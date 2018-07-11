@@ -30,5 +30,5 @@ class Voiture(Motorise):
 class Moto(Motorise):
     pass
 
-class Velo(Vehicule): 
+class Velo(Vehicule):
     pass
