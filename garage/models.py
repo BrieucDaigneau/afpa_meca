@@ -3,7 +3,6 @@ from datetime import datetime
 
 # Create your models here.
 
-# Voiture, Moto, velo
 class Type(models.Model):
     libelle_type_vehicule = models.CharField("type de véhicule", max_length=10)
     def __str__(self) :
