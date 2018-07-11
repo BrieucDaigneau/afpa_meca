@@ -3,7 +3,6 @@ from datetime import datetime
 
 # Create your models here.
 
-# Voiture, Moto, velo
 class Type(models.Model):
     libelle_type_vehicule = models.CharField("type de véhicule", max_length=10)
     def __str__(self) :
@@ -31,7 +30,56 @@ class Voiture(Motorise):
 class Moto(Motorise):
     pass
 
-class Velo(Vehicule): 
+class Velo(Vehicule):
     pass
-class Toto():
-    pass
+
+fatal: HttpRequestException encountered.
+   Une erreur s'est produite lors de l'envoi de la demande.
+Username for 'https://github.com': Jeffnad
+Password for 'https://Jeffnad@github.com':
+Counting objects: 4, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 361 bytes | 0 bytes/s, done.
+Total 4 (delta 3), reused 0 (delta 0)
+remote: Resolving deltas: 100% (3/3), completed 
+fatal: HttpRequestException encountered.
+   Une erreur s'est produite lors de l'envoi de la demande.
+Username for 'https://github.com': Jeffnad
+Password for 'https://Jeffnad@github.com':
+Counting objects: 4, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 361 bytes | 0 bytes/s, done.
+Total 4 (delta 3), reused 0 (delta 0)
+remote: Resolving deltas: 100% (3/3), completed 
+fatal: HttpRequestException encountered.
+   Une erreur s'est produite lors de l'envoi de la demande.
+Username for 'https://github.com': Jeffnad
+Password for 'https://Jeffnad@github.com':
+Counting objects: 4, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 361 bytes | 0 bytes/s, done.
+Total 4 (delta 3), reused 0 (delta 0)
+remote: Resolving deltas: 100% (3/3), completed 
+fatal: HttpRequestException encountered.
+   Une erreur s'est produite lors de l'envoi de la demande.
+Username for 'https://github.com': Jeffnad
+Password for 'https://Jeffnad@github.com':
+Counting objects: 4, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 361 bytes | 0 bytes/s, done.
+Total 4 (delta 3), reused 0 (delta 0)
+remote: Resolving deltas: 100% (3/3), completed 
+fatal: HttpRequestException encountered.
+   Une erreur s'est produite lors de l'envoi de la demande.
+Username for 'https://github.com': Jeffnad
+Password for 'https://Jeffnad@github.com':
+Counting objects: 4, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 361 bytes | 0 bytes/s, done.
+Total 4 (delta 3), reused 0 (delta 0)
+remote: Resolving deltas: 100% (3/3), completed 
