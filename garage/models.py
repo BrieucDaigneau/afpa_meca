@@ -33,3 +33,5 @@ class Moto(Motorise):
 
 class Velo(Vehicule): 
     pass
+class Toto():
+    pass
