@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-from database import *
+from .database import DATABASES_DEV
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
