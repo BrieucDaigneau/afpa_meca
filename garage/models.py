@@ -21,7 +21,7 @@ class TypeVehicule(models.Model):
     )
     
     def __str__(self) :
-        return self.libelle_type_vehicule
+        return self.Type_vehicule
 
 class Vehicule(models.Model):
     libelle_modele = models.CharField("libellé modèle", max_length=50)
