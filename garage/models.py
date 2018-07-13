@@ -56,7 +56,7 @@ class Utilisateur(models.Model):
         return "Profil de {0}".format(self.user.username)
 
 class Statut(models.Model):
-    libelle_statut = models.CharField("libellé statut", max_length=50)
+    #libelle_statut = models.CharField("libellé statut", max_length=50)
     ValidationFormateur = 'VF'
     AttenteFormateur = 'AF'
     RefusFormateur = 'RF'
