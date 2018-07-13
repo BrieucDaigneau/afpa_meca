@@ -30,3 +30,5 @@ admin.site.register(Intervention)
 admin.site.register(Devis)
 admin.site.register(Piece)
 admin.site.register(Fournisseur)
+
+admin.site.register(Statut)

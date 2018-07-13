@@ -4,7 +4,22 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class TypeVehicule(models.Model):
-    libelle_type_vehicule = models.CharField("type de véhicule", max_length=10)
+    # libelle_type_vehicule = models.CharField("type de véhicule", max_length=10)
+    Voiture = 'voiture'
+    Moto = 'moto'
+    Velo = 'velo'
+    
+    Type_vehicule_choice= (
+        (Voiture, 'Voiture'),
+        (Moto, 'Moto'),
+        (Velo, 'Velo'),
+    )
+    Type_vehicule = models.CharField(
+        max_length = 10,
+        choices = Type_vehicule_choice,
+        default = Voiture,
+    )
+    
     def __str__(self) :
         return self.libelle_type_vehicule
 
@@ -41,7 +56,35 @@ class Utilisateur(models.Model):
         return "Profil de {0}".format(self.user.username)
 
 class Statut(models.Model):
-    libelle_statut = models.CharField("libellé statut", max_length=50)
+    #libelle_statut = models.CharField("libellé statut", max_length=50)
+    ValidationFormateur = 'VF'
+    AttenteFormateur = 'AF'
+    RefusFormateur = 'RF'
+    AttenteDevis = 'AD'
+    ValidationClient ='VC'
+    AttenteClient = 'AC'
+    RefusClient = 'RC'
+    
+    Statut_choice = (
+        (ValidationFormateur, 'ValidationFormateur'),
+        (AttenteFormateur, 'AttenteFormateur'),
+        (RefusFormateur, 'RefusFormateur'),
+        (AttenteDevis, 'AttenteDevis'),
+        (ValidationClient,'ValidationClient'),
+        (AttenteClient, 'AttenteClient'),
+        (RefusClient, 'RefusClient'),
+    )
+
+    def StatutDefaut():
+        pass
+
+    Statut = models.CharField(
+        max_length = 20,
+        choices = Statut_choice,
+        default = AttenteFormateur,
+    )
+
+
 
 class Intervention(models.Model):
     date_saisie_intervention = models.DateTimeField("date d'intervention", null=True, default=datetime.now )
