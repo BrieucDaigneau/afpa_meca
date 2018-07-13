@@ -21,7 +21,7 @@ class TypeVehicule(models.Model):
     )
     
     def __str__(self) :
-        return self.libelle_type_vehicule
+        return self.Type_vehicule
 
 class Vehicule(models.Model):
     libelle_modele = models.CharField("libellé modèle", max_length=50)
@@ -56,7 +56,7 @@ class Utilisateur(models.Model):
         return "Profil de {0}".format(self.user.username)
 
 class Statut(models.Model):
-    #libelle_statut = models.CharField("libellé statut", max_length=50)
+    libelle_statut = models.CharField("libellé statut", max_length=50)
     ValidationFormateur = 'VF'
     AttenteFormateur = 'AF'
     RefusFormateur = 'RF'
@@ -122,3 +122,14 @@ class Devis(models.Model):
 
 class Piece_Fournisseur_Devis(models.Model):
     pass
+
+class DonneesPersonnelles(models.Model):
+    mail_client = models.EmailField("Email Client", max_length=35)
+    telephone_client = models.CharField("Téléphone Client", max_length=10)
+    carte_AFPA_img = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
+
+class Client(models.Model):
+    nom_client = models.CharField("Nom Client", max_length=15)
+    prenom_client = models.CharField("Prenom Client", max_length=15)
+    numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
+    donnees_personnelles_client = models.ForeignKey(DonneesPersonnelles, on_delete=models.CASCADE)
