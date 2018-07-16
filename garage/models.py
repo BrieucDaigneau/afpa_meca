@@ -45,28 +45,38 @@ class Address(models.Model):
         verbose_name = "Adresse"
 
 
-class TypeVehicule(models.Model):
-    # libelle_type_vehicule = models.CharField("type de véhicule", max_length=10)
-    VOITURE = 'VOITURE'
-    MOTO = 'MOTO'
-    VELO = 'VELO'
+# class TypeVehicule(object):
+#     # libelle_type_vehicule = models.CharField("type de véhicule", max_length=10)
+#     VOITURE = 'VOITURE'
+#     MOTO = 'MOTO'
+#     VELO = 'VELO'
     
-    choices= (
-        (VOITURE, 'Voiture'),
-        (MOTO, 'Moto'),
-        (VELO, 'Velo'),
-    )
+#     choices= (
+#         (VOITURE, 'Voiture'),
+#         (MOTO, 'Moto'),
+#         (VELO, 'Velo'),
+#     )
     
-    # def __str__(self) :
-    #     return self.Type_vehicule
+#     # def __str__(self) :
+#     #     return self.Type_vehicule
 
 class Vehicule(models.Model):
     libelle_modele = models.CharField("libellé modèle", max_length=50)
     #type_vehicule = models.ForeignKey(TypeVehicule, on_delete=models.CASCADE)
-    # Type_vehicule = models.CharField(
-    #     max_length = 10,
-    #     choices = TypeVehicule.choices,
-    #     default = TypeVehicule.choices[0])
+    VOITURE = 'VOITURE'
+    MOTO = 'MOTO'
+    VELO = 'VELO'
+    
+    Type_vehicule_choice= (
+        (VOITURE, 'Voiture'),
+        (MOTO, 'Moto'),
+        (VELO, 'Velo'),
+    ) 
+    Type_vehicule = models.CharField(
+        max_length = 10,
+        choices = Type_vehicule_choice,
+        default=Type_vehicule_choice[0]
+        )
     
     def __str__(self):
         return self.libelle_modele
