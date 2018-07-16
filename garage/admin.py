@@ -24,7 +24,7 @@ admin.site.register(Motorise)
 admin.site.register(Moto)
 admin.site.register(Voiture)
 admin.site.register(Velo)
-admin.site.register(TypeVehicule)
+#admin.site.register(TypeIntervention)
 
 admin.site.register(Intervention)
 admin.site.register(Devis)

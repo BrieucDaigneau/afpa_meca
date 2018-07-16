@@ -3,29 +3,29 @@ from datetime import datetime
 from django.contrib.auth.models import User
 # Create your models here.
 
-class TypeVehicule(models.Model):
+class TypeVehicule(object):
     # libelle_type_vehicule = models.CharField("type de véhicule", max_length=10)
-    Voiture = 'voiture'
-    Moto = 'moto'
-    Velo = 'velo'
+    VOITURE = 'VOITURE'
+    MOTO = 'MOTO'
+    VELO = 'VELO'
     
-    Type_vehicule_choice= (
-        (Voiture, 'Voiture'),
-        (Moto, 'Moto'),
-        (Velo, 'Velo'),
-    )
-    Type_vehicule = models.CharField(
-        max_length = 10,
-        choices = Type_vehicule_choice,
-        default = Voiture,
+    choices= (
+        (VOITURE, 'Voiture'),
+        (MOTO, 'Moto'),
+        (VELO, 'Velo'),
     )
     
-    def __str__(self) :
-        return self.Type_vehicule
+    # def __str__(self) :
+    #     return self.Type_vehicule
 
 class Vehicule(models.Model):
     libelle_modele = models.CharField("libellé modèle", max_length=50)
-    type_vehicule = models.ForeignKey(TypeVehicule, on_delete=models.CASCADE) 
+    #type_vehicule = models.ForeignKey(TypeVehicule, on_delete=models.CASCADE)
+    # Type_vehicule = models.CharField(
+    #     max_length = 10,
+    #     choices = TypeVehicule.choices,
+    #     default = TypeVehicule.choices[0])
+    
     def __str__(self):
         return self.libelle_modele
 
