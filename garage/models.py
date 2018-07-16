@@ -44,25 +44,7 @@ class Address(models.Model):
     class Meta:
         verbose_name = "Adresse"
 
-
-# class TypeVehicule(object):
-#     # libelle_type_vehicule = models.CharField("type de véhicule", max_length=10)
-#     VOITURE = 'VOITURE'
-#     MOTO = 'MOTO'
-#     VELO = 'VELO'
-    
-#     choices= (
-#         (VOITURE, 'Voiture'),
-#         (MOTO, 'Moto'),
-#         (VELO, 'Velo'),
-#     )
-    
-#     # def __str__(self) :
-#     #     return self.Type_vehicule
-
 class Vehicule(models.Model):
-    libelle_modele = models.CharField("libellé modèle", max_length=50)
-    #type_vehicule = models.ForeignKey(TypeVehicule, on_delete=models.CASCADE)
     VOITURE = 'VOITURE'
     MOTO = 'MOTO'
     VELO = 'VELO'
@@ -72,11 +54,16 @@ class Vehicule(models.Model):
         (MOTO, 'Moto'),
         (VELO, 'Velo'),
     ) 
-    Type_vehicule = models.CharField(
+    
+    libelle_modele = models.CharField("libellé modèle", max_length=50)
+    type_vehicule = models.CharField(
         max_length = 10,
-        choices = Type_vehicule_choice,
+        choices=Type_vehicule_choice,
         default=Type_vehicule_choice[0]
         )
+
+    def is_upperclass(self):
+        return self.type_vehicule in (self.MOTO, self.VOITURE)
     
     def __str__(self):
         return self.libelle_modele
@@ -107,36 +94,6 @@ class Utilisateur(models.Model):
     def __str__(self):
         return "Profil de {0}".format(self.user.username)
 
-class Statut(models.Model):
-    #libelle_statut = models.CharField("libellé statut", max_length=50)
-    ValidationFormateur = 'VF'
-    AttenteFormateur = 'AF'
-    RefusFormateur = 'RF'
-    AttenteDevis = 'AD'
-    ValidationClient ='VC'
-    AttenteClient = 'AC'
-    RefusClient = 'RC'
-    
-    Statut_choice = (
-        (ValidationFormateur, 'ValidationFormateur'),
-        (AttenteFormateur, 'AttenteFormateur'),
-        (RefusFormateur, 'RefusFormateur'),
-        (AttenteDevis, 'AttenteDevis'),
-        (ValidationClient,'ValidationClient'),
-        (AttenteClient, 'AttenteClient'),
-        (RefusClient, 'RefusClient'),
-    )
-
-    def StatutDefaut():
-        pass
-
-    Statut = models.CharField(
-        max_length = 20,
-        choices = Statut_choice,
-        default = AttenteFormateur,
-    )
-
-
 
 class Intervention(models.Model):
     date_saisie_intervention = models.DateTimeField("date d'intervention", null=True, default=datetime.now )
@@ -144,6 +101,34 @@ class Intervention(models.Model):
     diagnostic = models.TextField(max_length=300, null=True)
     intervention_a_realiser = models.TextField("interventions prévus", max_length=300, null=True)
     intervention_realisee = models.BooleanField("intervention réalisée", null=False, default=False)
+
+   
+    ValidationFormateur = 'VF'
+    AttenteFormateur = 'AF'
+    RefusFormateur = 'RF'
+    AttenteDevis = 'AD'
+    
+    
+    Statut_choice = (
+        (ValidationFormateur, 'ValidationFormateur'),
+        (AttenteFormateur, 'AttenteFormateur'),
+        (RefusFormateur, 'RefusFormateur'),
+        (AttenteDevis, 'AttenteDevis'),
+        
+    )
+    # if Vehicule.type_vehicule == "Voiture":
+    Statut = models.CharField(
+        max_length = 20,
+        choices = Statut_choice,
+        default = AttenteDevis,
+    )
+    # else :
+    #         Statut = models.CharField(
+    #         max_length = 20,
+    #         choices = Statut_choice,
+    #         default = AttenteFormateur,
+    #     )
+
 
 class Piece(models.Model):
     reference_piece = models.CharField("référence pièce", max_length=20)
@@ -157,8 +142,6 @@ class Fournisseur(models.Model):
         return self.libelle_fournisseur
 
 class Devis(models.Model):
-    date_devis = models.DateField("Date du devis", null=False)
-    devis_signe_img = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis")
     def NumeroDevis():
         num = Devis.objects.count()
         if num == None:
@@ -168,6 +151,29 @@ class Devis(models.Model):
     numero_devis = models.IntegerField(unique=True, default=NumeroDevis )
     class Meta():
         verbose_name_plural = "Devis"
+    date_devis = models.DateField("Date du devis", null=False)
+    devis_signe_img = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis")
+    ValidationFormateur = 'VF'
+    AttenteFormateur = 'AF'
+    RefusFormateur = 'RF'
+    ValidationClient ='VC'
+    AttenteClient = 'AC'
+    RefusClient = 'RC'
+    
+    Statut_choice = (
+        (ValidationFormateur, 'ValidationFormateur'),
+        (AttenteFormateur, 'AttenteFormateur'),
+        (RefusFormateur, 'RefusFormateur'),
+        (ValidationClient,'ValidationClient'),
+        (AttenteClient, 'AttenteClient'),
+        (RefusClient, 'RefusClient'),
+    )
+    Statut = models.CharField(
+        max_length = 20,
+        choices = Statut_choice,
+        default = AttenteFormateur,
+    )
+
     
     def __str__(self):
         return self.numero_devis
