@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{% block title %}AFPA - Liste des clients - Création client {% endblock %}</title>
+    <title>{% block title %}AFPA - Recherche client {% endblock %}</title>
 
     {% load static %}
 
@@ -27,13 +27,14 @@
 
             <h1>Liste des Clients</h1>
             &emsp;
+
             <div class="form-inline my-2 my-lg-0" style="margin-left: 40%;">
                 <form action="{% url 'garage:recherche' %}" method="get" accept-charset="utf-8">
                     <input class="form-control mr-sm-2" name="query" type="text" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0">Search</button>
                 </form>
             </div>
-            
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
@@ -56,6 +57,7 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     <tr> {% for client in context_object_name %} </tr>
                     <th scope="row">{{ client.nom_client }}</th>
                     <td>{{ client.prenom_client }}</td>
@@ -63,6 +65,7 @@
                     {% empty %}
                     <td>aucun client</td>
                     {% endfor %}
+
                 </tbody>
             </table>
         </div>
@@ -95,7 +98,7 @@
                     <div class="row">
                         <div class="col-md-12">34430 St Jean de Vedas</div>
                     </div>
-                    <!-- <div class="row">
+                    <div class="row">
                         <div class="col-md-12">
                             <div class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
@@ -111,80 +114,75 @@
                                 </div>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
 
                 </div>
             </afpa>
 
             <formulaire class="col-md-9">
                 <h4>Client</h4>
-                <form class="needs-validation" action="{% url 'garage:client' %}" method="post">
+                <form class="needs-validation" action="{% url 'garage:recherche' %}" method="post">
                     {% csrf_token %}
+
+                    {% for client in context_object_name %} 
+
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group {% if form.nom_client.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ form.nom_client.id_for_label }}" class="control-label">Nom</label>
-                                {{ form.nom_client }}
-                            </div>
-                            <div class="invalid-feedback">
-                                Saisie du nom est obligatoire
-                            </div>
+                          <label for="nom_client">Nom</label>
+                          <input type="text" class="form-control" id="nom_client" placeholder="" value="{{ client.nom_client }}" required>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group {% if form.prenom_client.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ form.prenom_client.id_for_label }}" class="control-label">Prenom</label>
-                                {{ form.prenom_client }}
-                            </div>
-                            <div class="invalid-feedback">
-                                Saisie du prenom est obligatoire
-                            </div>
+                          <label for="prenom_client">Prénom</label>
+                          <input type="text" class="form-control" id="prenom_client" placeholder="" value="{{ client.prenom_client }}" required>
+                        </div>
+                    </div>  
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="telephone_client" class="control-label">Téléphone </label>
+                            <input type="text" class="form-control" id="telephone_client" placeholder="" value="{{ client.telephone_client }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email_client" class="control-label">Email </label> 
+                            <input type="email" class="form-control" id="email_client" placeholder="" value="{{ client.email_client }}" required>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="{{ form.telephone_client.id_for_label }}" class="control-label">Téléphone</label>
-                            {{ form.telephone_client }}
-                        </div>
-                        <div class="col-md-6">
-                            <label for="{{ form.email_client.id_for_label }}" class="control-label">Email</label>
-                            {{ form.email_client }}
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="{{ form.adresse_client.id_for_label }}" class="control-label">Adresse</label>
-                            {{ form.adresse_client }}
+                            <label for="adresse_client" class="control-label">Adresse </label>
+                            <input type="text" class="form-control" id="adresse_client" placeholder="" value="{{ client.adresse_client }}" required>
                         </div>
 
                         <div class="col-md-2">
-                            <label for="{{ form.code_postal_client.id_for_label }}" class="control-label">Code Postal</label>
-                            {{ form.code_postal_client }}
+                            <label for="code_postal_client" class="control-label">Code Postal </label>
+                            <input type="text" class="form-control" id="code_postal_client" placeholder="" value="{{ client.code_postal_client }}" required>
                         </div>
 
                         <div class="col-md-2">
-                            <label for="{{ form.ville_client.id_for_label }}" class="control-label">Ville</label>
-                            {{ form.ville_client }}
+                            <label for="ville_client" class="control-label">Ville </label>
+                            <input type="text" class="form-control" id="ville_client" placeholder="" value="{{ client.ville_client }}" required>
                         </div>
 
                         <div class="col-md-2">
-                            <label for="{{ form.pays_client.id_for_label }}" class="control-label">Pays</label>
-                            {{ form.pays_client }}
-                            <div class="invalid-feedback">
-                                Selectionner un pays valide
-                            </div>
+                            <label for="pays_client" class="control-label">Pays </label>
+                            <input type="text" class="form-control" id="pays_client" placeholder="" value="{{ client.pays_client }}" required>
                         </div>
                     </div>
 
                     <br/>
+
+                    {% endfor %}
+
+
                     <div class="row">
-                        <div class="col-md-9">
-                        </div>    
-                        <div class="col-md-3">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
+                        <div class="col-md-6">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Modifier</button>
                         </div>
-                    </div>    
+                        <div class="col-md-6">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Valider</button>
+                        </div>
+                    </div>                                
                 </form>
 
             </formulaire>
@@ -206,3 +204,4 @@
 </body>
 
 </html>
+
