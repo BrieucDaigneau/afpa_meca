@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{% block title %}AFPA - Liste des clients - Création client {% endblock %}</title>
+    <title>{% block title %}AFPA Création client {% endblock %}</title>
 
     {% load static %}
 
@@ -25,7 +25,7 @@
         <br/>
         <div class="row">
 
-            <h1>Liste des Client</h1>
+            <!-- <h1>Création Client</h1> -->
             &emsp;
             <div class="form-inline my-2 my-lg-0" style="margin-left: 40%;">
                 <form action="{% url 'garage:recherche' %}" method="get" accept-charset="utf-8">
@@ -34,39 +34,9 @@
                 </form>
             </div>
             
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <!-- <div class="col-md-6">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Modifier</button>
-                        </div> -->
-                        <div class="col-md-12">
-                                <button class="btn btn-primary btn-lg btn-block" type="submit">Nouveau</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Prénom</th>
-                        <th scope="col">Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr> {% for client in context_object_name %} </tr>
-                    <th scope="row">{{ client.nom_client }}</th>
-                    <td>{{ client.prenom_client }}</td>
-                    <td>{{ client.email_client }}</td>
-                    {% empty %}
-                    <td>aucun client</td>
-                    {% endfor %}
-                </tbody>
-            </table>
         </div>
 
+        <br/>
         <br/>
 
         <header class="row">
@@ -161,12 +131,20 @@
 
                     <br/>
                     <div class="row">
-                        <div class="col-md-9">
-                        </div>    
+                        <!-- <div class="col-md-9">
+                        </div>     -->
+                        <div class="col-md-3">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Annuler</button>
+                        </div>
+                        <div class="col-md-3">
+                        </div>        
+                        <div class="col-md-3">
+                        </div>        
                         <div class="col-md-3">
                             <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
                         </div>
-                    </div>    
+                    </div>   
+
                 </form>
 
             </formulaire>
