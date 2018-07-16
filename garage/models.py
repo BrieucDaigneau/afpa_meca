@@ -3,6 +3,48 @@ from datetime import datetime
 from django.contrib.auth.models import User
 # Create your models here.
 
+from django.db import models
+
+class ZipCode(models.Model):
+    zip_code = models.IntegerField( verbose_name = 'Code Postal',)
+    
+    def __str__(self):
+        rslt = ""
+        nb = 0
+        for c in self.city_set.all():
+            if nb != 0:
+                rslt += " ; "
+            rslt += str( c )
+            nb += 1
+        return str( self.zip_code ) + " " + rslt
+    class Meta:
+        verbose_name = "Code Postal"
+        verbose_name_plural = "Codes Postaux"
+
+class City(models.Model):
+    city_name   = models.CharField(max_length =25, verbose_name = "Ville",)
+    zipCode     = models.ManyToManyField(ZipCode, verbose_name="Code Postal")
+
+    def __str__(self):
+        return  self.city_name
+    class Meta:
+        verbose_name = "Ville"
+
+
+    
+
+class Address(models.Model):
+    street              = models.TextField(max_length=50, verbose_name = "Nom de la rue",)
+    street_number       = models.CharField(max_length = 30, null=True, blank = True, verbose_name = "Numéro de la rue",)
+    street_complement   = models.CharField(max_length =50, null=True, blank = True, verbose_name = "Complément d'adresse",)
+
+    city    = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name = 'Ville')
+    zipCode = models.ForeignKey(ZipCode, on_delete=models.CASCADE, verbose_name = 'Code Postal')
+ 
+    class Meta:
+        verbose_name = "Adresse"
+
+
 class TypeVehicule(models.Model):
     # libelle_type_vehicule = models.CharField("type de véhicule", max_length=10)
     Voiture = 'voiture'
