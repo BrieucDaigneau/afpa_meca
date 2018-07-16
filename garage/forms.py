@@ -4,20 +4,38 @@ from django.forms import ModelForm, TextInput, EmailInput
 from django.forms.utils import ErrorList
 from .models import Client 
 
-class ClientForm(forms.Form):
-    nom_client = forms.CharField(
-        label='Nom',
-        max_length=20,
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-        required=True
-        )
 
-    prenom_client = forms.CharField(
-        label='Prenom_client',
-        max_length=20,
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-        required=True
-        )     
+
+
+class ClientForm(ModelForm):
+    class Meta:
+        model = Client
+        # fields = '__all__'
+        fields = ["nom_client", "prenom_client"]
+        widgets = {
+            'nom_client': TextInput(attrs={'class': 'form-control'}),
+            'prenom_client': TextInput(attrs={'class': 'form-control'})
+        }
+
+
+
+# class ClientForm(forms.Form):
+#     nom_client = forms.CharField(
+#         label='Nom',
+#         max_length=20,
+#         widget=forms.TextInput(attrs={'class': 'form-control'}),
+#         required=True
+#         )
+
+#     prenom_client = forms.CharField(
+#         label='Prenom_client',
+#         max_length=20,
+#         widget=forms.TextInput(attrs={'class': 'form-control'}),
+#         required=True
+#         )     
+
+
+
 
     # telephone_client = forms.CharField(
     #     label='telephone',

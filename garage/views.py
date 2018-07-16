@@ -3,8 +3,13 @@ from .models import Client
 
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import ClientForm
-from django.views.generic.list import ListView
+from django.views.generic import CreateView, ListView
+from django.views.generic import DetailView
 
+
+class ClientCreate(CreateView):
+    model = Client
+    form_class = ClientForm
 
 # class ListeClients(ListView):
 #     model = Client
