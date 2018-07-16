@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}AFPA - Ordre de réparation{% endblock %}</title>    
+
+    {% load static %}
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'garage/css/style.css' %}" rel="stylesheet">
+</head>
+
+<body class="container">
+
+    <div>
+
+        <header class="row">
+            <titre class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href="https://www.afpa.fr/" target="_blank">
+                            <img src="{% static 'garage/img/afpa.jpg' %}" alt="afpa" />
+                        </a>
+                    </div>
+                    <div class="col-md-9">
+                        <br/>
+                        <h1 id="titre">{% block monTitre %}Ordre de réparation{% endblock %}</h1>                            
+                    </div>
+                </div>
+            </titre>
+
+            <afpa class="col-md-3">
+                <div id="info_afpa">
+                    <div class="row">
+                        <div class="col-md-12">AFPA St Jean de VEDAS</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">ZI de la Lauze</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">34430 St Jean de Vedas</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img class="d-block w-100" src="{% static 'garage/img/mercedes.jpg ' %}" alt="mercedes">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="{% static 'garage/img/bmw.jpg' %}" alt="bmw">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img class="d-block w-100" src="{% static 'garage/img/audi.jpg' %}" alt="audi">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </afpa>
+
+            <formulaire class="col-md-9">
+                <h4>Client</h4>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="nom" class="control-label">Nom : </label>
+                        {{ client.nom_client }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="prenom" class="control-label">Prenom : </label>
+                        {{ client.prenom_client }}
+                    </div>
+                </div>  
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="telephone" class="control-label">Téléphone : </label>
+                        {{ client.telephone_client }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="control-label">Email : </label> 
+                        {{ client.email_client }}
+                    </div> 
+                </div>                 
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="adresse" class="control-label">Adresse : </label>
+                        {{ client.adresse_client }}
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="codepostal" class="control-label">Code Postal : </label>
+                        {{ client.code_postal_client }}
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="ville" class="control-label">Ville : </label>
+                        {{ client.ville_client }}
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="pays" class="control-label">Pays : </label>
+                        {{ client.pays_client }}
+                    </div>
+                </div>
+
+                <br/>
+
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Valider</button>
+
+            </formulaire>
+
+        </header>
+
+        <vehicule class="col-md-12">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="address">Marque</label>
+                    <input type="text" class="form-control" id="address" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Saisir la marque
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="zip">Modele</label>
+                    <input type="text" class="form-control" id="zip" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Saisir le modele
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="zip">Immatriculation</label>
+                    <input type="text" class="form-control" id="zip" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Saisir l'immatriculation
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="zip">Réceptionnaire</label>
+                    <input type="text" class="form-control" id="zip" placeholder="" required>
+                    <div class="invalid-feedback">
+                        Saisir le réceptionnaire
+                    </div>
+                </div>
+
+            </div>
+
+        </vehicule>
+
+        <div id="saisir">
+            <div class="form-group">
+                <label for="textarea">Description des symptômes du client (si diagonstic) </label>
+                <textarea id="textarea" class="form-control" rows="4"></textarea>
+                <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
+            </div>
+
+            <div class="form-group">
+                <label for="textarea">Intervention à réaliser</label>
+                <textarea id="textarea" class="form-control" rows="4"></textarea>
+                <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
+            </div>
+        </div>
+
+
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <!-- <p class="mb-1">&copy; 2017-2018 Afpa</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Privé</a></li>
+        </ul> -->
+        </footer>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- jQuery -->
+    <script src="{% static 'garage/js/jquery-slim.min.js' %}"></script>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Baa to do <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    <!-- <script>window.jQuery || document.write('<script src="../../bootstrap-4.1.1/assets/js/vendor/jquery-slim.min.js"><\/script>')</script> -->
+    <script>
+        window.jQuery || document.write('<script src="{% static "garage/js/jquery-slim.min.js" %}"><\/script>')
+    </script>
+    <script src="{% static 'garage/js/popper.min.js' %}"></script>
+    <script src="{% static 'garage/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'garage/js/holder.min.js' %}"></script>
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict';
+
+            window.addEventListener('load', function () {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+
+</html>
