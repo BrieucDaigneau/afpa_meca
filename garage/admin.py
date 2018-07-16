@@ -49,7 +49,7 @@ admin.site.register(Motorise)
 admin.site.register(Moto)
 admin.site.register(Voiture)
 admin.site.register(Velo)
-#admin.site.register(TypeIntervention)
+
 
 admin.site.register(Intervention)
 admin.site.register(Devis)
@@ -58,4 +58,3 @@ admin.site.register(Fournisseur)
 admin.site.register(Client)
 admin.site.register(DonneesPersonnelles)
 
-admin.site.register(Statut)
