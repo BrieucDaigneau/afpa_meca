@@ -116,20 +116,24 @@ class Intervention(models.Model):
         (AttenteDevis, 'AttenteDevis'),
         
     )
-    # if Vehicule.type_vehicule == "Voiture":
-    Statut = models.CharField(
-        max_length = 20,
-        choices = Statut_choice,
-        default = AttenteDevis,
-    )
-    # else :
-    #         Statut = models.CharField(
-    #         max_length = 20,
-    #         choices = Statut_choice,
-    #         default = AttenteFormateur,
-    #     )
+    def StatutDefaut():
+        if Vehicule.type_vehicule == "Voiture":
+            Statut = models.CharField(
+                max_length = 20,
+                choices = Intervention.Statut_choice,
+                default = Intervention.AttenteDevis,
+            )
+        else :
+                Statut = models.CharField(
+                max_length = 20,
+                choices = Intervention.Statut_choice,
+                default = Intervention.AttenteFormateur,
+            )
+        return Statut
+    statut = StatutDefaut()
 
-
+    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
 class Piece(models.Model):
     reference_piece = models.CharField("référence pièce", max_length=20)
     libelle_piece = models.CharField("libellé de la pièce", max_length=50)
@@ -181,19 +185,22 @@ class Devis(models.Model):
     commande_piece = models.ManyToManyField(Piece, through='Piece_Fournisseur_Devis')
     
     def __str__(self):
-        return self.numero_devis
+        return str(self.numero_devis)
 
 class Piece_Fournisseur_Devis(models.Model):
-    quantite_pieces_necessaires = models.IntegerField("Quantité de pièces nécessaires")
+    quantite_pieces_necessaires = models.IntegerField("Quantité de pièces nécessaires", null=True)
     prix_ht = models.IntegerField("Prix Hors Taxes", null=True, blank=False)
     numero_devis_fournisseur = models.CharField("Numéro du devis fournisseur", max_length=20, null=True, blank=False)
-    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
-    fournisseur = models.ForeignKey(Fournisseur, on_delete=models.CASCADE)
-    piece = models.ForeignKey(Piece, on_delete=models.CASCADE)
+    devis = models.ForeignKey(Devis, null=True, on_delete=models.CASCADE)
+    fournisseur = models.ForeignKey(Fournisseur, null=True, on_delete=models.CASCADE)
+    piece = models.ForeignKey(Piece, null=True, on_delete=models.CASCADE)
 
     class Meta():
         verbose_name = "Commande"
         verbose_name_plural = "Commandes"
+
+    def __str__(self):
+        return str(self.fournisseur) + " devis n°" +str(self.devis) + " pièce : " + str(self.piece)
 
 
 
