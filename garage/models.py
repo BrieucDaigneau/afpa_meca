@@ -30,9 +30,6 @@ class City(models.Model):
     class Meta:
         verbose_name = "Ville"
 
-
-    
-
 class Address(models.Model):
     street              = models.TextField(max_length=50, verbose_name = "Nom de la rue",)
     street_number       = models.CharField(max_length = 30, null=True, blank = True, verbose_name = "Numéro de la rue",)
@@ -48,19 +45,13 @@ class DonneesPersonnelles(models.Model):
     mail_client = models.EmailField("Email Client", max_length=35)
     telephone_client = models.CharField("Téléphone Client", max_length=10)
     carte_AFPA_img = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
-    def __str__(self) :
-        return "{0}  Tel: {1}".format(self.mail_client, self.telephone_client)
-
 
 class Client(models.Model):
     nom_client = models.CharField("Nom Client", max_length=15)
     prenom_client = models.CharField("Prenom Client", max_length=15)
     numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
     donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE, primary_key=True)
-    adresse = models.OneToOneField(Address, null=True, on_delete=models.CASCADE, primary_key=True)
-    def __str__(self):
-        return "{0} {1} n° AFPA : {2}".format(self.nom_client, self.prenom_client, self.numero_afpa_client)
-
+    adresse = models.ForeignKey(Address, null=True, on_delete=models.CASCADE)
 
 class Vehicule(models.Model):
     VOITURE = 'VOITURE'
@@ -79,16 +70,12 @@ class Vehicule(models.Model):
         choices=Type_vehicule_choice,
         default=Type_vehicule_choice[0]
         )
-
     client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
-
     def is_upperclass(self):
         return self.type_vehicule in (self.MOTO, self.VOITURE)
     
     def __str__(self):
         return self.libelle_modele
-
-    
 
 class Motorise(Vehicule):
     libelle_marque = models.CharField("libellé marque", max_length=100, null=True)
@@ -150,8 +137,8 @@ class Intervention(models.Model):
     #         choices = Statut_choice,
     #         default = AttenteFormateur,
     #     )
-    utilisateur = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    vehicule = models.ForeignKey(Vehicule, null=True, on_delete=models.CASCADE)
+    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
 class Piece(models.Model):
     reference_piece = models.CharField("référence pièce", max_length=20)
     libelle_piece = models.CharField("libellé de la pièce", max_length=50)
