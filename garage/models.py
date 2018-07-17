@@ -116,22 +116,18 @@ class Intervention(models.Model):
         (AttenteDevis, 'AttenteDevis'),
         
     )
-    def StatutDefaut():
-        if Vehicule.type_vehicule == "Voiture":
-            Statut = models.CharField(
-                max_length = 20,
-                choices = Intervention.Statut_choice,
-                default = Intervention.AttenteDevis,
-            )
-        else :
-                Statut = models.CharField(
-                max_length = 20,
-                choices = Intervention.Statut_choice,
-                default = Intervention.AttenteFormateur,
-            )
-        return Statut
-    statut = StatutDefaut()
-
+    # if Vehicule.type_vehicule == "Voiture":
+    Statut = models.CharField(
+        max_length = 20,
+        choices = Statut_choice,
+        default = AttenteDevis,
+    )
+    # else :
+    #         Statut = models.CharField(
+    #         max_length = 20,
+    #         choices = Statut_choice,
+    #         default = AttenteFormateur,
+    #     )
     utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
     vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
 class Piece(models.Model):
