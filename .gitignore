@@ -1,4 +1,4 @@
 *.pyc
 database.py
 *root*
-migrations/
+garage/migrations/*.py
