@@ -57,7 +57,7 @@ class Client(models.Model):
     prenom_client = models.CharField("Prenom Client", max_length=15)
     numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
     donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE, primary_key=True)
-    adresse = models.ForeignKey(Address, null=True, on_delete=models.CASCADE)
+    adresse = models.OneToOneField(Address, null=True, on_delete=models.CASCADE, primary_key=True)
     def __str__(self):
         return "{0} {1} n° AFPA : {2}".format(self.nom_client, self.prenom_client, self.numero_afpa_client)
 
