@@ -138,6 +138,7 @@ class Piece(models.Model):
 
 class Fournisseur(models.Model):
     libelle_fournisseur = models.CharField("Nom Fournisseur", max_length=35)
+    piece_fournisseur = models.ManyToManyField(Piece, through='Piece_Fournisseur_Devis')
     def __str__(self):
         return self.libelle_fournisseur
 
@@ -149,8 +150,10 @@ class Devis(models.Model):
         else:
             return num +1
     numero_devis = models.IntegerField(unique=True, default=NumeroDevis )
+    
     class Meta():
         verbose_name_plural = "Devis"
+
     date_devis = models.DateField("Date du devis", null=False)
     devis_signe_img = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis")
     ValidationFormateur = 'VF'
@@ -174,12 +177,25 @@ class Devis(models.Model):
         default = AttenteFormateur,
     )
 
+    commande_fournisseur = models.ManyToManyField(Fournisseur, through='Piece_Fournisseur_Devis')
+    commande_piece = models.ManyToManyField(Piece, through='Piece_Fournisseur_Devis')
     
     def __str__(self):
         return self.numero_devis
 
 class Piece_Fournisseur_Devis(models.Model):
-    pass
+    quantite_pieces_necessaires = models.IntegerField("Quantité de pièces nécessaires")
+    prix_ht = models.IntegerField("Prix Hors Taxes", null=True, blank=False)
+    numero_devis_fournisseur = models.CharField("Numéro du devis fournisseur", max_length=20, null=True, blank=False)
+    devis = models.ForeignKey(Devis, on_delete=models.CASCADE)
+    fournisseur = models.ForeignKey(Fournisseur, on_delete=models.CASCADE)
+    piece = models.ForeignKey(Piece, on_delete=models.CASCADE)
+
+    class Meta():
+        verbose_name = "Commande"
+        verbose_name_plural = "Commandes"
+
+
 
 class DonneesPersonnelles(models.Model):
     mail_client = models.EmailField("Email Client", max_length=35)
@@ -190,4 +206,4 @@ class Client(models.Model):
     nom_client = models.CharField("Nom Client", max_length=15)
     prenom_client = models.CharField("Prenom Client", max_length=15)
     numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
-    donnees_personnelles_client = models.ForeignKey(DonneesPersonnelles, on_delete=models.CASCADE)
+    donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE, primary_key=True)
