@@ -44,6 +44,17 @@ class Address(models.Model):
     class Meta:
         verbose_name = "Adresse"
 
+class DonneesPersonnelles(models.Model):
+    mail_client = models.EmailField("Email Client", max_length=35)
+    telephone_client = models.CharField("Téléphone Client", max_length=10)
+    carte_AFPA_img = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
+
+class Client(models.Model):
+    nom_client = models.CharField("Nom Client", max_length=15)
+    prenom_client = models.CharField("Prenom Client", max_length=15)
+    numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
+    donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE, primary_key=True)
+
 class Vehicule(models.Model):
     VOITURE = 'VOITURE'
     MOTO = 'MOTO'
@@ -62,11 +73,15 @@ class Vehicule(models.Model):
         default=Type_vehicule_choice[0]
         )
 
+    client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
+
     def is_upperclass(self):
         return self.type_vehicule in (self.MOTO, self.VOITURE)
     
     def __str__(self):
         return self.libelle_modele
+
+    
 
 class Motorise(Vehicule):
     libelle_marque = models.CharField("libellé marque", max_length=100, null=True)
@@ -128,8 +143,8 @@ class Intervention(models.Model):
     #         choices = Statut_choice,
     #         default = AttenteFormateur,
     #     )
-    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
-    vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
+    utilisateur = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    vehicule = models.ForeignKey(Vehicule, null=True, on_delete=models.CASCADE)
 class Piece(models.Model):
     reference_piece = models.CharField("référence pièce", max_length=20)
     libelle_piece = models.CharField("libellé de la pièce", max_length=50)
@@ -199,14 +214,3 @@ class Piece_Fournisseur_Devis(models.Model):
         return str(self.fournisseur) + " devis n°" +str(self.devis) + " pièce : " + str(self.piece)
 
 
-
-class DonneesPersonnelles(models.Model):
-    mail_client = models.EmailField("Email Client", max_length=35)
-    telephone_client = models.CharField("Téléphone Client", max_length=10)
-    carte_AFPA_img = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
-
-class Client(models.Model):
-    nom_client = models.CharField("Nom Client", max_length=15)
-    prenom_client = models.CharField("Prenom Client", max_length=15)
-    numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
-    donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE, primary_key=True)
