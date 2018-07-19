@@ -139,8 +139,12 @@ class Intervention(models.Model):
     #         choices = Statut_choice,
     #         default = AttenteFormateur,
     #     )
-    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    utilisateur = models.ForeignKey(User, on_delete=models.CASCADE)
     vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.vehicule + " " + self.date_saisie_intervention + " " + self.utilisateur + " " + self.Statut
+
 class Piece(models.Model):
     reference_piece = models.CharField("référence pièce", max_length=20)
     libelle_piece = models.CharField("libellé de la pièce", max_length=50)
