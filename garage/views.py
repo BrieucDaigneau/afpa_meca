@@ -1,20 +1,34 @@
 from django.http import HttpResponse
-from .models import Client
+from .models import Client, DonneesPersonnelles
 
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import ClientForm
+from .forms import ClientForm, DonneesPersonnellesForm
 from django.views.generic import CreateView, ListView
 from django.views.generic import DetailView
+from django.urls import reverse_lazy
 
 
-class ClientCreate(CreateView):
-    model = Client
-    form_class = ClientForm
+def client(request):
+    sauvegarde = False
+    client_form = ClientForm(request.POST or None)   
+    donneesPersonnelles_form = DonneesPersonnellesForm(request.POST or None)
+    if client_form.is_valid() and donneesPersonnelles_form.is_valid():
+        donnees = donneesPersonnelles_form.save()
+        client = client_form.save(commit=False)
+        client.donnees_personnelles_client = donnees
+        client.save()
+        
+        sauvegarde = True
+        return redirect("garage:ordre_reparation", client_id=client.id)
 
-# class ListeClients(ListView):
-#     model = Client
-#     context_object_name = "derniers_clients"
-#     template_name = "garage/client_list.html"
+    return render(
+        request, 
+        'garage/client_form.html', 
+        {   'client_form': client_form,
+            'donneesPersonnelles_form': donneesPersonnelles_form,
+            'sauvegarde' : sauvegarde,
+            'context_object_name': Client.objects.all()}
+    )
 
 
 def ordre_reparation(request, client_id):
@@ -24,32 +38,6 @@ def ordre_reparation(request, client_id):
     }
     # client = get_object_or_404(Client, id=id)
     return render(request, 'garage/ordre_reparation.html', context)    
-
-
-def client(request):
-    sauvegarde = False
-    form = ClientForm(request.POST or None)    
-    if form.is_valid():
-        client = Client()
-        client.nom_client = form.cleaned_data["nom_client"]
-        client.prenom_client = form.cleaned_data["prenom_client"]
-        # client.telephone_client = form.cleaned_data["telephone_client"]        
-        # client.email_client = form.cleaned_data["email_client"]    
-        # client.adresse_client = form.cleaned_data["adresse_client"]
-        # client.code_postal_client = form.cleaned_data["code_postal_client"]
-        # client.ville_client = form.cleaned_data["ville_client"]
-        # client.pays_client = form.cleaned_data["pays_client"]
-        client.save()
-        sauvegarde = True
-        return redirect("garage:ordre_reparation", client_id=client.id)
-
-    return render(
-        request, 
-        'garage/list_creer_client.html', 
-        {   'form': form,
-            'sauvegarde' : sauvegarde,
-            'context_object_name': Client.objects.all()}
-    )
 
 
 def recherche(request):

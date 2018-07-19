@@ -14,7 +14,12 @@ class UtilisateurInline(admin.StackedInline):
 class UserAdmin(BaseUserAdmin):
     inlines = (UtilisateurInline, )
 
+class ClientInline(admin.TabularInline):
+    model = Client
+    can_delete = False
 
+class DonneesPersonnellesAdmin(admin.ModelAdmin):
+    inlines = (ClientInline, )
 
 class ZipCodeInline(admin.TabularInline):        
     model = City.zipCode.through
@@ -39,8 +44,6 @@ admin.site.register(Address)
 admin.site.register(ZipCode, ZipCodeAdmin)
 admin.site.register(City, CityAdmin)
 
-
-
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
@@ -55,7 +58,6 @@ admin.site.register(Intervention)
 admin.site.register(Devis)
 admin.site.register(Piece)
 admin.site.register(Fournisseur)
-admin.site.register(Client)
-admin.site.register(DonneesPersonnelles)
+admin.site.register(DonneesPersonnelles, DonneesPersonnellesAdmin)
 
 admin.site.register(Statut)

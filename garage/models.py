@@ -170,8 +170,10 @@ class DonneesPersonnelles(models.Model):
     telephone_client = models.CharField("Téléphone Client", max_length=10)
     carte_AFPA_img = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
 
+
 class Client(models.Model):
     nom_client = models.CharField("Nom Client", max_length=15)
     prenom_client = models.CharField("Prenom Client", max_length=15)
     numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
-    donnees_personnelles_client = models.ForeignKey(DonneesPersonnelles, on_delete=models.CASCADE)
+    donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE)
+    
