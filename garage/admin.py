@@ -57,4 +57,5 @@ admin.site.register(Piece)
 admin.site.register(Fournisseur)
 admin.site.register(Client)
 admin.site.register(DonneesPersonnelles)
+admin.site.register(Piece_Fournisseur_Devis)
 

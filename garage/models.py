@@ -5,22 +5,6 @@ from django.contrib.auth.models import User
 
 from django.db import models
 
-class DonneesPersonnelles(models.Model):
-    mail_client = models.EmailField("Email Client", max_length=35)
-    telephone_client = models.CharField("Téléphone Client", max_length=10)
-    carte_AFPA_img = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
-
-    def __str__(self) :
-        return "Adresse mail : {0}  Téléphone : {1}".format(self.mail_client, self.telephone_client)
-        
-class Client(models.Model):
-    nom_client = models.CharField("Nom Client", max_length=15)
-    prenom_client = models.CharField("Prenom Client", max_length=15)
-    numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
-    donnees_personnelles_client = models.ForeignKey(DonneesPersonnelles, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return "Nom : {0}  Prénom : {1} Numéro AFPA : {2}".format(self.nom_client, self.prenom_client, self.numero_afpa_client)
         
         
 class ZipCode(models.Model):
@@ -48,9 +32,6 @@ class City(models.Model):
     class Meta:
         verbose_name = "Ville"
 
-
-    
-
 class Address(models.Model):
     street              = models.TextField(max_length=50, verbose_name = "Nom de la rue",)
     street_number       = models.CharField(max_length = 30, null=True, blank = True, verbose_name = "Numéro de la rue",)
@@ -61,6 +42,24 @@ class Address(models.Model):
  
     class Meta:
         verbose_name = "Adresse"
+
+class DonneesPersonnelles(models.Model):
+    mail_client = models.EmailField("Email Client", max_length=35)
+    telephone_client = models.CharField("Téléphone Client", max_length=10)
+    carte_AFPA_img = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
+
+    def __str__(self) :
+        return "Adresse mail : {0}  Téléphone : {1}".format(self.mail_client, self.telephone_client)
+        
+class Client(models.Model):
+    nom_client = models.CharField("Nom Client", max_length=15)
+    prenom_client = models.CharField("Prenom Client", max_length=15)
+    numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
+    donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE)
+    adresse = models.ForeignKey(Address, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "{0}  {1}  N° AFPA : {2}".format(self.nom_client, self.prenom_client, self.numero_afpa_client)
 
 class Vehicule(models.Model):
     VOITURE = 'VOITURE'
@@ -79,7 +78,7 @@ class Vehicule(models.Model):
         choices=Type_vehicule_choice,
         default=Type_vehicule_choice[0]
         )
-
+    client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
     def is_upperclass(self):
         return self.type_vehicule in (self.MOTO, self.VOITURE)
     
@@ -146,8 +145,8 @@ class Intervention(models.Model):
     #         choices = Statut_choice,
     #         default = AttenteFormateur,
     #     )
-
-
+    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
 class Piece(models.Model):
     reference_piece = models.CharField("référence pièce", max_length=20)
     libelle_piece = models.CharField("libellé de la pièce", max_length=50)
@@ -156,6 +155,7 @@ class Piece(models.Model):
 
 class Fournisseur(models.Model):
     libelle_fournisseur = models.CharField("Nom Fournisseur", max_length=35)
+    piece_fournisseur = models.ManyToManyField(Piece, through='Piece_Fournisseur_Devis')
     def __str__(self):
         return self.libelle_fournisseur
 
@@ -167,8 +167,10 @@ class Devis(models.Model):
         else:
             return num +1
     numero_devis = models.IntegerField(unique=True, default=NumeroDevis )
+    
     class Meta():
         verbose_name_plural = "Devis"
+
     date_devis = models.DateField("Date du devis", null=False)
     devis_signe_img = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis")
     ValidationFormateur = 'VF'
@@ -192,12 +194,24 @@ class Devis(models.Model):
         default = AttenteFormateur,
     )
 
+    commande_fournisseur = models.ManyToManyField(Fournisseur, through='Piece_Fournisseur_Devis')
+    commande_piece = models.ManyToManyField(Piece, through='Piece_Fournisseur_Devis')
     
     def __str__(self):
-        return self.numero_devis
+        return str(self.numero_devis)
 
 class Piece_Fournisseur_Devis(models.Model):
-    pass
+    quantite_pieces_necessaires = models.IntegerField("Quantité de pièces nécessaires", null=True)
+    prix_ht = models.IntegerField("Prix Hors Taxes", null=True, blank=False)
+    numero_devis_fournisseur = models.CharField("Numéro du devis fournisseur", max_length=20, null=True, blank=False)
+    devis = models.ForeignKey(Devis, null=True, on_delete=models.CASCADE)
+    fournisseur = models.ForeignKey(Fournisseur, null=True, on_delete=models.CASCADE)
+    piece = models.ForeignKey(Piece, null=True, on_delete=models.CASCADE)
 
+    class Meta():
+        verbose_name = "Commande"
+        verbose_name_plural = "Commandes"
 
-         
+    def __str__(self):
+        return str(self.fournisseur) + " devis n°" +str(self.devis) + " pièce : " + str(self.piece)
+
