@@ -4,8 +4,8 @@
 # emplacement du projet
 #======================
 
-source /home/afpa/virtualEnvs/venvDjango/bin/activate
-cd /home/afpa/_projets/afpa_meca
+source /home/afpa/Documents/vEnv/django_env/bin/activate
+cd /home/afpa/Documents/_Projets/afpa_meca
 
 
 

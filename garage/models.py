@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 
 from django.db import models
 
+
+          
 class ZipCode(models.Model):
     zip_code = models.IntegerField( verbose_name = 'Code Postal',)
     
@@ -137,8 +139,12 @@ class Intervention(models.Model):
     #         choices = Statut_choice,
     #         default = AttenteFormateur,
     #     )
-    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    utilisateur = models.ForeignKey(User, on_delete=models.CASCADE)
     vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.vehicule + " " + self.date_saisie_intervention + " " + self.utilisateur + " " + self.Statut
+
 class Piece(models.Model):
     reference_piece = models.CharField("référence pièce", max_length=20)
     libelle_piece = models.CharField("libellé de la pièce", max_length=50)
@@ -206,5 +212,4 @@ class Piece_Fournisseur_Devis(models.Model):
 
     def __str__(self):
         return str(self.fournisseur) + " devis n°" +str(self.devis) + " pièce : " + str(self.piece)
-
 
