@@ -56,7 +56,7 @@ class DonneesPersonnelles(models.Model):
     class Meta:
         verbose_name = "Donnée Personnelle"
         verbose_name_plural = "Données Personnelles"
-
+git log --oneline
     def __str__(self) :
         return "Adresse mail : {0}  Téléphone : {1}".format(self.mail_client, self.telephone_client)
 
