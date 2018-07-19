@@ -52,12 +52,11 @@ admin.site.register(Motorise)
 admin.site.register(Moto)
 admin.site.register(Voiture)
 admin.site.register(Velo)
-admin.site.register(TypeVehicule)
+
 
 admin.site.register(Intervention)
 admin.site.register(Devis)
 admin.site.register(Piece)
 admin.site.register(Fournisseur)
 admin.site.register(DonneesPersonnelles, DonneesPersonnellesAdmin)
-
-admin.site.register(Statut)
+admin.site.register(Piece_Fournisseur_Devis)

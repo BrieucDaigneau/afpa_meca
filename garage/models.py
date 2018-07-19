@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 
 from django.db import models
 
+        
+        
 class ZipCode(models.Model):
     zip_code = models.IntegerField( verbose_name = 'Code Postal',)
     
@@ -30,9 +32,6 @@ class City(models.Model):
     class Meta:
         verbose_name = "Ville"
 
-
-    
-
 class Address(models.Model):
     street              = models.TextField(max_length=50, verbose_name = "Nom de la rue",)
     street_number       = models.CharField(max_length = 30, null=True, blank = True, verbose_name = "Numéro de la rue",)
@@ -44,30 +43,45 @@ class Address(models.Model):
     class Meta:
         verbose_name = "Adresse"
 
+class DonneesPersonnelles(models.Model):
+    mail_client = models.EmailField("Email Client", max_length=35)
+    telephone_client = models.CharField("Téléphone Client", max_length=10)
+    carte_AFPA_img = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
 
-class TypeVehicule(models.Model):
-    # libelle_type_vehicule = models.CharField("type de véhicule", max_length=10)
-    Voiture = 'voiture'
-    Moto = 'moto'
-    Velo = 'velo'
-    
-    Type_vehicule_choice= (
-        (Voiture, 'Voiture'),
-        (Moto, 'Moto'),
-        (Velo, 'Velo'),
-    )
-    Type_vehicule = models.CharField(
-        max_length = 10,
-        choices = Type_vehicule_choice,
-        default = Voiture,
-    )
-    
     def __str__(self) :
-        return self.Type_vehicule
+        return "Adresse mail : {0}  Téléphone : {1}".format(self.mail_client, self.telephone_client)
+        
+class Client(models.Model):
+    nom_client = models.CharField("Nom Client", max_length=15)
+    prenom_client = models.CharField("Prenom Client", max_length=15)
+    numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
+    donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE)
+    adresse = models.ForeignKey(Address, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "{0}  {1}  N° AFPA : {2}".format(self.nom_client, self.prenom_client, self.numero_afpa_client)
 
 class Vehicule(models.Model):
+    VOITURE = 'VOITURE'
+    MOTO = 'MOTO'
+    VELO = 'VELO'
+    
+    Type_vehicule_choice= (
+        (VOITURE, 'Voiture'),
+        (MOTO, 'Moto'),
+        (VELO, 'Velo'),
+    ) 
+    
     libelle_modele = models.CharField("libellé modèle", max_length=50)
-    type_vehicule = models.ForeignKey(TypeVehicule, on_delete=models.CASCADE) 
+    type_vehicule = models.CharField(
+        max_length = 10,
+        choices=Type_vehicule_choice,
+        default=Type_vehicule_choice[0]
+        )
+    client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
+    def is_upperclass(self):
+        return self.type_vehicule in (self.MOTO, self.VOITURE)
+    
     def __str__(self):
         return self.libelle_modele
 
@@ -97,36 +111,6 @@ class Utilisateur(models.Model):
     def __str__(self):
         return "Profil de {0}".format(self.user.username)
 
-class Statut(models.Model):
-    #libelle_statut = models.CharField("libellé statut", max_length=50)
-    ValidationFormateur = 'VF'
-    AttenteFormateur = 'AF'
-    RefusFormateur = 'RF'
-    AttenteDevis = 'AD'
-    ValidationClient ='VC'
-    AttenteClient = 'AC'
-    RefusClient = 'RC'
-    
-    Statut_choice = (
-        (ValidationFormateur, 'ValidationFormateur'),
-        (AttenteFormateur, 'AttenteFormateur'),
-        (RefusFormateur, 'RefusFormateur'),
-        (AttenteDevis, 'AttenteDevis'),
-        (ValidationClient,'ValidationClient'),
-        (AttenteClient, 'AttenteClient'),
-        (RefusClient, 'RefusClient'),
-    )
-
-    def StatutDefaut():
-        pass
-
-    Statut = models.CharField(
-        max_length = 20,
-        choices = Statut_choice,
-        default = AttenteFormateur,
-    )
-
-
 
 class Intervention(models.Model):
     date_saisie_intervention = models.DateTimeField("date d'intervention", null=True, default=datetime.now )
@@ -135,6 +119,34 @@ class Intervention(models.Model):
     intervention_a_realiser = models.TextField("interventions prévus", max_length=300, null=True)
     intervention_realisee = models.BooleanField("intervention réalisée", null=False, default=False)
 
+   
+    ValidationFormateur = 'VF'
+    AttenteFormateur = 'AF'
+    RefusFormateur = 'RF'
+    AttenteDevis = 'AD'
+    
+    
+    Statut_choice = (
+        (ValidationFormateur, 'ValidationFormateur'),
+        (AttenteFormateur, 'AttenteFormateur'),
+        (RefusFormateur, 'RefusFormateur'),
+        (AttenteDevis, 'AttenteDevis'),
+        
+    )
+    # if Vehicule.type_vehicule == "Voiture":
+    Statut = models.CharField(
+        max_length = 20,
+        choices = Statut_choice,
+        default = AttenteDevis,
+    )
+    # else :
+    #         Statut = models.CharField(
+    #         max_length = 20,
+    #         choices = Statut_choice,
+    #         default = AttenteFormateur,
+    #     )
+    utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
+    vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
 class Piece(models.Model):
     reference_piece = models.CharField("référence pièce", max_length=20)
     libelle_piece = models.CharField("libellé de la pièce", max_length=50)
@@ -143,12 +155,11 @@ class Piece(models.Model):
 
 class Fournisseur(models.Model):
     libelle_fournisseur = models.CharField("Nom Fournisseur", max_length=35)
+    piece_fournisseur = models.ManyToManyField(Piece, through='Piece_Fournisseur_Devis')
     def __str__(self):
         return self.libelle_fournisseur
 
 class Devis(models.Model):
-    date_devis = models.DateField("Date du devis", null=False)
-    devis_signe_img = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis")
     def NumeroDevis():
         num = Devis.objects.count()
         if num == None:
@@ -156,24 +167,51 @@ class Devis(models.Model):
         else:
             return num +1
     numero_devis = models.IntegerField(unique=True, default=NumeroDevis )
+    
     class Meta():
         verbose_name_plural = "Devis"
+
+    date_devis = models.DateField("Date du devis", null=False)
+    devis_signe_img = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis")
+    ValidationFormateur = 'VF'
+    AttenteFormateur = 'AF'
+    RefusFormateur = 'RF'
+    ValidationClient ='VC'
+    AttenteClient = 'AC'
+    RefusClient = 'RC'
+    
+    Statut_choice = (
+        (ValidationFormateur, 'ValidationFormateur'),
+        (AttenteFormateur, 'AttenteFormateur'),
+        (RefusFormateur, 'RefusFormateur'),
+        (ValidationClient,'ValidationClient'),
+        (AttenteClient, 'AttenteClient'),
+        (RefusClient, 'RefusClient'),
+    )
+    Statut = models.CharField(
+        max_length = 20,
+        choices = Statut_choice,
+        default = AttenteFormateur,
+    )
+
+    commande_fournisseur = models.ManyToManyField(Fournisseur, through='Piece_Fournisseur_Devis')
+    commande_piece = models.ManyToManyField(Piece, through='Piece_Fournisseur_Devis')
     
     def __str__(self):
-        return self.numero_devis
+        return str(self.numero_devis)
 
 class Piece_Fournisseur_Devis(models.Model):
-    pass
+    quantite_pieces_necessaires = models.IntegerField("Quantité de pièces nécessaires", null=True)
+    prix_ht = models.IntegerField("Prix Hors Taxes", null=True, blank=False)
+    numero_devis_fournisseur = models.CharField("Numéro du devis fournisseur", max_length=20, null=True, blank=False)
+    devis = models.ForeignKey(Devis, null=True, on_delete=models.CASCADE)
+    fournisseur = models.ForeignKey(Fournisseur, null=True, on_delete=models.CASCADE)
+    piece = models.ForeignKey(Piece, null=True, on_delete=models.CASCADE)
 
-class DonneesPersonnelles(models.Model):
-    mail_client = models.EmailField("Email Client", max_length=35)
-    telephone_client = models.CharField("Téléphone Client", max_length=10)
-    carte_AFPA_img = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
+    class Meta():
+        verbose_name = "Commande"
+        verbose_name_plural = "Commandes"
 
+    def __str__(self):
+        return str(self.fournisseur) + " devis n°" +str(self.devis) + " pièce : " + str(self.piece)
 
-class Client(models.Model):
-    nom_client = models.CharField("Nom Client", max_length=15)
-    prenom_client = models.CharField("Prenom Client", max_length=15)
-    numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
-    donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE)
-    
