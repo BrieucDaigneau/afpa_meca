@@ -8,7 +8,7 @@ from django.db import models
 
           
 class ZipCode(models.Model):
-    zip_code = models.IntegerField( verbose_name = 'Code Postal',)
+    zip_code = models.IntegerField( verbose_name = 'Code Postal', blank=False)
     
     def __str__(self):
         rslt = ""
@@ -25,7 +25,7 @@ class ZipCode(models.Model):
         verbose_name_plural = "Codes Postaux"
 
 class City(models.Model):
-    city_name   = models.CharField(max_length =25, verbose_name = "Ville",)
+    city_name   = models.CharField(max_length =25, blank=False, verbose_name = "Ville",)
     zipCode     = models.ManyToManyField(ZipCode, verbose_name="Code Postal")
 
     def __str__(self):
@@ -35,7 +35,7 @@ class City(models.Model):
         verbose_name = "Ville"
 
 class Address(models.Model):
-    street              = models.TextField(max_length=50, verbose_name = "Nom de la rue",)
+    street              = models.TextField(max_length=50, blank=False, verbose_name = "Nom de la rue",)
     street_number       = models.CharField(max_length = 30, null=True, blank = True, verbose_name = "Numéro de la rue",)
     street_complement   = models.CharField(max_length =50, null=True, blank = True, verbose_name = "Complément d'adresse",)
 
@@ -50,7 +50,7 @@ class Address(models.Model):
 
 class DonneesPersonnelles(models.Model):
     mail_client = models.EmailField("Email Client", max_length=35)
-    telephone_client = models.CharField("Téléphone Client", max_length=10)
+    telephone_client = models.CharField("Téléphone Client", blank=False, max_length=10)
     carte_AFPA_img = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
 
     class Meta:
@@ -61,9 +61,9 @@ class DonneesPersonnelles(models.Model):
         return self.mail_client + " " + self.telephone_client
 
 class Client(models.Model):
-    nom_client = models.CharField("Nom Client", max_length=15)
-    prenom_client = models.CharField("Prenom Client", max_length=15)
-    numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
+    nom_client = models.CharField("Nom Client", blank=False, max_length=15)
+    prenom_client = models.CharField("Prenom Client", blank=False, max_length=15)
+    numero_afpa_client = models.CharField("Numéro carte AFPA Client", blank=False, max_length=10, null=False)
     donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE, primary_key=True)
     adresse = models.ForeignKey(Address, null=True, on_delete=models.CASCADE)
 
@@ -71,22 +71,22 @@ class Client(models.Model):
         return self.nom_client + " " + self.prenom_client + " " + self.numero_afpa_client
 
 class Vehicule(models.Model):
-    VOITURE = 'VOITURE'
-    MOTO = 'MOTO'
-    VELO = 'VELO'
+    # VOITURE = 'VOITURE'
+    # MOTO = 'MOTO'
+    # VELO = 'VELO'
     
-    Type_vehicule_choice= (
-        (VOITURE, 'Voiture'),
-        (MOTO, 'Moto'),
-        (VELO, 'Velo'),
-    ) 
+    # Type_vehicule_choice= (
+    #     (VOITURE, 'Voiture'),
+    #     (MOTO, 'Moto'),
+    #     (VELO, 'Velo'),
+    # ) 
     
-    libelle_modele = models.CharField("libellé modèle", max_length=50)
-    type_vehicule = models.CharField(
-        max_length = 10,
-        choices=Type_vehicule_choice,
-        default=Type_vehicule_choice[0]
-        )
+    libelle_modele = models.CharField("libellé modèle", blank=False, max_length=50)
+    type_vehicule = ""#models.CharField(
+        # max_length = 10,
+        # choices=Type_vehicule_choice,
+        # default=Type_vehicule_choice[0]
+        # )
     client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
 
     def is_upperclass(self):
@@ -101,12 +101,12 @@ class Vehicule(models.Model):
 
 class Motorise(Vehicule):
     libelle_marque = models.CharField("libellé marque", max_length=100, null=True)
-    vin = models.CharField(max_length=100, null=True)
-    immatriculation = models.CharField( max_length=15, null=True)
-    kilometrage = models.IntegerField(null=True)
+    vin = models.CharField(max_length=100, blank=False, null=True)
+    immatriculation = models.CharField( max_length=15, blank=False, null=True)
+    kilometrage = models.IntegerField(null=True, blank=True)
     date_mec = models.DateField("date de première m.e.c.", null=True, default=datetime.now )
-    carte_grise_img = models.ImageField("carte grise", null=True, blank=True, upload_to="img/carte_grise")
-    carte_assurance_img = models.ImageField("carte assurance", null=True, blank=True, upload_to="img/carte_assurance")
+    carte_grise_img = models.ImageField("carte grise", null=True, blank=False, upload_to="img/carte_grise")
+    carte_assurance_img = models.ImageField("carte assurance", null=True, blank=False, upload_to="img/carte_assurance")
     class Meta:
         verbose_name = "Motorisé"
         verbose_name_plural = "Motorisés"
@@ -116,36 +116,25 @@ class Motorise(Vehicule):
 
 
 class Voiture(Motorise):
+        
+    type_vehicule = "voiture"
+    def __str__(self):
+        return Motorise.__str__(self) + " " + self.type_vehicule
 
-    def __init__(self):
-        super().__init__(Vehicule)
-        self.type_vehicule = models.CharField(
-        max_length = 10,
-        choices=Vehicule.Type_vehicule_choice[0],
-        default=Vehicule.Type_vehicule_choice[0]
-    )
-    
 
 class Moto(Motorise):
-    def __init__(self):
-        super().__init__(Vehicule)
-        self.type_vehicule = models.CharField(
-        max_length = 10,
-        choices=Vehicule.Type_vehicule_choice[1],
-        default=Vehicule.Type_vehicule_choice[1]
-    )
-        
+    type_vehicule = "Moto"
+    
+    def __str__(self):
+        return Motorise.__str__(self) + " " + self.type_vehicule
+
 
 class Velo(Vehicule):
-    def __init__(self):
-        super().__init__(Vehicule)
-        self.type_vehicule = models.CharField(
-        max_length = 10,
-        choices=Vehicule.Type_vehicule_choice[2],
-        default=Vehicule.Type_vehicule_choice[2]
-    )
-
+    type_vehicule = "Velo"
     
+    def __str__(self):
+        return Vehicule.__str__(self) + " " + self.type_vehicule
+        
     class Meta:
         verbose_name = "Vélo"
         verbose_name_plural = "Vélos"
@@ -154,14 +143,14 @@ class Utilisateur(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     date_entree_stage = models.DateField(null=True, blank=True)
     date_sortie_stage = models.DateField(null=True, blank=True)
-    carte_afpa = models.CharField("Numéro carte AFPA", max_length=10, null=False)
+    carte_afpa = models.CharField("Numéro carte AFPA", max_length=10, blank=False, )
    
     def __str__(self):
         return "Profil de {0}".format(self.user.username)
 
 
 class Intervention(models.Model):
-    date_saisie_intervention = models.DateTimeField("date d'intervention", null=True, default=datetime.now )
+    date_saisie_intervention = models.DateTimeField("date d'intervention", null=True, blank=False, default=datetime.now )
     date_restitution_prevu = models.DateField("Date de restitution prévisionnelle", null=True)
     diagnostic = models.TextField(max_length=300, null=True)
     intervention_a_realiser = models.TextField("interventions prévus", max_length=300, null=True)
@@ -200,8 +189,8 @@ class Intervention(models.Model):
         return str(self.vehicule) + " " + str(self.date_saisie_intervention) + " " + str(self.utilisateur) + " " + str(self.statut)
 
 class Piece(models.Model):
-    reference_piece = models.CharField("référence pièce", max_length=20)
-    libelle_piece = models.CharField("libellé de la pièce", max_length=50)
+    reference_piece = models.CharField("référence pièce", blank=False, max_length=20)
+    libelle_piece = models.CharField("libellé de la pièce", blank=False, max_length=50)
     
     class Meta:
         verbose_name = "Pièces"
@@ -211,7 +200,7 @@ class Piece(models.Model):
         return self.libelle_piece
 
 class Fournisseur(models.Model):
-    libelle_fournisseur = models.CharField("Nom Fournisseur", max_length=35)
+    libelle_fournisseur = models.CharField("Nom Fournisseur", blank=False, max_length=35)
     piece_fournisseur = models.ManyToManyField(Piece, through='Piece_Fournisseur_Devis')
   
     def __str__(self):
@@ -226,7 +215,7 @@ class Devis(models.Model):
             return num +1
 
     numero_devis = models.IntegerField(unique=True, default=NumeroDevis )
-    date_devis = models.DateField("Date du devis", null=False)
+    date_devis = models.DateField("Date du devis", blank=False, null=False)
     devis_signe_img = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis")
     ValidationFormateur = 'VF'
     AttenteFormateur = 'AF'
@@ -263,7 +252,7 @@ class Devis(models.Model):
 
 
 class Piece_Fournisseur_Devis(models.Model):
-    quantite_pieces_necessaires = models.IntegerField("Quantité de pièces nécessaires", null=True)
+    quantite_pieces_necessaires = models.IntegerField("Quantité de pièces nécessaires", blank=False, null=True, default=1)
     prix_ht = models.IntegerField("Prix Hors Taxes", null=True, blank=False)
     numero_devis_fournisseur = models.CharField("Numéro du devis fournisseur", max_length=20, null=True, blank=False)
     
