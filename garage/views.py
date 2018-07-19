@@ -23,7 +23,7 @@ def ordre_reparation(request, client_id):
         'client': client
     }
     # client = get_object_or_404(Client, id=id)
-    return render(request, 'garage/ordre_reparation.html', context)    
+    return render(request, 'garage/ordre_reparation.html', context)   
 
 
 def client(request):

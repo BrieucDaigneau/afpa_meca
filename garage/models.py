@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 
 from django.db import models
 
-
-          
+        
+        
 class ZipCode(models.Model):
     zip_code = models.IntegerField( verbose_name = 'Code Postal', blank=False)
     
@@ -57,8 +57,8 @@ class DonneesPersonnelles(models.Model):
         verbose_name = "Donnée Personnelle"
         verbose_name_plural = "Données Personnelles"
 
-    def __str__(self):
-        return self.mail_client + " " + self.telephone_client
+    def __str__(self) :
+        return "Adresse mail : {0}  Téléphone : {1}".format(self.mail_client, self.telephone_client)
 
 class Client(models.Model):
     nom_client = models.CharField("Nom Client", blank=False, max_length=15)
@@ -68,7 +68,7 @@ class Client(models.Model):
     adresse = models.ForeignKey(Address, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.nom_client + " " + self.prenom_client + " " + self.numero_afpa_client
+        return "{0}  {1}  N° AFPA : {2}".format(self.nom_client, self.prenom_client, self.numero_afpa_client)
 
 class Vehicule(models.Model):
     # VOITURE = 'VOITURE'
