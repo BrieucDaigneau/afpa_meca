@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+
+  
+
+    <title>AFPA Méca. Authent</title>
+ {% load static %}
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'garage/css/test.css' %}" rel="stylesheet">
+  </head>
+
+    
+  <body class="text-center">
+      
+      <div class="container">
+      <div class="col-md-4"></div>
+      <div class="col-md-12">
+    <form action="{% url 'garage:login' %}" method="post" class="form-signin">
+        {% csrf_token %}
+        
+      <img class="mb-4" src="http://image-parcours.copainsdavant.com/image/750/2033807884/4242662.jpg" alt="" width="72" height="72">
+        
+      <h1 class="h3 mb-3 font-weight-normal">Connectez vous</h1>
+      
+      <label for="inputEmail" class="sr-only">Nom</label>  
+      <input type="text" id="inputEmail" class="form-control" placeholder="Identifiant" required autofocus>
+        
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required>
+        
+<!--
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" value="remember-me"> Se souvenir de moi
+        </label>
+      </div>
+-->
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Connexion</button>
+      <p class="mt-5 mb-3 text-muted">&copy;Afpa-2018</p>
+    </form>
+          </div>
+          </div>
+  </body>
+</html>
