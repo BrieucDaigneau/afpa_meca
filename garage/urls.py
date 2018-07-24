@@ -21,4 +21,5 @@ urlpatterns = [
         name='login'),
     url(r'^logout', LogoutView.as_view(redirect_authenticated_user=True, template_name="garage/login.html"),
         name='logout'),
+    path('accueil/', views.accueil, name='accueil'),
 ]
