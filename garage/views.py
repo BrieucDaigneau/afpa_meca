@@ -56,3 +56,12 @@ def recherche(request):
         'context_object_name': clients
     }
     return render(request, 'garage/recherche.html', context)  
+
+
+class LogoutView(LoginRequiredMixin, FormView):
+    form_class = LogoutForm
+    template_name = 'garage/logout.html'
+
+    def form_valid(self, form):
+        logout(self.request)
+        return HttpResponseRedirect(reverse('garage:login'))
