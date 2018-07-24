@@ -2,11 +2,12 @@
 <html lang="fr">
     <head>
         <meta charset="utf-8" />
-        <title>Base html</title>
+        <title>{% block title %}Titre{% endblock %}</title>
       {% load static %}
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'garage/css/base.css' %}" />
+        <link href="{% static 'garage/css/style.css' %}" rel="stylesheet">
         
     </head>
 
@@ -88,7 +89,15 @@
 
 
                 {% block content %}{% endblock %}
-                
+
+                <footer class="my-5 pt-5 text-muted text-center text-small">
+                  </footer>
+                  
+                  <script src="{% static 'garage/js/jquery-slim.min.js' %}"></script>
+                  <script>window.jQuery || document.write('<script src="{% static "garage/js/jquery-slim.min.js" %}"><\/script>')</script>
+                  <script src="{% static 'garage/js/popper.min.js' %}"></script>
+                  <script src="{% static 'garage/js/bootstrap.min.js' %}"></script>
+                  <script src="{% static 'garage/js/holder.min.js' %}"></script>
                 <script>
                  window.onscroll = function() {myFunction()};
                   
@@ -103,6 +112,8 @@
                     }
                   }
                   </script>
+
               
     </body>
+
 </html>
