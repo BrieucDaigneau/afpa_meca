@@ -6,7 +6,7 @@ from .forms import ClientForm, DonneesPersonnellesForm
 from django.views.generic import CreateView, ListView
 from django.views.generic import DetailView
 from django.urls import reverse_lazy
-
+from django.contrib.auth import logout
 
 # def client(request):
 def clientCreate(request):
@@ -53,4 +53,3 @@ def recherche(request):
         'context_object_name': clients
     }
     return render(request, 'garage/recherche.html', context)  
-

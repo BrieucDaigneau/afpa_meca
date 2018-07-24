@@ -23,7 +23,7 @@
     <form action="{% url 'garage:client-create' %}" method="post" class="form-signin">
         {% csrf_token %}
         
-      <img class="mb-4" src="http://image-parcours.copainsdavant.com/image/750/2033807884/4242662.jpg" alt="" width="72" height="72">
+      <img class="mb-4" src="{% static 'garage/img/logo_afpa_modifie.png' %}" alt="" width="86" height="86">
         
       <h1 class="h3 mb-3 font-weight-normal">Connectez vous</h1>
       
