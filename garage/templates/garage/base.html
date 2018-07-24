@@ -2,7 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="utf-8" />
-        <title>{% block title %}Titre{% endblock %}</title>
+        <title>{% block title %}AFPA Pôle Mécanique{% endblock %}</title>
       {% load static %}
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
@@ -23,7 +23,7 @@
               <h1>Pôle Mécanique</h1>
           </div>
           <div class="col-md-4" id="logout">
-              <img src="{% static 'garage/img/logo_logout.jpg' %}" width="30" height="30"></img><a href="">déconnexion</a>
+              <img src="{% static 'garage/img/logo_logout.jpg' %}" width="30" height="30"></img><a href="{% static 'garage:'">   déconnexion</a>
           </div>
         </div>
       </div>
@@ -92,7 +92,7 @@
 
                 <footer class="my-5 pt-5 text-muted text-center text-small">
                   </footer>
-                  
+
                   <script src="{% static 'garage/js/jquery-slim.min.js' %}"></script>
                   <script>window.jQuery || document.write('<script src="{% static "garage/js/jquery-slim.min.js" %}"><\/script>')</script>
                   <script src="{% static 'garage/js/popper.min.js' %}"></script>
