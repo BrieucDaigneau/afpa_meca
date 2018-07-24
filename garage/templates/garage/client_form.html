@@ -70,7 +70,7 @@
 
             <formulaire class="col-md-9">
                 <h4>Client</h4>
-                <form class="needs-validation" action="{% url 'garage:client' %}" method="post">
+                <form class="needs-validation" action="{% url 'garage:client-create' %}" method="post">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-6">
