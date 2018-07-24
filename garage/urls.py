@@ -16,4 +16,5 @@ urlpatterns = [
     path('reparation/<int:client_id>/', views.ordre_reparation, name='ordre_reparation'),
     url(r'^recherche/$', views.recherche, name='recherche'),
     # url(r'^search/$', views.recherche, name='recherche'),
+    path('accueil/', views.accueil, name='accueil'),
 ]

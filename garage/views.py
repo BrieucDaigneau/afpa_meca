@@ -7,6 +7,9 @@ from django.views.generic import CreateView, ListView
 from django.views.generic import DetailView
 from django.urls import reverse_lazy
 
+def accueil(request):
+    return render(request, 'garage/accueil.html')
+   
 
 def client(request):
     sauvegarde = False

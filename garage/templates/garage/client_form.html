@@ -2,6 +2,7 @@
 <html lang="fr">
 
 <head>
+    {% extends "garage/base.html" %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -18,7 +19,8 @@
     <link href="{% static 'garage/css/style.css' %}" rel="stylesheet">
 </head>
 
-<body class="container">
+{% block content %}
+<body class="container-fluid">
 
     <div>
 
@@ -152,7 +154,7 @@
         <footer class="my-5 pt-5 text-muted text-center text-small">
         </footer>
     </div>
-
+{% endblock %}
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- jQuery -->
