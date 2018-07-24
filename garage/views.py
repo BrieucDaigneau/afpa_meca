@@ -8,7 +8,8 @@ from django.views.generic import DetailView
 from django.urls import reverse_lazy
 
 
-def client(request):
+# def client(request):
+def clientCreate(request):
     sauvegarde = False
     client_form = ClientForm(request.POST or None)   
     donneesPersonnelles_form = DonneesPersonnellesForm(request.POST or None)
