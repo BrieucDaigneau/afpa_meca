@@ -68,8 +68,8 @@ def recherche(request):
 
 
 
-class LoginView(FormView):
+# class LoginView(FormView):
 
-    template_name = 'garage/login.html'
-    redirect_field_name ='' 
+#     template_name = 'garage/login.html'
+#     redirect_field_name ='' 
    
