@@ -62,7 +62,7 @@ class DonneesPersonnelles(models.Model):
 class Client(models.Model):
     nom_client = models.CharField("Nom Client", blank=False, max_length=15)
     prenom_client = models.CharField("Prenom Client", blank=False, max_length=15)
-    numero_afpa_client = models.CharField("Numéro carte AFPA Client", blank=False, max_length=10, null=False)
+    numero_afpa_client = models.CharField("Numéro carte AFPA Client", blank=True, max_length=10, null=False, default="extérieur")
     donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE)
     adresse = models.OneToOneField(Address, null=True, on_delete=models.CASCADE)
 
