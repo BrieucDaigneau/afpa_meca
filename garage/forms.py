@@ -24,3 +24,5 @@ class DonneesPersonnellesForm(forms.ModelForm):
             'mail_client': TextInput(attrs={'class': 'form-control'}),
             'telephone_client': TextInput(attrs={'class': 'form-control'})
         }  
+class LogoutForm(forms.Form):
+    pass

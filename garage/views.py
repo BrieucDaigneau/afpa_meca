@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+﻿from django.http import HttpResponse
 from .models import Client, DonneesPersonnelles
 
 from django.shortcuts import render, get_object_or_404, redirect
@@ -8,13 +8,9 @@ from django.views.generic import DetailView
 from django.urls import reverse_lazy
 from django.contrib.auth import logout
 
-<<<<<<< HEAD
-=======
 def accueil(request):
     return render(request, 'garage/accueil.html')
-   
 
->>>>>>> 952b706406cdd0eef559f1e350dbc499ec6192a9
 # def client(request):
 def clientCreate(request):
     sauvegarde = False
