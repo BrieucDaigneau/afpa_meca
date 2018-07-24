@@ -11,7 +11,8 @@ def accueil(request):
     return render(request, 'garage/accueil.html')
    
 
-def client(request):
+# def client(request):
+def clientCreate(request):
     sauvegarde = False
     client_form = ClientForm(request.POST or None)   
     donneesPersonnelles_form = DonneesPersonnellesForm(request.POST or None)
