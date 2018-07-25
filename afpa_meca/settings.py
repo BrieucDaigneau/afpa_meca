@@ -128,4 +128,7 @@ STATIC_URL = '/static/'
 
 
 LOGIN_URL = 'user:login'
-LOGIN_REDIRECT_URL = 'garage:client-create'
+LOGIN_REDIRECT_URL = 'garage:accueil'
+
+LOGOUT_URL ="user:logout"
+LOGOUT_REDIRECT_URL = 'garage:login'

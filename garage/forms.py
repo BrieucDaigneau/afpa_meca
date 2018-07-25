@@ -4,7 +4,6 @@ from django.forms import ModelForm, TextInput, EmailInput
 from django.forms.utils import ErrorList
 from .models import Client, DonneesPersonnelles
 
-
 class ClientForm(forms.ModelForm):
     class Meta:
         model = Client

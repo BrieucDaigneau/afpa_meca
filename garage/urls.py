@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from . import views
 from django.contrib.auth.views import LoginView, LogoutView
 from .models import Client
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 app_name = 'garage'
 
@@ -17,9 +17,9 @@ urlpatterns = [
     path('reparation/<int:client_id>/', views.ordre_reparation, name='ordre_reparation'),
     url(r'^recherche/$', views.recherche, name='recherche'),
     # url(r'^search/$', views.recherche, name='recherche'),
-    url(r'^login', LoginView.as_view(redirect_authenticated_user=True, template_name="garage/login.html"),
+    url(r'login', LoginView.as_view(redirect_authenticated_user=True, template_name="garage/login.html"),
         name='login'),
-    url(r'^logout', LogoutView.as_view(redirect_authenticated_user=True, template_name="garage/login.html"),
-        name='logout'),
+    url(r'logout', LogoutView.as_view(template_name="garage/logout.html"), name='logout'),
     path('accueil/', views.accueil, name='accueil'),
+    # path('garage/login/', include('django.contrib.auth.urls'), name="login"),
 ]

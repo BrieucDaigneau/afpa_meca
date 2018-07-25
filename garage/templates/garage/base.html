@@ -23,7 +23,18 @@
               <h1>Pôle Mécanique</h1>
           </div>
           <div class="col-md-4" id="logout">
-              <img src="{% static 'garage/img/logo_logout.jpg' %}" width="30" height="30"></img><a href="{% static 'garage:'">   déconnexion</a>
+              {% if user.is_authenticated %}
+            
+              {% endif %}
+              
+              <img src="{% static 'garage/img/logo_logout.jpg' %}" width="30" height="30"></img>
+            {% if user.is_authenticated %}
+              <li>User: {{ user.get_username }}</li>
+              <li><a href="{% url 'garage:logout' %}">Logout</a></li>   
+            {% else %}
+              <li><a href="{% url 'garage:login' %}?next={{request.path}}">Login</a></li>   
+            {% endif %} 
+           </ul>
           </div>
         </div>
       </div>

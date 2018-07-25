@@ -1,11 +1,13 @@
-﻿from django.http import HttpResponse
+﻿from django.http import HttpResponse, HttpResponseRedirect
 from .models import Client, DonneesPersonnelles
 
-from django.shortcuts import render, get_object_or_404, redirect
-from .forms import ClientForm, DonneesPersonnellesForm
-from django.views.generic import CreateView, ListView
+from django.shortcuts import render, get_object_or_404, redirect, reverse
+from .forms import ClientForm, DonneesPersonnellesForm, LogoutForm
+from django.views.generic import CreateView, ListView, FormView
 from django.views.generic import DetailView
 from django.urls import reverse_lazy
+# from django.contrib.auth import LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
 
 def accueil(request):
@@ -58,10 +60,3 @@ def recherche(request):
     return render(request, 'garage/recherche.html', context)  
 
 
-class LogoutView(LoginRequiredMixin, FormView):
-    form_class = LogoutForm
-    template_name = 'garage/logout.html'
-
-    def form_valid(self, form):
-        logout(self.request)
-        return HttpResponseRedirect(reverse('garage:login'))
