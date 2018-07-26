@@ -24,7 +24,6 @@ class DonneesPersonnellesForm(forms.ModelForm):
             'mail_client': TextInput(attrs={'class': 'form-control'}),
             'telephone_client': TextInput(attrs={'class': 'form-control'})
         }  
-<<<<<<< HEAD
 
 
 class AddressForm(forms.ModelForm):
@@ -56,7 +55,5 @@ class CityForm(forms.ModelForm):
         }  
 
 
-=======
 class LogoutForm(forms.Form):
     pass
->>>>>>> 59930c27d985e023a94caeb533fcfd63dda45dde
