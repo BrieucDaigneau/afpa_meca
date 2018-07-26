@@ -71,7 +71,9 @@
                         <div class="col-md-6">
                             <label for="{{ form.mail_client.id_for_label }}" class="control-label">Email</label>
                             {{ donneesPersonnelles_form.mail_client }}
+                            <div> {{ donneesPersonnelles_form.mail_client.errors }} </div>
                         </div>
+
                     </div> 
 
                     <div class="row">

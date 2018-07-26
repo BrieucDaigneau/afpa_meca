@@ -25,6 +25,15 @@ class DonneesPersonnellesForm(forms.ModelForm):
             'telephone_client': TextInput(attrs={'class': 'form-control'})
         }  
 
+    # Clean suivi du nom du champ concerné ensuite géré dans le Html
+    def clean_mail_client(self):
+        mail_client = self.cleaned_data['mail_client'].lower()
+        print(mail_client)
+        r = DonneesPersonnelles.objects.filter(mail_client=mail_client)
+        if r.count():
+            raise  forms.ValidationError("Email already exists")
+        return mail_client
+
 
 class AddressForm(forms.ModelForm):
     class Meta:
