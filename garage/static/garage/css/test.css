@@ -49,6 +49,10 @@ body {
   border-top-left-radius: 2;
   border-top-right-radius: 2;
 }
-#id_username{
-  color : red
+#id_form.username.label_tag{
+  color :green
+}
+
+#form.password.label_tag{
+  color:red
 }
