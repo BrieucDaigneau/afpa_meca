@@ -8,29 +8,37 @@ from django.db import models
         
         
 class ZipCode(models.Model):
-    zip_code = models.IntegerField( verbose_name = 'Code Postal',)
+    zip_code = models.CharField(max_length=15, verbose_name = 'Code Postal',)
     
+    # def __str__(self):
+    #     rslt = ""
+    #     nb = 0
+    #     for c in self.city_set.all():
+    #         if nb != 0:
+    #             rslt += " ; "
+    #         rslt += str( c )
+    #         nb += 1
+    #     return str( self.zip_code ) + " " + rslt
+
     def __str__(self):
-        rslt = ""
-        nb = 0
-        for c in self.city_set.all():
-            if nb != 0:
-                rslt += " ; "
-            rslt += str( c )
-            nb += 1
-        return str( self.zip_code ) + " " + rslt
+        return str( self.zip_code )
+
     class Meta:
         verbose_name = "Code Postal"
         verbose_name_plural = "Codes Postaux"
 
+
 class City(models.Model):
     city_name   = models.CharField(max_length =25, verbose_name = "Ville",)
-    zipCode     = models.ManyToManyField(ZipCode, verbose_name="Code Postal")
+    zip_codes     = models.ManyToManyField(ZipCode, verbose_name="Code Postal")
 
     def __str__(self):
         return  self.city_name
+
     class Meta:
         verbose_name = "Ville"
+        verbose_name_plural = "Villes"   
+     
 
 class Address(models.Model):
     street              = models.TextField(max_length=50, verbose_name = "Nom de la rue",)
@@ -43,6 +51,7 @@ class Address(models.Model):
     class Meta:
         verbose_name = "Adresse"
 
+
 class DonneesPersonnelles(models.Model):
     mail_client = models.EmailField("Email Client", max_length=35)
     telephone_client = models.CharField("Téléphone Client", max_length=10)
@@ -51,15 +60,17 @@ class DonneesPersonnelles(models.Model):
     def __str__(self) :
         return "Adresse mail : {0}  Téléphone : {1}".format(self.mail_client, self.telephone_client)
         
+
 class Client(models.Model):
     nom_client = models.CharField("Nom Client", max_length=15)
     prenom_client = models.CharField("Prenom Client", max_length=15)
-    numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=False)
+    numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=True)
     donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE)
     adresse = models.ForeignKey(Address, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return "{0}  {1}  N° AFPA : {2}".format(self.nom_client, self.prenom_client, self.numero_afpa_client)
+
 
 class Vehicule(models.Model):
     VOITURE = 'VOITURE'
@@ -85,6 +96,7 @@ class Vehicule(models.Model):
     def __str__(self):
         return self.libelle_modele
 
+
 class Motorise(Vehicule):
     libelle_marque = models.CharField("libellé marque", max_length=100, null=True)
     vin = models.CharField(max_length=100, null=True)
@@ -94,14 +106,18 @@ class Motorise(Vehicule):
     carte_grise_img = models.ImageField("carte grise", null=True, blank=True, upload_to="img/carte_grise")
     carte_assurance_img = models.ImageField("carte assurance", null=True, blank=True, upload_to="img/carte_assurance")
 
+
 class Voiture(Motorise):
     pass
+
 
 class Moto(Motorise):
     pass
 
+
 class Velo(Vehicule):
     pass
+
 
 class Utilisateur(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -153,11 +169,13 @@ class Piece(models.Model):
     def __str__(self):
         return self.libelle_piece
 
+
 class Fournisseur(models.Model):
     libelle_fournisseur = models.CharField("Nom Fournisseur", max_length=35)
     piece_fournisseur = models.ManyToManyField(Piece, through='Piece_Fournisseur_Devis')
     def __str__(self):
         return self.libelle_fournisseur
+
 
 class Devis(models.Model):
     def NumeroDevis():
@@ -199,6 +217,7 @@ class Devis(models.Model):
     
     def __str__(self):
         return str(self.numero_devis)
+
 
 class Piece_Fournisseur_Devis(models.Model):
     quantite_pieces_necessaires = models.IntegerField("Quantité de pièces nécessaires", null=True)

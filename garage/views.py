@@ -1,34 +1,80 @@
 from django.http import HttpResponse
-from .models import Client, DonneesPersonnelles
+from .models import Client, DonneesPersonnelles, ZipCode, City
 
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import ClientForm, DonneesPersonnellesForm
-from django.views.generic import CreateView, ListView
+from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm
+from django.views.generic import CreateView, ListView, View
 from django.views.generic import DetailView
 from django.urls import reverse_lazy
 
+class ClientCreateView(View):
 
-# def client(request):
+    def post(self, request):
+        pass
+
+
+
 def clientCreate(request):
     sauvegarde = False
+    zipCode_form = ZipCodeForm(request.POST or None)
+    city_form = CityForm(request.POST or None)
+    address_form = AddressForm(request.POST or None)    
     client_form = ClientForm(request.POST or None)   
     donneesPersonnelles_form = DonneesPersonnellesForm(request.POST or None)
-    if client_form.is_valid() and donneesPersonnelles_form.is_valid():
-        donnees = donneesPersonnelles_form.save()
-        client = client_form.save(commit=False)
-        client.donnees_personnelles_client = donnees
-        client.save()
-        
-        sauvegarde = True
-        return redirect("garage:ordre_reparation", client_id=client.id)
+
+    zipcode_form = ZipCodeForm(request.POST or None)
+    if zipCode_form.is_valid():
+        zip_code = zipCode_form.cleaned_data['zip_code']
+        codepostal = ZipCode.objects.filter(zip_code=zip_code)
+        if not codepostal.exists():
+            zipCode = zipCode_form.save() 
+        else :
+            zipCode = codepostal[0]
+
+        city_form = CityForm(request.POST or None)
+        if city_form.is_valid():
+            city_name = city_form.cleaned_data['city_name']   
+            ville = City.objects.filter(city_name=city_name)
+            if not ville.exists():
+                city = city_form.save() 
+            else :
+                city = ville[0]
+
+            city.zip_codes.add(zipCode)
+            city.save()
+
+            address_form = AddressForm(request.POST or None)    
+            if address_form.is_valid():
+                address = address_form.save(commit=False)
+                address.zipCode = zipCode
+                address.city = city
+                address.save()
+
+                donneesPersonnelles_form = DonneesPersonnellesForm(request.POST or None)
+                if donneesPersonnelles_form.is_valid():
+                    donnees = donneesPersonnelles_form.save()    
+
+                    client_form = ClientForm(request.POST or None) 
+                    if client_form.is_valid():
+                        client = client_form.save(commit=False)
+                        client.donnees_personnelles_client = donnees
+                        client.adresse = address
+                        client.save()                        
+
+                        sauvegarde = True
+                        return redirect("garage:ordre_reparation", client_id=client.id)
 
     return render(
         request, 
         'garage/client_form.html', 
         {   'client_form': client_form,
             'donneesPersonnelles_form': donneesPersonnelles_form,
+            'address_form' : address_form,
+            'city_form' : city_form,
+            'zipCode_form' : zipCode_form,
             'sauvegarde' : sauvegarde,
-            'context_object_name': Client.objects.all()}
+            'context_object_name': Client.objects.all()
+            }
     )
 
 
