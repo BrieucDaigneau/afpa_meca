@@ -4,7 +4,6 @@ from django.forms import ModelForm, TextInput, EmailInput
 from django.forms.utils import ErrorList
 from .models import Client, DonneesPersonnelles, Address, ZipCode, City
 
-
 class ClientForm(forms.ModelForm):
     class Meta:
         model = Client
@@ -25,6 +24,7 @@ class DonneesPersonnellesForm(forms.ModelForm):
             'mail_client': TextInput(attrs={'class': 'form-control'}),
             'telephone_client': TextInput(attrs={'class': 'form-control'})
         }  
+<<<<<<< HEAD
 
 
 class AddressForm(forms.ModelForm):
@@ -56,3 +56,7 @@ class CityForm(forms.ModelForm):
         }  
 
 
+=======
+class LogoutForm(forms.Form):
+    pass
+>>>>>>> 59930c27d985e023a94caeb533fcfd63dda45dde

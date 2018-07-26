@@ -1,18 +1,35 @@
+<<<<<<< HEAD
 from django.http import HttpResponse
 from .models import Client, DonneesPersonnelles, ZipCode, City
 
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm
 from django.views.generic import CreateView, ListView, View
+=======
+﻿from django.http import HttpResponse, HttpResponseRedirect
+from .models import Client, DonneesPersonnelles
+
+from django.shortcuts import render, get_object_or_404, redirect, reverse
+from .forms import ClientForm, DonneesPersonnellesForm, LogoutForm
+from django.views.generic import CreateView, ListView, FormView
+>>>>>>> 59930c27d985e023a94caeb533fcfd63dda45dde
 from django.views.generic import DetailView
 from django.urls import reverse_lazy
+# from django.contrib.auth import LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import logout
 
+<<<<<<< HEAD
 class ClientCreateView(View):
 
     def post(self, request):
         pass
 
 
+=======
+def accueil(request):
+    return render(request, 'garage/accueil.html')
+>>>>>>> 59930c27d985e023a94caeb533fcfd63dda45dde
 
 def clientCreate(request):
     sauvegarde = False
@@ -99,7 +116,5 @@ def recherche(request):
         'context_object_name': clients
     }
     return render(request, 'garage/recherche.html', context)  
-
-
 
 
