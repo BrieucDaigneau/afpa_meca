@@ -11,8 +11,6 @@ from django.contrib.auth.decorators import login_required
 app_name = 'garage'
 
 urlpatterns = [  
-    # path('client-create', views.ClientDonneePersoCreate.as_view(), name='client-create'),    
-    # path('client-create', views.ClientCreate.as_view(), name='client-create'),    
     # path('client', views.client, name='client'),   
     path('client-create', login_required(views.clientCreate), name='client-create'),   
     # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
