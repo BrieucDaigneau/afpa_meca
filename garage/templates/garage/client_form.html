@@ -95,6 +95,10 @@
 
                     <div class="row">
                         <div class="col-md-6">
+                            <label for="{{ client_form.numero_afpa_client.id_for_label }}" class="control-label">Carte AFPA</label>
+                            {{ client_form.numero_afpa_client }}
+                        </div>
+                        <div class="col-md-6">
                             <label for="{{ form.telephone_client.id_for_label }}" class="control-label">Téléphone</label>
                             {{ donneesPersonnelles_form.telephone_client }}
                         </div>
@@ -104,30 +108,22 @@
                         </div>
                     </div> 
 
-                    <!-- <div class="row">
+                    <div class="row">
                         <div class="col-md-6">
-                            <label for="{{ form.adresse_client.id_for_label }}" class="control-label">Adresse</label>
-                            {{ form.adresse_client }}
+                            <label for="{{ address_form.street.id_for_label }}" class="control-label">Adresse</label>
+                            {{ address_form.street }}
                         </div>
 
-                        <div class="col-md-2">
-                            <label for="{{ form.code_postal_client.id_for_label }}" class="control-label">Code Postal</label>
-                            {{ form.code_postal_client }}
+                        <div class="col-md-3">
+                            <label for="{{ zipCode_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
+                            {{ zipCode_form.zip_code }}
                         </div>
 
-                        <div class="col-md-2">
-                            <label for="{{ form.ville_client.id_for_label }}" class="control-label">Ville</label>
-                            {{ form.ville_client }}
+                        <div class="col-md-3">
+                            <label for="{{ city_form.city_name.id_for_label }}" class="control-label">Ville</label>
+                            {{ city_form.city_name }}
                         </div>
-
-                        <div class="col-md-2">
-                            <label for="{{ form.pays_client.id_for_label }}" class="control-label">Pays</label>
-                            {{ form.pays_client }}
-                            <div class="invalid-feedback">
-                                Selectionner un pays valide
-                            </div>
-                        </div>
-                    </div> -->
+                    </div>
                    
                     <br/>
                     <div class="row">

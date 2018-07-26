@@ -9,8 +9,6 @@ from django.conf.urls import url
 app_name = 'garage'
 
 urlpatterns = [  
-    # path('client-create', views.ClientDonneePersoCreate.as_view(), name='client-create'),    
-    # path('client-create', views.ClientCreate.as_view(), name='client-create'),    
     # path('client', views.client, name='client'),   
     path('client-create', views.clientCreate, name='client-create'),   
     # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
