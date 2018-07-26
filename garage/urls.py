@@ -12,7 +12,7 @@ app_name = 'garage'
 
 urlpatterns = [  
     # path('client', views.client, name='client'),   
-    path('client-create', views.clientCreate, name='client-create'),   
+    path('client-create', login_required(views.clientCreate), name='client-create'),   
     # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
     path('reparation/<int:client_id>/', views.ordre_reparation, name='ordre_reparation'),
     url(r'^recherche/$', views.recherche, name='recherche'),
@@ -20,6 +20,6 @@ urlpatterns = [
     url(r'login', LoginView.as_view(redirect_authenticated_user=True, template_name="garage/login.html"),
         name='login'),
     url(r'logout', LogoutView.as_view(template_name="garage/logout.html"), name='logout'),
-    path('accueil/', views.accueil, name='accueil'),
+    path('accueil/', login_required(views.accueil), name='accueil'),
     # path('garage/login/', include('django.contrib.auth.urls'), name="login"),
 ]
