@@ -95,12 +95,12 @@
                   {% comment %} <script src="{% static 'garage/js/bootstrap.min.js' %}"></script> {% endcomment %}
                   <script src="{% static 'garage/js/holder.min.js' %}"></script>
                 <script>
-                 window.onscroll = function() {myFunction()};
+                 window.onscroll = function() {staticNavBar()};
                   
                   var navbar = document.getElementById("navbar");
                   var sticky = navbar.offsetTop;
                   
-                  function myFunction() {
+                  function staticNavBar() {
                     if (window.pageYOffset >= sticky) {
                       navbar.classList.add("sticky")
                     } else {
