@@ -37,7 +37,7 @@
         </button>
         
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <div class="container">
+          <div class="container" id="navbar-contenu">
                     <ul class="navbar-nav mr-auto">
                       <li class="nav-item nav-link">
                         <div id="test">|</div>
@@ -55,7 +55,7 @@
                           <div id="test">|</div>
                       </li>
                       <li class="nav-item">
-                              <a class="nav-link" href="">Clients</a>
+                        <a class="nav-link" href="#">Clients</a>
                       </li>
                       <li class="nav-item nav-link">
                           <div id="test">|</div>
@@ -108,15 +108,15 @@
                     }
                   }
                   
-                  function setActive() {
-                    aObj = document.getElementById('navbar-nav').getElementsByTagName('a');
-                    for(i=0;i<aObj.length;i++) {
-                      if(document.location.href.indexOf(aObj[i].href)>=0) {
-                        aObj[i].className+='active';
-                      }
-                    }
-                  }
-                  window.onload = setActive;
+                  $(document).ready(function() {
+
+                    $("#navbar-contenu a").each(function( index ) {
+                       if ( this.href == document.location.href)
+                       {
+                           $(this).addClass('active');
+                       }
+                   })
+               });
                   </script>
 
               

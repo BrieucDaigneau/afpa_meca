@@ -71,10 +71,9 @@ footer
   /* border : solid 2px black; */
 }
 
-#titre
-{
+#titre{
   font-family: 'BallparkWeiner', serif;
-  font-size: 75px; 
+  font-size: 35px; 
   text-align: center;
 }
 
