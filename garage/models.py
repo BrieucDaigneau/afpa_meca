@@ -264,10 +264,6 @@ class Devis(models.Model):
         return str(self.numero_devis)
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> dev
 class Piece_Fournisseur_Devis(models.Model):
     quantite_pieces_necessaires = models.IntegerField("Quantité de pièces nécessaires", blank=False, null=True, default=1)
     prix_ht = models.IntegerField("Prix Hors Taxes", null=True, blank=False)
