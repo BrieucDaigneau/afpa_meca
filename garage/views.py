@@ -22,21 +22,6 @@ class ClientCreateView(View):
 
 
 def clientCreate(request):
-
-    # def DonneesExistes(self):
-    #     print("function")
-    #     zipcode_form = ZipCodeForm(request.POST or None)
-    #     if zipCode_form.is_valid():
-    #         zip_code = zipCode_form.cleaned_data['zip_code']
-    #         codepostal = ZipCode.objects.filter(zip_code=zip_code)
-    #         if not codepostal.exists():
-    #             zipCode = zipCode_form.save() 
-    #         else :
-    #             zipCode = codepostal[0]    
-    #         print("functionterminer")  
-
-    # DonneesExistes()
-
     sauvegarde = False
     zipCode_form = ZipCodeForm(request.POST or None)
     city_form = CityForm(request.POST or None)
