@@ -7,15 +7,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'garage/css/base.css' %}" />
-        <link href="{% static 'garage/css/style.css' %}" rel="stylesheet">
+        <link href= {% block css %}{% endblock css %}  rel="stylesheet">
         
     </head>
-
-
     <body>
 
-      <div class="container-fluid">
+    <div class="container-fluid">
         <div class="row">
+<<<<<<< HEAD
           <div class="col-md-4" id="logo">
             <img src="{% static 'garage/img/logo_afpa2.png' %}" width="250" height="170" ></img>
           </div>
@@ -39,89 +38,121 @@
         </div>
       </div>
       
+=======
+			<div class="col-md-4" id="logo">
+				<img src="{% static 'garage/img/logo_afpa2.png' %}" width="250" height="170" ></img>
+			</div>
+			<div class="col-md-4" id="titre">
+				<h1>Pôle Mécanique</h1>
+			</div>
+			<div class="col-md-4" id="logout">
+				<img src="{% static 'garage/img/logo_logout.jpg' %}" width="30" height="30"></img><a href="{% static 'garage:'">   déconnexion</a>
+			</div>
+        </div>    
+>>>>>>> 42e17c178737fa989d809e84e859af76f4f61965
       
 
-      <nav class="navbar navbar-expand-lg" id="navbar">
-        
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <div class="container">
-                    <ul class="navbar-nav mr-auto">
-                      <li class="nav-item nav-link">
-                        <div id="test">|</div>
-                      </li>
-                      <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'garage:accueil' %}">Accueil <span class="sr-only">(current)</span></a>
-                      </li>
-                      <li class="nav-item nav-link">
-                          <div id="test">|</div>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'garage:client-create' %}">Nouveau</a>
-                      </li>
-                      <li class="nav-item nav-link">
-                          <div id="test">|</div>
-                      </li>
-                      <li class="nav-item">
-                              <a class="nav-link" href="">Clients</a>
-                      </li>
-                      <li class="nav-item nav-link">
-                          <div id="test">|</div>
-                      </li>
-                      <li class="nav-item">
-                              <a class="nav-link" href="#">Véhicules</a>
-                      </li>
-                      <li class="nav-item nav-link">
-                          <div id="test">|</div>
-                      </li>
-                      <li class="nav-item">
-                              <a class="nav-link" href="#">Ordres de réparations</a>
-                      </li>
-                      <li class="nav-item nav-link">
-                          <div id="test">|</div>
-                      </li>
-                      <li class="nav-item">
-                              <a class="nav-link" href="#">Utilisateurs</a>
-                      </li>
-                      <li class="nav-item nav-link">
-                          <div id="test">|</div>
-                      </li>
-                    
-                      
-                    </ul>
-                  </div>
+		<nav class="navbar navbar-expand-lg" id="navbar">
+
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<div id="navbar-contenu">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item nav-link">
+							<div id="test">|</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'garage:accueil' %}">Accueil <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item nav-link">
+							<div id="test">|</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'garage:client-create' %}">Nouveau</a>
+						</li>
+						<li class="nav-item nav-link">
+							<div id="test">|</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Clients</a>
+						</li>
+						<li class="nav-item nav-link">
+							<div id="test">|</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Véhicules</a>
+						</li>
+						<li class="nav-item nav-link">
+							<div id="test">|</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Ordres de réparations</a>
+						</li>
+						<li class="nav-item nav-link">
+							<div id="test">|</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Utilisateurs</a>
+						</li>
+						<li class="nav-item nav-link">
+							<div id="test">|</div>
+						</li>
+					</ul>
+				</div> 
+			</div>
+			
+		</nav>
+
+
+		<div class="container-fluid">
+			<div class="col-md-12">	
+				{% block content %}{% endblock %}
+			</div>
+		</div>  
+			
+		<footer class="page-footer font-small">
+			<div class="footer-copyright text-center py-3" id="footer">© 2018 Copyright
+				<a href="https://www.afpa.fr/">Afpa.fr</a>
+			</div>
+		</footer>
+
+    </div>
+
+
+              
                   
-                    
-                  </div>
-                </nav>
-
-
-                {% block content %}{% endblock %}
-
-                <footer class="my-5 pt-5 text-muted text-center text-small">
-                  </footer>
 
                   <script src="{% static 'garage/js/jquery-slim.min.js' %}"></script>
-                  <script>window.jQuery || document.write('<script src="{% static "garage/js/jquery-slim.min.js" %}"><\/script>')</script>
+                  {% comment %} <script>window.jQuery || document.write('<script src="{% static "garage/js/jquery-slim.min.js" %}"><\/script>')</script> {% endcomment %}
                   <script src="{% static 'garage/js/popper.min.js' %}"></script>
-                  <script src="{% static 'garage/js/bootstrap.min.js' %}"></script>
+                  {% comment %} <script src="{% static 'garage/js/bootstrap.min.js' %}"></script> {% endcomment %}
                   <script src="{% static 'garage/js/holder.min.js' %}"></script>
                 <script>
-                 window.onscroll = function() {myFunction()};
+                 window.onscroll = function() {staticNavBar()};
                   
                   var navbar = document.getElementById("navbar");
                   var sticky = navbar.offsetTop;
                   
-                  function myFunction() {
+                  function staticNavBar() {
                     if (window.pageYOffset >= sticky) {
                       navbar.classList.add("sticky")
                     } else {
                       navbar.classList.remove("sticky");
                     }
                   }
+                  
+                  $(document).ready(function() {
+
+                    $("#navbar-contenu a").each(function( index ) {
+                       if ( this.href == document.location.href)
+                       {
+                           $(this).addClass('active');
+                       }
+                   })
+               });
                   </script>
 
               

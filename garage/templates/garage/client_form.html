@@ -1,6 +1,8 @@
 {% extends 'garage/base.html' %}
 {% load static %}
 
+{% block css %}"{% static 'garage/css/client_form.css' %}"{% endblock css %}
+
 {% block content %}
     <div class="container">
 
@@ -25,7 +27,7 @@
             <titre class="col-md-12">
                 <div class="row">
                     <div class="col-md-8">
-                        <h1 id="titre">Création nouveau client</h1>
+                        <h1 id="titre" class="title">Création nouveau client</h1>
                     </div>
                 </div>
             </titre>
