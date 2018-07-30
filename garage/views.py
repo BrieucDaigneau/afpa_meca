@@ -70,7 +70,7 @@ def clientCreate(request):
                         client.save()                        
 
                         sauvegarde = True
-                        return redirect("garage:ordre_reparation", client_id=client.id)
+                        return redirect("garage:vehicule-select", client_id=client.id)
 
     return render(
         request, 
@@ -130,11 +130,15 @@ class VehiculeSelect(ListView):
             print( v)
         context['liste_vehicule'] = self.get_queryset()
         context['isVoiture'] = self.model == Voiture
-        context['isMoto'] = self.model == Moto
-        context['isVelo'] = self.model == Velo
+        # context['isMoto'] = self.model == Moto
+        # context['isVelo'] = self.model == Velo
 
         return context
-   
+        
+    def get_queryset(self):
+        print( "############# ", self.kwargs['client_id'] )
+        return Voiture.objects.filter(client_id=self.kwargs['client_id'])
+
 class VehiculeList(VehiculeSelect):
     template_name = 'garage/vehicules.html'
 
