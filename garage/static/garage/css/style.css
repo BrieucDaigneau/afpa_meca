@@ -43,13 +43,13 @@ afpa, vehicule
   /* border : solid 2px black; */
 }
 
-#info_afpa
+/* #info_afpa
 {
   margin-top: 10px;
   margin-right: 200px; 
   width: 200px ;
   text-align: center;
-}
+} */
 
 #identite
 {
@@ -74,7 +74,7 @@ footer
 #titre
 {
   font-family: 'BallparkWeiner', serif;
-  font-size: 1.5em; 
+  font-size: 40px; 
   text-align: center;
 }
 
