@@ -16,7 +16,7 @@ urlpatterns = [
     path('reparation/<int:client_id>/', views.ordre_reparation, name='ordre_reparation'),
     url(r'^recherche/$', views.recherche, name='recherche'),
     # url(r'^search/$', views.recherche, name='recherche'),
-    path('nouveau-etape-2/', views.DeuxiemeEtape.as_view(), name="etape-2"),
+    path('nouveau-etape-2/', views.VehiculeSelect.as_view(), name="vehicule-select"),
     path('nouveau-choix-vehicule', views.ChoixVehicule, name="choixVehicule"),
-
+    path('vehicules', views.VehiculeList.as_view(), name="vehicules")
 ]

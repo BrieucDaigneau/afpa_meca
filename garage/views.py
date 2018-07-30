@@ -6,6 +6,7 @@ from .forms import ClientForm, DonneesPersonnellesForm
 from django.views.generic import CreateView, ListView
 from django.views.generic import DetailView
 from django.urls import reverse_lazy
+from . import urls
 
 
 def client(request):
@@ -53,32 +54,37 @@ def recherche(request):
     }
     return render(request, 'garage/recherche.html', context)  
 
-
-class DeuxiemeEtape(ListView):
-    # if Vehicule.type_vehicule == "Voiture":
+class VehiculeSelect(ListView):
+    
+    # def mon_model(self, request):
+    #         if request.POST.get('optradio') == "Voiture":
     model = Voiture
-    # elif Vehicule.type_vehicule == "Moto":
-    #     model = Moto
-    # elif Vehicule.type_vehicule == "Velo":
-    #     model = Velo
-    template_name = 'garage/etape-2.html'
-    paginate_by = 12
-    # success_url = reverse_lazy('garage:ordre_reparation')
+            # elif Vehicule.type_vehicule == "Moto":
+            #     model = Moto
+            # elif Vehicule.type_vehicule == "Velo":
+            #     model = Velo
+    #         return model
+    # model = mon_model()
+
+    template_name = 'garage/vehicule-select.html'
+
 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #context['now'] = timezone.now()
         for v in self.get_queryset():
             print( v)
-        
-        # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        # print( "#############", os.path.join(BASE_DIR, 'toto.txt') )
-
         context['liste_vehicule'] = self.get_queryset()
-        return context
-    def get_absolute_url(self):
-        return reverse('garage:ordre_reparation', kwargs={'pk':self.pk})
+        context['isVoiture'] = self.model == Voiture
+        context['isMoto'] = self.model == Moto
+        context['isVelo'] = self.model == Velo
 
+        return context
+   
+class VehiculeList(VehiculeSelect):
+    template_name = 'garage/vehicules.html'
+
+   
 def ChoixVehicule(request):
     pass
+
