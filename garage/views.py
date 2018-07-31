@@ -10,13 +10,14 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
+from django.db import transaction
 
 
 def accueil(request):
     return render(request, 'garage/accueil.html')
 
-class ClientCreateView(View):
 
+class ClientCreateView(View):
     def getForm(self, request):
         zipCode_form = ZipCodeForm(request.POST or None)
         city_form = CityForm(request.POST or None)
@@ -35,149 +36,59 @@ class ClientCreateView(View):
         myTemplate_name = 'garage/client_form.html'
         return render(request, myTemplate_name, self.getForm( request ) )
 
+    @transaction.atomic
     def post(self, request):
-        dico = self.getForm( request )
-            
-        zipCode_form = dico['zipCode_form']
-        if zipCode_form.is_valid():
-            zip_code = zipCode_form.cleaned_data['zip_code']
-            codepostal = ZipCode.objects.filter(zip_code=zip_code)
-            if not codepostal.exists():
-                zipCode = zipCode_form.save() 
-            else :
-                zipCode = codepostal[0]
+        try:
+            with transaction.atomic():
+                dico = self.getForm( request )
+                    
+                zipCode_form = dico['zipCode_form']
+                if zipCode_form.is_valid():
+                    zip_code = zipCode_form.cleaned_data['zip_code']
+                    codepostal = ZipCode.objects.filter(zip_code=zip_code)
+                    if not codepostal.exists():
+                        zipCode = zipCode_form.save() 
+                    else :
+                        zipCode = codepostal[0]
 
-            city_form = dico['city_form']
-            if city_form.is_valid():
-                city_name = city_form.cleaned_data['city_name']   
-                ville = City.objects.filter(city_name=city_name)
-                if not ville.exists():
-                    city = city_form.save() 
-                else :
-                    city = ville[0]
+                    city_form = dico['city_form']
+                    if city_form.is_valid():
+                        city_name = city_form.cleaned_data['city_name']   
+                        ville = City.objects.filter(city_name=city_name)
+                        if not ville.exists():
+                            city = city_form.save() 
+                        else :
+                            city = ville[0]
 
-                city.zip_codes.add(zipCode)
-                city.save()
+                        city.zip_codes.add(zipCode)
+                        city.save()
 
-                address_form = dico['address_form'] 
-                if address_form.is_valid():
-                    address = address_form.save(commit=False)
-                    address.zipCode = zipCode
-                    address.city = city
-                    address.save()
+                        address_form = dico['address_form'] 
+                        if address_form.is_valid():
+                            address = address_form.save(commit=False)
+                            address.zipCode = zipCode
+                            address.city = city
+                            address.save()
 
-                    donneesPersonnelles_form = dico['donneesPersonnelles_form'] 
-                    if donneesPersonnelles_form.is_valid():
-                        donnees = donneesPersonnelles_form.save()    
+                            donneesPersonnelles_form = dico['donneesPersonnelles_form'] 
+                            if donneesPersonnelles_form.is_valid():
+                                donnees = donneesPersonnelles_form.save()    
 
-                        client_form = dico['client_form'] 
-                        if client_form.is_valid():
-                            client = client_form.save(commit=False)
-                            client.donnees_personnelles_client = donnees
-                            client.adresse = address
-                            client.save()                        
+                                client_form = dico['client_form'] 
+                                if client_form.is_valid():
+                                    client = client_form.save(commit=False)
+                                    client.donnees_personnelles_client = donnees
+                                    client.adresse = address
+                                    client.save()                        
 
-                            sauvegarde = True
-                            return redirect("garage:ordre_reparation", client_id=client.id)
+                                    return redirect("garage:ordre_reparation", client_id=client.id)
 
-
-# def existe_donnees(request):
-#     print('entrer function')
-#     zipCode_form = ZipCodeForm(request.POST or None)
-#     if zipCode_form.is_valid():
-#         zip_code = zipCode_form.cleaned_data['zip_code']
-#         codepostal = ZipCode.objects.filter(zip_code=zip_code)
-#         if not codepostal.exists():
-#             zipCode = zipCode_form.save() 
-#         else :
-#             zipCode = codepostal[0]
-#         print(zipCode)    
-
-
-def existe_donnees(request, modelForm, instForm, DonneeVerif):
-    print('ok01')      
-    objSaisie = instForm.cleaned_data[DonneeVerif]
-    print('ok1')    
-    valeur = modelForm.objects.filter(zip_code=objSaisie)
-    print('ok2')       
-    if not valeur.exists():
-        test =  instForm.save() 
-    else :
-        test = valeur[0]
-    print(test)    
-    return test   
-
-
-def clientCreate(request):
-    sauvegarde = False
-    zipCode_form = ZipCodeForm(request.POST or None)
-    city_form = CityForm(request.POST or None)
-    address_form = AddressForm(request.POST or None)    
-    client_form = ClientForm(request.POST or None)   
-    donneesPersonnelles_form = DonneesPersonnellesForm(request.POST or None)
-    
-
-    zipCode_form = ZipCodeForm(request.POST or None)
-    if zipCode_form.is_valid():
-        # zip_code = zipCode_form.cleaned_data['zip_code']
-        # print(zip_code)
-        # codepostal = ZipCode.objects.filter(zip_code=zip_code)
-        # print(codepostal)
-        # if not codepostal.exists():
-        #     zipCode = zipCode_form.save() 
-        # else :
-        #     zipCode = codepostal[0]
-
-
-        zipCode = existe_donnees(request, ZipCode, zipCode_form, 'zip_code')
-        print(zipCode)
-
-
-        city_form = CityForm(request.POST or None)
-        if city_form.is_valid():
-            city_name = city_form.cleaned_data['city_name']   
-            ville = City.objects.filter(city_name=city_name)
-            if not ville.exists():
-                city = city_form.save() 
-            else :
-                city = ville[0]
-
-            city.zip_codes.add(zipCode)
-            city.save()
-
-            address_form = AddressForm(request.POST or None)    
-            if address_form.is_valid():
-                address = address_form.save(commit=False)
-                address.zipCode = zipCode
-                address.city = city
-                address.save()
-
-                donneesPersonnelles_form = DonneesPersonnellesForm(request.POST or None)
-                if donneesPersonnelles_form.is_valid():
-                    donnees = donneesPersonnelles_form.save()    
-
-                    client_form = ClientForm(request.POST or None) 
-                    if client_form.is_valid():
-                        client = client_form.save(commit=False)
-                        client.donnees_personnelles_client = donnees
-                        client.adresse = address
-                        client.save()                        
-
-                        sauvegarde = True
-                        return redirect("garage:ordre_reparation", client_id=client.id)
-
-    return render(
-        request, 
-        'garage/client_form.html', 
-        {   'client_form': client_form,
-            'donneesPersonnelles_form': donneesPersonnelles_form,
-            'address_form' : address_form,
-            'city_form' : city_form,
-            'zipCode_form' : zipCode_form,
-            'sauvegarde' : sauvegarde,
-            'context_object_name': Client.objects.all()
-            }
-    )
+        except IntegrityError:
+            client_form.errors['internal'] = "Une erreur interne est apparue. Merci de recommencer votre requête."
+         
+        return render(request, 'garage/client_form.html', self.getForm( request ) )
+        # context['errors'] = client_form.errors.items()
+        # return render(request, 'garage/client_form.html', context)
 
 
 def ordre_reparation(request, client_id):
