@@ -23,18 +23,17 @@
         <br/>
         <br/>
 
-        <header class="row">
+        <div class="row">
             <titre class="col-md-12">
                 <div class="row">
                     <div class="col-md-8">
-                        <h1 id="titre" class="title">Création nouveau client</h1>
+                        <h1 id="titre" class="title_nouveau_client">Création nouveau client</h1>
                     </div>
                 </div>
             </titre>
+        </div>
 
-            
-
-            <formulaire class="col-md-9">
+            <formulaire class="col-md-12">
                 <h4>Client</h4>
                 <form class="needs-validation" action="{% url 'garage:client-create' %}" method="post">
                     {% csrf_token %}
@@ -94,20 +93,22 @@
                     <br/>
                     <div class="row">
                         <div class="col-md-3">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Annuler</button>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="bouton">Annuler</button>
                         </div>
                         <div class="col-md-3">
                         </div>        
                         <div class="col-md-3">
                         </div>        
                         <div class="col-md-3">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="bouton">Etape suivante</button>
                         </div>
                     </div>   
 
                 </form>
 
             </formulaire>
+
+    </div>
         {% endblock content %}
 
     
