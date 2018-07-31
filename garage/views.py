@@ -5,57 +5,22 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm
 from django.views.generic import CreateView, ListView, View, FormView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
-<<<<<<< HEAD
 from .models import Client, DonneesPersonnelles, Address, Motorise
-=======
-from .models import Client, DonneesPersonnelles
->>>>>>> 44510b0ecd584721eee8141c49e118feb0b28a65
 from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
-<<<<<<< HEAD
-
-
-def accueil(request):
-    return render(request, 'garage/accueil.html')
-
-class ClientCreateView(View):
-
-    def post(self, request):
-        pass
-
-
-def clientCreate(request):
-    sauvegarde = False
-    zipCode_form = ZipCodeForm(request.POST or None)
-    city_form = CityForm(request.POST or None)
-    address_form = AddressForm(request.POST or None)    
-    client_form = ClientForm(request.POST or None)   
-    donneesPersonnelles_form = DonneesPersonnellesForm(request.POST or None)
-
-    zipCode_form = ZipCodeForm(request.POST or None)
-    if zipCode_form.is_valid():
-        zip_code = zipCode_form.cleaned_data['zip_code']
-        codepostal = ZipCode.objects.filter(zip_code=zip_code)
-        if not codepostal.exists():
-            zipCode = zipCode_form.save() 
-        else :
-            zipCode = codepostal[0]
-=======
 from django.db import transaction
 
 
 def accueil(request):
     return render(request, 'garage/accueil.html')
->>>>>>> 44510b0ecd584721eee8141c49e118feb0b28a65
 
 
 class ClientCreateView(View):
     def getForm(self, request):
         zipCode_form = ZipCodeForm(request.POST or None)
         city_form = CityForm(request.POST or None)
-<<<<<<< HEAD
         if city_form.is_valid():
             city_name = city_form.cleaned_data['city_name']   
             ville = City.objects.filter(city_name=city_name)
@@ -102,13 +67,6 @@ class ClientCreateView(View):
         request, 
         'garage/client_form.html', 
         {   'client_form': client_form,
-=======
-        address_form = AddressForm(request.POST or None)    
-        client_form = ClientForm(request.POST or None)   
-        donneesPersonnelles_form = DonneesPersonnellesForm(request.POST or None)
-
-        return { 'client_form': client_form,
->>>>>>> 44510b0ecd584721eee8141c49e118feb0b28a65
             'donneesPersonnelles_form': donneesPersonnelles_form,
             'address_form' : address_form,
             'city_form' : city_form,
