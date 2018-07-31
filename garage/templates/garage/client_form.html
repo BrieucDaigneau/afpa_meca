@@ -39,8 +39,8 @@
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group {% if form.nom_client.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ form.nom_client.id_for_label }}" class="control-label">Nom</label>
+                            <div class="form-group {% if client_form.nom_client.errors %}has-warning has-feedback{% endif %}">
+                                <label for="{{ client_form.nom_client.id_for_label }}" class="control-label">Nom</label>
                                 {{ client_form.nom_client }}
                             </div>
                             <div class="invalid-feedback">
@@ -48,8 +48,8 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group {% if form.prenom_client.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ form.prenom_client.id_for_label }}" class="control-label">Prenom</label>
+                            <div class="form-group {% if client_form.prenom_client.errors %}has-warning has-feedback{% endif %}">
+                                <label for="{{ client_form.prenom_client.id_for_label }}" class="control-label">Prenom</label>
                                 {{ client_form.prenom_client }}
                             </div>
                             <div class="invalid-feedback">
@@ -70,7 +70,9 @@
                         <div class="col-md-6">
                             <label for="{{ form.mail_client.id_for_label }}" class="control-label">Email</label>
                             {{ donneesPersonnelles_form.mail_client }}
+                            <div> {{ donneesPersonnelles_form.mail_client.errors }} </div>
                         </div>
+
                     </div> 
 
                     <div class="row">
@@ -105,6 +107,16 @@
                     </div>   
 
                 </form>
+
+                {% if errors %}
+                <div>
+                  {% for key, error in errors %}
+                  {% autoescape off %}
+                    {{ error }}
+                  {% endautoescape %}
+                  {% endfor %}
+                </div>
+                {% endif %}                
 
             </formulaire>
 

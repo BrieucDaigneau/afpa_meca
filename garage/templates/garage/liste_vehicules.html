@@ -1,0 +1,60 @@
+{% load static %}
+
+<!-- Bootstrap core CSS -->
+<link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet">
+
+<!-- Custom styles for this template -->
+<link href="{% static 'garage/css/style.css' %}" rel="stylesheet">
+
+
+<div class="container">
+
+    <div class="row">
+
+        <h1>Liste des Vehicules</h1>
+
+    </div>
+
+    <div class="row">
+        {% block recherche %}{% endblock recherche %}
+    </div>
+    <div class="row">
+        {% if isVoiture %}
+
+        <div class="col-md-1"></div>
+        <h4 class="col-md-11" >
+            <div class="row">
+                <div class=" col-md-3">Modele </div>
+                <div class=" col-md-3">Marque</div>
+                <div class="col-md-3">N° VIN</div>
+                <div class="col-md-3">N° Immatriculation</div>
+            </div>
+        </h4>
+
+
+
+        {% for vehicule in liste_vehicule %}
+        <input type="radio" class="btn col-md-1" id="{{vehicule.id}}" name="btnVehicule" checked="">
+        </input>
+
+        <label for="{{vehicule.id}}" class="col-md-11">
+            <div class="row">
+                <div class=" col-md-3">{{ vehicule.libelle_modele }}</div>
+                <div class=" col-md-3">{{ vehicule.libelle_marque }}</div>
+                <div class="col-md-3">{{ vehicule.vin }}</div>
+                <div class="col-md-3">{{ vehicule.immatriculation }}</div>
+            </div>
+
+        </label>
+
+        {% empty %}
+        <p>aucun vehicule</p>
+        {% endfor %} {% endif %}
+
+
+    </div>
+    <div class="row">
+        {% block bouttons %}{% endblock bouttons %}
+    </div>
+
+</div>

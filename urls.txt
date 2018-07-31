@@ -1,0 +1,64 @@
+page de connexion:
+	url : meca/
+	view: views.Connexion.as_view()
+	name: "connexion"
+
+page d'accueil:
+	url: meca/accueil
+	view: views.Accueil.as_view()
+	name: "accueil"
+
+
+
+
+
+page nouveau - liste clients:
+	url: meca/nouveau-etape-1
+	view: views.PremiereEtape.as_view()
+	name: "etape-1"
+
+page création client:
+	url: meca/client-create
+	view: views.ClientCreate.as_view()
+	name: "client-create"
+
+page mise a jour client:
+	url: meca/client-update
+	view: views.ClientUpdate.as_view()
+	name: "client-update"
+
+page liste clients (consultation):
+	url:meca/clients
+	view: views.Clients.as_view()
+	name: "clients"
+
+page détail client (consultation):
+	renvoie à la page "mise a jour client"
+
+
+
+
+
+
+page nouveau - liste véhicules:
+	url: meca/nouveau-etape-2
+	view: views.DeuxiemeEtape.as_view()
+	name: "etape-2"
+
+page création véhicule:
+	url: meca/vehicule-create
+	view: views.VehiculeCreate.as_view()
+	name: "vehicule-create"
+
+page mise a jour véhicule:
+	url: meca/vehicule-update
+	view: views.VehiculeUpdate.as_view()
+	name: "vehicule-update"
+
+page liste véhicules (consultation):
+	url:meca/vehicules
+	view: views.Vehicules.as_view()
+	name: "vehicules"
+
+page détail véhicule (consultation):
+	renvoie à la page "mise a jour véhicule"

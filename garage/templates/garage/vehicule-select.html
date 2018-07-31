@@ -1,0 +1,65 @@
+<div class="container">
+    {% extends 'garage/liste_vehicules.html' %} {% block recherche %}
+
+    <div class="row">
+        <label class="checkmark ">
+            <input type="radio" value="Voiture" id="Voiture" name="optradio" checked="checked">Voiture</label>
+        <div class="col-md-1"></div>
+        <label class="checkmark">
+            <input type="radio" value="Moto" id="Voiture" name="optradio">Moto</label>
+        <div class="col-md-1"></div>
+        <label class="checkmark">
+            <input type="radio" value="Velo" id="Voiture" name="optradio">Velo</label>
+    </div>
+
+    <div class="col-md-2">
+        <div class="row">
+
+            <div class="col-md-12">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Nouveau</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock recherche %} {% block bouttons %}
+
+
+<div class="container">
+    <div class="row">
+        <button class=" btn btn-sm btn-primary " onClick="redirect()">annuler</button>
+        <div class="col-md-7"></div>
+        <button class=" btn btn-primary btn-sm" onClick="redirect()">Modifier</br>
+        </button>
+        <div class="col-md-1"></div>
+        <button class="  btn btn-primary btn-sm" onClick="redirect()">Valider et finaliser
+            <br> un ordre de réparation</br>
+        </button>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    function redirect() {
+        var btnVehicule = document.getElementsByName('btnVehicule');
+        var optionSelectionnee
+        for (var i = 0; i < btnVehicule.length; i++) {
+            console.log("################################## ok  : " + btnVehicule[i])
+            if (btnVehicule[i].checked) {
+                console.log("################################## ok  : " + btnVehicule[i].id)
+                optionSelectionnee = btnVehicule[i].id;
+            }
+        }
+        // var myIndex = document.getElementsByName('btnVehicule').selectedIndex
+        // var optionSelectionnee = document.getElementsByName('btnVehicule').options[myIndex].id;
+
+        var url_initiale = "{% url 'garage:ordre_reparation' 1 %}"
+        var left = url_initiale.substring(0, url_initiale.length - 2)
+        var urlOk = left + optionSelectionnee + "/"
+
+        window.location = urlOk
+    }
+</script> {% endblock bouttons %}
+</div>
