@@ -15,7 +15,7 @@ urlpatterns = [
     path('client-create', login_required(views.ClientCreateView.as_view()), name='client-create'),   
     # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
     path('reparation/<int:client_id>/', login_required(views.ordre_reparation), name='ordre_reparation'),
-    url(r'^recherche/$', login_required(views.recherche, name='recherche'),
+    url(r'^recherche/$', login_required(views.recherche), name='recherche'),
     path('vehicule-select/<int:client_id>/', login_required(views.VehiculeSelect.as_view()), name="vehicule-select"),
     path('nouveau-choix-vehicule', views.ChoixVehicule, name="choixVehicule"),
     path('vehicules', login_required(views.VehiculeList.as_view()), name="vehicules"),
@@ -25,6 +25,4 @@ urlpatterns = [
     path('accueil/', login_required(views.accueil), name='accueil'),
     path('moto-select/<int:client_id>/', login_required(views.MotoSelect.as_view()), name="moto-select"),
     path('client-select/', login_required(views.ClientSelect.as_view()), name="client-select"),
-
-    # path('garage/login/', include('django.contrib.auth.urls'), name="login"),
 ]
