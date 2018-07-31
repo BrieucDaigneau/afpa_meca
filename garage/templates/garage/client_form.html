@@ -71,6 +71,8 @@
                             {{ city_form.city_name }}
                         </div>
                     </div>
+
+                    <div class="msgError"> {{ internal_error }} </div>     
                    
                     <br/>
                     <div class="row">
@@ -88,15 +90,7 @@
 
                 </form>
 
-                {% if errors %}
-                <div>
-                  {% for key, error in errors %}
-                  {% autoescape off %}
-                    {{ error }}
-                  {% endautoescape %}
-                  {% endfor %}
-                </div>
-                {% endif %}                
+
 
             </formulaire>
         {% endblock content %}
