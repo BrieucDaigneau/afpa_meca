@@ -168,4 +168,3 @@ class ClientSelect(ListView):
         context = super().get_context_data(**kwargs)
         context['liste_client'] = self.get_queryset()
         return context
-

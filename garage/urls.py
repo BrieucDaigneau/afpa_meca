@@ -26,6 +26,5 @@ urlpatterns = [
     path('accueil/', login_required(views.accueil), name='accueil'),
     path('moto-select/<int:client_id>/', login_required(views.MotoSelect.as_view()), name="moto-select"),
     path('client-select/', login_required(views.ClientSelect.as_view()), name="client-select"),
-
     # path('garage/login/', include('django.contrib.auth.urls'), name="login"),
 ]
