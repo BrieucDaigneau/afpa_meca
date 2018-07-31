@@ -5,35 +5,15 @@
 
 {% block content %}
     <div class="container">
-
-        <br/>
-        <div class="row">
-
-            <!-- <h1>Création Client</h1> -->
-            &emsp;
-            <div class="form-inline my-2 my-lg-0" style="margin-left: 40%;">
-                <form action="{% url 'garage:recherche' %}" method="get" accept-charset="utf-8">
-                    <input class="form-control mr-sm-2" name="query" type="text" placeholder="Recherche" aria-label="recherche">
-                    <button class="btn btn-outline-success my-2 my-sm-0">Search</button>
-                </form>
-            </div>
-            
-        </div>
-
-        <br/>
-        <br/>
-
-        <div class="row">
+    
             <titre class="col-md-12">
-                <div class="row">
-                    <div class="col-md-8">
-                        <h1 id="titre" class="title_nouveau_client">Création nouveau client</h1>
-                    </div>
+                <div class="col-md-12">
+                    <h1 id="titre" class="title">Création nouveau client</h1>
                 </div>
             </titre>
-        </div>
-
-            <formulaire class="col-md-12">
+        </br>
+        
+            <formulaire class="col-md-9">
                 <h4>Client</h4>
                 <form class="needs-validation" action="{% url 'garage:client-create' %}" method="post">
                     {% csrf_token %}
@@ -91,6 +71,8 @@
                             {{ city_form.city_name }}
                         </div>
                     </div>
+
+                    <div class="msgError"> {{ internal_error }} </div>     
                    
                     <br/>
                     <div class="row">
@@ -109,15 +91,7 @@
 
                 </form>
 
-                {% if errors %}
-                <div>
-                  {% for key, error in errors %}
-                  {% autoescape off %}
-                    {{ error }}
-                  {% endautoescape %}
-                  {% endfor %}
-                </div>
-                {% endif %}                
+
 
             </formulaire>
 

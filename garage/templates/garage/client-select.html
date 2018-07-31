@@ -79,9 +79,6 @@
                             optionSelectionnee = btnClient[i].id;
                         }
                     }
-                    // var myIndex = document.getElementsByName('btnClient').selectedIndex
-                    // var optionSelectionnee = document.getElementsByName('btnClient').options[myIndex].id;
-            
                     var url_initiale = "{% url 'garage:vehicule-select' 1 %}"
                     var left = url_initiale.substring(0, url_initiale.length - 2)
                     var urlOk = left + optionSelectionnee + "/"

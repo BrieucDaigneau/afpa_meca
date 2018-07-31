@@ -3,74 +3,75 @@
 
 {% block css %}"{% static 'garage/css/style.css' %}"{% endblock css %}
 
-
-
-{% block content %}
+    {% block content %}
 
     <div>
-        <h1 id="titre">{% block monTitre %}Ordre de réparation{% endblock %}</h1>                            
-                
-            <formulaire class="col-md-9">
-                <h4>Client</h4>
+
+        <header class="row">
+            <titre class="col-md-12">
+                <h1 id="titre">{% block monTitre %}Ordre de réparation{% endblock %}</h1> 
+                <br/>                          
+            </titre>
+
+  
+            
+            <formulaire class="col-md-12">
+                <h2>Client :</h2>
+                <hr>
                 <div class="row">
                     <div class="col-md-6">
                         <label for="nom" class="control-label">Nom : </label>
                         {{ client.nom_client }}
                     </div>
                     <div class="col-md-6">
-                        <label for="prenom" class="control-label">Prenom : </label>
+                        <label for="email" class="control-label">Email : </label> 
+                        {{ donnees.mail_client }}
+                    </div> 
+                </div>  
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="prenom" class="control-label">Prénom : </label>
                         {{ client.prenom_client }}
                     </div>
-                </div>  
-
+                    <div class="col-md-6">
+                        <label for="adresse" class="control-label">Adresse : </label>
+                        {{ address.street }}
+                    </div>
+                </div>                 
+                
                 <div class="row">
                     <div class="col-md-6">
                         <label for="telephone" class="control-label">Téléphone : </label>
-                        {{ client.telephone_client }}
+                        {{ donnees.telephone_client }}
                     </div>
-                    <div class="col-md-6">
-                        <label for="email" class="control-label">Email : </label> 
-                        {{ client.email_client }}
-                    </div> 
-                </div>                 
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="adresse" class="control-label">Adresse : </label>
-                        {{ client.adresse_client }}
-                    </div>
-
-                    <div class="col-md-2">
-                        <label for="codepostal" class="control-label">Code Postal : </label>
-                        {{ client.code_postal_client }}
-                    </div>
-
+                    
                     <div class="col-md-2">
                         <label for="ville" class="control-label">Ville : </label>
-                        {{ client.ville_client }}
+                        {{ city.city_name }}
                     </div>
+                    <div class="col-md-2">
+                        <label for="codepostal" class="control-label">Code Postal : </label>
+                        {{ zipCode.zip_code }}
+                    </div>
+                    
 
                     <div class="col-md-2">
-                        <label for="pays" class="control-label">Pays : </label>
-                        {{ client.pays_client }}
+                        <label for="numero_afpa_client" class="control-label">Numéro AFPA : </label>
+                        {{ client.numero_afpa_client }}
                     </div>
                 </div>
-
                 <br/>
 
-                <div class="row">
-                        <div class="col-md-4"></div>
-                            <div class="col-md-4">
-                                <button class="btn btn-primary btn-lg btn-block" type="submit">Valider</button>
-                            </div>
-                        <div class="col-md-4"></div>
-                </div>
+
 
             </formulaire>
-
+            
         </header>
-
+        
         <vehicule class="col-md-12">
+            <h3>Véhicule :</h3>
+            <hr>
             <div class="row">
                 <div class="col-md-3">
                     <label for="address">Marque</label>
@@ -107,7 +108,7 @@
             </div>
 
         </vehicule>
-
+        <hr>
         <div id="saisir">
             <div class="form-group">
                 <label for="textarea">Description des symptômes du client (si diagnostic) </label>
@@ -121,9 +122,14 @@
                 <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-10">
+            </div>
+            <div class="col-md1-12">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Valider</button>
+            </div>
+        </div>
     </div>
-
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
