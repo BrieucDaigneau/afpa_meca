@@ -82,7 +82,7 @@ class ClientCreateView(View):
                                     client.adresse = address
                                     client.save()                        
 
-                                    return redirect("garage:ordre_reparation", client_id=client.id)
+                                    return redirect("garage:vehicule-select", client_id=client.id)
 
         except IntegrityError:
             client_form.errors['internal'] = "Une erreur interne est apparue. Merci de recommencer votre requête."
