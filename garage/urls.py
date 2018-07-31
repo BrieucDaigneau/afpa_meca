@@ -16,7 +16,6 @@ urlpatterns = [
     # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
     path('reparation/<int:client_id>/', views.ordre_reparation, name='ordre_reparation'),
     url(r'^recherche/$', views.recherche, name='recherche'),
-    # url(r'^search/$', views.recherche, name='recherche'),
     url(r'login', LoginView.as_view(redirect_authenticated_user=True, template_name="garage/login.html"),
         name='login'),
     url(r'logout', LogoutView.as_view(template_name="garage/logout.html"), name='logout'),
