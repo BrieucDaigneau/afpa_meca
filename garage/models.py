@@ -116,7 +116,7 @@ class Motorise(Vehicule):
     vin = models.CharField(max_length=100, blank=False, null=True)
     immatriculation = models.CharField( max_length=15, blank=False, null=True)
     kilometrage = models.IntegerField(null=True, blank=True)
-    date_mec = models.DateField("date de première m.e.c.", null=True, default=datetime.now )
+    date_mec = models.DateField("date de première m.e.c.", null=True)
     carte_grise_img = models.ImageField("carte grise", null=True, blank=False, upload_to="img/carte_grise")
     carte_assurance_img = models.ImageField("carte assurance", null=True, blank=False, upload_to="img/carte_assurance")
     class Meta:

@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'logout', LogoutView.as_view(template_name="garage/logout.html"), name='logout'),
     path('accueil/', login_required(views.accueil), name='accueil'),
     # path('garage/login/', include('django.contrib.auth.urls'), name="login"),
-    # path('client-create', login_required(views.VoitureCreate), name='client-create'),
+    path('voiture-create', login_required(views.VoitureCreate.as_view()), name='voiture-create'),
 ]

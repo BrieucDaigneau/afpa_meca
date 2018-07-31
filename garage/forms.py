@@ -2,7 +2,7 @@ from django import forms
 
 from django.forms import ModelForm, TextInput, EmailInput
 from django.forms.utils import ErrorList
-from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise
+from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture
 
 class ClientForm(forms.ModelForm):
     class Meta:
@@ -24,14 +24,6 @@ class DonneesPersonnellesForm(forms.ModelForm):
             'mail_client': TextInput(attrs={'class': 'form-control'}),
             'telephone_client': TextInput(attrs={'class': 'form-control'})
         }  
-
-    # Clean suivi du nom du champ concerné ensuite géré dans le Html
-    def clean_mail_client(self):
-        mail_client = self.cleaned_data['mail_client'].lower()
-        r = DonneesPersonnelles.objects.filter(mail_client=mail_client)
-        if r.count():
-            raise  forms.ValidationError("Email already exists")
-        return mail_client
 
 
 class AddressForm(forms.ModelForm):
@@ -62,8 +54,16 @@ class CityForm(forms.ModelForm):
             'city_name': TextInput(attrs={'class': 'form-control'})
         }  
 
-class VehiculeForm(forms.ModelForm):
+class VoitureForm(forms.ModelForm):
     class Meta:
-        model = Motorise
+        model = Voiture
         fields = '__all__'
+        widgets = {
+            'libelle_marque': TextInput(attrs={'class': 'form-control'}),
+            'libelle_modele': TextInput(attrs={'class': 'form-control'}),
+            'immatriculation': TextInput(attrs={'class': 'form-control'}),
+            'vin': TextInput(attrs={'class': 'form-control'}),
+            'kilometrage': TextInput(attrs={'class': 'form-control'}),
+            'date_mec': TextInput(attrs={'class': 'form-control'})
+        }
        
