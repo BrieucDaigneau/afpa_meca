@@ -12,15 +12,28 @@
     <div class="row">
 
         <h1>Liste des Vehicules</h1>
-        &emsp;
+
     </div>
 
     <div class="row">
         {% block recherche %}{% endblock recherche %}
     </div>
     <div class="row">
-        {% if isVoiture %} {% for vehicule in liste_vehicule %}
+        {% if isVoiture %}
 
+        <div class="col-md-1"></div>
+        <h4 class="col-md-11" >
+            <div class="row">
+                <div class=" col-md-3">Modele </div>
+                <div class=" col-md-3">Marque</div>
+                <div class="col-md-3">N° VIN</div>
+                <div class="col-md-3">N° Immatriculation</div>
+            </div>
+        </h4>
+
+
+
+        {% for vehicule in liste_vehicule %}
         <input type="radio" class="btn col-md-1" id="{{vehicule.id}}" name="btnVehicule" checked="">
         </input>
 
