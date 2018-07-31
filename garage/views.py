@@ -133,10 +133,10 @@ class VehiculeSelect(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         for v in self.get_queryset():
-            print( v)
+            print( "#############################", v)
         context['liste_vehicule'] = self.get_queryset()
         context['isVoiture'] = self.model == Voiture
-        # context['isMoto'] = self.model == Moto
+        context['isMoto'] = self.model == Moto
         # context['isVelo'] = self.model == Velo
 
         return context
@@ -144,6 +144,17 @@ class VehiculeSelect(ListView):
     def get_queryset(self):
         print( "############# ", self.kwargs['client_id'] )
         return Voiture.objects.filter(client_id=self.kwargs['client_id'])
+
+
+class MotoSelect(VehiculeSelect):
+    model = Moto
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_vehicule'] = self.get_queryset()
+        return context
+    def get_queryset(self):
+        return Moto.objects.filter(client_id=self.kwargs['client_id'])
+
 
 class VehiculeList(VehiculeSelect):
     template_name = 'garage/vehicules.html'

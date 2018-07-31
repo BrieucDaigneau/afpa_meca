@@ -9,7 +9,7 @@
 	<link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="{% static 'garage/css/base.css' %}" />
 	<link href= {% block css %}{% endblock css %} rel="stylesheet">
-
+	{% block head %}{% endblock head %}
 </head>
 
 <body>
@@ -130,7 +130,8 @@
 
 	<script src="{% static 'garage/js/jquery-slim.min.js' %}"></script> {% comment %}
 	<script>window.jQuery || document.write('<script src="{% static "garage/js/jquery-slim.min.js" %}"><\/script>')</script> {% endcomment %}
-	<script src="{% static 'garage/js/popper.min.js' %}"></script> {% comment %}
+	{% comment %} <script src="{% static 'garage/js/popper.min.js' %}"></script>  {% endcomment %}
+	{% comment %}
 	<script src="{% static 'garage/js/bootstrap.min.js' %}"></script> {% endcomment %}
 	<script src="{% static 'garage/js/holder.min.js' %}"></script>
 	<script>
