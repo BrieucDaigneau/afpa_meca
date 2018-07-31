@@ -38,7 +38,6 @@ class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
         fields = ["street"]
-        # fields = ('street', 'zipCode', 'city')
         widgets = {
             'street': TextInput(attrs={'class': 'form-control'})
         }

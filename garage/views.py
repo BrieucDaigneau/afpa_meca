@@ -10,7 +10,8 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
-from django.db import transaction
+from django.db import DatabaseError, transaction
+from django.core.exceptions import ValidationError
 
 
 def accueil(request):
@@ -24,7 +25,7 @@ class ClientCreateView(View):
         address_form = AddressForm(request.POST or None)    
         client_form = ClientForm(request.POST or None)   
         donneesPersonnelles_form = DonneesPersonnellesForm(request.POST or None)
-
+ 
         return { 'client_form': client_form,
             'donneesPersonnelles_form': donneesPersonnelles_form,
             'address_form' : address_form,
@@ -39,56 +40,97 @@ class ClientCreateView(View):
     @transaction.atomic
     def post(self, request):
         try:
+            modelFormError = ""
             with transaction.atomic():
                 dico = self.getForm( request )
                     
                 zipCode_form = dico['zipCode_form']
-                if zipCode_form.is_valid():
-                    zip_code = zipCode_form.cleaned_data['zip_code']
-                    codepostal = ZipCode.objects.filter(zip_code=zip_code)
-                    if not codepostal.exists():
-                        zipCode = zipCode_form.save() 
-                    else :
-                        zipCode = codepostal[0]
+                if not zipCode_form.is_valid():
+                    modelFormError = "Une erreur interne est apparue sur le code postal. Merci de recommencer votre saisie."                  
+                    raise ValidationError(modelFormError)
+                else :
+                    try:
+                        zip_code = zipCode_form.cleaned_data['zip_code']
+                        codepostal = ZipCode.objects.filter(zip_code=zip_code)
+                        if not codepostal.exists():
+                            zipCode = zipCode_form.save() 
+                        else :
+                            zipCode = codepostal[0]
+
+                    except DatabaseError:   
+                        modelFormError = "Problème de connection à la base de données"                  
+                        raise                                
+
 
                     city_form = dico['city_form']
-                    if city_form.is_valid():
-                        city_name = city_form.cleaned_data['city_name']   
-                        ville = City.objects.filter(city_name=city_name)
-                        if not ville.exists():
-                            city = city_form.save() 
-                        else :
-                            city = ville[0]
+                    if not city_form.is_valid():
+                        modelFormError = "Une erreur interne est apparue sur la ville. Merci de recommencer votre saisie."                  
+                        raise ValidationError(modelFormError)
+                    else :
+                        try:
+                            city_name = city_form.cleaned_data['city_name']   
+                            ville = City.objects.filter(city_name=city_name)
+                            if not ville.exists():
+                                city = city_form.save() 
+                            else :
+                                city = ville[0]
 
-                        city.zip_codes.add(zipCode)
-                        city.save()
+                            city.zip_codes.add(zipCode)
+                            city.save()
+
+                        except DatabaseError:   
+                            modelFormError = "Problème de connection à la base de données"                  
+                            raise                                
+
 
                         address_form = dico['address_form'] 
-                        if address_form.is_valid():
-                            address = address_form.save(commit=False)
-                            address.zipCode = zipCode
-                            address.city = city
-                            address.save()
+                        if not address_form.is_valid():
+                            modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
+                            raise ValidationError(modelFormError)
+                        else :
+                            try:
+                                address = address_form.save(commit=False)
+                                address.zipCode = zipCode
+                                address.city = city
+                                address.save()
+
+                            except DatabaseError:   
+                                modelFormError = "Problème de connection à la base de données"                  
+                                raise                                
+
 
                             donneesPersonnelles_form = dico['donneesPersonnelles_form'] 
-                            if donneesPersonnelles_form.is_valid():
+                            if not donneesPersonnelles_form.is_valid():
+                                modelFormError = "Une erreur interne est apparue sur les données personnelles. Merci de recommencer votre saisie."                  
+                                raise ValidationError(modelFormError)
+                            else :
                                 donnees = donneesPersonnelles_form.save()    
 
+
                                 client_form = dico['client_form'] 
-                                if client_form.is_valid():
-                                    client = client_form.save(commit=False)
-                                    client.donnees_personnelles_client = donnees
-                                    client.adresse = address
-                                    client.save()                        
+                                if not client_form.is_valid():
+                                    modelFormError = "Une erreur interne est apparue sur les données clients. Merci de recommencer votre saisie."                  
+                                    raise ValidationError(modelFormError)
+                                else :
+                                    try:
+                                        client = client_form.save(commit=False)
+                                        client.donnees_personnelles_client = donnees
+                                        client.adresse = address
+                                        client.save()                        
 
+                                    except DatabaseError:   
+                                        modelFormError = "Problème de connection à la base de données"                  
+                                        raise                                    
+                                    
                                     return redirect("garage:ordre_reparation", client_id=client.id)
-
-        except IntegrityError:
-            client_form.errors['internal'] = "Une erreur interne est apparue. Merci de recommencer votre requête."
+            
+        except (ValidationError, DatabaseError):
+            dicoError = self.getForm( request )
+            dicoError ['internal_error'] = modelFormError
+            return render(request, 'garage/client_form.html', dicoError )
          
         return render(request, 'garage/client_form.html', self.getForm( request ) )
-        # context['errors'] = client_form.errors.items()
-        # return render(request, 'garage/client_form.html', context)
+        
 
 
 def ordre_reparation(request, client_id):
