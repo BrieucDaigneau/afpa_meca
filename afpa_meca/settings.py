@@ -127,8 +127,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-LOGIN_URL = 'user:login'
+LOGIN_URL = 'garage:login'
 LOGIN_REDIRECT_URL = 'garage:accueil'
 
-LOGOUT_URL ="user:logout"
+LOGOUT_URL ="garage:login"
 LOGOUT_REDIRECT_URL = 'garage:login'

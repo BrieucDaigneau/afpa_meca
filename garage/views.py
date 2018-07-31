@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm
 from django.views.generic import CreateView, ListView, View, FormView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Client, DonneesPersonnelles
+from .models import Client, DonneesPersonnelles, Address, Motorise
 from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -29,7 +29,7 @@ def clientCreate(request):
     client_form = ClientForm(request.POST or None)   
     donneesPersonnelles_form = DonneesPersonnellesForm(request.POST or None)
 
-    zipcode_form = ZipCodeForm(request.POST or None)
+    zipCode_form = ZipCodeForm(request.POST or None)
     if zipCode_form.is_valid():
         zip_code = zipCode_form.cleaned_data['zip_code']
         codepostal = ZipCode.objects.filter(zip_code=zip_code)
@@ -67,9 +67,19 @@ def clientCreate(request):
                         client.donnees_personnelles_client = donnees
                         client.adresse = address
                         client.save()                        
-
                         sauvegarde = True
-                        return redirect("garage:ordre_reparation", client_id=client.id)
+                        dico = {
+                            
+                            'client_id':client.id,
+                            'address_id':address.id,
+                            'zipCode_id':zipCode.id,
+                            'city_id':city.id,
+    
+                            }
+
+
+                        return redirect("garage:ordre_reparation", **dico)
+                
 
     return render(
         request, 
@@ -85,12 +95,23 @@ def clientCreate(request):
     )
 
 
-def ordre_reparation(request, client_id):
+def ordre_reparation(request, client_id, address_id, zipCode_id, city_id):
     client = Client.objects.get(pk=client_id)
+    donnees = DonneesPersonnelles.objects.get(pk=client_id)
+    address = Address.objects.get(pk=address_id)
+    zipCode = ZipCode.objects.get(pk=zipCode_id)
+    city = City.objects.get(pk=city_id)
+    
+    
     context = {
-        'client': client
+        'donnees': donnees,
+        'client': client,
+        'address': address,    
+        'zipCode': zipCode,
+        'city': city,
+       
     }
-    # client = get_object_or_404(Client, id=id)
+    
     return render(request, 'garage/ordre_reparation.html', context)    
 
 
@@ -106,5 +127,12 @@ def recherche(request):
         'context_object_name': clients
     }
     return render(request, 'garage/recherche.html', context)  
+
+
+
+class VoitureCreate (CreateView):
+    model = Motorise
+    fields = '__all__'
+
 
 

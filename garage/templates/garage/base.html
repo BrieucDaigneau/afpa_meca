@@ -8,7 +8,7 @@
         <link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" type="text/css" media="screen" href="{% static 'garage/css/base.css' %}" />
         <link href= {% block css %}{% endblock css %}  rel="stylesheet">
-        
+				<link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="style.css">
     </head>
     <body>
 
@@ -118,19 +118,7 @@
                   {% comment %} <script src="{% static 'garage/js/bootstrap.min.js' %}"></script> {% endcomment %}
                   <script src="{% static 'garage/js/holder.min.js' %}"></script>
                 <script>
-                 window.onscroll = function() {staticNavBar()};
-                  
-                  var navbar = document.getElementById("navbar");
-                  var sticky = navbar.offsetTop;
-                  
-                  function staticNavBar() {
-                    if (window.pageYOffset >= sticky) {
-                      navbar.classList.add("sticky")
-                    } else {
-                      navbar.classList.remove("sticky");
-                    }
-                  }
-                  
+              
                   $(document).ready(function() {
 
                     $("#navbar-contenu a").each(function( index ) {

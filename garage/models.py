@@ -105,6 +105,10 @@ class Vehicule(models.Model):
 
     def __str__(self):
         return self.libelle_modele
+    
+    
+    # def get_absolute_url(self):
+    #     return reverse('vehicule.views')
 
 
 class Motorise(Vehicule):
