@@ -118,7 +118,7 @@ class ClientCreateView(View):
                                         client.donnees_personnelles_client = donnees
                                         client.adresse = address
                                         client.save()                        
-                                        dico = {
+                                        context = {
                                                                         'client_id':client.id,
                                                                         'address_id':address.id,
                                                                         'zipCode_id':zipCode.id,
@@ -129,7 +129,7 @@ class ClientCreateView(View):
                                         modelFormError = "Problème de connection à la base de données"                  
                                         raise 
                                     
-                                    return redirect("garage:voiture-select", **dico)
+                                    return redirect("garage:voiture-select", context)
 
         except (ValidationError, DatabaseError):
             dicoError = self.getForm( request )
@@ -137,91 +137,6 @@ class ClientCreateView(View):
             return render(request, 'garage/client_form.html', dicoError )
          
         return render(request, 'garage/client_form.html', self.getForm( request ) )
-
-
-def ordre_reparation(request, client_id, address_id, zipCode_id, city_id):
-    client = Client.objects.get(pk=client_id)
-    donnees = DonneesPersonnelles.objects.get(pk=client_id)
-    address = Address.objects.get(pk=address_id)
-    zipCode = ZipCode.objects.get(pk=zipCode_id)
-    city = City.objects.get(pk=city_id)
-    
-     
-    context = {
-        'donnees': donnees,
-        'client': client,
-        'address': address,    
-        'zipCode': zipCode,
-        'city': city,
-       
-    }
-    
-    # client = get_object_or_404(Client, id=id)
-    return render(request, 'garage/ordre_reparation.html', context)    
-
-
-def recherche(request):
-    query = request.GET.get('query')
-    if not query:
-        clients = Client.objects.all()
-    else:
-        # nom_client contains the query is and query is not sensitive to case.
-        clients = Client.objects.filter(nom_client__icontains=query)
-    title = "Résultats pour la requête %s"%query
-    context = {
-        'context_object_name': clients
-    }
-    return render(request, 'garage/recherche.html', context) 
-
-
-
-
-
-class VehiculeSelect(ListView):
-    
-    # def mon_model(self, request):
-    #         if request.POST.get('optradio') == "Voiture":
-    model = Voiture
-            # elif Vehicule.type_vehicule == "Moto":
-            #     model = Moto
-            # elif Vehicule.type_vehicule == "Velo":
-            #     model = Velo
-    #         return model
-    # model = mon_model()
-
-    template_name = 'garage/vehicule-select.html'
-
-
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['liste_vehicule'] = self.get_queryset()
-        context['isVoiture'] = self.model == Voiture
-        context['isMoto'] = self.model == Moto
-        # context['isVelo'] = self.model == Velo
-
-        return context
-        
-    def get_queryset(self):
-        return Voiture.objects.filter(client_id=self.kwargs['client_id'])
-
-
-class MotoSelect(VehiculeSelect):
-    model = Moto
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['liste_vehicule'] = self.get_queryset()
-        return context
-    def get_queryset(self):
-        return Moto.objects.filter(client_id=self.kwargs['client_id'])
-
-
-class VehiculeList(VehiculeSelect):
-    template_name = 'garage/vehicules.html'
-
-   
-def ChoixVehicule(request):
-    pass
 
 class ClientSelect(ListView):
     model = Client
@@ -248,3 +163,67 @@ class VoitureCreate(CreateView):
 
     def redirect(self, request):
         return redirect
+
+class VehiculeSelect(ListView):
+    model = Voiture
+    template_name = 'garage/voiture-select.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_vehicule'] = self.get_queryset()
+        return context
+        
+    def get_queryset(self):
+        return Voiture.objects.filter(client_id=self.kwargs['client_id'])
+
+
+class MotoSelect(VehiculeSelect):
+    model = Moto
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_vehicule'] = self.get_queryset()
+        return context
+
+    def get_queryset(self):
+        return Moto.objects.filter(client_id=self.kwargs['client_id'])
+
+def ordre_reparation(request, client_id, address_id, zipCode_id, city_id):
+    client = Client.objects.get(pk=client_id)
+    donnees = DonneesPersonnelles.objects.get(pk=client_id)
+    address = Address.objects.get(pk=address_id)
+    zipCode = ZipCode.objects.get(pk=zipCode_id)
+    city = City.objects.get(pk=city_id)
+     
+    context = {
+        'donnees': donnees,
+        'client': client,
+        'address': address,    
+        'zipCode': zipCode,
+        'city': city,
+       
+    }
+    # client = get_object_or_404(Client, id=id)
+    return render(request, 'garage/ordre_reparation.html', context)    
+
+
+def recherche(request):
+    query = request.GET.get('query')
+    if not query:
+        clients = Client.objects.all()
+    else:
+        # nom_client contains the query is and query is not sensitive to case.
+        clients = Client.objects.filter(nom_client__icontains=query)
+    title = "Résultats pour la requête %s"%query
+    context = {
+        'context_object_name': clients
+    }
+    return render(request, 'garage/recherche.html', context) 
+
+class VehiculeList(VehiculeSelect):
+    template_name = 'garage/vehicules.html'
+
+   
+def ChoixVehicule(request):
+    pass
+

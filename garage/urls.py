@@ -24,10 +24,11 @@ urlpatterns = [
     # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
     path('moto-select/<int:client_id>/', login_required(views.MotoSelect.as_view()), name="moto-select"),
 
-    path('vehicule-select/<int:client_id>/', login_required(views.VehiculeSelect.as_view()), name="vehicule-select"),
+    path('voiture-select/<int:client_id>/', login_required(views.VehiculeSelect.as_view()), name="voiture-select"),
     path('voiture-create', login_required(views.VoitureCreate.as_view()), name='voiture-create'),
     path('vehicules', login_required(views.VehiculeList.as_view()), name="vehicules"),
     path('nouveau-choix-vehicule', views.ChoixVehicule, name="choixVehicule"),
     
     path('reparation/<int:client_id>/<int:address_id>/<int:zipCode_id>/<int:city_id>/', login_required(views.ordre_reparation), name='ordre_reparation'),
+    #  path('reparation/<int:voiture_id>/', login_required(views.ordre_reparation), name='ordre_reparation'),
 ]

@@ -17,7 +17,7 @@
     <div class="row mb-5 mt-3">
 
         <div class="col-md-2 ">
-            <button class="btn btn-sm btn-primary btn-lg btn-block" type="submit">Nouveau</button>
+            <a href="{% url 'garage:voiture-create' %}" class="btn btn-sm btn-primary btn-lg btn-block" type="submit">Nouveau</a>
         </div>
     </div>
 </div>
@@ -26,7 +26,7 @@
 
 <div class="container">
     <div class="row mt-5">
-        <button class=" btn btn-sm btn-primary col-md-1" onClick="redirect()">annuler</button>
+        <a href="{% url 'garage:client-select' %}" class=" btn btn-sm btn-primary col-md-1" onClick="redirect()">Annuler</a>
         <div class="col-md-3"></div>
         <button class=" btn btn-primary btn-sm col-md-2" onClick="redirect()">Modifier
         </button>
@@ -53,7 +53,7 @@
         // var myIndex = document.getElementsByName('btnVehicule').selectedIndex
         // var optionSelectionnee = document.getElementsByName('btnVehicule').options[myIndex].id;
 
-        var url_initiale = "{% url 'garage:ordre_reparation' 1 %}"
+        var url_initiale = "{% url 'garage:voiture-select' 1 %}"
         var left = url_initiale.substring(0, url_initiale.length - 2)
         var urlOk = left + optionSelectionnee + "/"
 
