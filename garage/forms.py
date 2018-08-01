@@ -2,7 +2,7 @@ from django import forms
 
 from django.forms import ModelForm, TextInput, EmailInput
 from django.forms.utils import ErrorList
-from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture
+from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture, Intervention
 
 class ClientForm(forms.ModelForm):
     class Meta:
@@ -66,3 +66,15 @@ class VoitureForm(forms.ModelForm):
             'date_mec': TextInput(attrs={'class': 'form-control'})
         }
        
+class OrdreReparationForm(forms.ModelForm):
+    class Meta:
+        model = Intervention
+        fields = '__all__'
+        #exclude = ('intervention_realisee', 'statut')
+        # widgets = {
+        #     'date_saisie_intervention': 
+        #     'date_restitution_prevu'
+        #     'diagnostic'
+        #     'intervention_a_realiser'
+        # }
+
