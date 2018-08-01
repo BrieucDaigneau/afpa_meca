@@ -30,7 +30,7 @@ class DonneesPersonnellesForm(forms.ModelForm):
         mail_client = self.cleaned_data['mail_client'].lower()
         r = DonneesPersonnelles.objects.filter(mail_client=mail_client)
         if r.count():
-            raise  forms.ValidationError("Email already exists")
+            raise  forms.ValidationError("Email existe déjà")
         return mail_client
 
 
@@ -42,6 +42,13 @@ class AddressForm(forms.ModelForm):
             'street': TextInput(attrs={'class': 'form-control'})
         }
 
+    # Clean suivi du nom du champ concerné ensuite géré dans le Html
+    def clean_street(self):
+        street = self.cleaned_data['street'].lower()
+        r = Address.objects.filter(street=street)
+        if r.count():
+            raise  forms.ValidationError("l'adresse existe déjà")
+        return street
 
 
 class ZipCodeForm(forms.ModelForm):
