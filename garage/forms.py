@@ -1,6 +1,6 @@
 from django import forms
 
-from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput
+from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput
 from django.forms.utils import ErrorList
 from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture
 
@@ -12,7 +12,7 @@ class ClientForm(forms.ModelForm):
         widgets = {
             'nom_client': TextInput(attrs={'class': 'form-control'}),
             'prenom_client': TextInput(attrs={'class': 'form-control'}),
-            'numero_afpa_client': TextInput(attrs={'class': 'form-control'})
+            'numero_afpa_client': NumberInput(attrs={'class': 'form-control'})
         }
 
 
@@ -34,7 +34,7 @@ class AddressForm(forms.ModelForm):
         widgets = {
             'street': TextInput(attrs={'class': 'form-control'}),
             'street_number': NumberInput(attrs={'class': 'form-control'}),
-            'street_complement': TextInput(attrs={'class': 'form_control'})
+            'street_complement': TextInput(attrs={'class': 'form-control'})
         }
 
 
@@ -65,8 +65,8 @@ class VoitureForm(forms.ModelForm):
             'libelle_modele': TextInput(attrs={'class': 'form-control'}),
             'immatriculation': TextInput(attrs={'class': 'form-control'}),
             'vin': TextInput(attrs={'class': 'form-control'}),
-            'kilometrage': TextInput(attrs={'class': 'form-control'}),
-            'date_mec': SelectDateWidget(attrs={'class': 'form-control'}),
+            'kilometrage': NumberInput(attrs={'class': 'form-control'}),
+            'date_mec': DateInput(attrs={'class': 'form-control'}),
             'carte_grise_img': FileInput(attrs={'class': 'form-control'}),
             'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
         }

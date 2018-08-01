@@ -83,8 +83,8 @@ class ClientCreateView(View):
                             raise                                
 
 
-                        address_form = dico['address_form'] 
-                        if not address_form.is_valid():
+                        address_form = dico['address_form']                       
+                        if not address_form.is_valid():                         
                             modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
                             raise ValidationError(modelFormError)
                         else :
