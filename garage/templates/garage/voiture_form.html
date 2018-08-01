@@ -20,7 +20,7 @@
                     <div class="col-md-6">
                         <div class="form-group {% if form.libelle_marque.errors %}has-warning has-feedback{% endif %}">
                             <label for="{{ form.libelle_marque.id_for_label }}" class="control-label">Marque</label>
-                            {{ voiture_form.libelle_marque }}
+                            {{ form.libelle_marque }}
                         </div>
                         <div class="invalid-feedback">
                             Saisie du nom est obligatoire
@@ -29,7 +29,7 @@
                     <div class="col-md-6">
                         <div class="form-group {% if form.libelle_modele.errors %}has-warning has-feedback{% endif %}">
                             <label for="{{ form.libelle_modele.id_for_label }}" class="control-label">Modèle</label>
-                            {{ voiture_form.libelle_modele }}
+                            {{ form.libelle_modele }}
                         </div>
                         <div class="invalid-feedback">
                             Saisie du prenom est obligatoire
@@ -40,22 +40,22 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="{{ client_form.immatriculation.id_for_label }}" class="control-label">Immatriculation</label>
-                        {{ voiture_form.immatriculation }}
+                        {{ form.immatriculation }}
                     </div>
                     <div class="col-md-6">
                         <label for="{{ form.vin.id_for_label }}" class="control-label">Vin</label>
-                        {{ voiture_form.vin }}
+                        {{ form.vin }}
                     </div>
                     <div class="col-md-6">
                         <label for="{{ form.kilometrage.id_for_label }}" class="control-label">kilometrage</label>
-                        {{ voiture_form.kilometrage }}
+                        {{ form.kilometrage }}
                     </div>
                 </div> 
 
                 <div class="row">
                     <div class="col-md-4">
                         <label for="{{ voiture_form.date_mec.id_for_label }}" class="control-label">Date mise en circulation</label>
-                        {{ voiture_form.date_mec }}
+                        {{ form.date_mec }}
                     </div>
 
                     <div class="col-md-4">
@@ -65,7 +65,7 @@
 
                     <div class="col-md-4">
                         <label for="{{ voiture_form.carte_assurance_img.id_for_label }}" class="control-label">Carte assurance</label>
-                        {{ voiture_form.carte_assurance_img }}
+                        {{ form.carte_assurance_img }}
                     </div>
                 </div>
                
