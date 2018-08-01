@@ -159,12 +159,14 @@ class VoitureCreate(CreateView):
     # # #     print(" 2 queryset #########################", self.get_queryset())
     #     print("############################################################", context)
     # # #     return context
+    # def get_queryset(self):
+    #     return Voiture.client.get(client_id="client_id")
        
-    def form_invalid(self, form):
-        vehicule = form.save()
-        print("################# ok")
-        vehicule.instance.client = Client.objects.get(pk=1)
-        return super(VoitureCreate, self).form_valid(form) 
+    # def form_valid(self, form):
+    #     vehicule = form.save()
+    #     print("################# ok")
+    #     vehicule.instance.client = Client.objects.get(pk=1)
+    #     return super(VoitureCreate, self).form_valid(form) 
 
     # model = Voiture
     # fields = '__all__'
