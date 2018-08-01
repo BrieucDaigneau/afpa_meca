@@ -129,7 +129,7 @@ class ClientCreateView(View):
                                         modelFormError = "Problème de connection à la base de données"                  
                                         raise 
                                     
-                                    return redirect("garage:voiture-select", context)
+                                    return redirect("garage:voiture-select", **context)
 
         except (ValidationError, DatabaseError):
             dicoError = self.getForm( request )
