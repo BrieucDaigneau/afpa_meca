@@ -12,20 +12,23 @@ app_name = 'garage'
 
 urlpatterns = [  
     # path('client', views.client, name='client'),   
-    path('client-create', login_required(views.ClientCreateView.as_view()), name='client-create'),   
-    # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
-    path('reparation/<int:client_id>/', login_required(views.ordre_reparation), name='ordre_reparation'),
-    url(r'^recherche/$', login_required(views.recherche), name='recherche'),
-    # url(r'^search/$', views.recherche, name='recherche'),
-    path('vehicule-select/<int:client_id>/', login_required(views.VehiculeSelect.as_view()), name="vehicule-select"),
-    path('nouveau-choix-vehicule', views.ChoixVehicule, name="choixVehicule"),
-    path('vehicules', login_required(views.VehiculeList.as_view()), name="vehicules"),
     url(r'login', LoginView.as_view(redirect_authenticated_user=True, template_name="garage/login.html"),
         name='login'),
     url(r'logout', LogoutView.as_view(template_name="garage/logout.html"), name='logout'),
+    
+    url(r'^recherche/$', login_required(views.recherche), name='recherche'),
     path('accueil/', login_required(views.accueil), name='accueil'),
-    path('moto-select/<int:client_id>/', login_required(views.MotoSelect.as_view()), name="moto-select"),
-    path('client-select/', login_required(views.ClientSelect.as_view()), name="client-select"),
 
-    # path('garage/login/', include('django.contrib.auth.urls'), name="login"),
+    path('client-create', login_required(views.ClientCreateView.as_view()), name='client-create'),   
+    path('client-select/', login_required(views.ClientSelect.as_view()), name="client-select"),
+    # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
+    path('moto-select/<int:client_id>/', login_required(views.MotoSelect.as_view()), name="moto-select"),
+
+    path('voiture-select/<int:client_id>/', login_required(views.VehiculeSelect.as_view()), name="voiture-select"),
+    path('voiture-create', login_required(views.VoitureCreate.as_view()), name='voiture-create'),
+    path('vehicules', login_required(views.VehiculeList.as_view()), name="vehicules"),
+    path('nouveau-choix-vehicule', views.ChoixVehicule, name="choixVehicule"),
+    
+    path('reparation/<int:client_id>/<int:address_id>/<int:zipCode_id>/<int:city_id>/', login_required(views.ordre_reparation), name='ordre_reparation'),
+    #  path('reparation/<int:voiture_id>/', login_required(views.ordre_reparation), name='ordre_reparation'),
 ]

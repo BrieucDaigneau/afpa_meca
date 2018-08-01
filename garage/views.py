@@ -2,16 +2,17 @@ from django.http import HttpResponse
 from .models import *
 
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm
+from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm
 from django.views.generic import CreateView, ListView, View, FormView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Client, DonneesPersonnelles
+from .models import Client, DonneesPersonnelles, Address, ZipCode, Voiture
 from django.urls import reverse_lazy
 from . import urls
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
-from django.db import transaction
+from django.db import DatabaseError, transaction
+from django.core.exceptions import ValidationError
 
 
 def accueil(request):
@@ -40,62 +41,167 @@ class ClientCreateView(View):
     @transaction.atomic
     def post(self, request):
         try:
+            modelFormError = ""
             with transaction.atomic():
                 dico = self.getForm( request )
                     
                 zipCode_form = dico['zipCode_form']
-                if zipCode_form.is_valid():
-                    zip_code = zipCode_form.cleaned_data['zip_code']
-                    codepostal = ZipCode.objects.filter(zip_code=zip_code)
-                    if not codepostal.exists():
-                        zipCode = zipCode_form.save() 
-                    else :
-                        zipCode = codepostal[0]
+                if not zipCode_form.is_valid():
+                    modelFormError = "Une erreur interne est apparue sur le code postal. Merci de recommencer votre saisie."                  
+                    raise ValidationError(modelFormError)
+                else :
+                    try:
+                        zip_code = zipCode_form.cleaned_data['zip_code']
+                        codepostal = ZipCode.objects.filter(zip_code=zip_code)
+                        if not codepostal.exists():
+                            zipCode = zipCode_form.save() 
+                        else :
+                            zipCode = codepostal[0]
+
+                    except DatabaseError:   
+                        modelFormError = "Problème de connection à la base de données"                  
+                        raise                                
+
 
                     city_form = dico['city_form']
-                    if city_form.is_valid():
-                        city_name = city_form.cleaned_data['city_name']   
-                        ville = City.objects.filter(city_name=city_name)
-                        if not ville.exists():
-                            city = city_form.save() 
-                        else :
-                            city = ville[0]
+                    if not city_form.is_valid():
+                        modelFormError = "Une erreur interne est apparue sur la ville. Merci de recommencer votre saisie."                  
+                        raise ValidationError(modelFormError)
+                    else :
+                        try:
+                            city_name = city_form.cleaned_data['city_name']   
+                            ville = City.objects.filter(city_name=city_name)
+                            if not ville.exists():
+                                city = city_form.save() 
+                            else :
+                                city = ville[0]
 
-                        city.zip_codes.add(zipCode)
-                        city.save()
+                            city.zip_codes.add(zipCode)
+                            city.save()
+
+                        except DatabaseError:   
+                            modelFormError = "Problème de connection à la base de données"                  
+                            raise                                
+
 
                         address_form = dico['address_form'] 
-                        if address_form.is_valid():
-                            address = address_form.save(commit=False)
-                            address.zipCode = zipCode
-                            address.city = city
-                            address.save()
+                        if not address_form.is_valid():
+                            modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
+                            raise ValidationError(modelFormError)
+                        else :
+                            try:
+                                address = address_form.save(commit=False)
+                                address.zipCode = zipCode
+                                address.city = city
+                                address.save()
+
+                            except DatabaseError:   
+                                modelFormError = "Problème de connection à la base de données"                  
+                                raise                                
+
 
                             donneesPersonnelles_form = dico['donneesPersonnelles_form'] 
-                            if donneesPersonnelles_form.is_valid():
+                            if not donneesPersonnelles_form.is_valid():
+                                modelFormError = "Une erreur interne est apparue sur les données personnelles. Merci de recommencer votre saisie."                  
+                                raise ValidationError(modelFormError)
+                            else :
                                 donnees = donneesPersonnelles_form.save()    
 
+
                                 client_form = dico['client_form'] 
-                                if client_form.is_valid():
-                                    client = client_form.save(commit=False)
-                                    client.donnees_personnelles_client = donnees
-                                    client.adresse = address
-                                    client.save()                        
+                                if not client_form.is_valid():
+                                    modelFormError = "Une erreur interne est apparue sur les données clients. Merci de recommencer votre saisie."                  
+                                    raise ValidationError(modelFormError)
+                                else :
+                                    try:
+                                        client = client_form.save(commit=False)
+                                        client.donnees_personnelles_client = donnees
+                                        client.adresse = address
+                                        client.save()                        
+                                        context = {
+                                                                        'client_id':client.id,
+                                                                        'address_id':address.id,
+                                                                        'zipCode_id':zipCode.id,
+                                                                        'city_id':city.id,  
+                                                                        }
 
-                                    return redirect("garage:ordre_reparation", client_id=client.id)
+                                    except DatabaseError:   
+                                        modelFormError = "Problème de connection à la base de données"                  
+                                        raise 
+                                    
+                                    return redirect("garage:voiture-select", context)
 
-        except IntegrityError:
-            client_form.errors['internal'] = "Une erreur interne est apparue. Merci de recommencer votre requête."
+        except (ValidationError, DatabaseError):
+            dicoError = self.getForm( request )
+            dicoError ['internal_error'] = modelFormError
+            return render(request, 'garage/client_form.html', dicoError )
          
         return render(request, 'garage/client_form.html', self.getForm( request ) )
-        # context['errors'] = client_form.errors.items()
-        # return render(request, 'garage/client_form.html', context)
+
+class ClientSelect(ListView):
+    model = Client
+    template_name = "garage/client-select.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_client'] = self.get_queryset()
+        return context
 
 
-def ordre_reparation(request, client_id):
+class VoitureCreate(CreateView):
+    model = Voiture
+    fields = '__all__'
+    def getForm(self, request):
+        voiture_form = VoitureForm(request.POST or None)
+        return {
+            'voiture_form' : voiture_form
+        
+        }
+    def get(self, request):
+        myTemplate_name = 'garage/voiture_form.html'
+        return render(request, myTemplate_name, self.getForm( request ) )
+
+    def redirect(self, request):
+        return redirect
+
+class VehiculeSelect(ListView):
+    model = Voiture
+    template_name = 'garage/voiture-select.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_vehicule'] = self.get_queryset()
+        return context
+        
+    def get_queryset(self):
+        return Voiture.objects.filter(client_id=self.kwargs['client_id'])
+
+
+class MotoSelect(VehiculeSelect):
+    model = Moto
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_vehicule'] = self.get_queryset()
+        return context
+
+    def get_queryset(self):
+        return Moto.objects.filter(client_id=self.kwargs['client_id'])
+
+def ordre_reparation(request, client_id, address_id, zipCode_id, city_id):
     client = Client.objects.get(pk=client_id)
+    donnees = DonneesPersonnelles.objects.get(pk=client_id)
+    address = Address.objects.get(pk=address_id)
+    zipCode = ZipCode.objects.get(pk=zipCode_id)
+    city = City.objects.get(pk=city_id)
+     
     context = {
-        'client': client
+        'donnees': donnees,
+        'client': client,
+        'address': address,    
+        'zipCode': zipCode,
+        'city': city,
+       
     }
     # client = get_object_or_404(Client, id=id)
     return render(request, 'garage/ordre_reparation.html', context)    
@@ -112,46 +218,7 @@ def recherche(request):
     context = {
         'context_object_name': clients
     }
-    return render(request, 'garage/recherche.html', context)  
-
-class VehiculeSelect(ListView):
-    
-    # def mon_model(self, request):
-    #         if request.POST.get('optradio') == "Voiture":
-    model = Voiture
-            # elif Vehicule.type_vehicule == "Moto":
-            #     model = Moto
-            # elif Vehicule.type_vehicule == "Velo":
-            #     model = Velo
-    #         return model
-    # model = mon_model()
-
-    template_name = 'garage/vehicule-select.html'
-
-
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['liste_vehicule'] = self.get_queryset()
-        context['isVoiture'] = self.model == Voiture
-        context['isMoto'] = self.model == Moto
-        # context['isVelo'] = self.model == Velo
-
-        return context
-        
-    def get_queryset(self):
-        return Voiture.objects.filter(client_id=self.kwargs['client_id'])
-
-
-class MotoSelect(VehiculeSelect):
-    model = Moto
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['liste_vehicule'] = self.get_queryset()
-        return context
-    def get_queryset(self):
-        return Moto.objects.filter(client_id=self.kwargs['client_id'])
-
+    return render(request, 'garage/recherche.html', context) 
 
 class VehiculeList(VehiculeSelect):
     template_name = 'garage/vehicules.html'
@@ -159,13 +226,4 @@ class VehiculeList(VehiculeSelect):
    
 def ChoixVehicule(request):
     pass
-
-class ClientSelect(ListView):
-    model = Client
-    template_name = "garage/client-select.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['liste_client'] = self.get_queryset()
-        return context
 
