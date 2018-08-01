@@ -84,8 +84,8 @@ class ClientCreateView(View):
                             raise                                
 
 
-                        address_form = dico['address_form'] 
-                        if not address_form.is_valid():
+                        address_form = dico['address_form']                       
+                        if not address_form.is_valid():                         
                             modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
                             raise ValidationError(modelFormError)
                         else :
@@ -129,7 +129,7 @@ class ClientCreateView(View):
                                         modelFormError = "Problème de connection à la base de données"                  
                                         raise 
                                     
-                                    return redirect("garage:voiture-select", context)
+                                    return redirect("garage:voiture-select", **context)
 
         except (ValidationError, DatabaseError):
             dicoError = self.getForm( request )
@@ -151,18 +151,23 @@ class ClientSelect(ListView):
 class VoitureCreate(CreateView):
     model = Voiture
     fields = '__all__'
+    
     def getForm(self, request):
         voiture_form = VoitureForm(request.POST or None)
         return {
-            'voiture_form' : voiture_form
-        
+            'voiture_form' : voiture_form       
         }
+    
     def get(self, request):
         myTemplate_name = 'garage/voiture_form.html'
         return render(request, myTemplate_name, self.getForm( request ) )
 
-    def redirect(self, request):
-        return redirect
+    # def post(self, **kwargs):
+    #     voiture = voiture_form.save(commit=False)
+    #     context = {
+
+    #     }
+    #     return redirect('garage:ordre-reparation', voiture_id=self.kwargs['voiture_id'])
 
 class VehiculeSelect(ListView):
     model = Voiture
