@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from .models import Client, DonneesPersonnelles, ZipCode, City, Voiture
+from .models import *
 
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm
@@ -7,6 +7,7 @@ from django.views.generic import CreateView, ListView, View, FormView, DetailVie
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Client, DonneesPersonnelles, Address, ZipCode, Voiture
 from django.urls import reverse_lazy
+from . import urls
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
@@ -117,7 +118,7 @@ class ClientCreateView(View):
                                         client.donnees_personnelles_client = donnees
                                         client.adresse = address
                                         client.save()                        
-                                        dico = {
+                                        context = {
                                                                         'client_id':client.id,
                                                                         'address_id':address.id,
                                                                         'zipCode_id':zipCode.id,
@@ -128,7 +129,7 @@ class ClientCreateView(View):
                                         modelFormError = "Problème de connection à la base de données"                  
                                         raise 
                                     
-                                    return redirect("garage:ordre_reparation", **dico)
+                                    return redirect("garage:voiture-select", context)
 
         except (ValidationError, DatabaseError):
             dicoError = self.getForm( request )
@@ -137,45 +138,14 @@ class ClientCreateView(View):
          
         return render(request, 'garage/client_form.html', self.getForm( request ) )
 
+class ClientSelect(ListView):
+    model = Client
+    template_name = "garage/client-select.html"
 
-def ordre_reparation(request, client_id, address_id, zipCode_id, city_id):
-    client = Client.objects.get(pk=client_id)
-    donnees = DonneesPersonnelles.objects.get(pk=client_id)
-    address = Address.objects.get(pk=address_id)
-    zipCode = ZipCode.objects.get(pk=zipCode_id)
-    city = City.objects.get(pk=city_id)
-    
-     
-    context = {
-        'donnees': donnees,
-        'client': client,
-        'address': address,    
-        'zipCode': zipCode,
-        'city': city,
-       
-    }
-    
-    # client = get_object_or_404(Client, id=id)
-    return render(request, 'garage/ordre_reparation.html', context)    
-
-
-def recherche(request):
-    query = request.GET.get('query')
-    if not query:
-        clients = Client.objects.all()
-    else:
-        # nom_client contains the query is and query is not sensitive to case.
-        clients = Client.objects.filter(nom_client__icontains=query)
-    title = "Résultats pour la requête %s"%query
-    context = {
-        'context_object_name': clients
-    }
-    return render(request, 'garage/recherche.html', context) 
-
-
-
-
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_client'] = self.get_queryset()
+        return context
 
 
 class VoitureCreate(CreateView):
@@ -193,3 +163,67 @@ class VoitureCreate(CreateView):
 
     def redirect(self, request):
         return redirect
+
+class VehiculeSelect(ListView):
+    model = Voiture
+    template_name = 'garage/voiture-select.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_vehicule'] = self.get_queryset()
+        return context
+        
+    def get_queryset(self):
+        return Voiture.objects.filter(client_id=self.kwargs['client_id'])
+
+
+class MotoSelect(VehiculeSelect):
+    model = Moto
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_vehicule'] = self.get_queryset()
+        return context
+
+    def get_queryset(self):
+        return Moto.objects.filter(client_id=self.kwargs['client_id'])
+
+def ordre_reparation(request, client_id, address_id, zipCode_id, city_id):
+    client = Client.objects.get(pk=client_id)
+    donnees = DonneesPersonnelles.objects.get(pk=client_id)
+    address = Address.objects.get(pk=address_id)
+    zipCode = ZipCode.objects.get(pk=zipCode_id)
+    city = City.objects.get(pk=city_id)
+     
+    context = {
+        'donnees': donnees,
+        'client': client,
+        'address': address,    
+        'zipCode': zipCode,
+        'city': city,
+       
+    }
+    # client = get_object_or_404(Client, id=id)
+    return render(request, 'garage/ordre_reparation.html', context)    
+
+
+def recherche(request):
+    query = request.GET.get('query')
+    if not query:
+        clients = Client.objects.all()
+    else:
+        # nom_client contains the query is and query is not sensitive to case.
+        clients = Client.objects.filter(nom_client__icontains=query)
+    title = "Résultats pour la requête %s"%query
+    context = {
+        'context_object_name': clients
+    }
+    return render(request, 'garage/recherche.html', context) 
+
+class VehiculeList(VehiculeSelect):
+    template_name = 'garage/vehicules.html'
+
+   
+def ChoixVehicule(request):
+    pass
+

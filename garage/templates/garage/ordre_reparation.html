@@ -1,11 +1,9 @@
-{% extends "garage/base.html" %}
+{% extends 'garage/base.html' %}
+{% load static %}
 
-    <title>{% block title %}AFPA - Ordre de réparation{% endblock %}</title>    
+{% block css %}"{% static 'garage/css/style.css' %}"{% endblock css %}
 
-    {% load static %}
     {% block content %}
-    
-<body class="container-fluid">
 
     <div>
 
@@ -64,7 +62,9 @@
                     </div>
                 </div>
                 <br/>
-                
+
+
+
             </formulaire>
             
         </header>
@@ -111,7 +111,7 @@
         <hr>
         <div id="saisir">
             <div class="form-group">
-                <label for="textarea">Description des symptômes du client (si diagonstic) </label>
+                <label for="textarea">Description des symptômes du client (si diagnostic) </label>
                 <textarea id="textarea" class="form-control" rows="4"></textarea>
                 <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
             </div>
@@ -167,6 +167,5 @@
             }, false);
         })();
     </script>
-</body>
-{% endblock %}
-</html>
+{% endblock content %}
+
