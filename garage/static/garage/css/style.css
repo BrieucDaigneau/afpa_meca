@@ -78,11 +78,11 @@ footer
 
 
 #test:hover{
-  background-color: rgba(121, 126, 122, 0.151);
+  background-color: rgba(121, 126, 122, 0.541);
 }
 
 :checked + label{
-  background-color: rgba(70, 131, 180, 0.52);
+  background-color: rgba(70, 131, 180, 0.671);
   
 }
 
