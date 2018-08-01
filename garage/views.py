@@ -5,7 +5,6 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm
 from django.views.generic import CreateView, ListView, View, FormView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Client, DonneesPersonnelles, Address, ZipCode, Voiture
 from django.urls import reverse_lazy
 from . import urls
 
@@ -129,7 +128,7 @@ class ClientCreateView(View):
                                         modelFormError = "Problème de connection à la base de données"                  
                                         raise 
                                     
-                                    return redirect("garage:voiture-select", **context)
+                                    return redirect("garage:voiture-select", context['client_id'])
 
         except (ValidationError, DatabaseError):
             dicoError = self.getForm( request )
