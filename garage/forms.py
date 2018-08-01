@@ -2,7 +2,7 @@ from django import forms
 
 from django.forms import ModelForm, TextInput, EmailInput
 from django.forms.utils import ErrorList
-from .models import Client, DonneesPersonnelles, Address, ZipCode, City
+from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture
 
 class ClientForm(forms.ModelForm):
     class Meta:
@@ -68,6 +68,16 @@ class CityForm(forms.ModelForm):
             'city_name': TextInput(attrs={'class': 'form-control'})
         }  
 
-
-class LogoutForm(forms.Form):
-    pass
+class VoitureForm(forms.ModelForm):
+    class Meta:
+        model = Voiture
+        fields = '__all__'
+        widgets = {
+            'libelle_marque': TextInput(attrs={'class': 'form-control'}),
+            'libelle_modele': TextInput(attrs={'class': 'form-control'}),
+            'immatriculation': TextInput(attrs={'class': 'form-control'}),
+            'vin': TextInput(attrs={'class': 'form-control'}),
+            'kilometrage': TextInput(attrs={'class': 'form-control'}),
+            'date_mec': TextInput(attrs={'class': 'form-control'})
+        }
+       

@@ -9,16 +9,7 @@ from django.db import models
         
 class ZipCode(models.Model):
     zip_code = models.CharField(max_length=15, verbose_name = 'Code Postal',)
-    
-    # def __str__(self):
-    #     rslt = ""
-    #     nb = 0
-    #     for c in self.city_set.all():
-    #         if nb != 0:
-    #             rslt += " ; "
-    #         rslt += str( c )
-    #         nb += 1
-    #     return str( self.zip_code ) + " " + rslt
+
 
     def __str__(self):
         return str( self.zip_code )
@@ -56,7 +47,7 @@ class Address(models.Model):
 
 class DonneesPersonnelles(models.Model):
     mail_client = models.EmailField("Email Client", max_length=35, unique=True)
-    telephone_client = models.CharField("Téléphone Client", blank=False, max_length=10)
+    telephone_client = models.CharField("Téléphone Client", blank=False, max_length=10, null=True)
     carte_AFPA_img = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
 
     class Meta:
@@ -69,7 +60,7 @@ class DonneesPersonnelles(models.Model):
 class Client(models.Model):
     nom_client = models.CharField("Nom Client", max_length=15)
     prenom_client = models.CharField("Prenom Client", max_length=15)
-    numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, null=True)
+    numero_afpa_client = models.CharField("Numéro carte AFPA Client", max_length=10, default="extérieur")
     donnees_personnelles_client = models.OneToOneField(DonneesPersonnelles, on_delete=models.CASCADE)
     adresse = models.OneToOneField(Address, null=True, on_delete=models.CASCADE)
 
@@ -105,6 +96,10 @@ class Vehicule(models.Model):
 
     def __str__(self):
         return self.libelle_modele
+    
+    
+    # def get_absolute_url(self):
+    #     return reverse('vehicule.views')
 
 
 class Motorise(Vehicule):
@@ -112,7 +107,7 @@ class Motorise(Vehicule):
     vin = models.CharField(max_length=100, blank=False, null=True)
     immatriculation = models.CharField( max_length=15, blank=False, null=True)
     kilometrage = models.IntegerField(null=True, blank=True)
-    date_mec = models.DateField("date de première m.e.c.", null=True, default=datetime.now )
+    date_mec = models.DateField("date de première m.e.c.", null=True)
     carte_grise_img = models.ImageField("carte grise", null=True, blank=False, upload_to="img/carte_grise")
     carte_assurance_img = models.ImageField("carte assurance", null=True, blank=False, upload_to="img/carte_assurance")
     class Meta:
@@ -262,6 +257,7 @@ class Devis(models.Model):
 
     def __str__(self):
         return str(self.numero_devis)
+
 
 
 class Piece_Fournisseur_Devis(models.Model):

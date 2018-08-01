@@ -5,35 +5,14 @@
 
 {% block content %}
     <div class="container">
-
-        <br/>
-        <div class="row">
-
-            <!-- <h1>Création Client</h1> -->
-            &emsp;
-            <div class="form-inline my-2 my-lg-0" style="margin-left: 40%;">
-                <form action="{% url 'garage:recherche' %}" method="get" accept-charset="utf-8">
-                    <input class="form-control mr-sm-2" name="query" type="text" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0">Search</button>
-                </form>
-            </div>
-            
-        </div>
-
-        <br/>
-        <br/>
-
-        <header class="row">
+    
             <titre class="col-md-12">
-                <div class="row">
-                    <div class="col-md-8">
-                        <h1 id="titre" class="title">Création nouveau client</h1>
-                    </div>
+                <div class="col-md-12">
+                    <h1 id="titre" class="title">Création nouveau client</h1>
                 </div>
             </titre>
-
-            
-
+        </br>
+        
             <formulaire class="col-md-9">
                 <h4>Client</h4>
                 <form class="needs-validation" action="{% url 'garage:client-create' %}" method="post">
@@ -99,14 +78,15 @@
                     <br/>
                     <div class="row">
                         <div class="col-md-3">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Annuler</button>
+                            <a href="{% url 'garage:client-select' %}" class="btn btn-primary btn-lg btn-block" id="bouton">Annuler</a>
                         </div>
+                        <div class="col-md-2">
+                        </div>         
+                        <div class="col-md-4">
+                                <button class="btn btn-primary btn-lg btn-block" type="submit" id="bouton">Valider et retour Accueil</button>
+                            </div>     
                         <div class="col-md-3">
-                        </div>        
-                        <div class="col-md-3">
-                        </div>        
-                        <div class="col-md-3">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="bouton">Etape suivante</button>
                         </div>
                     </div>   
 
@@ -115,6 +95,8 @@
 
 
             </formulaire>
+
+    </div>
         {% endblock content %}
 
     

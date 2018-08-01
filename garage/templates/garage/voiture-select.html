@@ -1,0 +1,63 @@
+{% extends 'garage/liste_vehicules.html' %} {% block recherche %}
+
+<div class="container">
+    {% comment %} <div class="row">
+        <label class="checkmark ">
+            <input type="radio" value="Voiture" id="Voiture" name="optradio" checked="checked">Voiture</label>
+        <div class="col-md-1"></div>
+        <label class="checkmark">
+            <input type="radio" value="Moto" id="Voiture" name="optradio">Moto</label>
+        <div class="col-md-1"></div>
+        <label class="checkmark">
+            <input type="radio" value="Velo" id="Voiture" name="optradio">Velo</label>
+    </div> {% endcomment %}
+
+    <div class="col-md-2">
+    </div>
+    <div class="row mb-5 mt-3">
+
+        <div class="col-md-2 ">
+            <a href="{% url 'garage:voiture-create' %}" class="btn btn-sm btn-primary btn-lg btn-block" type="submit">Nouveau</a>
+        </div>
+    </div>
+</div>
+{% endblock recherche %} {% block bouttons %}
+
+
+<div class="container">
+    <div class="row mt-5">
+        <a href="{% url 'garage:client-select' %}" class=" btn btn-sm btn-primary col-md-1" onClick="redirect()">Annuler</a>
+        <div class="col-md-3"></div>
+        <button class=" btn btn-primary btn-sm col-md-2" onClick="redirect()">Modifier
+        </button>
+        <div class="col-md-1"></div>
+        <button class="  btn btn-primary btn-sm col-md-5" onClick="redirect()">Valider et finaliser
+            un ordre de réparation
+        </button>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    function redirect() {
+        var btnVehicule = document.getElementsByName('btnVehicule');
+        var optionSelectionnee
+        for (var i = 0; i < btnVehicule.length; i++) {
+            if (btnVehicule[i].checked) {
+                optionSelectionnee = btnVehicule[i].id;
+            }
+        }
+        // var myIndex = document.getElementsByName('btnVehicule').selectedIndex
+        // var optionSelectionnee = document.getElementsByName('btnVehicule').options[myIndex].id;
+
+        var url_initiale = "{% url 'garage:voiture-select' 1 %}"
+        var left = url_initiale.substring(0, url_initiale.length - 2)
+        var urlOk = left + optionSelectionnee + "/"
+
+        window.location = urlOk
+    }
+</script> {% endblock bouttons %}
+</div>

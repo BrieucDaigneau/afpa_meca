@@ -1,15 +1,5 @@
 
-@font-face
-{
-    font-family: 'BallparkWeiner';
-    src: url('polices/ballpark.eot');
-    src: url('polices/ballpark.eot?#iefix') format('embedded-opentype'),
-         url('polices/ballpark.woff') format('woff'),
-         url('polices/ballpark.ttf') format('truetype'),
-         url('polices/ballpark.svg#BallparkWeiner') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
+
 
 body 
 {
@@ -73,7 +63,7 @@ footer
 
 #titre
 {
-  font-family: 'BallparkWeiner', serif;
+  font-family: serif;
   font-size: 40px; 
   text-align: center;
 }
@@ -85,3 +75,17 @@ footer
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
 .lh-condensed { line-height: 1.25; }
+
+
+#test:hover{
+  background-color: rgba(121, 126, 122, 0.151);
+}
+
+:checked + label{
+  background-color: rgba(70, 131, 180, 0.52);
+  
+}
+
+.radio{
+  display: none;
+}

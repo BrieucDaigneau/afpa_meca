@@ -1,0 +1,97 @@
+{% extends "garage/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+        <titre class="col-md-12">
+                <div class="col-md-12">
+                    <h1 id="titre" class="title">Création nouveau Véhicule</h1>
+                </div>     
+        </titre>
+    <br/>
+
+        
+
+        <formulaire class="col-md-9">
+            <h4>Véhicule</h4>
+            <form class="needs-validation" action="{% url 'garage:voiture-create' %}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group {% if form.libelle_marque.errors %}has-warning has-feedback{% endif %}">
+                            <label for="{{ form.libelle_marque.id_for_label }}" class="control-label">Marque</label>
+                            {{ voiture_form.libelle_marque }}
+                        </div>
+                        <div class="invalid-feedback">
+                            Saisie du nom est obligatoire
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group {% if form.libelle_modele.errors %}has-warning has-feedback{% endif %}">
+                            <label for="{{ form.libelle_modele.id_for_label }}" class="control-label">Modèle</label>
+                            {{ voiture_form.libelle_modele }}
+                        </div>
+                        <div class="invalid-feedback">
+                            Saisie du prenom est obligatoire
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="{{ client_form.immatriculation.id_for_label }}" class="control-label">Immatriculation</label>
+                        {{ voiture_form.immatriculation }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.vin.id_for_label }}" class="control-label">Vin</label>
+                        {{ voiture_form.vin }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="{{ form.kilometrage.id_for_label }}" class="control-label">kilometrage</label>
+                        {{ voiture_form.kilometrage }}
+                    </div>
+                </div> 
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="{{ voiture_form.date_mec.id_for_label }}" class="control-label">Date mise en circulation</label>
+                        {{ voiture_form.date_mec }}
+                    </div>
+
+                    <!-- <div class="col-md-3">
+                        <label for="{{ zipCode_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
+                        {{ zipCode_form.zip_code }}
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="{{ city_form.city_name.id_for_label }}" class="control-label">Ville</label>
+                        {{ city_form.city_name }}
+                    </div> -->
+                </div>
+               
+                <br/>
+                <div class="row">
+                    <div class="col-md-3">
+                        <a onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
+                    </div>
+                    <div class="col-md-3">
+                    </div>        
+                    <div class="col-md-3">
+                    </div>        
+                    <div class="col-md-3">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
+                    </div>
+                </div>   
+
+            </form>
+
+        </formulaire>
+
+
+
+
+
+
+
+
+{% endblock %}
