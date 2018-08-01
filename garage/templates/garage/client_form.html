@@ -40,7 +40,7 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="{{ client_form.numero_afpa_client.id_for_label }}" class="control-label">Carte AFPA</label>
+                            <label for="{{ client_form.numero_afpa_client.id_for_label }}" class="control-label">Numéro carte AFPA</label>
                             {{ client_form.numero_afpa_client }}
                         </div>
                         <div class="col-md-6">
@@ -52,25 +52,38 @@
                             {{ donneesPersonnelles_form.mail_client }}
                             <div> {{ donneesPersonnelles_form.mail_client.errors }} </div>
                         </div>
-
                     </div> 
-
+                    
                     <div class="row">
+                        <div class="col-md-2">
+                            <label for="{{ address_form.street_number.id_for_label }}" class="control-label">Numéro de rue :</label>
+                            {{ address_form.street_number }}
+                        </div>
                         <div class="col-md-6">
                             <label for="{{ address_form.street.id_for_label }}" class="control-label">Adresse</label>
                             {{ address_form.street }}
                         </div>
-
-                        <div class="col-md-3">
+                        <div class="col-md-4">
+                            <label for="{{ address_form.street_complement.id_for_label }}" class="control-label">Complement d'adresse</label>
+                            {{ address_form.street_complement }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
                             <label for="{{ zipCode_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
                             {{ zipCode_form.zip_code }}
                         </div>
-
-                        <div class="col-md-3">
+                    
+                        <div class="col-md-4">
                             <label for="{{ city_form.city_name.id_for_label }}" class="control-label">Ville</label>
                             {{ city_form.city_name }}
                         </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.carte_AFPA_img.id_for_label }}" class="control-label">Carte AFPA img</label>
+                            {{ donneesPersonnelles_form.carte_AFPA_img }}
+                        </div>
                     </div>
+                    <div> {{ address_form.street.errors }} </div>
 
                     <div class="msgError"> {{ internal_error }} </div>     
                    
