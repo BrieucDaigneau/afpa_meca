@@ -161,17 +161,13 @@ class VoitureCreate(CreateView):
     def get(self, request):
         myTemplate_name = 'garage/voiture_form.html'
         return render(request, myTemplate_name, self.getForm( request ) )
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # context['liste_vehicule'] = self.get_queryset()
-        print(context)
-        return context
 
-    def get_queryset(self):
-        return Voiture.objects.filter(voiture_id=self.kwargs['voiture_id'])
-    
-        return redirect('garage:ordre-reparation', get_queryset(self))
+    # def post(self, **kwargs):
+    #     voiture = voiture_form.save(commit=False)
+    #     context = {
+
+    #     }
+    #     return redirect('garage:ordre-reparation', voiture_id=self.kwargs['voiture_id'])
 
 class VehiculeSelect(ListView):
     model = Voiture
