@@ -83,11 +83,10 @@
                             {{ donneesPersonnelles_form.carte_AFPA_img }}
                         </div>
                     </div>
-                    <div> {{ address_form.street.errors }} </div>
+                    <div> {{ address_form.non_field_errors }} </div>
 
                     <div class="msgError"> {{ internal_error }} </div>     
-                   
-                    <br/>
+
                     <div class="row">
                         <div class="col-md-3">
                             <a href="{% url 'garage:client-select' %}" class="btn btn-primary btn-lg btn-block" id="bouton">Annuler</a>

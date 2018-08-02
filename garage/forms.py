@@ -46,12 +46,14 @@ class AddressForm(forms.ModelForm):
         }
 
     # Clean suivi du nom du champ concerné ensuite géré dans le Html
-    def clean_street(self):
-        street = self.cleaned_data['street'].lower()
-        r = Address.objects.filter(street=street)
+    def clean(self):
+        cleaned_data = super().clean()
+        street_number = self.cleaned_data['street_number']
+        street = self.cleaned_data['street']
+        r = Address.objects.filter(street_number=street_number,street=street)
         if r.count():
-            raise  forms.ValidationError("l'adresse existe déjà")
-        return street
+            raise forms.ValidationError("l'adresse existe déjà")
+        return cleaned_data
 
 
 class ZipCodeForm(forms.ModelForm):
