@@ -84,8 +84,8 @@ class ClientCreateView(View):
                             raise                                
 
 
-                        address_form = dico['address_form'] 
-                        if not address_form.is_valid():
+                        address_form = dico['address_form']                       
+                        if not address_form.is_valid():                         
                             modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
                             raise ValidationError(modelFormError)
                         else :
@@ -144,10 +144,33 @@ class ClientSelect(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # print(context)
         context['liste_client'] = self.get_queryset()
+        print(context)
         return context
 
 
+
+# class VoitureCreate(CreateView):
+#     model = Voiture
+#     fields = '__all__'
+    
+#     def getForm(self, request):
+#         voiture_form = VoitureForm(request.POST or None)
+#         return {
+#             'voiture_form' : voiture_form       
+#         }
+    
+#     def get(self, request):
+#         myTemplate_name = 'garage/voiture_form.html'
+#         return render(request, myTemplate_name, self.getForm( request ) )
+
+#     # def post(self, **kwargs):
+#     #     voiture = voiture_form.save(commit=False)
+#     #     context = {
+
+#     #     }
+#     #     return redirect('garage:ordre-reparation', voiture_id=self.kwargs['voiture_id'])
 
 class VehiculeSelect(ListView):
     model = Voiture
@@ -180,21 +203,17 @@ class VoitureCreate(CreateView):
     form_class = VoitureForm
     template_name = 'garage/voiture_form.html'
     success_url = reverse_lazy('garage:ordre_reparation')
-
-    def getForm(self, request):
-        voiture_form = VoitureForm(request.POST or None)
-        return {
-            'voiture_form' : voiture_form
-        }
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        print("################################################ en prépa", Client.objects.get(pk='client.id'))
+
         return context
 
     def form_valid(self, form):
-        client = Client.objects.get(pk=self.kwargs['client_id'])
+        print("################################################ ok <3")
+        #client = Client.objects.get(pk=self.kwargs['client_id'])
         voiture = form.save()
-        voiture.client = client
+        #voiture.client = client
         voiture.save()
     
         return super().form_valid(form)
