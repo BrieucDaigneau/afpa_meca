@@ -12,18 +12,17 @@ class ClientForm(forms.ModelForm):
         widgets = {
             'nom_client': TextInput(attrs={'class': 'form-control'}),
             'prenom_client': TextInput(attrs={'class': 'form-control'}),
-            'numero_afpa_client': NumberInput(attrs={'class': 'form-control'})
+            'numero_afpa_client': TextInput(attrs={'class': 'form-control'})
         }
 
 
 class DonneesPersonnellesForm(forms.ModelForm):
     class Meta:
         model = DonneesPersonnelles
-        fields = ["mail_client", "telephone_client","carte_AFPA_img"]
+        fields = ["mail_client", "telephone_client"]
         widgets = {
             'mail_client': TextInput(attrs={'class': 'form-control'}),
-            'telephone_client': TextInput(attrs={'class': 'form-control'}),
-            'carte_AFPA_img': FileInput(attrs={'class': 'form-control'})
+            'telephone_client': TextInput(attrs={'class': 'form-control'})
         }  
 
     # Clean suivi du nom du champ concerné ensuite géré dans le Html
