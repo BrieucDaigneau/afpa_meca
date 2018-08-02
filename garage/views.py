@@ -148,12 +148,9 @@ class VoitureCreate(CreateView):
     form_class = VoitureForm
     template_name = 'garage/voiture_form.html'
     success_url = reverse_lazy('garage:ordre_reparation')
-    # form_class.client = Client.objects.get(id=client_id)
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         return context
 
     def form_valid(self, form):
@@ -162,6 +159,7 @@ class VoitureCreate(CreateView):
         voiture.client = client
         voiture.save()
         return super().form_valid(form)
+
 
 class VehiculeSelect(ListView):
     model = Voiture
@@ -174,8 +172,6 @@ class VehiculeSelect(ListView):
         return context
         
     def get_queryset(self):
-
-        print("###############################", self.kwargs['client_id'])
         return Voiture.objects.filter(client_id=self.kwargs['client_id'])
 
 
