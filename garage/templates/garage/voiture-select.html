@@ -17,7 +17,7 @@
     <div class="row mb-5 mt-3">
 
         <div class="col-md-2 ">
-            <a href="{% url 'garage:voiture-create' %}" class="btn btn-sm btn-primary btn-lg btn-block" type="submit">Nouveau</a>
+            <button onClick="voiture_create()" id="nouveau" value="{{client_id}}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</button>
         </div>
     </div>
 </div>
@@ -26,6 +26,7 @@
 
 <div class="container">
     <div class="row mt-5">
+        
         <a href="{% url 'garage:client-select' %}" class=" btn btn-sm btn-primary col-md-1" onClick="redirect()">Annuler</a>
         <div class="col-md-3"></div>
         <button class=" btn btn-primary btn-sm col-md-2" onClick="redirect()">Modifier
@@ -58,6 +59,17 @@
         var urlOk = left + optionSelectionnee + "/"
 
         window.location = urlOk
+    }
+
+    function voiture_create() {
+        var adresse = window.location.href
+        var left_ad = adresse.substring(0, adresse.length -2)
+        var optionSelectionnee = adresse.substring(left_ad.length, adresse.length -1);
+        console.log(adresse)
+        
+        var url = "{% url 'garage:voiture-create' 1 %}".replace(1, optionSelectionnee)
+
+        window.location = url
     }
 </script> {% endblock bouttons %}
 </div>

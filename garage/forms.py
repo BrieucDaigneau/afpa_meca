@@ -82,7 +82,7 @@ class VoitureForm(forms.ModelForm):
             'immatriculation': TextInput(attrs={'class': 'form-control'}),
             'vin': TextInput(attrs={'class': 'form-control'}),
             'kilometrage': NumberInput(attrs={'class': 'form-control'}),
-            'date_mec': DateInput(attrs={'class': 'form-control'}),
+            'date_mec':  SelectDateWidget(attrs={'class': 'form-control'}),
             'carte_grise_img': FileInput(attrs={'class': 'form-control'}),
             'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
         }
@@ -98,3 +98,4 @@ class OrdreReparationForm(forms.ModelForm):
         #     'diagnostic'
         #     'intervention_a_realiser'
         # }
+
