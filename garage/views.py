@@ -5,7 +5,6 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm, OrdreReparationForm
 from django.views.generic import CreateView, ListView, View, FormView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Client, DonneesPersonnelles, Address, ZipCode, Voiture
 from django.urls import reverse_lazy
 from . import urls
 
@@ -84,8 +83,8 @@ class ClientCreateView(View):
                             raise                                
 
 
-                        address_form = dico['address_form'] 
-                        if not address_form.is_valid():
+                        address_form = dico['address_form']                       
+                        if not address_form.is_valid():                         
                             modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
                             raise ValidationError(modelFormError)
                         else :
@@ -118,18 +117,13 @@ class ClientCreateView(View):
                                         client.donnees_personnelles_client = donnees
                                         client.adresse = address
                                         client.save()                        
-                                        context = {
-                                                                        'client_id':client.id,
-                                                                        'address_id':address.id,
-                                                                        'zipCode_id':zipCode.id,
-                                                                        'city_id':city.id,  
-                                                                        }
+                                        context = {'client_id':client.id}
 
                                     except DatabaseError:   
                                         modelFormError = "Problème de connection à la base de données"                  
                                         raise 
                                     
-                                    return redirect("garage:voiture-select", **context)
+                                    return redirect("garage:voiture-create", context['client_id'])
 
         except (ValidationError, DatabaseError):
             dicoError = self.getForm( request )
@@ -142,12 +136,40 @@ class ClientSelect(ListView):
     model = Client
     template_name = "garage/client-select.html"
 
+    def post(self):
+
+
+        redirect
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # print(context)
         context['liste_client'] = self.get_queryset()
+        print(context)
         return context
 
 
+
+# class VoitureCreate(CreateView):
+#     model = Voiture
+#     fields = '__all__'
+    
+#     def getForm(self, request):
+#         voiture_form = VoitureForm(request.POST or None)
+#         return {
+#             'voiture_form' : voiture_form       
+#         }
+    
+#     def get(self, request):
+#         myTemplate_name = 'garage/voiture_form.html'
+#         return render(request, myTemplate_name, self.getForm( request ) )
+
+#     # def post(self, **kwargs):
+#     #     voiture = voiture_form.save(commit=False)
+#     #     context = {
+
+#     #     }
+#     #     return redirect('garage:ordre-reparation', voiture_id=self.kwargs['voiture_id'])
 
 class VehiculeSelect(ListView):
     model = Voiture
@@ -180,23 +202,29 @@ class VoitureCreate(CreateView):
     form_class = VoitureForm
     template_name = 'garage/voiture_form.html'
     success_url = reverse_lazy('garage:ordre_reparation')
+    # form_class.client = Client.objects.get(id=client_id)
 
-    def getForm(self, request):
-        voiture_form = VoitureForm(request.POST or None)
-        return {
-            'voiture_form' : voiture_form
-        }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         return context
 
+    def get_queryset(self):
+        client = Client.objects.get(self.kwargs['client_id'])
+        voiture = form.save()
+        voiture.client = client
+        voiture.save()
+        print("#########______________#################", client_id)
+        return voiture
+
     def form_valid(self, form):
+        print("################################################ ok <3")
         client = Client.objects.get(pk=self.kwargs['client_id'])
         voiture = form.save()
         voiture.client = client
         voiture.save()
-    
+        print(" ## form valid")
         return super().form_valid(form)
 
 
