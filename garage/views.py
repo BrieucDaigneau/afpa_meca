@@ -187,10 +187,10 @@ class MotoSelect(VehiculeSelect):
         return Moto.objects.filter(client_id=self.kwargs['client_id'])
 
 
-# class ordre_reparation(CreateView):
-#     model = Intervention
-#     fields = '__all__'
-#     #exclude = ('intervention_realisee', 'statut')
+class ordre_reparation(CreateView):
+    model = Intervention
+    fields = '__all__'
+    #exclude = ('intervention_realisee', 'statut')
 #     def getForm(self, request):
 #         ordre_reparation_form = OrdreReparationForm(request.POST or None)
 #         return {

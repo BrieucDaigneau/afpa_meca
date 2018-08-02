@@ -67,22 +67,17 @@
                 </div>
             </div>
               
+</div>
+
+</div>
+
+
+
+
             <script type="text/javascript">
             
                 function redirect() {
-                    let btnClient = document.getElementsByName('btnClient');
-                    let optionSelectionnee
-                    for (let i = 0; i < btnClient.length; i++) {
-                        if (btnClient[i].checked) {
-                            optionSelectionnee = btnClient[i].id;
-                        }
-                    }
-                    let url = "{% url 'garage:voiture-select' 1 %}".replace(1, document.clientChecked)            
-                    window.location = url
+                    window.location = "{% url 'garage:voiture-select' 1 %}".replace(1, document.clientChecked)            
                 }
             </script>
-</div>
-
-</div>
-
 {% endblock %}

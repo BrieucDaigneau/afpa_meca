@@ -44,32 +44,20 @@
 <script type="text/javascript">
 
     function redirect() {
-        var btnVehicule = document.getElementsByName('btnVehicule');
-        var optionSelectionnee
-        for (var i = 0; i < btnVehicule.length; i++) {
-            if (btnVehicule[i].checked) {
-                optionSelectionnee = btnVehicule[i].id;
-            }
+        window.location = "{% url 'garage:ordre_reparation' 1 %}".replace(1, document.vehiculeChecked)
+    }
+
+    function voiture_create() { 
+
+        // TODO : exercice : ecrire le code ci-dessous en expression régulière
+        // absolument
+        let currentHref = window.location.href
+        const ch = "{% url 'garage:voiture-select' 1 %}"
+        let chaineATrouver = ch.substr(0, ch.length - 2)
+        let i = currentHref.indexOf(chaineATrouver)
+        let pk = window.location.href.substring(i+ chaineATrouver.length, currentHref.length - 1)
+        window.location = "{% url 'garage:voiture-create' 1 %}".replace(1, pk)
+
         }
-        // var myIndex = document.getElementsByName('btnVehicule').selectedIndex
-        // var optionSelectionnee = document.getElementsByName('btnVehicule').options[myIndex].id;
-
-        var url_initiale = "{% url 'garage:voiture-select' 1 %}"
-        var left = url_initiale.substring(0, url_initiale.length - 2)
-        var urlOk = left + optionSelectionnee + "/"
-
-        window.location = urlOk
-    }
-
-    function voiture_create() {
-        var adresse = window.location.href
-        var left_ad = adresse.substring(0, adresse.length -2)
-        var optionSelectionnee = adresse.substring(left_ad.length, adresse.length -1);
-        console.log(adresse)
-        
-        var url = "{% url 'garage:voiture-create' 1 %}".replace(1, optionSelectionnee)
-
-        window.location = url
-    }
 </script> {% endblock bouttons %}
 </div>
