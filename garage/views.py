@@ -117,18 +117,13 @@ class ClientCreateView(View):
                                         client.donnees_personnelles_client = donnees
                                         client.adresse = address
                                         client.save()                        
-                                        context = {
-                                                                        'client_id':client.id,
-                                                                        'address_id':address.id,
-                                                                        'zipCode_id':zipCode.id,
-                                                                        'city_id':city.id,  
-                                                                        }
+                                        context = {'client_id':client.id}
 
                                     except DatabaseError:   
                                         modelFormError = "Problème de connection à la base de données"                  
                                         raise 
                                     
-                                    return redirect("garage:voiture-select", context['client_id'])
+                                    return redirect("garage:voiture-create", context['client_id'])
 
         except (ValidationError, DatabaseError):
             dicoError = self.getForm( request )
@@ -140,6 +135,11 @@ class ClientCreateView(View):
 class ClientSelect(ListView):
     model = Client
     template_name = "garage/client-select.html"
+
+    def post(self):
+
+
+        redirect
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -202,19 +202,29 @@ class VoitureCreate(CreateView):
     form_class = VoitureForm
     template_name = 'garage/voiture_form.html'
     success_url = reverse_lazy('garage:ordre_reparation')
+    # form_class.client = Client.objects.get(id=client_id)
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print("################################################ en prépa", Client.objects.get(pk='client.id'))
 
         return context
 
+    def get_queryset(self):
+        client = Client.objects.get(self.kwargs['client_id'])
+        voiture = form.save()
+        voiture.client = client
+        voiture.save()
+        print("#########______________#################", client_id)
+        return voiture
+
     def form_valid(self, form):
         print("################################################ ok <3")
-        #client = Client.objects.get(pk=self.kwargs['client_id'])
+        client = Client.objects.get(pk=self.kwargs['client_id'])
         voiture = form.save()
-        #voiture.client = client
+        voiture.client = client
         voiture.save()
-    
+        print(" ## form valid")
         return super().form_valid(form)
 
 

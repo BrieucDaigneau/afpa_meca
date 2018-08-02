@@ -36,7 +36,7 @@
         
         
         {% for client in liste_client %}
-        <input type="radio" class="btn col-md-1 radio" id="{{client.id}}" name="btnClient" checked="">
+        <input type="radio" class="btn col-md-1 radio" id="{{client.id}}" name="btnClient" onclick='javascript:document.clientChecked={{client.id}};' >
     </input>
     
     <label for="{{client.id}}" id="test" class="col-md-12">
@@ -70,18 +70,15 @@
             <script type="text/javascript">
             
                 function redirect() {
-                    var btnClient = document.getElementsByName('btnClient');
-                    var optionSelectionnee
-                    for (var i = 0; i < btnClient.length; i++) {
+                    let btnClient = document.getElementsByName('btnClient');
+                    let optionSelectionnee
+                    for (let i = 0; i < btnClient.length; i++) {
                         if (btnClient[i].checked) {
                             optionSelectionnee = btnClient[i].id;
                         }
                     }
-                    var url_initiale = "{% url 'garage:voiture-select' 1 %}"
-                    var left = url_initiale.substring(0, url_initiale.length - 2)
-                    var urlOk = left + optionSelectionnee + "/"
-            
-                    window.location = urlOk
+                    let url = "{% url 'garage:voiture-select' 1 %}".replace(1, document.clientChecked)            
+                    window.location = url
                 }
             </script>
 </div>

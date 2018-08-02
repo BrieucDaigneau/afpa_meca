@@ -74,17 +74,17 @@ class CityForm(forms.ModelForm):
 class VoitureForm(forms.ModelForm):
     class Meta:
         model = Voiture
-        fields = '__all__'
-        # widgets = {
-        #     'libelle_marque': TextInput(attrs={'class': 'form-control'}),
-        #     'libelle_modele': TextInput(attrs={'class': 'form-control'}),
-        #     'immatriculation': TextInput(attrs={'class': 'form-control'}),
-        #     'vin': TextInput(attrs={'class': 'form-control'}),
-        #     'kilometrage': NumberInput(attrs={'class': 'form-control'}),
-        #     'date_mec': DateInput(attrs={'class': 'form-control'}),
-        #     'carte_grise_img': FileInput(attrs={'class': 'form-control'}),
-        #     'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
-        # }
+        exclude = ('client', 'carte_grise_img', 'carte_assurance_img' )
+        widgets = {
+            'libelle_marque': TextInput(attrs={'class': 'form-control'}),
+            'libelle_modele': TextInput(attrs={'class': 'form-control'}),
+            'immatriculation': TextInput(attrs={'class': 'form-control'}),
+            'vin': TextInput(attrs={'class': 'form-control'}),
+            'kilometrage': NumberInput(attrs={'class': 'form-control'}),
+            'date_mec': DateInput(attrs={'class': 'form-control'}),
+            'carte_grise_img': FileInput(attrs={'class': 'form-control'}),
+            'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
+        }
        
 class OrdreReparationForm(forms.ModelForm):
     class Meta:
