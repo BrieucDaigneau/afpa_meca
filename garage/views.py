@@ -136,11 +136,6 @@ class ClientSelect(ListView):
     model = Client
     template_name = "garage/client-select.html"
 
-    def post(self):
-
-
-        redirect
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # print(context)
@@ -149,27 +144,24 @@ class ClientSelect(ListView):
         return context
 
 
+class VoitureCreate(CreateView):
+    form_class = VoitureForm
+    template_name = 'garage/voiture_form.html'
+    success_url = reverse_lazy('garage:ordre_reparation')
+    # form_class.client = Client.objects.get(id=client_id)
 
-# class VoitureCreate(CreateView):
-#     model = Voiture
-#     fields = '__all__'
-    
-#     def getForm(self, request):
-#         voiture_form = VoitureForm(request.POST or None)
-#         return {
-#             'voiture_form' : voiture_form       
-#         }
-    
-#     def get(self, request):
-#         myTemplate_name = 'garage/voiture_form.html'
-#         return render(request, myTemplate_name, self.getForm( request ) )
 
-#     # def post(self, **kwargs):
-#     #     voiture = voiture_form.save(commit=False)
-#     #     context = {
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-#     #     }
-#     #     return redirect('garage:ordre-reparation', voiture_id=self.kwargs['voiture_id'])
+        return context
+
+    def form_valid(self, form):
+        client = Client.objects.get(pk=self.kwargs['client_id'])
+        voiture = form.save()
+        voiture.client = client
+        voiture.save()
+        return super().form_valid(form)
 
 class VehiculeSelect(ListView):
     model = Voiture
@@ -197,36 +189,6 @@ class MotoSelect(VehiculeSelect):
 
     def get_queryset(self):
         return Moto.objects.filter(client_id=self.kwargs['client_id'])
-
-class VoitureCreate(CreateView):
-    form_class = VoitureForm
-    template_name = 'garage/voiture_form.html'
-    success_url = reverse_lazy('garage:ordre_reparation')
-    # form_class.client = Client.objects.get(id=client_id)
-
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        return context
-
-    def get_queryset(self):
-        client = Client.objects.get(self.kwargs['client_id'])
-        voiture = form.save()
-        voiture.client = client
-        voiture.save()
-        print("#########______________#################", client_id)
-        return voiture
-
-    def form_valid(self, form):
-        print("################################################ ok <3")
-        client = Client.objects.get(pk=self.kwargs['client_id'])
-        voiture = form.save()
-        voiture.client = client
-        voiture.save()
-        print(" ## form valid")
-        return super().form_valid(form)
-
 
 
 # class ordre_reparation(CreateView):
