@@ -277,4 +277,3 @@ class Piece_Fournisseur_Devis(models.Model):
 
     def __str__(self):
         return str(self.fournisseur) + " devis n°" +str(self.devis) + " pièce : " + str(self.piece)
-

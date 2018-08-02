@@ -2,10 +2,9 @@ from django.http import HttpResponse
 from .models import *
 
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm
+from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm, OrdreReparationForm
 from django.views.generic import CreateView, ListView, View, FormView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Client, DonneesPersonnelles, Address, ZipCode, Voiture
 from django.urls import reverse_lazy
 from . import urls
 
@@ -118,18 +117,13 @@ class ClientCreateView(View):
                                         client.donnees_personnelles_client = donnees
                                         client.adresse = address
                                         client.save()                        
-                                        context = {
-                                                                        'client_id':client.id,
-                                                                        'address_id':address.id,
-                                                                        'zipCode_id':zipCode.id,
-                                                                        'city_id':city.id,  
-                                                                        }
+                                        context = {'client_id':client.id}
 
                                     except DatabaseError:   
                                         modelFormError = "Problème de connection à la base de données"                  
                                         raise 
                                     
-                                    return redirect("garage:voiture-select", **context)
+                                    return redirect("garage:voiture-create", context['client_id'])
 
         except (ValidationError, DatabaseError):
             dicoError = self.getForm( request )
@@ -144,30 +138,28 @@ class ClientSelect(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # print(context)
         context['liste_client'] = self.get_queryset()
+        print(context)
         return context
 
 
 class VoitureCreate(CreateView):
-    model = Voiture
-    fields = '__all__'
-    
-    def getForm(self, request):
-        voiture_form = VoitureForm(request.POST or None)
-        return {
-            'voiture_form' : voiture_form       
-        }
-    
-    def get(self, request):
-        myTemplate_name = 'garage/voiture_form.html'
-        return render(request, myTemplate_name, self.getForm( request ) )
+    form_class = VoitureForm
+    template_name = 'garage/voiture_form.html'
+    success_url = reverse_lazy('garage:ordre_reparation')
 
-    # def post(self, **kwargs):
-    #     voiture = voiture_form.save(commit=False)
-    #     context = {
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
-    #     }
-    #     return redirect('garage:ordre-reparation', voiture_id=self.kwargs['voiture_id'])
+    def form_valid(self, form):
+        client = Client.objects.get(pk=self.kwargs['client_id'])
+        voiture = form.save()
+        voiture.client = client
+        voiture.save()
+        return super().form_valid(form)
+
 
 class VehiculeSelect(ListView):
     model = Voiture
@@ -176,6 +168,7 @@ class VehiculeSelect(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['liste_vehicule'] = self.get_queryset()
+        context['voiture_id'] = None
         return context
         
     def get_queryset(self):
@@ -193,23 +186,39 @@ class MotoSelect(VehiculeSelect):
     def get_queryset(self):
         return Moto.objects.filter(client_id=self.kwargs['client_id'])
 
-def ordre_reparation(request, client_id, address_id, zipCode_id, city_id):
-    client = Client.objects.get(pk=client_id)
-    donnees = DonneesPersonnelles.objects.get(pk=client_id)
-    address = Address.objects.get(pk=address_id)
-    zipCode = ZipCode.objects.get(pk=zipCode_id)
-    city = City.objects.get(pk=city_id)
+
+# class ordre_reparation(CreateView):
+#     model = Intervention
+#     fields = '__all__'
+#     #exclude = ('intervention_realisee', 'statut')
+#     def getForm(self, request):
+#         ordre_reparation_form = OrdreReparationForm(request.POST or None)
+#         return {
+#             'ordre_reparation_form' : ordre_reparation_form
+        
+#         }
+#     def get(self, request):
+#         myTemplate_name = "garage/ordre_reparation.html"
+#         return render(request, myTemplate_name, self.getForm( request ) )
+
+
+# def ordre_reparation(request, client_id, address_id, zipCode_id, city_id):
+#     client = Client.objects.get(pk=client_id)
+#     donnees = DonneesPersonnelles.objects.get(pk=client_id)
+#     address = Address.objects.get(pk=address_id)
+#     zipCode = ZipCode.objects.get(pk=zipCode_id)
+#     city = City.objects.get(pk=city_id)
      
-    context = {
-        'donnees': donnees,
-        'client': client,
-        'address': address,    
-        'zipCode': zipCode,
-        'city': city,
+#     context = {
+#         'donnees': donnees,
+#         'client': client,
+#         'address': address,    
+#         'zipCode': zipCode,
+#         'city': city,
        
-    }
-    # client = get_object_or_404(Client, id=id)
-    return render(request, 'garage/ordre_reparation.html', context)    
+#     }
+#     # client = get_object_or_404(Client, id=id)
+#     return render(request, 'garage/ordre_reparation.html', context)    
 
 
 def recherche(request):
@@ -231,4 +240,3 @@ class VehiculeList(VehiculeSelect):
    
 def ChoixVehicule(request):
     pass
-

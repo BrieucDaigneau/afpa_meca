@@ -2,7 +2,7 @@ from django import forms
 
 from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput
 from django.forms.utils import ErrorList
-from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture
+from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture, Intervention
 
 class ClientForm(forms.ModelForm):
     class Meta:
@@ -26,6 +26,14 @@ class DonneesPersonnellesForm(forms.ModelForm):
             'carte_AFPA_img': FileInput(attrs={'class': 'form-control'})
         }  
 
+    # Clean suivi du nom du champ concerné ensuite géré dans le Html
+    def clean_mail_client(self):
+        mail_client = self.cleaned_data['mail_client'].lower()
+        r = DonneesPersonnelles.objects.filter(mail_client=mail_client)
+        if r.count():
+            raise  forms.ValidationError("Email existe déjà")
+        return mail_client
+
 
 class AddressForm(forms.ModelForm):
     class Meta:
@@ -37,6 +45,15 @@ class AddressForm(forms.ModelForm):
             'street_complement': TextInput(attrs={'class': 'form-control'})
         }
 
+    # Clean suivi du nom du champ concerné ensuite géré dans le Html
+    def clean(self):
+        cleaned_data = super().clean()
+        street_number = self.cleaned_data['street_number']
+        street = self.cleaned_data['street']
+        r = Address.objects.filter(street_number=street_number,street=street)
+        if r.count():
+            raise forms.ValidationError("l'adresse existe déjà")
+        return cleaned_data
 
 
 class ZipCodeForm(forms.ModelForm):
@@ -59,7 +76,7 @@ class CityForm(forms.ModelForm):
 class VoitureForm(forms.ModelForm):
     class Meta:
         model = Voiture
-        fields = '__all__'
+        exclude = ('client', 'carte_grise_img', 'carte_assurance_img' )
         widgets = {
             'libelle_marque': TextInput(attrs={'class': 'form-control'}),
             'libelle_modele': TextInput(attrs={'class': 'form-control'}),
@@ -71,3 +88,14 @@ class VoitureForm(forms.ModelForm):
             'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
         }
        
+class OrdreReparationForm(forms.ModelForm):
+    class Meta:
+        model = Intervention
+        fields = '__all__'
+        #exclude = ('intervention_realisee', 'statut')
+        # widgets = {
+        #     'date_saisie_intervention': 
+        #     'date_restitution_prevu'
+        #     'diagnostic'
+        #     'intervention_a_realiser'
+        # }
