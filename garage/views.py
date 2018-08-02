@@ -149,7 +149,6 @@ class ClientSelect(ListView):
         return context
 
 
-<<<<<<< HEAD
 
 # class VoitureCreate(CreateView):
 #     model = Voiture
@@ -164,41 +163,6 @@ class ClientSelect(ListView):
 #     def get(self, request):
 #         myTemplate_name = 'garage/voiture_form.html'
 #         return render(request, myTemplate_name, self.getForm( request ) )
-=======
-class VoitureCreate(CreateView):
-    form_class = VoitureForm
-    template_name = 'garage/voiture_form.html'
-    success_url = reverse_lazy('garage:ordre_reparation')
-    
-    
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    # # #     # context['liste_vehicule'] = self.get_queryset()
-    # # #     print(" 2 queryset #########################", self.get_queryset())
-    #     print("############################################################", context)
-    # # #     return context
-    # def get_queryset(self):
-    #     return Voiture.client.get(client_id="client_id")
-       
-    # def form_valid(self, form):
-    #     vehicule = form.save()
-    #     print("################# ok")
-    #     vehicule.instance.client = Client.objects.get(pk=1)
-    #     return super(VoitureCreate, self).form_valid(form) 
-
-    # model = Voiture
-    # fields = '__all__'
-    
-    # def getForm(self, request):
-    #     voiture_form = VoitureForm(request.POST or None)
-    #     return {
-    #         'voiture_form' : voiture_form       
-    #     }
-    
-    # def get(self, request):
-    #     myTemplate_name = 'garage/voiture_form.html'
-    #     return render(request, myTemplate_name, self.getForm( request ) )
->>>>>>> a4b21fe629632d70cc021561bd8e2783d991eb08
 
 #     # def post(self, **kwargs):
 #     #     voiture = voiture_form.save(commit=False)
