@@ -44,32 +44,19 @@
 <script type="text/javascript">
 
     function redirect() {
-        var btnVehicule = document.getElementsByName('btnVehicule');
-        var optionSelectionnee
-        for (var i = 0; i < btnVehicule.length; i++) {
-            if (btnVehicule[i].checked) {
-                optionSelectionnee = btnVehicule[i].id;
-            }
+        window.location = "{% url 'garage:intervention-create' 1 %}".replace(1, document.vehiculeChecked)
+    }
+
+    function voiture_create() { 
+
+//expression régulière qui récupère l'id client
+//[/] = recherche le caractère "/" dans l'ulr
+//(d+) = "()" retourne la valeur à l'intérieur des (), "d" cherche un nombre entre [0-9],
+// "+" cherche entre 1 et plusieurs fois le paramètre saisi avant 
+// window.location.href.match(/[/](\d+)[/]/) retourne un tableau = [/nombre/, nombre]
+
+        let chaineATrouver = window.location.href.match(/[/](\d+)[/]/)
+        window.location = "{% url 'garage:voiture-create' 1 %}".replace(1, chaineATrouver[1])
         }
-        // var myIndex = document.getElementsByName('btnVehicule').selectedIndex
-        // var optionSelectionnee = document.getElementsByName('btnVehicule').options[myIndex].id;
-
-        var url_initiale = "{% url 'garage:intervention-create' 1 %}"
-        var left = url_initiale.substring(0, url_initiale.length - 2)
-        var urlOk = left + optionSelectionnee + "/"
-
-        window.location = urlOk
-    }
-
-    function voiture_create() {
-        var adresse = window.location.href
-        var left_ad = adresse.substring(0, adresse.length -2)
-        var optionSelectionnee = adresse.substring(left_ad.length, adresse.length -1);
-        console.log(adresse)
-        
-        var url = "{% url 'garage:voiture-create' 1 %}".replace(1, optionSelectionnee)
-
-        window.location = url
-    }
 </script> {% endblock bouttons %}
 </div>

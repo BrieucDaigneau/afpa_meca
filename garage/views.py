@@ -193,22 +193,7 @@ class MotoSelect(VehiculeSelect):
     def get_queryset(self):
         return Moto.objects.filter(client_id=self.kwargs['client_id'])
 
-
-# def ordre_reparation(request, client_id):
-#     print("Ok1")
-#     client = Client.objects.get(pk=client_id)
-     
-#     context = {
-#         'donnees': donnees,
-#         'client': client,
-#         'address': address,    
-#         'zipCode': zipCode,
-#         'city': city,
-       
-#     }
-#     # client = get_object_or_404(Client, id=id)
-#     print("Ok1")
-#     return render(request, 'garage/ordre_reparation.html', context)         
+    
 
 
 class Intervention(CreateView):
@@ -228,8 +213,6 @@ class Intervention(CreateView):
         intervention.save()
         return super().form_valid(form)
 
-    # def get_queryset(self):
-    #     return Vehicule.objects.get(client_id=self.kwargs['client_id'])
 
   
 
