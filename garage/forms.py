@@ -1,6 +1,6 @@
 from django import forms
 
-from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput
+from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea
 from django.forms.utils import ErrorList
 from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture, Intervention
 
@@ -88,15 +88,18 @@ class VoitureForm(forms.ModelForm):
             'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
         }
        
-class OrdreReparationForm(forms.ModelForm):
+class InterventionForm(forms.ModelForm):
     class Meta:
         model = Intervention
-        fields = '__all__'
+        fields = ["date_saisie_intervention","date_restitution_prevu","diagnostic","intervention_a_realiser"]
         #exclude = ('intervention_realisee', 'statut')
-        # widgets = {
-        #     'date_saisie_intervention': 
-        #     'date_restitution_prevu'
-        #     'diagnostic'
-        #     'intervention_a_realiser'
-        # }
+        widgets = {
+            'date_saisie_intervention': DateInput(attrs={'class': 'form-control'}),            
+            'date_restitution_prevu': DateInput(attrs={'class': 'form-control'}),    
+            'diagnostic' : Textarea(attrs={'class': 'form-control'}),  
+            'intervention_a_realiser' : Textarea(attrs={'class': 'form-control'})
+        }
+
+
+
 

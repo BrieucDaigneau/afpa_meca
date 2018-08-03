@@ -54,7 +54,7 @@
         // var myIndex = document.getElementsByName('btnVehicule').selectedIndex
         // var optionSelectionnee = document.getElementsByName('btnVehicule').options[myIndex].id;
 
-        var url_initiale = "{% url 'garage:voiture-select' 1 %}"
+        var url_initiale = "{% url 'garage:intervention-create' 1 %}"
         var left = url_initiale.substring(0, url_initiale.length - 2)
         var urlOk = left + optionSelectionnee + "/"
 

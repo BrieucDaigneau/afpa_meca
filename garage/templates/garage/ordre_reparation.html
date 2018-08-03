@@ -21,44 +21,44 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="nom" class="control-label">Nom : </label>
-                        {{ client.nom_client }}
+                        {{ vehicule.client.nom_client }}
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="control-label">Email : </label> 
-                        {{ donnees.mail_client }}
+                        {{ vehicule.donneespersonnelles.mail_client }}
                     </div> 
                 </div>  
                 
                 <div class="row">
                     <div class="col-md-6">
                         <label for="prenom" class="control-label">Prénom : </label>
-                        {{ client.prenom_client }}
+                        {{ vehicule.client.prenom_client }}
                     </div>
                     <div class="col-md-6">
                         <label for="adresse" class="control-label">Adresse : </label>
-                        {{ address.street }}
+                        {{ vehicule.address.street }}
                     </div>
                 </div>                 
                 
                 <div class="row">
                     <div class="col-md-6">
                         <label for="telephone" class="control-label">Téléphone : </label>
-                        {{ donnees.telephone_client }}
+                        {{ vehicule.donnees.telephone_client }}
                     </div>
                     
                     <div class="col-md-2">
                         <label for="ville" class="control-label">Ville : </label>
-                        {{ city.city_name }}
+                        {{ vehicule.city.city_name }}
                     </div>
                     <div class="col-md-2">
                         <label for="codepostal" class="control-label">Code Postal : </label>
-                        {{ zipCode.zip_code }}
+                        {{ vehicule.zipCode.zip_code }}
                     </div>
                     
 
                     <div class="col-md-2">
                         <label for="numero_afpa_client" class="control-label">Numéro AFPA : </label>
-                        {{ client.numero_afpa_client }}
+                        {{ vehicule.client.numero_afpa_client }}
                     </div>
                 </div>
                 <br/>
@@ -109,35 +109,34 @@
 
         </vehicule>
         <hr>
-        <div id="saisir">
-            <div class="form-group">
-                <label for="textarea">Description des symptômes du client (si diagnostic) </label>
-                <textarea id="textarea" class="form-control" rows="4"></textarea>
-                <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
-            </div>
+        <form class="" action="" method="post">
+            <div id="saisir">
+                <div class="form-group">
+                    <label for="textarea">Description des symptômes du client (si diagnostic) </label>
+                    <textarea id="textarea" class="form-control" rows="4"></textarea>
+                    <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
+                </div>
 
-            <div class="form-group">
-                <label for="textarea">Intervention à réaliser</label>
-                <textarea id="textarea" class="form-control" rows="4"></textarea>
-                <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
+                <div class="form-group">
+                    <label for="textarea">Intervention à réaliser</label>
+                    <textarea id="textarea" class="form-control" rows="4"></textarea>
+                    <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-10">
+                </div>
+                <div class="col-md1-12">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Valider</button>
+                </div>
             </div>
-            <div class="col-md1-12">
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Valider</button>
-            </div>
-        </div>
+        </form>
     </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- jQuery -->
     <script src="{% static 'garage/js/jquery-slim.min.js' %}"></script>
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!-- Baa to do <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
-    <!-- <script>window.jQuery || document.write('<script src="../../bootstrap-4.1.1/assets/js/vendor/jquery-slim.min.js"><\/script>')</script> -->
     <script>
         window.jQuery || document.write('<script src="{% static "garage/js/jquery-slim.min.js" %}"><\/script>')
     </script>
@@ -145,27 +144,5 @@
     <script src="{% static 'garage/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'garage/js/holder.min.js' %}"></script>
 
-    <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
-        (function () {
-            'use strict';
-
-            window.addEventListener('load', function () {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
-    </script>
 {% endblock content %}
 

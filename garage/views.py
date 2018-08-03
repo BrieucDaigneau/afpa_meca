@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from .models import *
 
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm, OrdreReparationForm
+from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm, InterventionForm
 from django.views.generic import CreateView, ListView, View, FormView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -140,18 +140,25 @@ class ClientSelect(ListView):
         context = super().get_context_data(**kwargs)
         # print(context)
         context['liste_client'] = self.get_queryset()
-        print(context)
+        # print(context)
         return context
 
 
 class VoitureCreate(CreateView):
     form_class = VoitureForm
     template_name = 'garage/voiture_form.html'
-    success_url = reverse_lazy('garage:ordre_reparation')
+    # success_url = reverse_lazy('garage:intervention-create',
+    #                             kwargs={'vehicule_id': self.object.id},
+    #                             current_app='garage')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('garage:intervention-create',
+                                kwargs={'vehicule_id': self.object.id},
+                                current_app='garage')
 
     def form_valid(self, form):
         client = Client.objects.get(pk=self.kwargs['client_id'])
@@ -164,7 +171,7 @@ class VoitureCreate(CreateView):
 class VehiculeSelect(ListView):
     model = Voiture
     template_name = 'garage/voiture-select.html'
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['liste_vehicule'] = self.get_queryset()
@@ -185,6 +192,47 @@ class MotoSelect(VehiculeSelect):
 
     def get_queryset(self):
         return Moto.objects.filter(client_id=self.kwargs['client_id'])
+
+
+# def ordre_reparation(request, client_id):
+#     print("Ok1")
+#     client = Client.objects.get(pk=client_id)
+     
+#     context = {
+#         'donnees': donnees,
+#         'client': client,
+#         'address': address,    
+#         'zipCode': zipCode,
+#         'city': city,
+       
+#     }
+#     # client = get_object_or_404(Client, id=id)
+#     print("Ok1")
+#     return render(request, 'garage/ordre_reparation.html', context)         
+
+
+class Intervention(CreateView):
+    form_class = InterventionForm
+    template_name = 'garage/ordre_reparation.html'    
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        vehicule = Vehicule.objects.get(pk=self.kwargs['vehicule_id'])
+        context['vehicule'] = vehicule   
+        return context
+
+    def form_valid(self, form):
+        vehicule = Vehicule.objects.get(pk=self.kwargs['vehicule_id'])
+        intervention = form.save()
+        intervention.vehicule = vehicule
+        intervention.save()
+        return super().form_valid(form)
+
+    # def get_queryset(self):
+    #     return Vehicule.objects.get(client_id=self.kwargs['client_id'])
+
+  
+
 
 
 # class ordre_reparation(CreateView):
