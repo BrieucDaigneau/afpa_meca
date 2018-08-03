@@ -49,15 +49,14 @@
 
     function voiture_create() { 
 
-        // TODO : exercice : ecrire le code ci-dessous en expression régulière
-        // absolument
-        let currentHref = window.location.href
-        const ch = "{% url 'garage:voiture-select' 1 %}"
-        let chaineATrouver = ch.substr(0, ch.length - 2)
-        let i = currentHref.indexOf(chaineATrouver)
-        let pk = window.location.href.substring(i+ chaineATrouver.length, currentHref.length - 1)
-        window.location = "{% url 'garage:voiture-create' 1 %}".replace(1, pk)
+//expression régulière qui récupère l'id client
+//[/] = recherche le caractère "/" dans l'ulr
+//(d+) = "()" retourne la valeur à l'intérieur des (), "d" cherche un nombre entre [0-9],
+// "+" cherche entre 1 et plusieurs fois le paramètre saisi avant 
+// window.location.href.match(/[/](\d+)[/]/) retourne un tableau = [/nombre/, nombre]
 
+        let chaineATrouver = window.location.href.match(/[/](\d+)[/]/)
+        window.location = "{% url 'garage:voiture-create' 1 %}".replace(1, chaineATrouver[1])
         }
 </script> {% endblock bouttons %}
 </div>
