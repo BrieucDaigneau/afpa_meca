@@ -1,4 +1,20 @@
 {% extends 'garage/liste_clients.html' %}
+
+{% block recherche %}
+    </div>
+        <div class="container">
+            <div class="col-md-2">
+            </div>
+            <div class="row mb-5 mt-3">
+                
+                <div class="col-md-2 ">
+                    <a href="{% url 'garage:client-create' %}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</a>
+                </div>
+        </div>
+    </div>
+{% endblock recherche %}
+
+
 {% block boutons %}
 
 </div>

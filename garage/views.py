@@ -138,9 +138,7 @@ class ClientSelect(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # print(context)
         context['liste_client'] = self.get_queryset()
-        # print(context)
         return context
 
 class Clients(ClientSelect):
@@ -154,13 +152,6 @@ class Clients(ClientSelect):
 class VoitureCreate(CreateView):
     form_class = VoitureForm
     template_name = 'garage/voiture_form.html'
-    # success_url = reverse_lazy('garage:intervention-create',
-    #                             kwargs={'vehicule_id': self.object.id},
-    #                             current_app='garage')
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     return context
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('garage:intervention-create',
@@ -187,6 +178,16 @@ class VehiculeSelect(ListView):
         
     def get_queryset(self):
         return Voiture.objects.filter(client_id=self.kwargs['client_id'])
+
+class VehiculeList(VehiculeSelect):
+    template_name = 'garage/vehicules.html'
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+        
+    def get_queryset(self):
+        return Voiture.objects.all()
 
 
 class MotoSelect(VehiculeSelect):
@@ -220,44 +221,23 @@ class Intervention(CreateView):
         intervention.save()
         return super().form_valid(form)
 
+#en cours de conception 
+##################################################
+class InterventionSelect(ListView):
+    model = Intervention
+    template_name = "garage/intervention-select.html"
 
-  
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_interventions'] = self.get_queryset()
+        return context
+class Interventions(InterventionSelect):
+    template_name = "garage/interventions.html"
 
-
-
-# class ordre_reparation(CreateView):
-#     model = Intervention
-#     fields = '__all__'
-#     #exclude = ('intervention_realisee', 'statut')
-#     def getForm(self, request):
-#         ordre_reparation_form = OrdreReparationForm(request.POST or None)
-#         return {
-#             'ordre_reparation_form' : ordre_reparation_form
-        
-#         }
-#     def get(self, request):
-#         myTemplate_name = "garage/ordre_reparation.html"
-#         return render(request, myTemplate_name, self.getForm( request ) )
-
-
-# def ordre_reparation(request, client_id, address_id, zipCode_id, city_id):
-#     client = Client.objects.get(pk=client_id)
-#     donnees = DonneesPersonnelles.objects.get(pk=client_id)
-#     address = Address.objects.get(pk=address_id)
-#     zipCode = ZipCode.objects.get(pk=zipCode_id)
-#     city = City.objects.get(pk=city_id)
-     
-#     context = {
-#         'donnees': donnees,
-#         'client': client,
-#         'address': address,    
-#         'zipCode': zipCode,
-#         'city': city,
-       
-#     }
-#     # client = get_object_or_404(Client, id=id)
-#     return render(request, 'garage/ordre_reparation.html', context)    
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+#############################################################
 
 def recherche(request):
     query = request.GET.get('query')
@@ -272,29 +252,8 @@ def recherche(request):
     }
     return render(request, 'garage/recherche.html', context) 
 
-class VehiculeList(VehiculeSelect):
-    template_name = 'garage/vehicules.html'
-        
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-        
-    def get_queryset(self):
-        return Voiture.objects.all()
 
-
-<<<<<<< HEAD
-def clients(request):
-    clients = Client.objects.order_by('nom_client')
-    donnees_persos = DonneesPersonnelles.objects.order_by('mail_client')
-    context = {
-        'clients': clients,
-        'donnees_persos': donnees_persos
-    }
-    return render(request, 'garage/clients.html', context )
-=======
    
 def ChoixVehicule(request):
     pass
 
->>>>>>> develop

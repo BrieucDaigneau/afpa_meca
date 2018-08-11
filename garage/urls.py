@@ -24,13 +24,6 @@ urlpatterns = [
     path('clients', login_required(views.Clients.as_view()), name="clients"),
 
     # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
-<<<<<<< HEAD
-    path('reparation/<int:client_id>/', views.ordre_reparation, name='ordre_reparation'),
-    url(r'^recherche/$', views.recherche, name='recherche'),
-    # url(r'^search/$', views.recherche, name='recherche'),
-    path('clients', views.clients, name='clients'),
-]
-=======
     path('moto-select/<int:client_id>/', login_required(views.MotoSelect.as_view()), name="moto-select"),
 
     path('voiture-select/<int:client_id>/', login_required(views.VehiculeSelect.as_view()), name="voiture-select"),
@@ -41,5 +34,5 @@ urlpatterns = [
     # path('reparation/<int:client_id>/', login_required(views.ordre_reparation), name='ordre_reparation'),
     # path('reparation/', login_required(views.ordre_reparation.as_view()), name='ordre_reparation'),
     path('intervention-create/<int:vehicule_id>/', login_required(views.Intervention.as_view()), name='intervention-create'),
+    path('interventions', login_required(views.Interventions.as_view()), name="interventions"),
 ]
->>>>>>> develop
