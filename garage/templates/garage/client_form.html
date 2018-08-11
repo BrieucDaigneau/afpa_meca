@@ -1,81 +1,26 @@
-<!doctype html>
-<html lang="fr">
+{% extends 'garage/base.html' %}
+{% load static %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+{% block css %}"{% static 'garage/css/client_form.css' %}"{% endblock css %}
 
-    <title>{% block title %}AFPA Création client {% endblock %}</title>
-
-    {% load static %}
-
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="{% static 'garage/css/style.css' %}" rel="stylesheet">
-</head>
-
-<body class="container">
-
-    <div>
-
-        <br/>
-        <div class="row">
-
-            <!-- <h1>Création Client</h1> -->
-            &emsp;
-            <div class="form-inline my-2 my-lg-0" style="margin-left: 40%;">
-                <form action="{% url 'garage:recherche' %}" method="get" accept-charset="utf-8">
-                    <input class="form-control mr-sm-2" name="query" type="text" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0">Search</button>
-                </form>
-            </div>
-            
-        </div>
-
-        <br/>
-        <br/>
-
-        <header class="row">
+{% block content %}
+    <div class="container">
+    
             <titre class="col-md-12">
-                <div class="row">
-                    <div class="col-md-3">
-                        <a href="https://www.afpa.fr/" target="_blank">
-                            <img src="{% static 'garage/img/afpa.jpg' %}" alt="afpa" />
-                        </a>
-                    </div>
-                    <div class="col-md-9">
-                        <br/>
-                        <h1 id="titre">Création nouveau client</h1>
-                    </div>
+                <div class="col-md-12">
+                    <h1 id="titre" class="title">Création nouveau client</h1>
                 </div>
             </titre>
-
-            <afpa class="col-md-3">
-                <div id="info_afpa">
-                    <div class="row">
-                        <div class="col-md-12">AFPA St Jean de VEDAS</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">ZI de la Lauze</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">34430 St Jean de Vedas</div>
-                    </div>
-                </div>
-            </afpa>
-
+        </br>
+        
             <formulaire class="col-md-9">
                 <h4>Client</h4>
-                <form class="needs-validation" action="{% url 'garage:client' %}" method="post">
+                <form class="needs-validation" action="{% url 'garage:client-create' %}" method="post">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group {% if form.nom_client.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ form.nom_client.id_for_label }}" class="control-label">Nom</label>
+                            <div class="form-group {% if client_form.nom_client.errors %}has-warning has-feedback{% endif %}">
+                                <label for="{{ client_form.nom_client.id_for_label }}" class="control-label">Nom</label>
                                 {{ client_form.nom_client }}
                             </div>
                             <div class="invalid-feedback">
@@ -83,8 +28,8 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group {% if form.prenom_client.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ form.prenom_client.id_for_label }}" class="control-label">Prenom</label>
+                            <div class="form-group {% if client_form.prenom_client.errors %}has-warning has-feedback{% endif %}">
+                                <label for="{{ client_form.prenom_client.id_for_label }}" class="control-label">Prenom</label>
                                 {{ client_form.prenom_client }}
                             </div>
                             <div class="invalid-feedback">
@@ -95,72 +40,74 @@
 
                     <div class="row">
                         <div class="col-md-6">
+                            <label for="{{ client_form.numero_afpa_client.id_for_label }}" class="control-label">Numéro carte AFPA</label>
+                            {{ client_form.numero_afpa_client }}
+                        </div>
+                        <div class="col-md-6">
                             <label for="{{ form.telephone_client.id_for_label }}" class="control-label">Téléphone</label>
                             {{ donneesPersonnelles_form.telephone_client }}
                         </div>
                         <div class="col-md-6">
                             <label for="{{ form.mail_client.id_for_label }}" class="control-label">Email</label>
                             {{ donneesPersonnelles_form.mail_client }}
+                            <div> {{ donneesPersonnelles_form.mail_client.errors }} </div>
                         </div>
                     </div> 
-
-                    <!-- <div class="row">
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="{{ address_form.street_number.id_for_label }}" class="control-label">Numéro de rue :</label>
+                            {{ address_form.street_number }}
+                        </div>
                         <div class="col-md-6">
-                            <label for="{{ form.adresse_client.id_for_label }}" class="control-label">Adresse</label>
-                            {{ form.adresse_client }}
+                            <label for="{{ address_form.street.id_for_label }}" class="control-label">Adresse</label>
+                            {{ address_form.street }}
                         </div>
+                        <div class="col-md-4">
+                            <label for="{{ address_form.street_complement.id_for_label }}" class="control-label">Complement d'adresse</label>
+                            {{ address_form.street_complement }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="{{ zipCode_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
+                            {{ zipCode_form.zip_code }}
+                        </div>
+                    
+                        <div class="col-md-4">
+                            <label for="{{ city_form.city_name.id_for_label }}" class="control-label">Ville</label>
+                            {{ city_form.city_name }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.carte_AFPA_img.id_for_label }}" class="control-label">Carte AFPA img</label>
+                            {{ donneesPersonnelles_form.carte_AFPA_img }}
+                        </div>
+                    </div>
+                    <div> {{ address_form.non_field_errors }} </div>
 
-                        <div class="col-md-2">
-                            <label for="{{ form.code_postal_client.id_for_label }}" class="control-label">Code Postal</label>
-                            {{ form.code_postal_client }}
-                        </div>
+                    <div class="msgError"> {{ internal_error }} </div>     
 
-                        <div class="col-md-2">
-                            <label for="{{ form.ville_client.id_for_label }}" class="control-label">Ville</label>
-                            {{ form.ville_client }}
-                        </div>
-
-                        <div class="col-md-2">
-                            <label for="{{ form.pays_client.id_for_label }}" class="control-label">Pays</label>
-                            {{ form.pays_client }}
-                            <div class="invalid-feedback">
-                                Selectionner un pays valide
-                            </div>
-                        </div>
-                    </div> -->
-                   
-                    <br/>
                     <div class="row">
                         <div class="col-md-3">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Annuler</button>
+                            <a href="{% url 'garage:client-select' %}" class="btn btn-primary btn-lg btn-block" id="bouton">Annuler</a>
                         </div>
+                        <div class="col-md-2">
+                        </div>         
+                        <div class="col-md-4">
+                                <button class="btn btn-primary btn-lg btn-block" type="submit" id="bouton">Valider et retour Accueil</button>
+                            </div>     
                         <div class="col-md-3">
-                        </div>        
-                        <div class="col-md-3">
-                        </div>        
-                        <div class="col-md-3">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="bouton">Etape suivante</button>
                         </div>
                     </div>   
 
                 </form>
 
+
+
             </formulaire>
 
-        </header>
-
-        <footer class="my-5 pt-5 text-muted text-center text-small">
-        </footer>
     </div>
+        {% endblock content %}
 
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- jQuery -->
-    <script src="{% static 'garage/js/jquery-slim.min.js' %}"></script>
-    <script>window.jQuery || document.write('<script src="{% static "garage/js/jquery-slim.min.js" %}"><\/script>')</script>
-    <script src="{% static 'garage/js/popper.min.js' %}"></script>
-    <script src="{% static 'garage/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'garage/js/holder.min.js' %}"></script>
-</body>
-
-</html>
+    
