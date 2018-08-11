@@ -21,12 +21,14 @@ urlpatterns = [
 
     path('client-create', login_required(views.ClientCreateView.as_view()), name='client-create'),   
     path('client-select/', login_required(views.ClientSelect.as_view()), name="client-select"),
+    path('clients', login_required(views.Clients.as_view()), name="clients"),
+
     # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
     path('moto-select/<int:client_id>/', login_required(views.MotoSelect.as_view()), name="moto-select"),
 
     path('voiture-select/<int:client_id>/', login_required(views.VehiculeSelect.as_view()), name="voiture-select"),
     path('voiture-create/<int:client_id>/', login_required(views.VoitureCreate.as_view()), name='voiture-create'),
-    path('vehicules', login_required(views.VehiculeList.as_view()), name="vehicules"),
+    path('voitures', login_required(views.VehiculeList.as_view()), name="voitures"),
     path('nouveau-choix-vehicule', views.ChoixVehicule, name="choixVehicule"),
     
     # path('reparation/<int:client_id>/', login_required(views.ordre_reparation), name='ordre_reparation'),

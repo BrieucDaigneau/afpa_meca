@@ -1,6 +1,4 @@
-<ul>
-    {% for client in clients %}
-        {% print("###########################################################", client) %}
-        <li>{{ client }}{{ donnees_persos[client.id] }}</li>
-    {% endfor %}
-</ul>
+{% extends 'garage/liste_clients.html' %}
+{% block boutons %}
+
+{% endblock boutons %}

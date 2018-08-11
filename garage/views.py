@@ -143,6 +143,13 @@ class ClientSelect(ListView):
         # print(context)
         return context
 
+class Clients(ClientSelect):
+    template_name = "garage/clients.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
 
 class VoitureCreate(CreateView):
     form_class = VoitureForm
@@ -267,6 +274,14 @@ def recherche(request):
 
 class VehiculeList(VehiculeSelect):
     template_name = 'garage/vehicules.html'
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+        
+    def get_queryset(self):
+        return Voiture.objects.all()
+
 
    
 def ChoixVehicule(request):
