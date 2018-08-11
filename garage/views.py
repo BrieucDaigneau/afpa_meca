@@ -55,4 +55,11 @@ def recherche(request):
 
 
 
-
+def clients(request):
+    clients = Client.objects.order_by('nom_client')
+    donnees_persos = DonneesPersonnelles.objects.order_by('mail_client')
+    context = {
+        'clients': clients,
+        'donnees_persos': donnees_persos
+    }
+    return render(request, 'garage/clients.html', context )
