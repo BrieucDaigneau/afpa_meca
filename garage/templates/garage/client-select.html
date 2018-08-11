@@ -1,0 +1,83 @@
+{% extends 'garage/base.html' %}
+
+{% load static %}
+{% block head %}
+<link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
+{% endblock head %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h1 class="mt-5">Liste des Clients</h1>
+    </div>
+    <div class="row">
+            <div class="container">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="row mb-5 mt-3">
+                
+                        <div class="col-md-2 ">
+                           <a href="{% url 'garage:client-create' %}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</a>
+                        </div>
+                    </div>
+                </div>
+    </div>
+    <div class="row">
+        
+        <h4 class="col-md-12" >
+            <div class="row">
+                <div class=" col-md-3">Nom</div>
+                <div class=" col-md-3">Prénom</div>
+                <div class="col-md-3">N° AFPA</div>
+                <div class="col-md-3">E-mail</div>
+            </div>
+        </h4>
+        
+        
+        
+        {% for client in liste_client %}
+        <input type="radio" class="btn col-md-1 radio" id="{{client.id}}" name="btnClient" onclick='javascript:document.clientChecked={{client.id}};' >
+    </input>
+    
+    <label for="{{client.id}}" id="test" class="col-md-12">
+        <div class="row ">
+            <div class=" col-md-3">{{ client.nom_client }}</div>
+            <div class=" col-md-3">{{ client.prenom_client }}</div>
+            <div class="col-md-3">{{ client.numero_afpa_client }}</div>
+            <div class="col-md-3">{{ client. }}</div>
+        </div>
+        
+    </label>
+    
+    {% empty %}
+    <p>aucun client</p>
+    {% endfor %}
+    
+    
+</div>
+<div class="row">
+        <div class="container">
+                <div class="row mt-5">
+                    <a href="{% url 'garage:accueil' %}" class=" btn btn-sm btn-primary col-md-1" >Annuler</a>
+                    <div class="col-md-3"></div>
+                    <button class=" btn btn-primary btn-sm col-md-2" onClick="redirect()">Modifier
+                    </button>
+                    <div class="col-md-1"></div>
+                    <button class="  btn btn-primary btn-sm col-md-5" onClick="redirect()">Valider et Attribuer un véhicule</button>
+                </div>
+            </div>
+              
+</div>
+
+</div>
+
+
+
+
+            <script type="text/javascript">
+            
+                function redirect() {
+                    window.location = "{% url 'garage:voiture-select' 1 %}".replace(1, document.clientChecked)            
+                }
+            </script>
+{% endblock %}
