@@ -36,7 +36,10 @@
                     </div>
                     <div class="col-md-6">
                         <label for="adresse" class="control-label">Adresse : </label>
-                        {{ vehicule.client.adresse.street }}
+                        {{ vehicule.client.adresse.street_number }} {{ vehicule.client.adresse.street }}
+                        {% if vehicule.client.adresse.street_complement %} 
+                        {{vehicule.client.adresse.street_complement}}
+                        {% endif %}
                     </div>
                 </div>                 
                 
@@ -122,9 +125,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-3">
+                    <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Retour</a>
                 </div>
-                <div class="col-md1-12">
+                <div class="col-md-6"> </div>
+                <div class="col-md-3">
                     <button class="btn btn-primary btn-lg btn-block" type="submit">Valider</button>
                 </div>
             </div>

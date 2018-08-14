@@ -24,7 +24,7 @@ class City(models.Model):
     zip_codes     = models.ManyToManyField(ZipCode, verbose_name="Code Postal")
 
     def __str__(self):
-        return  self.city_name
+        return  str(self.city_name)
 
     class Meta:
         verbose_name = "Ville"
@@ -43,7 +43,7 @@ class Address(models.Model):
         verbose_name = "Adresse"
 
     def __str__(self):
-        return self.street_number + " " + str(self.street) + " " + self.street_complement + " " + str(self.zipCode) + " " + str(self.city)
+        return str(self.street_number) + " " + str(self.street) + " " + str(self.street_complement) + " " + str(self.zipCode) + " " + str(self.city)
 
 class DonneesPersonnelles(models.Model):
     mail_client = models.EmailField("Email Client", max_length=35, unique=True)

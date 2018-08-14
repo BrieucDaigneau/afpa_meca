@@ -8,6 +8,60 @@
 
 
 <div class="container">
+        <div class="col-md-12">
+                <h2>Client :</h2>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="nom" class="control-label">Nom : </label>
+                        {{ client.nom_client }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="control-label">Email : </label> 
+                        {{ client.donnees_personnelles_client.mail_client }}
+                    </div> 
+                </div>  
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="prenom" class="control-label">Prénom : </label>
+                        {{ client.prenom_client }}
+                    </div>
+                    <div class="col-md-6">
+                        <label for="adresse" class="control-label">Adresse : </label>
+                        {{ client.adresse.street_number }} {{ client.adresse.street }}
+                        {% if client.adresse.street_complement %} 
+                        {{client.adresse.street_complement}}
+                        {% endif %}
+                    </div>
+                </div>                 
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="telephone" class="control-label">Téléphone : </label>
+                        {{ client.donnees_personnelles_client.telephone_client }}
+                    </div>
+                    
+                    <div class="col-md-2">
+                        <label for="ville" class="control-label">Ville : </label>
+                        {{ client.adresse.city.city_name }}
+                    </div>
+                    <div class="col-md-2">
+                        <label for="codepostal" class="control-label">Code Postal : </label>
+                        {{ client.adresse.zipCode.zip_code }}
+                    </div>
+                    
+
+                    <div class="col-md-2">
+                        <label for="numero_afpa_client" class="control-label">Numéro AFPA : </label>
+                        {{ client.numero_afpa_client }}
+                    </div>
+                </div>
+                <br/>
+
+
+
+            </div>
     
     <div class="row">
         
