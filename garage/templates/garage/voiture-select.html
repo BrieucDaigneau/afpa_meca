@@ -1,17 +1,75 @@
-{% extends 'garage/liste_vehicules.html' %} {% block recherche %}
+{% extends 'garage/liste_vehicules.html' %} 
 
-<div class="container">
-    {% comment %} <div class="row">
-        <label class="checkmark ">
-            <input type="radio" value="Voiture" id="Voiture" name="optradio" checked="checked">Voiture</label>
-        <div class="col-md-1"></div>
-        <label class="checkmark">
-            <input type="radio" value="Moto" id="Voiture" name="optradio">Moto</label>
-        <div class="col-md-1"></div>
-        <label class="checkmark">
-            <input type="radio" value="Velo" id="Voiture" name="optradio">Velo</label>
-    </div> {% endcomment %}
+{% block infos %}
+    <div class="mt-5">
+        <h2>Client :</h2>
+    </div>
+        <hr>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="nom" class="control-label">Nom : </label>
+                            {{ client.nom_client }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="control-label">Email : </label> 
+                            {{ client.donnees_personnelles_client.mail_client }}
+                        </div> 
+                    </div>  
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="prenom" class="control-label">Prénom : </label>
+                            {{ client.prenom_client }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="adresse" class="control-label">Adresse : </label>
+                            {{ client.adresse.street_number }} {{ client.adresse.street }}
+                            {% if client.adresse.street_complement %} 
+                            {{client.adresse.street_complement}}
+                            {% endif %}
+                        </div>
+                    </div>                 
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="telephone" class="control-label">Téléphone : </label>
+                            {{ client.donnees_personnelles_client.telephone_client }}
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <label for="ville" class="control-label">Ville : </label>
+                            {{ client.adresse.city.city_name }}
+                        </div>
+                        <div class="col-md-2">
+                            <label for="codepostal" class="control-label">Code Postal : </label>
+                            {{ client.adresse.zipCode.zip_code }}
+                        </div>
+                        
+    
+                        <div class="col-md-2">
+                            <label for="numero_afpa_client" class="control-label">Numéro AFPA : </label>
+                            {{ client.numero_afpa_client }}
+                        </div>
+                    </div>
+                </div>
+            <hr>
+{% endblock infos %}
 
+{% block recherche %}
+
+    <div class="container">
+        {% comment %} <div class="row">
+            <label class="checkmark ">
+                <input type="radio" value="Voiture" id="Voiture" name="optradio" checked="checked">Voiture</label>
+            <div class="col-md-1"></div>
+            <label class="checkmark">
+                <input type="radio" value="Moto" id="Voiture" name="optradio">Moto</label>
+            <div class="col-md-1"></div>
+            <label class="checkmark">
+                <input type="radio" value="Velo" id="Voiture" name="optradio">Velo</label>
+        </div> {% endcomment %}
+    
     <div class="col-md-2">
     </div>
     <div class="row mb-5 mt-3">
@@ -27,7 +85,7 @@
 <div class="container">
     <div class="row mt-5">
         
-        <a href="{% url 'garage:client-select' %}" class=" btn btn-sm btn-primary col-md-1" onClick="redirect()">Annuler</a>
+        <a href="{% url 'garage:client-select' %}" class=" btn btn-sm btn-primary col-md-1" onClick="redirect()">Retour</a>
         <div class="col-md-3"></div>
         <button class=" btn btn-primary btn-sm col-md-2" onClick="redirect()">Modifier
         </button>

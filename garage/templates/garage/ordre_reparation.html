@@ -3,21 +3,17 @@
 
 {% block css %}"{% static 'garage/css/style.css' %}"{% endblock css %}
 
-    {% block content %}
-
+{% block content %}
     <div>
-
-        <header class="row">
-            <titre class="col-md-12">
-                <h1 id="titre">{% block monTitre %}Ordre de réparation{% endblock %}</h1> 
-                <br/>                          
-            </titre>
-
-  
+        <titre class="col-md-12">
+            <h1 id="titre">{% block monTitre %}Ordre de réparation{% endblock %}</h1> 
+            <br/>                          
+        </titre>
             
-            <formulaire class="col-md-12">
-                <h2>Client :</h2>
-                <hr>
+        <client class="col-md-12">
+            <h2>Client :</h2>
+            <hr>
+            <div class="container">
                 <div class="row">
                     <div class="col-md-6">
                         <label for="nom" class="control-label">Nom : </label>
@@ -42,7 +38,7 @@
                         {% endif %}
                     </div>
                 </div>                 
-                
+            
                 <div class="row">
                     <div class="col-md-6">
                         <label for="telephone" class="control-label">Téléphone : </label>
@@ -58,55 +54,49 @@
                         {{ vehicule.client.adresse.zipCode.zip_code }}
                     </div>
                     
-
                     <div class="col-md-2">
                         <label for="numero_afpa_client" class="control-label">Numéro AFPA : </label>
                         {{ vehicule.client.numero_afpa_client }}
                     </div>
                 </div>
-                <br/>
-
-
-
-            </formulaire>
-            
-        </header>
+            </div>
+        </client>
         
         <vehicule class="col-md-12">
             <h3>Véhicule :</h3>
             <hr>
-            <div class="row">
-                <div class="col-md-3">
-                    <label for="address">Marque :</label>
-                    <div class="row">
-                        <div class="col-md-12">{{ vehicule.libelle_marque }}</div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="address">Marque :</label>
+                        <div class="row">
+                            <div class="col-md-12">{{ vehicule.libelle_marque }}</div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="col-md-3">
-                    <label for="zip">Modele :</label>
-                    <div class="row">
-                        <div class="col-md-12">{{ vehicule.libelle_modele }}</div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <label for="zip">Immatriculation :</label>
-                    <div class="row">
-                        <div class="col-md-12">{{ vehicule.immatriculation }}</div>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <label for="zip">Réceptionnaire :</label>
-                    <div class="row">
-                        <div class="col-md-12">{{ user.get_username }}</div>
+                    
+                    <div class="col-md-3">
+                        <label for="zip">Modele :</label>
+                        <div class="row">
+                            <div class="col-md-12">{{ vehicule.libelle_modele }}</div>
+                        </div>
                     </div>
 
+                    <div class="col-md-3">
+                        <label for="zip">Immatriculation :</label>
+                        <div class="row">
+                            <div class="col-md-12">{{ vehicule.immatriculation }}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="zip">Réceptionnaire :</label>
+                        <div class="row">
+                            <div class="col-md-12">{{ user.get_username }}</div>
+                        </div>
+                    </div>  
                 </div>
-
             </div>
-
+            
         </vehicule>
         <hr>
         <form class="" action="" method="post">

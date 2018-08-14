@@ -187,6 +187,8 @@ class VehiculeList(VehiculeSelect):
         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        client = None
+        context['client'] = client
         return context
         
     def get_queryset(self):
