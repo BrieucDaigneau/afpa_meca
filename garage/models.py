@@ -163,6 +163,12 @@ class Intervention(models.Model):
     intervention_a_realiser = models.TextField("interventions prévus", max_length=300, null=True)
     intervention_realisee = models.BooleanField("intervention réalisée", null=False, default=False)
 
+    utilisateur = models.ForeignKey(User, on_delete=models.CASCADE)
+    vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.vehicule) + " " + str(self.date_saisie_intervention) + " " + str(self.utilisateur) + " " + str(self.statut)
+
    
     ValidationFormateur = 'VF'
     AttenteFormateur = 'AF'
@@ -189,11 +195,6 @@ class Intervention(models.Model):
     #         choices = Statut_choice,
     #         default = AttenteFormateur,
     #     )
-    utilisateur = models.ForeignKey(User, on_delete=models.CASCADE)
-    vehicule = models.ForeignKey(Vehicule, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return str(self.vehicule) + " " + str(self.date_saisie_intervention) + " " + str(self.utilisateur) + " " + str(self.statut)
 
 class Piece(models.Model):
     reference_piece = models.CharField("référence pièce", blank=False, max_length=20)

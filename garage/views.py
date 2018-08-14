@@ -177,7 +177,6 @@ class VehiculeSelect(ListView):
         if self.template_name == 'garage/voiture-select.html':
             client = Client.objects.get(pk=self.kwargs['client_id'])
             context['client'] = client
-        print("#############################################################################", context)
         return context
         
     def get_queryset(self):
@@ -205,10 +204,7 @@ class MotoSelect(VehiculeSelect):
     def get_queryset(self):
         return Moto.objects.filter(client_id=self.kwargs['client_id'])
 
-    
-
-
-class Intervention(CreateView):
+class InterventionCreate(CreateView):
     form_class = InterventionForm
     template_name = 'garage/ordre_reparation.html'    
     
@@ -225,8 +221,6 @@ class Intervention(CreateView):
         intervention.save()
         return super().form_valid(form)
 
-#en cours de conception 
-##################################################
 class InterventionSelect(ListView):
     model = Intervention
     template_name = "garage/intervention-select.html"
@@ -235,13 +229,13 @@ class InterventionSelect(ListView):
         context = super().get_context_data(**kwargs)
         context['liste_interventions'] = self.get_queryset()
         return context
+
 class Interventions(InterventionSelect):
     template_name = "garage/interventions.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-#############################################################
 
 def recherche(request):
     query = request.GET.get('query')

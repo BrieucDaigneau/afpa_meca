@@ -28,7 +28,7 @@
         {% for intervention in liste_interventions %}
         <input type="radio" class="btn col-md-1 radio" id="{{intervention.id}}" name="btnIntervention" onclick='javascript:document.interventionChecked={{intervention.id}};' ></input>
     
-        <label for="{{intervention.id}}" id="test" class="col-md-12">
+        <label for="{{intervention.id}}" id="elementListe" class="col-md-12" ondblclick="redirect()">
             <div class="row ">
                 <div class=" col-md-3">{{ intervention.vehicule }}</div>
                 <div class=" col-md-3">{{ intervention.utilisateur }}</div>

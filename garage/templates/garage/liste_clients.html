@@ -27,14 +27,14 @@
         
         
         {% for client in liste_client %}
-        <input type="radio" class="btn col-md-1 radio" id="{{client.id}}" name="btnClient" onclick='javascript:document.clientChecked={{client.id}};' ></input>
+        <input type="radio" class="btn col-md-1 radio" id="{{client.id}}" name="btnClient" ondblclick="redirect()" onclick='javascript:document.clientChecked={{client.id}};' ></input>
     
-        <label for="{{client.id}}" id="test" class="col-md-12">
-            <div class="row ">
+        <label for="{{client.id}}" id="elementListe" class="col-md-12">
+            <div class="row " ondblclick="redirect()">
                 <div class=" col-md-3">{{ client.nom_client }}</div>
                 <div class=" col-md-3">{{ client.prenom_client }}</div>
                 <div class="col-md-3">{{ client.numero_afpa_client }}</div>
-                <div class="col-md-3">{{ client. }}</div>
+                <div class="col-md-3">{{ client.donnees_personnelles_client.mail_client }}</div>
             </div>
         </label>
     

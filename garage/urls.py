@@ -33,6 +33,6 @@ urlpatterns = [
     
     # path('reparation/<int:client_id>/', login_required(views.ordre_reparation), name='ordre_reparation'),
     # path('reparation/', login_required(views.ordre_reparation.as_view()), name='ordre_reparation'),
-    path('intervention-create/<int:vehicule_id>/', login_required(views.Intervention.as_view()), name='intervention-create'),
+    path('intervention-create/<int:vehicule_id>/', login_required(views.InterventionCreate.as_view()), name='intervention-create'),
     path('interventions', login_required(views.Interventions.as_view()), name="interventions"),
 ]

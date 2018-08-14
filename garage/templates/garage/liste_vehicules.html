@@ -35,7 +35,7 @@
         <input type="radio" class="btn col-md-1 radio" id="{{vehicule.id}}" name="btnVehicule" onclick='javascript:document.vehiculeChecked={{vehicule.id}}' >
     </input>
     
-    <label for="{{vehicule.id}}" id="test" class="col-md-12 label_vehicule">
+    <label for="{{vehicule.id}}" id="elementListe" class="col-md-12 label_vehicule" ondblclick="redirect()" >
         <div class="row ">
             <div class="col-md-3">{{ vehicule.libelle_modele }}</div>
             <div class="col-md-3">{{ vehicule.libelle_marque }}</div>
