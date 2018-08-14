@@ -174,8 +174,9 @@ class VehiculeSelect(ListView):
         context = super().get_context_data(**kwargs)
         context['liste_vehicule'] = self.get_queryset()
         context['voiture_id'] = None
-        client = Client.objects.get(pk=self.kwargs['client_id'])
-        context['client'] = client
+        if self.template_name == 'garage/voiture-select.html':
+            client = Client.objects.get(pk=self.kwargs['client_id'])
+            context['client'] = client
         print("#############################################################################", context)
         return context
         
@@ -187,8 +188,6 @@ class VehiculeList(VehiculeSelect):
         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        client = None
-        context['client'] = client
         return context
         
     def get_queryset(self):
