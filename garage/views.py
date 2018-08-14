@@ -210,12 +210,12 @@ class Intervention(CreateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        vehicule = Vehicule.objects.get(pk=self.kwargs['vehicule_id'])
+        vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
         context['vehicule'] = vehicule   
         return context
 
     def form_valid(self, form):
-        vehicule = Vehicule.objects.get(pk=self.kwargs['vehicule_id'])
+        vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
         intervention = form.save()
         intervention.vehicule = vehicule
         intervention.save()
