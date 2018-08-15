@@ -17,40 +17,65 @@
     <div class="row">
         {% block recherche %}{% endblock recherche %}
     </div>
-    <div class="row">
+
+    {% if  curent_model == 'Velo' %}
+        <div class="row">            
+            <h4 class="col-md-12" >
+                <div class="row">
+                    <div class=" col-md-3">Modele </div>
+                </div>
+            </h4>
+            {% for vehicule in liste_vehicule %}
+            <input type="radio" class="btn col-md-1 radio" id="{{vehicule.id}}" name="btnVehicule" onclick='javascript:document.vehiculeChecked={{vehicule.id}}' >
+        </input>
         
-        
-        <h4 class="col-md-12" >
-            <div class="row">
-                <div class=" col-md-3">Modele </div>
-                <div class=" col-md-3">Marque</div>
-                <div class="col-md-3">N° VIN</div>
-                <div class="col-md-3">N° Immatriculation</div>
+        <label for="{{vehicule.id}}" id="elementListe" class="col-md-12 label_vehicule" ondblclick="redirect()" >
+            <div class="row ">
+                <div class="col-md-3">{{ vehicule.libelle_modele }}</div>
             </div>
-        </h4>
+        </label>
+        {% empty %}
+        <p>aucun véhicule</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if  curent_model == 'Moto' or curent_model == 'Voiture' %}
+        <div class="row">
+            
+            
+            <h4 class="col-md-12" >
+                <div class="row">
+                    <div class=" col-md-3">Modele </div>
+                    <div class=" col-md-3">Marque</div>
+                    <div class="col-md-3">N° VIN</div>
+                    <div class="col-md-3">N° Immatriculation</div>
+                </div>
+            </h4>
+            
+            
+            
+            {% for vehicule in liste_vehicule %}
+            <input type="radio" class="btn col-md-1 radio" id="{{vehicule.id}}" name="btnVehicule" onclick='javascript:document.vehiculeChecked={{vehicule.id}}' >
+        </input>
+        
+        <label for="{{vehicule.id}}" id="elementListe" class="col-md-12 label_vehicule" ondblclick="redirect()" >
+            <div class="row ">
+                <div class="col-md-3">{{ vehicule.libelle_modele }}</div>
+                <div class="col-md-3">{{ vehicule.libelle_marque }}</div>
+                <div class="col-md-3">{{ vehicule.vin }}</div>
+                <div class="col-md-3">{{ vehicule.immatriculation }}</div>
+            </div>
+            
+        </label>
+        
+        {% empty %}
+        <p>aucun véhicule</p>
+        {% endfor %}
         
         
-        
-        {% for vehicule in liste_vehicule %}
-        <input type="radio" class="btn col-md-1 radio" id="{{vehicule.id}}" name="btnVehicule" onclick='javascript:document.vehiculeChecked={{vehicule.id}}' >
-    </input>
-    
-    <label for="{{vehicule.id}}" id="elementListe" class="col-md-12 label_vehicule" ondblclick="redirect()" >
-        <div class="row ">
-            <div class="col-md-3">{{ vehicule.libelle_modele }}</div>
-            <div class="col-md-3">{{ vehicule.libelle_marque }}</div>
-            <div class="col-md-3">{{ vehicule.vin }}</div>
-            <div class="col-md-3">{{ vehicule.immatriculation }}</div>
-        </div>
-        
-    </label>
-    
-    {% empty %}
-    <p>aucun véhicule</p>
-    {% endfor %}
-    
-    
-</div>
+    </div>
+
+    {% endif %}
 <div class="row">
     {% block bouttons %}{% endblock bouttons %}
 </div>

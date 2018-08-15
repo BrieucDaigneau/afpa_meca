@@ -23,6 +23,9 @@ urlpatterns = [
     path('client-select/', login_required(views.ClientSelect.as_view()), name="client-select"),
     path('clients', login_required(views.Clients.as_view()), name="clients"),
 
+    path('velo-select/<int:client_id>/', login_required(views.VeloSelect.as_view()), name="velo-select"),
+    path('velo-create/<int:client_id>/', login_required(views.VeloCreate.as_view()), name='velo-create'),
+
     # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
     path('moto-select/<int:client_id>/', login_required(views.MotoSelect.as_view()), name="moto-select"),
     path('moto-create/<int:client_id>/', login_required(views.MotoCreate.as_view()), name='moto-create'),

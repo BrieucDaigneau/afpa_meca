@@ -67,13 +67,16 @@
             <hr>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3">
-                        <label for="address">Marque :</label>
-                        <div class="row">
-                            <div class="col-md-12">{{ vehicule.libelle_marque }}</div>
+
+                    {% if vehicule.type_vehicule != "Velo" %}
+                        <div class="col-md-3">
+                            <label for="address">Marque :</label>
+                            <div class="row">
+                                <div class="col-md-12">{{ vehicule.libelle_marque }}</div>
+                            </div>
                         </div>
-                    </div>
-                    
+                    {% endif %}
+
                     <div class="col-md-3">
                         <label for="zip">Modele :</label>
                         <div class="row">
@@ -81,19 +84,22 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
-                        <label for="zip">Immatriculation :</label>
-                        <div class="row">
-                            <div class="col-md-12">{{ vehicule.immatriculation }}</div>
+                    {% if vehicule.type_vehicule != "Velo" %}
+                        <div class="col-md-3">
+                            <label for="zip">Immatriculation :</label>
+                            <div class="row">
+                                <div class="col-md-12">{{ vehicule.immatriculation }}</div>
+                            </div>
                         </div>
-                    </div>
+                        
+                        <div class="col-md-3">
+                            <label for="zip">Réceptionnaire :</label>
+                            <div class="row">
+                                <div class="col-md-12">{{ user.get_username }}</div>
+                            </div>
+                        </div>  
+                    {% endif %}
                     
-                    <div class="col-md-3">
-                        <label for="zip">Réceptionnaire :</label>
-                        <div class="row">
-                            <div class="col-md-12">{{ user.get_username }}</div>
-                        </div>
-                    </div>  
                 </div>
             </div>
             

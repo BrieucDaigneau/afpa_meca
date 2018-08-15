@@ -2,7 +2,7 @@ from django import forms
 
 from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea
 from django.forms.utils import ErrorList
-from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture, Intervention, Moto
+from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture, Intervention, Moto, Velo
 
 class ClientForm(forms.ModelForm):
     class Meta:
@@ -100,6 +100,14 @@ class MotoForm(forms.ModelForm):
             'date_mec': DateInput(attrs={'class': 'form-control'}),
             'carte_grise_img': FileInput(attrs={'class': 'form-control'}),
             'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
+        }
+
+class VeloForm(forms.ModelForm):
+    class Meta:
+        model = Velo
+        fields = ['libelle_modele']
+        widgets = {
+            'libelle_modele': TextInput(attrs={'class': 'form-control'}),
         }
 
 class InterventionForm(forms.ModelForm):

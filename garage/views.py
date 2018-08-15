@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from .models import *
 
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm, InterventionForm, MotoForm
+from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm, InterventionForm, MotoForm, VeloForm
 from django.views.generic import CreateView, ListView, View, FormView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -184,6 +184,23 @@ class MotoCreate(CreateView):
         moto.save()
         return super().form_valid(form)
 
+class VeloCreate(CreateView):
+    form_class = VeloForm
+    template_name = 'garage/velo_form.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('garage:intervention-create',
+                                kwargs={'vehicule_id': self.object.id},
+                                current_app='garage')
+
+    def form_valid(self, form):
+        client = Client.objects.get(pk=self.kwargs['client_id'])
+        velo = form.save()
+        velo.type_vehicule = "Velo"
+        velo.client = client
+        velo.save()
+        return super().form_valid(form)
+
 
 class VehiculeSelect(ListView):
     model = Voiture
@@ -193,6 +210,7 @@ class VehiculeSelect(ListView):
         context = super().get_context_data(**kwargs)
         context['liste_vehicule'] = self.get_queryset()
         context['voiture_id'] = None
+        context['curent_model'] = "Voiture"
         if self.template_name == 'garage/voiture-select.html':
             client = Client.objects.get(pk=self.kwargs['client_id'])
             context['client'] = client
@@ -200,6 +218,31 @@ class VehiculeSelect(ListView):
         
     def get_queryset(self):
         return Voiture.objects.filter(client_id=self.kwargs['client_id'])
+
+class MotoSelect(VehiculeSelect):
+    model = Moto
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_vehicule'] = self.get_queryset()
+        context['curent_model'] = "Moto"
+        print("############################################################", context)
+        return context
+
+    def get_queryset(self):
+        return Moto.objects.filter(client_id=self.kwargs['client_id'])
+
+class VeloSelect(VehiculeSelect):
+    model = Velo
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_vehicule'] = self.get_queryset()
+        context['curent_model'] = "Velo"
+        return context
+
+    def get_queryset(self):
+        return Velo.objects.filter(client_id=self.kwargs['client_id'])
 
 class VehiculeList(VehiculeSelect):
     template_name = 'garage/vehicules.html'
@@ -210,18 +253,6 @@ class VehiculeList(VehiculeSelect):
         
     def get_queryset(self):
         return Voiture.objects.all()
-
-
-class MotoSelect(VehiculeSelect):
-    model = Moto
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['liste_vehicule'] = self.get_queryset()
-        return context
-
-    def get_queryset(self):
-        return Moto.objects.filter(client_id=self.kwargs['client_id'])
 
 class InterventionCreate(CreateView):
     form_class = InterventionForm
@@ -242,8 +273,13 @@ class InterventionCreate(CreateView):
         context = super().get_context_data(**kwargs)
         if Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Voiture":
             vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
+
         elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Moto":
             vehicule = Moto.objects.get(pk=self.kwargs['vehicule_id'])
+
+        elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Velo":
+            vehicule = Velo.objects.get(pk=self.kwargs['vehicule_id'])
+            
         context['vehicule'] = vehicule   
         return context
 
