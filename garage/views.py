@@ -148,29 +148,13 @@ class Clients(ClientSelect):
         context = super().get_context_data(**kwargs)
         return context
 
-class VoitureUpdate(UpdateView):
-    model = Voiture
-    template_name = 'garage/voiture_form.html'
-    form_class = VoitureForm
-    success_url = reverse_lazy('garage:voitures')
-
-class MotoUpdate(UpdateView):
-    model = Moto
-    template_name = 'garage/voiture_form.html'
-    form_class = MotoForm
-    success_url = reverse_lazy('garage:voitures')
-
-class VeloUpdate(UpdateView):
-    model = Velo
-    template_name = 'garage/velo_form.html'
-    form_class = VeloForm
-    success_url = reverse_lazy('garage:')
 
 class VoitureCreate(CreateView):
     form_class = VoitureForm
     template_name = 'garage/voiture_form.html'
 
     def get_success_url(self, **kwargs):
+
         return reverse_lazy('garage:intervention-create',
                                 kwargs={'vehicule_id': self.object.id},
                                 current_app='garage')
@@ -183,6 +167,7 @@ class VoitureCreate(CreateView):
         voiture.type_vehicule = "Voiture"
         voiture.save()
         return super().form_valid(form)
+
 
 class MotoCreate(CreateView):
     form_class = MotoForm
@@ -217,6 +202,25 @@ class VeloCreate(CreateView):
         velo.client = client
         velo.save()
         return super().form_valid(form)
+
+
+class VoitureUpdate(UpdateView):
+    model = Voiture
+    template_name = 'garage/voiture_form.html'
+    form_class = VoitureForm
+    success_url = reverse_lazy('garage:voitures')
+
+class MotoUpdate(UpdateView):
+    model = Moto
+    template_name = 'garage/voiture_form.html'
+    form_class = MotoForm
+    success_url = reverse_lazy('garage:voitures')
+
+class VeloUpdate(UpdateView):
+    model = Velo
+    template_name = 'garage/velo_form.html'
+    form_class = VeloForm
+    success_url = reverse_lazy('garage:')
 
 
 class VehiculeSelect(ListView):
@@ -261,6 +265,7 @@ class VeloSelect(VehiculeSelect):
     def get_queryset(self):
         return Velo.objects.filter(client_id=self.kwargs['client_id'])
 
+
 class VehiculeList(VehiculeSelect):
     template_name = 'garage/vehicules.html'
         
@@ -294,6 +299,7 @@ class VeloList(VehiculeSelect):
     def get_queryset(self):
         return Velo.objects.all()
 
+
 class InterventionCreate(CreateView):
     form_class = InterventionForm
     template_name = 'garage/ordre_reparation.html'    
@@ -323,7 +329,6 @@ class InterventionCreate(CreateView):
         context['vehicule'] = vehicule   
         return context
 
-
 class InterventionSelect(ListView):
     model = Intervention
     template_name = "garage/intervention-select.html"
@@ -339,6 +344,8 @@ class Interventions(InterventionSelect):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
 
 def recherche(request):
     query = request.GET.get('query')
