@@ -25,16 +25,21 @@ urlpatterns = [
 
     path('velo-select/<int:client_id>/', login_required(views.VeloSelect.as_view()), name="velo-select"),
     path('velo-create/<int:client_id>/', login_required(views.VeloCreate.as_view()), name='velo-create'),
+    path('velos', login_required(views.VeloList.as_view()), name="velos"),
+    path('velo-update/<pk>/', login_required(views.VeloUpdate.as_view()), name='velo-update'),
 
     # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
     path('moto-select/<int:client_id>/', login_required(views.MotoSelect.as_view()), name="moto-select"),
     path('moto-create/<int:client_id>/', login_required(views.MotoCreate.as_view()), name='moto-create'),
+    path('motos', login_required(views.MotoList.as_view()), name="motos"),
+    path('moto-update/<pk>/', login_required(views.MotoUpdate.as_view()), name='moto-update'),
 
     path('voiture-select/<int:client_id>/', login_required(views.VehiculeSelect.as_view()), name="voiture-select"),
     path('voiture-create/<int:client_id>/', login_required(views.VoitureCreate.as_view()), name='voiture-create'),
     path('voitures', login_required(views.VehiculeList.as_view()), name="voitures"),
     path('nouveau-choix-vehicule', views.ChoixVehicule, name="choixVehicule"),
-    
+    path('voiture-update/<pk>/', login_required(views.VoitureUpdate.as_view()), name='voiture-update'),
+
     # path('reparation/<int:client_id>/', login_required(views.ordre_reparation), name='ordre_reparation'),
     # path('reparation/', login_required(views.ordre_reparation.as_view()), name='ordre_reparation'),
     path('intervention-create/<int:vehicule_id>/', login_required(views.InterventionCreate.as_view()), name='intervention-create'),

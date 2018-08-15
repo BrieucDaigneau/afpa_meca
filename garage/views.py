@@ -3,7 +3,7 @@ from .models import *
 
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm, InterventionForm, MotoForm, VeloForm
-from django.views.generic import CreateView, ListView, View, FormView, DetailView
+from django.views.generic import CreateView, UpdateView, ListView, View, FormView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from . import urls
@@ -148,6 +148,23 @@ class Clients(ClientSelect):
         context = super().get_context_data(**kwargs)
         return context
 
+class VoitureUpdate(UpdateView):
+    model = Voiture
+    template_name = 'garage/voiture_form.html'
+    form_class = VoitureForm
+    success_url = reverse_lazy('garage:voitures')
+
+class MotoUpdate(UpdateView):
+    model = Moto
+    template_name = 'garage/voiture_form.html'
+    form_class = MotoForm
+    success_url = reverse_lazy('garage:voitures')
+
+class VeloUpdate(UpdateView):
+    model = Velo
+    template_name = 'garage/velo_form.html'
+    form_class = VeloForm
+    success_url = reverse_lazy('garage:')
 
 class VoitureCreate(CreateView):
     form_class = VoitureForm
@@ -249,10 +266,33 @@ class VehiculeList(VehiculeSelect):
         
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['curent_model'] = "Voiture"
         return context
         
     def get_queryset(self):
         return Voiture.objects.all()
+
+class MotoList(VehiculeSelect):
+    template_name = 'garage/vehicules.html'
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['curent_model'] = "Moto"
+        return context
+        
+    def get_queryset(self):
+        return Moto.objects.all()
+
+class VeloList(VehiculeSelect):
+    template_name = 'garage/vehicules.html'
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['curent_model'] = "Velo"
+        return context
+        
+    def get_queryset(self):
+        return Velo.objects.all()
 
 class InterventionCreate(CreateView):
     form_class = InterventionForm
@@ -279,7 +319,7 @@ class InterventionCreate(CreateView):
 
         elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Velo":
             vehicule = Velo.objects.get(pk=self.kwargs['vehicule_id'])
-            
+
         context['vehicule'] = vehicule   
         return context
 
