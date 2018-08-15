@@ -17,9 +17,11 @@
         
         <h4 class="col-md-12" >
             <div class="row">
-                <div class=" col-md-6">client</div>
-                <div class=" col-md-3">véhicule</div>
-                <div class="col-md-3">date de saisie</div>
+                <div class=" col-md-3">client</div>
+                <div class=" col-md-2">véhicule</div>
+                <div class="col-md-2">Réceptionnaire</div>
+                <div class="col-md-3">Date de réception</div>
+                <div class="col-md-2">Statut</div>
             </div>
         </h4>
         
@@ -30,10 +32,11 @@
     
         <label for="{{intervention.id}}" id="elementListe" class="col-md-12" ondblclick="redirect()">
             <div class="row ">
-                <div class=" col-md-3">{{ intervention.vehicule }}</div>
-                <div class=" col-md-3">{{ intervention.utilisateur }}</div>
+                <div class="col-md-3">{{ intervention.vehicule.client.nom_client }} {{ intervention.vehicule.client.prenom_client }}</div>
+                <div class="col-md-2">{{ intervention.vehicule }}</div>
+                <div class="col-md-2">{{ intervention.utilisateur }}</div>
                 <div class="col-md-3">{{ intervention.date_saisie_intervention }}</div>
-                <div class="col-md-3">{{ intervention.statut }}</div>
+                <div class="col-md-2">{{ intervention.statut }}</div>
             </div>
         </label>
     
