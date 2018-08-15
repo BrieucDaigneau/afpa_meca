@@ -2,7 +2,7 @@ from django import forms
 
 from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea
 from django.forms.utils import ErrorList
-from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture, Intervention
+from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture, Intervention, Moto
 
 class ClientForm(forms.ModelForm):
     class Meta:
@@ -76,7 +76,7 @@ class CityForm(forms.ModelForm):
 class VoitureForm(forms.ModelForm):
     class Meta:
         model = Voiture
-        exclude = ('client', 'carte_grise_img', 'carte_assurance_img' )
+        exclude = ('client', 'carte_grise_img', 'carte_assurance_img', 'type_vehicule' )
         widgets = {
             'libelle_marque': TextInput(attrs={'class': 'form-control'}),
             'libelle_modele': TextInput(attrs={'class': 'form-control'}),
@@ -87,17 +87,29 @@ class VoitureForm(forms.ModelForm):
             'carte_grise_img': FileInput(attrs={'class': 'form-control'}),
             'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
         }
-       
+class MotoForm(forms.ModelForm):
+    class Meta:
+        model = Moto
+        exclude = ('client', 'carte_grise_img', 'carte_assurance_img', 'type_vehicule'  )
+        widgets = {
+            'libelle_marque': TextInput(attrs={'class': 'form-control'}),
+            'libelle_modele': TextInput(attrs={'class': 'form-control'}),
+            'immatriculation': TextInput(attrs={'class': 'form-control'}),
+            'vin': TextInput(attrs={'class': 'form-control'}),
+            'kilometrage': NumberInput(attrs={'class': 'form-control'}),
+            'date_mec': DateInput(attrs={'class': 'form-control'}),
+            'carte_grise_img': FileInput(attrs={'class': 'form-control'}),
+            'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
+        }
+
 class InterventionForm(forms.ModelForm):
     class Meta:
         model = Intervention
-        fields = ["date_saisie_intervention","date_restitution_prevu","diagnostic","intervention_a_realiser"]
-        #exclude = ('intervention_realisee', 'statut')
+        exclude = ('intervention_realisee', 'statut', 'utilisateur', 'vehicule', 'date_saisie_intervention')
         widgets = {
-            'date_saisie_intervention': DateInput(attrs={'class': 'form-control'}),            
             'date_restitution_prevu': DateInput(attrs={'class': 'form-control'}),    
             'diagnostic' : Textarea(attrs={'class': 'form-control'}),  
-            'intervention_a_realiser' : Textarea(attrs={'class': 'form-control'})
+            'intervention_a_realiser' : Textarea(attrs={'class': 'form-control'}),
         }
 
 

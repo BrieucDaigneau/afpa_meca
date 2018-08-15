@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from .models import *
 
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm, InterventionForm
+from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm, InterventionForm, MotoForm
 from django.views.generic import CreateView, ListView, View, FormView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -163,6 +163,25 @@ class VoitureCreate(CreateView):
         voiture = form.save()
         voiture.client = client
         voiture.save()
+        voiture.type_vehicule = "Voiture"
+        voiture.save()
+        return super().form_valid(form)
+
+class MotoCreate(CreateView):
+    form_class = MotoForm
+    template_name = 'garage/moto_form.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('garage:intervention-create',
+                                kwargs={'vehicule_id': self.object.id},
+                                current_app='garage')
+
+    def form_valid(self, form):
+        client = Client.objects.get(pk=self.kwargs['client_id'])
+        moto = form.save()
+        moto.type_vehicule = "Moto"
+        moto.client = client
+        moto.save()
         return super().form_valid(form)
 
 
@@ -208,18 +227,26 @@ class InterventionCreate(CreateView):
     form_class = InterventionForm
     template_name = 'garage/ordre_reparation.html'    
     
+    def form_valid(self, form):
+        vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
+        user = User.objects.get(is_active=True)
+
+        intervention = form.save()
+        intervention.utilisateur = user
+        intervention.vehicule = vehicule
+
+        intervention.save()
+        return super().form_valid(form)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
+        if Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Voiture":
+            vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
+        elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Moto":
+            vehicule = Moto.objects.get(pk=self.kwargs['vehicule_id'])
         context['vehicule'] = vehicule   
         return context
 
-    def form_valid(self, form):
-        vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
-        intervention = form.save()
-        intervention.vehicule = vehicule
-        intervention.save()
-        return super().form_valid(form)
 
 class InterventionSelect(ListView):
     model = Intervention

@@ -25,6 +25,7 @@ urlpatterns = [
 
     # path('client/<int:client_id>/', views.modifier_client, name='modifier'),    
     path('moto-select/<int:client_id>/', login_required(views.MotoSelect.as_view()), name="moto-select"),
+    path('moto-create/<int:client_id>/', login_required(views.MotoCreate.as_view()), name='moto-create'),
 
     path('voiture-select/<int:client_id>/', login_required(views.VehiculeSelect.as_view()), name="voiture-select"),
     path('voiture-create/<int:client_id>/', login_required(views.VoitureCreate.as_view()), name='voiture-create'),

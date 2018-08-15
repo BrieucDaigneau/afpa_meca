@@ -80,11 +80,10 @@ class Vehicule(models.Model):
     # ) 
     
     libelle_modele = models.CharField("libellé modèle", blank=False, max_length=50)
-    type_vehicule = ""#models.CharField(
-        # max_length = 10,
-        # choices=Type_vehicule_choice,
-        # default=Type_vehicule_choice[0]
-        # )
+    type_vehicule = models.CharField(
+        max_length = 10,
+        default=""
+        )
     client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
 
     def is_upperclass(self):
@@ -121,14 +120,12 @@ class Motorise(Vehicule):
 
 class Voiture(Motorise):
         
-    type_vehicule = "Voiture"
     def __str__(self):
         return Motorise.__str__(self) + " " + self.type_vehicule
 
 
 
 class Moto(Motorise):
-    type_vehicule = "Moto"
     
     def __str__(self):
         return Motorise.__str__(self) + " " + self.type_vehicule
