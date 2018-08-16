@@ -206,15 +206,25 @@ class VeloCreate(CreateView):
 
 class VoitureUpdate(UpdateView):
     model = Voiture
-    template_name = 'garage/voiture_form.html'
+    template_name = 'garage/voiture_update.html'
     form_class = VoitureForm
     success_url = reverse_lazy('garage:voitures')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_interventions'] = Intervention.objects.filter(vehicule=self.kwargs['pk'])
+        return context
+
 class MotoUpdate(UpdateView):
     model = Moto
-    template_name = 'garage/voiture_form.html'
+    template_name = 'garage/moto_update.html'
     form_class = MotoForm
     success_url = reverse_lazy('garage:voitures')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_interventions'] = Intervention.objects.filter(vehicule=self.kwargs['pk'])
+        return context
 
 class VeloUpdate(UpdateView):
     model = Velo
@@ -309,7 +319,15 @@ class InterventionCreate(CreateView):
                                 current_app='garage')
 
     def form_valid(self, form):
-        vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
+        if Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Voiture":
+            vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
+
+        elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Moto":
+            vehicule = Moto.objects.get(pk=self.kwargs['vehicule_id'])
+
+        elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Velo":
+            vehicule = Velo.objects.get(pk=self.kwargs['vehicule_id'])
+            
         user = self.request.user
 
         intervention = form.save(commit=False)
