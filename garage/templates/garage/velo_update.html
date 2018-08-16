@@ -1,0 +1,57 @@
+{% extends 'garage/velo_form.html' %}
+
+{% block boutons %}
+<div class="row">
+    <div class="col-md-3">
+        <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
+    </div>
+    <div class="col-md-3">
+    </div>        
+    <div class="col-md-3">
+    </div>        
+    <div class="col-md-3">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Valider les modifications</button>
+    </div>
+</div>   
+{% endblock boutons %}
+
+
+{% block liste_interventions %}
+<div class="row">
+        
+        <h4 class="col-md-12" >
+            <div class="row">
+                <div class=" col-md-3">client</div>
+                <div class=" col-md-2">véhicule</div>
+                <div class="col-md-2">Réceptionnaire</div>
+                <div class="col-md-3">Date de réception</div>
+                <div class="col-md-2">Statut</div>
+            </div>
+        </h4>   
+        
+{% for intervention in liste_interventions %}
+<input type="radio" class="btn col-md-1 radio" id="{{intervention.id}}" name="btnIntervention" onclick='javascript:document.interventionChecked={{intervention.id}};' ></input>
+
+<label for="{{intervention.id}}" id="elementListe" class="col-md-12" ondblclick="redirect()">
+    <div class="row ">
+        <div class="col-md-3">{{ intervention.vehicule.client.nom_client }} {{ intervention.vehicule.client.prenom_client }}</div>
+        <div class="col-md-2">{{ intervention.vehicule }}</div>
+        <div class="col-md-2">{{ intervention.utilisateur }}</div>
+        <div class="col-md-3">{{ intervention.date_saisie_intervention }}</div>
+        <div class="col-md-2">{{ intervention.statut }}</div>
+    </div>
+</label>
+
+{% empty %}
+<p>aucune intervention</p>
+{% endfor %}
+</div>
+</div>
+
+<script type="text/javascript">
+    
+function redirect() {
+    window.location = "{% url 'garage:intervention-update' 1 %}".replace(1, document.interventionChecked)            
+}
+</script>
+{% endblock liste_interventions %}

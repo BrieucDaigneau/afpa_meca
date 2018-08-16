@@ -228,9 +228,14 @@ class MotoUpdate(UpdateView):
 
 class VeloUpdate(UpdateView):
     model = Velo
-    template_name = 'garage/velo_form.html'
+    template_name = 'garage/velo_update.html'
     form_class = VeloForm
     success_url = reverse_lazy('garage:')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_interventions'] = Intervention.objects.filter(vehicule=self.kwargs['pk'])
+        return context
 
 
 class VehiculeSelect(ListView):

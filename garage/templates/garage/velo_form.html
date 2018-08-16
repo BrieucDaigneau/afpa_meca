@@ -30,6 +30,8 @@
                     </div>
                 </div>
                 <br/>
+
+{% block boutons %}
                 <div class="row">
                     <div class="col-md-3">
                         <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
@@ -41,10 +43,13 @@
                     <div class="col-md-3">
                         <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
                     </div>
-                </div>   
+                </div>  
+                
+{% endblock boutons %}
             </form>
 
         </formulaire>
 </div>
 
-{% endblock %}
+{% block liste_interventions %}{% endblock liste_interventions %}
+{% endblock content %}
