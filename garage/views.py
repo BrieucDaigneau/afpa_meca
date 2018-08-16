@@ -349,7 +349,26 @@ class Interventions(InterventionSelect):
         context = super().get_context_data(**kwargs)
         return context
 
+class InterventionUpdate(UpdateView):
+    model = Intervention
+    form_class = InterventionForm
+    template_name = 'garage/ordre_reparation.html'   
+    success_url = reverse_lazy('garage:interventions')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        intervention = Intervention.objects.get(pk=self.kwargs['pk'])
+        if intervention.vehicule.type_vehicule == "Voiture":
+            vehicule = Voiture.objects.get(pk=intervention.vehicule)
+
+        elif intervention.vehicule.type_vehicule == "Moto":
+            vehicule = Moto.objects.get(pk=intervention.vehicule)
+
+        elif intervention.vehicule.type_vehicule == "Velo":
+            vehicule = Velo.objects.get(pk=intervention.vehicule)
+
+        context['vehicule'] = vehicule   
+        return context  
 
 def recherche(request):
     query = request.GET.get('query')

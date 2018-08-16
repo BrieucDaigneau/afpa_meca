@@ -44,4 +44,6 @@ urlpatterns = [
     # path('reparation/', login_required(views.ordre_reparation.as_view()), name='ordre_reparation'),
     path('intervention-create/<int:vehicule_id>/', login_required(views.InterventionCreate.as_view()), name='intervention-create'),
     path('interventions', login_required(views.Interventions.as_view()), name="interventions"),
+    path('intervention-update/<pk>/', login_required(views.InterventionUpdate.as_view()), name='intervention-update'),
+
 ]

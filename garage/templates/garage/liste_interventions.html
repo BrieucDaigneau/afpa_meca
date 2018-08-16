@@ -50,7 +50,10 @@
 <script type="text/javascript">
             
     function redirect() {
-        window.location = "{% url 'garage:voiture-select' 1 %}".replace(1, document.clientChecked)            
+        if (window.location.href.indexOf("interventions") >= 0){
+            window.location = "{% url 'garage:intervention-update' 1 %}".replace(1, document.interventionChecked)
+        }
+            
     }
 </script>
 {% endblock content %}
