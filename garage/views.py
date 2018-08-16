@@ -303,12 +303,16 @@ class VeloList(VehiculeSelect):
 class InterventionCreate(CreateView):
     form_class = InterventionForm
     template_name = 'garage/ordre_reparation.html'    
-    
+    def get_success_url(self, **kwargs):
+
+        return reverse_lazy('garage:accueil',
+                                current_app='garage')
+
     def form_valid(self, form):
         vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
-        user = User.objects.get(is_active=True)
+        user = self.request.user
 
-        intervention = form.save()
+        intervention = form.save(commit=False)
         intervention.utilisateur = user
         intervention.vehicule = vehicule
 
