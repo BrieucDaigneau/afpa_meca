@@ -48,7 +48,16 @@
 <script type="text/javascript">
             
     function redirect() {
-        window.location = "{% url 'garage:voiture-select' 1 %}".replace(1, document.clientChecked)            
+        if (window.location.href.indexOf("clients") >= 0){
+            window.location = "{% url 'garage:client-update' 1 %}".replace(1, document.clientChecked)
+        }
+        else if (window.location.href.indexOf("select") >= 0){
+            window.location = "{% url 'garage:voiture-select' 1 %}".replace(1, document.clientChecked)  
+        }          
+    }
+
+    function modifier() {
+        window.location = "{% url 'garage:client-update' 1 %}".replace(1, document.clientChecked)            
     }
 </script>
 {% endblock content %}

@@ -132,6 +132,90 @@ class ClientCreateView(View):
          
         return render(request, 'garage/client_form.html', self.getForm( request ) )
 
+
+class ClientUpdate(UpdateView):
+    model = Client
+    template_name = 'garage/client_update.html'
+    
+    form_class = ZipCodeForm
+    second_form = CityForm
+    third_form = AddressForm
+    fourth_form = DonneesPersonnellesForm
+    fifth_form = ClientForm
+    # success_url = reverse_lazy('garage/clients')
+
+    def get_context_data(self, **kwargs):
+
+        client = self.object
+        address = client.adresse
+        zipCode = address.zipCode
+        city = address.city
+        donneesPersonnelles = client.donnees_personnelles_client
+        context = super(ClientUpdate, self).get_context_data(**kwargs)
+        print("###", context , "#########################__0___######################")
+        if 'form' not in context:
+            context['form'] = self.form_class(instance=zipCode)
+        if 'form2' not in context:
+            context['form2'] = self.second_form(instance=city)
+        if 'form3' not in context:
+            context['form3'] = self.third_form(instance=address)
+        if 'form4' not in context:
+            context['form4'] = self.fourth_form(instance=donneesPersonnelles)
+        if 'form5' not in context:
+            context['form5'] = self.fifth_form(instance=client)
+        return context
+    
+    def get(self, request, *args, **kwargs):
+        client = Client.objects.get(pk=self.kwargs['pk'])
+        address = client.adresse
+        zipCode = address.zipCode
+        city = address.city
+        donneesPersonnelles = client.donnees_personnelles_client
+        print("######################################## ici")
+        super(ClientUpdate, self).get(request, *args, **kwargs)
+        form = self.form_class(instance=zipCode)
+        form2 = self.second_form(instance=city)
+        form3 = self.third_form(instance=address)
+        form4 = self.fourth_form(instance=donneesPersonnelles)
+        form5 = self.fifth_form(instance=client)
+        return self.render_to_response(self.get_context_data(object=self.object, form=form, form2=form2, form3=form3, form4=form4, form5=form5))
+    
+    def post (self, request, *args, **kwargs):
+        client = Client.objects.get(pk=self.kwargs['pk'])
+        address = client.adresse
+        zipCode = address.zipCode
+        city = address.city
+        donneesPersonnelles = client.donnees_personnelles_client
+
+        self.object = self.get_object()
+        form = self.form_class(request.POST, instance=zipCode)
+        form2 = self.second_form(request.POST, instance=city)
+        form3 = self.third_form(request.POST, instance=address)
+        form4 = self.fourth_form(request.POST, instance=donneesPersonnelles)
+        form5 = self.fifth_form(request.POST, instance=client)
+
+        if form.is_valid() and form2.is_valid() and form3.is_valid() and form4.is_valid() and form5.is_valid(): 
+            zipCodeData = form.save(commit=False) 
+            cityData = form2.save(commit=False)
+            addressData = form3.save(commit=False)
+            donneesPersosData = form4.save(commit=False)
+            clientdata = form5.save(commit=False)
+            
+            zipCodeData.save()
+            cityData.save()
+            addressData.save()
+            donneesPersosData.save()
+            clientdata.save()
+            messages.success(self.request, 'données sauvegardées avec succes')
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return self.render_to_response(
+              self.get_context_data(form=form, form2=form2, form3=form3, form4=form4, form5=form5))
+
+    def get_success_url(self):
+        return reverse('garage/clients')
+            
+
 class ClientSelect(ListView):
     model = Client
     template_name = "garage/client-select.html"
@@ -210,8 +294,12 @@ class VoitureUpdate(UpdateView):
     form_class = VoitureForm
     success_url = reverse_lazy('garage:voitures')
 
+    def my_url(self):
+        pass
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        print("####################################################################", self.request, "###")
         context['liste_interventions'] = Intervention.objects.filter(vehicule=self.kwargs['pk'])
         return context
 
@@ -230,7 +318,7 @@ class VeloUpdate(UpdateView):
     model = Velo
     template_name = 'garage/velo_update.html'
     form_class = VeloForm
-    success_url = reverse_lazy('garage:')
+    success_url = reverse_lazy('garage:velos')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

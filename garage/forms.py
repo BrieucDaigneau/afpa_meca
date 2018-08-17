@@ -27,12 +27,12 @@ class DonneesPersonnellesForm(forms.ModelForm):
         }  
 
     # Clean suivi du nom du champ concerné ensuite géré dans le Html
-    def clean_mail_client(self):
-        mail_client = self.cleaned_data['mail_client'].lower()
-        r = DonneesPersonnelles.objects.filter(mail_client=mail_client)
-        if r.count():
-            raise  forms.ValidationError("Email existe déjà")
-        return mail_client
+    # def clean_mail_client(self):
+    #     mail_client = self.cleaned_data['mail_client'].lower()
+    #     r = DonneesPersonnelles.objects.filter(mail_client=mail_client)
+    #     if r.count():
+    #         raise  forms.ValidationError("Email existe déjà")
+    #     return mail_client
 
 
 class AddressForm(forms.ModelForm):
@@ -46,14 +46,14 @@ class AddressForm(forms.ModelForm):
         }
 
     # Clean suivi du nom du champ concerné ensuite géré dans le Html
-    def clean(self):
-        cleaned_data = super().clean()
-        street_number = self.cleaned_data['street_number']
-        street = self.cleaned_data['street']
-        r = Address.objects.filter(street_number=street_number,street=street)
-        if r.count():
-            raise forms.ValidationError("l'adresse existe déjà")
-        return cleaned_data
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     street_number = self.cleaned_data['street_number']
+    #     street = self.cleaned_data['street']
+    #     r = Address.objects.filter(street_number=street_number,street=street)
+    #     if r.count():
+    #         raise forms.ValidationError("l'adresse existe déjà")
+    #     return cleaned_data
 
 
 class ZipCodeForm(forms.ModelForm):

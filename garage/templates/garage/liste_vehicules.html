@@ -116,6 +116,10 @@
         }
 
         }
+
+    function modifier() {
+        window.location = "{% url 'garage:voiture-update' 1 %}".replace(1, document.vehiculeChecked)            
+    }
 </script> 
 
 {% endblock %}

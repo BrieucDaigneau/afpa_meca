@@ -22,6 +22,7 @@ urlpatterns = [
     path('client-create', login_required(views.ClientCreateView.as_view()), name='client-create'),   
     path('client-select/', login_required(views.ClientSelect.as_view()), name="client-select"),
     path('clients', login_required(views.Clients.as_view()), name="clients"),
+    path('client-update/<pk>/', login_required(views.ClientUpdate.as_view()), name='client-update'),
 
     path('velo-select/<int:client_id>/', login_required(views.VeloSelect.as_view()), name="velo-select"),
     path('velo-create/<int:client_id>/', login_required(views.VeloCreate.as_view()), name='velo-create'),

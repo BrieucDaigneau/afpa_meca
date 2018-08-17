@@ -1,0 +1,113 @@
+{% extends 'garage/base.html' %}
+{% load static %}
+
+{% block css %}"{% static 'garage/css/client_form.css' %}"{% endblock css %}
+
+{% block content %}
+    <div class="container">
+    
+            <titre class="col-md-12">
+                <div class="col-md-12">
+                    <h1 id="titre" class="title">Consultation client</h1>
+                </div>
+            </titre>
+        </br>
+        
+            <formulaire class="col-md-9">
+                <h4>Client</h4>
+                <form class="needs-validation" action="{% url 'garage:client-create' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group {% if client_form.nom_client.errors %}has-warning has-feedback{% endif %}">
+                                <label for="{{ client_form.nom_client.id_for_label }}" class="control-label">Nom</label>
+                                {{ form5.nom_client }}
+                            </div>
+                            <div class="invalid-feedback">
+                                Saisie du nom est obligatoire
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group {% if client_form.prenom_client.errors %}has-warning has-feedback{% endif %}">
+                                <label for="{{ client_form.prenom_client.id_for_label }}" class="control-label">Prenom</label>
+                                {{ form5.prenom_client }}
+                            </div>
+                            <div class="invalid-feedback">
+                                Saisie du prenom est obligatoire
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="{{ client_form.numero_afpa_client.id_for_label }}" class="control-label">Numéro carte AFPA</label>
+                            {{ form5.numero_afpa_client }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.telephone_client.id_for_label }}" class="control-label">Téléphone</label>
+                            {{ form4.telephone_client }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ form.mail_client.id_for_label }}" class="control-label">Email</label>
+                            {{ form4.mail_client }}
+                            <div> {{ form4.mail_client.errors }} </div>
+                        </div>
+                    </div> 
+                    
+                    <div class="row">
+                        <div class="col-md-2">
+                            <label for="{{ address_form.street_number.id_for_label }}" class="control-label">Numéro de rue :</label>
+                            {{ form3.street_number }}
+                        </div>
+                        <div class="col-md-6">
+                            <label for="{{ address_form.street.id_for_label }}" class="control-label">Adresse</label>
+                            {{ form3.street }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ address_form.street_complement.id_for_label }}" class="control-label">Complement d'adresse</label>
+                            {{ form3.street_complement }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="{{ zipCode_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
+                            {{ form.zip_code }}
+                        </div>
+                    
+                        <div class="col-md-4">
+                            <label for="{{ city_form.city_name.id_for_label }}" class="control-label">Ville</label>
+                            {{ form2.city_name }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.carte_AFPA_img.id_for_label }}" class="control-label">Carte AFPA img</label>
+                            {{ form4.carte_AFPA_img }}
+                        </div>
+                    </div>
+                    <div> {{ form3.non_field_errors }} </div>
+
+                    <div class="msgError"> {{ internal_error }} </div>     
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="{% url 'garage:client-select' %}" class="btn btn-primary btn-lg btn-block" id="bouton">Annuler</a>
+                        </div>
+                        <div class="col-md-2">
+                        </div>         
+                        <div class="col-md-4">
+                                <button class="btn btn-primary btn-lg btn-block" type="submit" id="bouton">Valider et retour Accueil</button>
+                            </div>     
+                        <div class="col-md-3">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="bouton">Etape suivante</button>
+                        </div>
+                    </div>   
+
+                </form>
+
+
+
+            </formulaire>
+
+    </div>
+        {% endblock content %}
+
+    

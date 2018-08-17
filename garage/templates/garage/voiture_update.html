@@ -53,7 +53,9 @@
 <script type="text/javascript">
             
     function redirect() {
-            window.location = "{% url 'garage:intervention-update' 1 %}".replace(1, document.interventionChecked)            
+        if (window.history().indexOf("voitures") >= 0))
+            window.location = "{% url 'garage:intervention-update' 1 %}".replace(1, document.interventionChecked)
+
     }
 </script>
 {% endblock liste_interventions %}
