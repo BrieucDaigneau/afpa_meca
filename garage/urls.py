@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'logout', LogoutView.as_view(template_name="garage/logout.html"), name='logout'),
     
     url(r'^recherche/$', login_required(views.recherche), name='recherche'),
-    path('accueil/', login_required(views.accueil), name='accueil'),
+    path('accueil/', login_required(views.Accueil.as_view()), name='accueil'),
 
     path('client-create', login_required(views.ClientCreateView.as_view()), name='client-create'),   
     path('client-select/', login_required(views.ClientSelect.as_view()), name="client-select"),

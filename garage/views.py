@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from .models import *
-
+from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm, InterventionForm, MotoForm, VeloForm
 from django.views.generic import CreateView, UpdateView, ListView, View, FormView, DetailView
@@ -16,6 +16,22 @@ from django.core.exceptions import ValidationError
 
 def accueil(request):
     return render(request, 'garage/accueil.html')
+class Accueil(TemplateView):
+    template_name = 'garage/accueil.html'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(Accueil, self).get_context_data(**kwargs)
+    #     context['liste_interventions'] = Intervention.objects.filter(utilisateur=self.request.user)
+    #     context['liste_vehicules'] = []
+    #     context['liste_clients'] = []
+    #     context['liste_vehicules'] = Vehicule.objects.all()
+    #     context['liste_clients'] = Client.objects.all()
+    #     # for intervention in context['liste_interventions']:
+    #     #     context['liste_vehicules'].append(Vehicule.objects.filter(id=intervention.vehicule))
+    #     # for vehicule in context['liste_vehicules']:
+    #     #     context['liste_clients'].append(Client.objects.filter(id=vehicule.client))
+    #     # print("#####",context, "#################")
+    #     return context
 
 
 class ClientCreateView(View):
