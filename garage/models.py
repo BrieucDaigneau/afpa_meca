@@ -248,7 +248,7 @@ class Devis(models.Model):
 #cléfs de relations
     commande_fournisseur = models.ManyToManyField(Fournisseur, through='Piece_Fournisseur_Devis')
     commande_piece = models.ManyToManyField(Piece, through='Piece_Fournisseur_Devis')
-
+    intervention = models.ForeignKey(Intervention, on_delete=models.CASCADE)
 
     class Meta():
         verbose_name_plural = "Devis"

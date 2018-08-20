@@ -47,4 +47,7 @@ urlpatterns = [
     path('interventions', login_required(views.Interventions.as_view()), name="interventions"),
     path('intervention-update/<pk>/', login_required(views.InterventionUpdate.as_view()), name='intervention-update'),
 
+    # path('devis-create/<int:vehicule_id>/', login_required(views.DevisCreate.as_view()), name='devis-create'),
+
+
 ]
