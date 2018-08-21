@@ -41,6 +41,7 @@
         {% empty %}
         <p>aucun client</p>
         {% endfor %}
+        {% block boutons %}{% endblock boutons %}
         {% if is_paginated %}
                 <ul class="pagination">
                     {% if page_obj.has_previous %}
@@ -61,7 +62,6 @@
                     <li class="disabled"><span>&raquo;</span></li>
                     {% endif %}
                 </ul>
-        {% block boutons %}{% endblock boutons %}
     </div>
 
 </div>
