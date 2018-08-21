@@ -435,7 +435,7 @@ class InterventionCreate(CreateView):
 
         elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Velo":
             vehicule = Velo.objects.get(pk=self.kwargs['vehicule_id'])
-
+        
         context['vehicule'] = vehicule   
         return context
 

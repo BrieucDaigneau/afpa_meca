@@ -9,7 +9,8 @@
 	<link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="{% static 'garage/css/base.css' %}" />
 	<link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
-	<link href={ % block css %}{% endblock css %} rel="stylesheet"> {% block head %}{% endblock head %}
+	<link href={% block css %}{% endblock css %} rel="stylesheet"> 
+	{% block head %}{% endblock head %}
 </head>
 
 <body>

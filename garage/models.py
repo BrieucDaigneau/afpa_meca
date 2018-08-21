@@ -69,11 +69,15 @@ class Vehicule(models.Model):
         )
     client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
 
+    
     def is_upperclass(self):
         return self.type_vehicule in (self.MOTO, self.VOITURE)
+    
     class Meta:
+        #abstract = True
         verbose_name = "Véhicule"
         verbose_name_plural = "Véhicules"
+        
     def __str__(self):
         return self.libelle_modele
 
@@ -86,7 +90,9 @@ class Motorise(Vehicule):
     date_mec = models.DateField("date de première m.e.c.", null=True)
     carte_grise_img = models.ImageField("carte grise", null=True, blank=False, upload_to="img/carte_grise")
     carte_assurance_img = models.ImageField("carte assurance", null=True, blank=False, upload_to="img/carte_assurance")
+
     class Meta:
+        #abstract = True
         verbose_name = "Motorisé"
         verbose_name_plural = "Motorisés"
 
