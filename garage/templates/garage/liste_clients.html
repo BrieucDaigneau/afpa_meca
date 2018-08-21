@@ -1,0 +1,65 @@
+{% extends 'garage/base.html' %}
+
+{% load static %}
+{% block head %}
+<link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
+{% endblock head %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h1 class="mt-5">Liste des Clients</h1>
+    </div>
+    <div class="row">
+        {% block recherche %}{% endblock recherche %}
+    </div>
+    <div class="row">
+        
+        <h4 class="col-md-12" >
+            <div class="row">
+                <div class=" col-md-3">Nom</div>
+                <div class=" col-md-3">Prénom</div>
+                <div class="col-md-3">N° AFPA</div>
+                <div class="col-md-3">E-mail</div>
+            </div>
+        </h4>
+        
+        
+        
+        {% for client in liste_client %}
+        <input type="radio" class="btn col-md-1 radio" id="{{client.id}}" name="btnClient" ondblclick="redirect()" onclick='javascript:document.clientChecked={{client.id}};' ></input>
+    
+        <label for="{{client.id}}" id="elementListe" class="col-md-12">
+            <div class="row " ondblclick="redirect()">
+                <div class=" col-md-3">{{ client.nom_client }}</div>
+                <div class=" col-md-3">{{ client.prenom_client }}</div>
+                <div class="col-md-3">{{ client.numero_afpa_client }}</div>
+                <div class="col-md-3">{{ client.donnees_personnelles_client.mail_client }}</div>
+            </div>
+        </label>
+    
+        {% empty %}
+        <p>aucun client</p>
+        {% endfor %}
+        {% block boutons %}{% endblock boutons %}
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+            
+    function redirect() {
+        if (window.location.href.indexOf("clients") >= 0){
+            window.location = "{% url 'garage:client-update' 1 %}".replace(1, document.clientChecked)
+        }
+        else if (window.location.href.indexOf("select") >= 0){
+            window.location = "{% url 'garage:voiture-select' 1 %}".replace(1, document.clientChecked)  
+        }          
+    }
+
+    function modifier() {
+        window.location = "{% url 'garage:client-update' 1 %}".replace(1, document.clientChecked)            
+    }
+</script>
+{% endblock content %}

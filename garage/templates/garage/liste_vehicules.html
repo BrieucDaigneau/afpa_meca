@@ -3,11 +3,10 @@
 {% load static %}
 {% block head %}
 <link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
-{% endblock %}
+{% endblock head %}
+
 {% block content %}
-
-
-<div class="container">
+    {% block infos %}{% endblock infos %}
     
     <div class="row">
         
@@ -18,44 +17,109 @@
     <div class="row">
         {% block recherche %}{% endblock recherche %}
     </div>
-    <div class="row">
+
+    {% if  curent_model == 'Velo' %}
+        <div class="row">            
+            <h4 class="col-md-12" >
+                <div class="row">
+                    <div class=" col-md-3">Modele </div>
+                </div>
+            </h4>
+            {% for vehicule in liste_vehicule %}
+            <input type="radio" class="btn col-md-1 radio" id="{{vehicule.id}}" name="btnVehicule" onclick='javascript:document.vehiculeChecked={{vehicule.id}}' >
+        </input>
         
-        
-        <h4 class="col-md-12" >
-            <div class="row">
-                <div class=" col-md-3">Modele </div>
-                <div class=" col-md-3">Marque</div>
-                <div class="col-md-3">N° VIN</div>
-                <div class="col-md-3">N° Immatriculation</div>
+        <label for="{{vehicule.id}}" id="elementListe" class="col-md-12 label_vehicule" ondblclick="redirect()" >
+            <div class="row ">
+                <div class="col-md-3">{{ vehicule.libelle_modele }}</div>
             </div>
-        </h4>
+        </label>
+        {% empty %}
+        <p>aucun véhicule</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if  curent_model == 'Moto' or curent_model == 'Voiture' %}
+        <div class="row">
+            
+            
+            <h4 class="col-md-12" >
+                <div class="row">
+                    <div class=" col-md-3">Modele </div>
+                    <div class=" col-md-3">Marque</div>
+                    <div class="col-md-3">N° VIN</div>
+                    <div class="col-md-3">N° Immatriculation</div>
+                </div>
+            </h4>
+            
+            
+            
+            {% for vehicule in liste_vehicule %}
+            <input type="radio" class="btn col-md-1 radio" id="{{vehicule.id}}" name="btnVehicule" onclick='javascript:document.vehiculeChecked={{vehicule.id}}' >
+        </input>
+        
+        <label for="{{vehicule.id}}" id="elementListe" class="col-md-12 label_vehicule" ondblclick="redirect()" >
+            <div class="row ">
+                <div class="col-md-3">{{ vehicule.libelle_modele }}</div>
+                <div class="col-md-3">{{ vehicule.libelle_marque }}</div>
+                <div class="col-md-3">{{ vehicule.vin }}</div>
+                <div class="col-md-3">{{ vehicule.immatriculation }}</div>
+            </div>
+            
+        </label>
+        
+        {% empty %}
+        <p>aucun véhicule</p>
+        {% endfor %}
         
         
-        
-        {% for vehicule in liste_vehicule %}
-        <input type="radio" class="btn col-md-1 radio" id="{{vehicule.id}}" name="btnVehicule" onclick='javascript:document.vehiculeChecked={{vehicule.id}}' >
-    </input>
-    
-    <label for="{{vehicule.id}}" id="test" class="col-md-12 label_vehicule">
-        <div class="row ">
-            <div class="col-md-3">{{ vehicule.libelle_modele }}</div>
-            <div class="col-md-3">{{ vehicule.libelle_marque }}</div>
-            <div class="col-md-3">{{ vehicule.vin }}</div>
-            <div class="col-md-3">{{ vehicule.immatriculation }}</div>
-        </div>
-        
-    </label>
-    
-    {% empty %}
-    <p>aucun véhicule</p>
-    {% endfor %}
-    
-    
-</div>
+    </div>
+
+    {% endif %}
 <div class="row">
     {% block bouttons %}{% endblock bouttons %}
 </div>
 
 </div>
+<script type="text/javascript">
+
+    function redirect() {
+        if (window.location.href.indexOf("voitures") >= 0){
+            window.location = "{% url 'garage:voiture-update' 1 %}".replace(1, document.vehiculeChecked)
+        }
+        if (window.location.href.indexOf("motos") >= 0){
+            window.location = "{% url 'garage:moto-update' 1 %}".replace(1, document.vehiculeChecked)
+        }
+        if (window.location.href.indexOf("velos") >= 0){
+            window.location = "{% url 'garage:velo-update' 1 %}".replace(1, document.vehiculeChecked)
+        }
+        else if (window.location.href.indexOf("select") >= 0){
+            window.location = "{% url 'garage:intervention-create' 1 %}".replace(1, document.vehiculeChecked)
+        }
+    }
+    function voiture_create() { 
+
+//expression régulière qui récupère l'id client
+//[/] = recherche le caractère "/" dans l'ulr
+//(d+) = "()" retourne la valeur à l'intérieur des (), "d" cherche un nombre entre [0-9],
+// "+" cherche entre 1 et plusieurs fois le paramètre saisi avant 
+// window.location.href.match(/[/](\d+)[/]/) retourne un tableau = [/nombre/, nombre]
+
+        let chaineATrouver = window.location.href.match(/[/](\d+)[/]/)
+        console.log(window.location.href)
+        if (window.location.href.indexOf("voiture") >= 0){
+                window.location = "{% url 'garage:voiture-create' 1 %}".replace(1, chaineATrouver[1])
+        }else if (window.location.href.indexOf("moto") >= 0){
+            window.location = "{% url 'garage:moto-create' 1 %}".replace(1, chaineATrouver[1])
+        }else if (window.location.href.indexOf("velo") >= 0){
+            window.location = "{% url 'garage:velo-create' 1 %}".replace(1, chaineATrouver[1])
+        }
+
+        }
+
+    function modifier() {
+        window.location = "{% url 'garage:voiture-update' 1 %}".replace(1, document.vehiculeChecked)            
+    }
+</script> 
 
 {% endblock %}

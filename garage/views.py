@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from .models import *
-
+from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm, InterventionForm
-from django.views.generic import CreateView, ListView, View, FormView, DetailView
+from .forms import *
+from django.views.generic import CreateView, UpdateView, ListView, View, FormView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from . import urls
@@ -16,6 +16,13 @@ from django.core.exceptions import ValidationError
 
 def accueil(request):
     return render(request, 'garage/accueil.html')
+class Accueil(TemplateView):
+    template_name = 'garage/accueil.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Accueil, self).get_context_data(**kwargs)
+        context['liste_interventions'] = Intervention.objects.filter(utilisateur=self.request.user)
+        return context
 
 
 class ClientCreateView(View):
@@ -61,7 +68,6 @@ class ClientCreateView(View):
                         modelFormError = "Problème de connection à la base de données"                  
                         raise                                
 
-
                     city_form = dico['city_form']
                     if not city_form.is_valid():
                         modelFormError = "Une erreur interne est apparue sur la ville. Merci de recommencer votre saisie."                  
@@ -81,7 +87,6 @@ class ClientCreateView(View):
                         except DatabaseError:   
                             modelFormError = "Problème de connection à la base de données"                  
                             raise                                
-
 
                         address_form = dico['address_form']                       
                         if not address_form.is_valid():                         
@@ -132,30 +137,105 @@ class ClientCreateView(View):
          
         return render(request, 'garage/client_form.html', self.getForm( request ) )
 
+class ClientUpdate(UpdateView):
+    template_name = 'garage/client_update.html'
+    success_message = "Données mises à jour avec succès"
+
+    def get(self, request, *args, **kwargs):
+        client = Client.objects.get(pk=self.kwargs['pk'])
+        address = client.adresse
+        zipCode = address.zipCode
+        city = address.city
+        donneesPersonnelles = client.donnees_personnelles_client
+        form = ZipCodeForm(instance=zipCode)
+        form2 = CityForm(instance=city)
+        form3 = AddressUpdateForm(instance=address)
+        form4 = DonneesPersonnellesUpdateForm(instance=donneesPersonnelles)
+        form5 = ClientForm(instance=client)
+
+        context = {'form': form, 'form2': form2, 'form3': form3, 'form4': form4, 'form5': form5, }
+        return render(request, self.template_name, context)
+
+    def post (self, request, *args, **kwargs):
+        client = Client.objects.get(pk=self.kwargs['pk'])
+        address = client.adresse
+        zipCode = address.zipCode
+        city = address.city
+        donneesPersonnelles = client.donnees_personnelles_client
+
+        form = ZipCodeForm(request.POST, instance=zipCode)
+        form2 = CityForm(request.POST, instance=city)
+        form3 = AddressUpdateForm(request.POST, instance=address)
+        form4 = DonneesPersonnellesUpdateForm(request.POST, instance=donneesPersonnelles)
+        form5 = ClientForm(request.POST, instance=client)
+
+        if form.is_valid() and form2.is_valid() and form3.is_valid() and form4.is_valid() and form5.is_valid(): 
+            zipCodeData = form.save(commit=False) 
+            cityData = form2.save(commit=False)
+            addressData = form3.save(commit=False)
+            donneesPersosData = form4.save(commit=False)
+            clientData = form5.save(commit=False)
+            
+            cityData.save()
+            addressData.city = cityData
+
+            zipCodeData.save()
+            addressData.zipCode = zipCodeData
+
+            addressData.save()
+            clientData.adresse = addressData
+
+            donneesPersosData.save()
+            clientData.donnees_personnelles_client = donneesPersosData
+
+            clientData.save()
+            return redirect('garage:clients')
+        context = {'form': form, 'form2': form2, 'form3': form3, 'form4': form4, 'form5': form5, }
+        return render(request, self.template_name, context)
+
+    def get_context_data(self, **kwargs):
+
+        client = Client.objects.filter(pk=self.kwargs['pk'])
+        address = client.adresse
+        zipCode = address.zipCode
+        city = address.city
+        donneesPersonnelles = client.donnees_personnelles_client
+        context = super(ClientUpdate, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class(instance=zipCode)
+        if 'form2' not in context:
+            context['form2'] = self.second_form(instance=city)
+        if 'form3' not in context:
+            context['form3'] = self.third_form(instance=address)
+        if 'form4' not in context:
+            context['form4'] = self.fourth_form(instance=donneesPersonnelles)
+        if 'form5' not in context:
+            context['form5'] = self.fifth_form(instance=client)
+        return context            
+
 class ClientSelect(ListView):
     model = Client
     template_name = "garage/client-select.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # print(context)
         context['liste_client'] = self.get_queryset()
-        # print(context)
+        return context
+
+class Clients(ClientSelect):
+    template_name = "garage/clients.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         return context
 
 
 class VoitureCreate(CreateView):
     form_class = VoitureForm
     template_name = 'garage/voiture_form.html'
-    # success_url = reverse_lazy('garage:intervention-create',
-    #                             kwargs={'vehicule_id': self.object.id},
-    #                             current_app='garage')
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     return context
 
     def get_success_url(self, **kwargs):
+
         return reverse_lazy('garage:intervention-create',
                                 kwargs={'vehicule_id': self.object.id},
                                 current_app='garage')
@@ -165,7 +245,81 @@ class VoitureCreate(CreateView):
         voiture = form.save()
         voiture.client = client
         voiture.save()
+        voiture.type_vehicule = "Voiture"
+        voiture.save()
         return super().form_valid(form)
+
+
+class MotoCreate(CreateView):
+    form_class = MotoForm
+    template_name = 'garage/moto_form.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('garage:intervention-create',
+                                kwargs={'vehicule_id': self.object.id},
+                                current_app='garage')
+
+    def form_valid(self, form):
+        client = Client.objects.get(pk=self.kwargs['client_id'])
+        moto = form.save()
+        moto.type_vehicule = "Moto"
+        moto.client = client
+        moto.save()
+        return super().form_valid(form)
+
+class VeloCreate(CreateView):
+    form_class = VeloForm
+    template_name = 'garage/velo_form.html'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('garage:intervention-create',
+                                kwargs={'vehicule_id': self.object.id},
+                                current_app='garage')
+
+    def form_valid(self, form):
+        client = Client.objects.get(pk=self.kwargs['client_id'])
+        velo = form.save()
+        velo.type_vehicule = "Velo"
+        velo.client = client
+        velo.save()
+        return super().form_valid(form)
+
+
+class VoitureUpdate(UpdateView):
+    model = Voiture
+    template_name = 'garage/voiture_update.html'
+    form_class = VoitureForm
+    success_url = reverse_lazy('garage:voitures')
+
+    def my_url(self):
+        pass
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_interventions'] = Intervention.objects.filter(vehicule=self.kwargs['pk'])
+        return context
+
+class MotoUpdate(UpdateView):
+    model = Moto
+    template_name = 'garage/moto_update.html'
+    form_class = MotoForm
+    success_url = reverse_lazy('garage:voitures')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_interventions'] = Intervention.objects.filter(vehicule=self.kwargs['pk'])
+        return context
+
+class VeloUpdate(UpdateView):
+    model = Velo
+    template_name = 'garage/velo_update.html'
+    form_class = VeloForm
+    success_url = reverse_lazy('garage:velos')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_interventions'] = Intervention.objects.filter(vehicule=self.kwargs['pk'])
+        return context
 
 
 class VehiculeSelect(ListView):
@@ -176,11 +330,14 @@ class VehiculeSelect(ListView):
         context = super().get_context_data(**kwargs)
         context['liste_vehicule'] = self.get_queryset()
         context['voiture_id'] = None
+        context['curent_model'] = "Voiture"
+        if self.template_name == 'garage/voiture-select.html':
+            client = Client.objects.get(pk=self.kwargs['client_id'])
+            context['client'] = client
         return context
         
     def get_queryset(self):
         return Voiture.objects.filter(client_id=self.kwargs['client_id'])
-
 
 class MotoSelect(VehiculeSelect):
     model = Moto
@@ -188,69 +345,136 @@ class MotoSelect(VehiculeSelect):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['liste_vehicule'] = self.get_queryset()
+        context['curent_model'] = "Moto"
         return context
 
     def get_queryset(self):
         return Moto.objects.filter(client_id=self.kwargs['client_id'])
 
-    
+class VeloSelect(VehiculeSelect):
+    model = Velo
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_vehicule'] = self.get_queryset()
+        context['curent_model'] = "Velo"
+        return context
+
+    def get_queryset(self):
+        return Velo.objects.filter(client_id=self.kwargs['client_id'])
 
 
-class Intervention(CreateView):
+class VehiculeList(VehiculeSelect):
+    template_name = 'garage/vehicules.html'
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['curent_model'] = "Voiture"
+        return context
+        
+    def get_queryset(self):
+        return Voiture.objects.all()
+
+class MotoList(VehiculeSelect):
+    template_name = 'garage/vehicules.html'
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['curent_model'] = "Moto"
+        return context
+        
+    def get_queryset(self):
+        return Moto.objects.all()
+
+class VeloList(VehiculeSelect):
+    template_name = 'garage/vehicules.html'
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['curent_model'] = "Velo"
+        return context
+        
+    def get_queryset(self):
+        return Velo.objects.all()
+
+
+class InterventionCreate(CreateView):
     form_class = InterventionForm
     template_name = 'garage/ordre_reparation.html'    
+    def get_success_url(self, **kwargs):
+
+        return reverse_lazy('garage:accueil',
+                                current_app='garage')
+
+    def form_valid(self, form):
+        if Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Voiture":
+            vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
+
+        elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Moto":
+            vehicule = Moto.objects.get(pk=self.kwargs['vehicule_id'])
+
+        elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Velo":
+            vehicule = Velo.objects.get(pk=self.kwargs['vehicule_id'])
+            
+        user = self.request.user
+
+        intervention = form.save(commit=False)
+        intervention.utilisateur = user
+        intervention.vehicule = vehicule
+
+        intervention.save()
+        return super().form_valid(form)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        vehicule = Vehicule.objects.get(pk=self.kwargs['vehicule_id'])
+        if Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Voiture":
+            vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
+
+        elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Moto":
+            vehicule = Moto.objects.get(pk=self.kwargs['vehicule_id'])
+
+        elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Velo":
+            vehicule = Velo.objects.get(pk=self.kwargs['vehicule_id'])
+
         context['vehicule'] = vehicule   
         return context
 
-    def form_valid(self, form):
-        vehicule = Vehicule.objects.get(pk=self.kwargs['vehicule_id'])
-        intervention = form.save()
-        intervention.vehicule = vehicule
-        intervention.save()
-        return super().form_valid(form)
+class InterventionSelect(ListView):
+    model = Intervention
+    template_name = "garage/intervention-select.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_interventions'] = self.get_queryset()
+        return context
 
-  
+class Interventions(InterventionSelect):
+    template_name = "garage/interventions.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
+class InterventionUpdate(UpdateView):
+    model = Intervention
+    form_class = InterventionForm
+    template_name = 'garage/ordre_reparation.html'   
+    success_url = reverse_lazy('garage:interventions')
 
-# class ordre_reparation(CreateView):
-#     model = Intervention
-#     fields = '__all__'
-#     #exclude = ('intervention_realisee', 'statut')
-#     def getForm(self, request):
-#         ordre_reparation_form = OrdreReparationForm(request.POST or None)
-#         return {
-#             'ordre_reparation_form' : ordre_reparation_form
-        
-#         }
-#     def get(self, request):
-#         myTemplate_name = "garage/ordre_reparation.html"
-#         return render(request, myTemplate_name, self.getForm( request ) )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        intervention = Intervention.objects.get(pk=self.kwargs['pk'])
+        if intervention.vehicule.type_vehicule == "Voiture":
+            vehicule = Voiture.objects.get(pk=intervention.vehicule)
 
+        elif intervention.vehicule.type_vehicule == "Moto":
+            vehicule = Moto.objects.get(pk=intervention.vehicule)
 
-# def ordre_reparation(request, client_id, address_id, zipCode_id, city_id):
-#     client = Client.objects.get(pk=client_id)
-#     donnees = DonneesPersonnelles.objects.get(pk=client_id)
-#     address = Address.objects.get(pk=address_id)
-#     zipCode = ZipCode.objects.get(pk=zipCode_id)
-#     city = City.objects.get(pk=city_id)
-     
-#     context = {
-#         'donnees': donnees,
-#         'client': client,
-#         'address': address,    
-#         'zipCode': zipCode,
-#         'city': city,
-       
-#     }
-#     # client = get_object_or_404(Client, id=id)
-#     return render(request, 'garage/ordre_reparation.html', context)    
+        elif intervention.vehicule.type_vehicule == "Velo":
+            vehicule = Velo.objects.get(pk=intervention.vehicule)
 
+        context['vehicule'] = vehicule   
+        return context  
 
 def recherche(request):
     query = request.GET.get('query')
@@ -264,10 +488,6 @@ def recherche(request):
         'context_object_name': clients
     }
     return render(request, 'garage/recherche.html', context) 
-
-class VehiculeList(VehiculeSelect):
-    template_name = 'garage/vehicules.html'
-
    
 def ChoixVehicule(request):
     pass

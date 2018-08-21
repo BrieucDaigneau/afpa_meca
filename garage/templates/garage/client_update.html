@@ -8,20 +8,20 @@
     
             <titre class="col-md-12">
                 <div class="col-md-12">
-                    <h1 id="titre" class="title">Création nouveau client</h1>
+                    <h1 id="titre" class="title">Consultation client</h1>
                 </div>
             </titre>
         </br>
         
             <formulaire class="col-md-9">
                 <h4>Client</h4>
-                <form class="needs-validation" action="{% url 'garage:client-create' %}" method="post">
+                <form class="needs-validation" method="post">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group {% if client_form.nom_client.errors %}has-warning has-feedback{% endif %}">
                                 <label for="{{ client_form.nom_client.id_for_label }}" class="control-label">Nom</label>
-                                {{ client_form.nom_client }}
+                                {{ form5.nom_client }}
                             </div>
                             <div class="invalid-feedback">
                                 Saisie du nom est obligatoire
@@ -30,7 +30,7 @@
                         <div class="col-md-6">
                             <div class="form-group {% if client_form.prenom_client.errors %}has-warning has-feedback{% endif %}">
                                 <label for="{{ client_form.prenom_client.id_for_label }}" class="control-label">Prenom</label>
-                                {{ client_form.prenom_client }}
+                                {{ form5.prenom_client }}
                             </div>
                             <div class="invalid-feedback">
                                 Saisie du prenom est obligatoire
@@ -41,49 +41,49 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="{{ client_form.numero_afpa_client.id_for_label }}" class="control-label">Numéro carte AFPA</label>
-                            {{ client_form.numero_afpa_client }}
+                            {{ form5.numero_afpa_client }}
                         </div>
                         <div class="col-md-6">
                             <label for="{{ form.telephone_client.id_for_label }}" class="control-label">Téléphone</label>
-                            {{ donneesPersonnelles_form.telephone_client }}
+                            {{ form4.telephone_client }}
                         </div>
                         <div class="col-md-6">
                             <label for="{{ form.mail_client.id_for_label }}" class="control-label">Email</label>
-                            {{ donneesPersonnelles_form.mail_client }}
-                            <div> {{ donneesPersonnelles_form.mail_client.errors }} </div>
+                            {{ form4.mail_client }}
+                            <div> {{ form4.mail_client.errors }} </div>
                         </div>
                     </div> 
                     
                     <div class="row">
                         <div class="col-md-2">
                             <label for="{{ address_form.street_number.id_for_label }}" class="control-label">Numéro de rue :</label>
-                            {{ address_form.street_number }}
+                            {{ form3.street_number }}
                         </div>
                         <div class="col-md-6">
                             <label for="{{ address_form.street.id_for_label }}" class="control-label">Adresse</label>
-                            {{ address_form.street }}
+                            {{ form3.street }}
                         </div>
                         <div class="col-md-4">
                             <label for="{{ address_form.street_complement.id_for_label }}" class="control-label">Complement d'adresse</label>
-                            {{ address_form.street_complement }}
+                            {{ form3.street_complement }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <label for="{{ zipCode_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
-                            {{ zipCode_form.zip_code }}
+                            {{ form.zip_code }}
                         </div>
                     
                         <div class="col-md-4">
                             <label for="{{ city_form.city_name.id_for_label }}" class="control-label">Ville</label>
-                            {{ city_form.city_name }}
+                            {{ form2.city_name }}
                         </div>
                         <div class="col-md-4">
                             <label for="{{ form.carte_AFPA_img.id_for_label }}" class="control-label">Carte AFPA img</label>
-                            {{ donneesPersonnelles_form.carte_AFPA_img }}
+                            {{ form4.carte_AFPA_img }}
                         </div>
                     </div>
-                    <div> {{ address_form.non_field_errors }} </div>
+                    <div> {{ form3.non_field_errors }} </div>
 
                     <div class="msgError"> {{ internal_error }} </div>     
 
@@ -102,6 +102,9 @@
                     </div>   
 
                 </form>
+
+
+
             </formulaire>
 
     </div>

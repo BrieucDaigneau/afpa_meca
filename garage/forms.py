@@ -1,8 +1,7 @@
 from django import forms
-
 from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea
 from django.forms.utils import ErrorList
-from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture, Intervention
+from .models import *
 
 class ClientForm(forms.ModelForm):
     class Meta:
@@ -15,6 +14,15 @@ class ClientForm(forms.ModelForm):
             'numero_afpa_client': NumberInput(attrs={'class': 'form-control'})
         }
 
+class DonneesPersonnellesUpdateForm(forms.ModelForm):
+    class Meta:
+        model = DonneesPersonnelles
+        fields = ["mail_client", "telephone_client","carte_AFPA_img"]
+        widgets = {
+            'mail_client': TextInput(attrs={'class': 'form-control'}),
+            'telephone_client': TextInput(attrs={'class': 'form-control'}),
+            'carte_AFPA_img': FileInput(attrs={'class': 'form-control'})
+        }  
 
 class DonneesPersonnellesForm(forms.ModelForm):
     class Meta:
@@ -34,6 +42,15 @@ class DonneesPersonnellesForm(forms.ModelForm):
             raise  forms.ValidationError("Email existe déjà")
         return mail_client
 
+class AddressUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ["street","street_number","street_complement"]
+        widgets = {
+            'street': TextInput(attrs={'class': 'form-control'}),
+            'street_number': NumberInput(attrs={'class': 'form-control'}),
+            'street_complement': TextInput(attrs={'class': 'form-control'})
+        }
 
 class AddressForm(forms.ModelForm):
     class Meta:
@@ -55,7 +72,6 @@ class AddressForm(forms.ModelForm):
             raise forms.ValidationError("l'adresse existe déjà")
         return cleaned_data
 
-
 class ZipCodeForm(forms.ModelForm):
     class Meta:
         model = ZipCode
@@ -63,7 +79,6 @@ class ZipCodeForm(forms.ModelForm):
         widgets = {
             'zip_code': TextInput(attrs={'class': 'form-control'})
         }  
-
 
 class CityForm(forms.ModelForm):
     class Meta:
@@ -76,7 +91,7 @@ class CityForm(forms.ModelForm):
 class VoitureForm(forms.ModelForm):
     class Meta:
         model = Voiture
-        exclude = ('client', 'carte_grise_img', 'carte_assurance_img' )
+        exclude = ('client', 'carte_grise_img', 'carte_assurance_img', 'type_vehicule' )
         widgets = {
             'libelle_marque': TextInput(attrs={'class': 'form-control'}),
             'libelle_modele': TextInput(attrs={'class': 'form-control'}),
@@ -87,19 +102,37 @@ class VoitureForm(forms.ModelForm):
             'carte_grise_img': FileInput(attrs={'class': 'form-control'}),
             'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
         }
-       
+
+class MotoForm(forms.ModelForm):
+    class Meta:
+        model = Moto
+        exclude = ('client', 'carte_grise_img', 'carte_assurance_img', 'type_vehicule'  )
+        widgets = {
+            'libelle_marque': TextInput(attrs={'class': 'form-control'}),
+            'libelle_modele': TextInput(attrs={'class': 'form-control'}),
+            'immatriculation': TextInput(attrs={'class': 'form-control'}),
+            'vin': TextInput(attrs={'class': 'form-control'}),
+            'kilometrage': NumberInput(attrs={'class': 'form-control'}),
+            'date_mec': DateInput(attrs={'class': 'form-control'}),
+            'carte_grise_img': FileInput(attrs={'class': 'form-control'}),
+            'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
+        }
+
+class VeloForm(forms.ModelForm):
+    class Meta:
+        model = Velo
+        fields = ['libelle_modele']
+        widgets = {
+            'libelle_modele': TextInput(attrs={'class': 'form-control'}),
+        }
+
 class InterventionForm(forms.ModelForm):
     class Meta:
         model = Intervention
-        fields = ["date_saisie_intervention","date_restitution_prevu","diagnostic","intervention_a_realiser"]
-        #exclude = ('intervention_realisee', 'statut')
+        exclude = ('intervention_realisee', 'statut', 'utilisateur', 'vehicule', 'date_saisie_intervention')
         widgets = {
-            'date_saisie_intervention': DateInput(attrs={'class': 'form-control'}),            
             'date_restitution_prevu': DateInput(attrs={'class': 'form-control'}),    
             'diagnostic' : Textarea(attrs={'class': 'form-control'}),  
-            'intervention_a_realiser' : Textarea(attrs={'class': 'form-control'})
+            'intervention_a_realiser' : Textarea(attrs={'class': 'form-control'}),
         }
-
-
-
 
