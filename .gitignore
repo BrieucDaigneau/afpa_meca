@@ -5,5 +5,5 @@ garage/migrations/
 garage/migrations/0001_initial.py
 garage/migrations/*.py
 db.sqlite3
-settings.json
-launch.json
+.vscode/settings.json
+.vscode/launch.json
