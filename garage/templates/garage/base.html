@@ -9,8 +9,7 @@
 	<link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="{% static 'garage/css/base.css' %}" />
 	<link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
-	<link href= {% block css %}{% endblock css %} rel="stylesheet">
-	{% block head %}{% endblock head %}
+	<link href={ % block css %}{% endblock css %} rel="stylesheet"> {% block head %}{% endblock head %}
 </head>
 
 <body>
@@ -18,15 +17,15 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-4" id="logo">
-				<img src="{% static 'garage/img/logo_afpa2.png' %}" ></img>
+				<img src="{% static 'garage/img/logo_afpa2.png' %}"></img>
 			</div>
 			<div class="col-md-4" id="titre">
 				<h1>Pôle Mécanique</h1>
 			</div>
-			<div class="col-md-3" id="logout" >
+			<div class="col-md-3" id="logout">
 				<div class="container col-md-8" id="logoutBox">
 
-					<img class="mt-2"src="{% static 'garage/img/logo_logout.png' %}" width="30" height="30">
+					<img class="mt-2" src="{% static 'garage/img/logo_logout.png' %}" width="30" height="30">
 					<div class="utilisateurConnecte">Bonjour, {{ user.get_username }}</div>
 					<a href="{% url 'garage:logout' %}" class=" deconection utilisateurConnecte mb-2">Déconnexion</a>
 				</div>
@@ -81,16 +80,17 @@
 								<div class="separateur_navbar">|</div>
 							</li>
 							<li class="nav-item">
-									<a class="nav-link" href="{% url 'garage:motos' %}">Moto</a>
-								</li>
-								<li class="nav-item nav-link">
-									<div class="separateur_navbar">|</div>
-								</li><li class="nav-item">
-										<a class="nav-link" href="{% url 'garage:velos' %}">Velo</a>
-									</li>
-									<li class="nav-item nav-link">
-										<div class="separateur_navbar">|</div>
-									</li>
+								<a class="nav-link" href="{% url 'garage:motos' %}">Moto</a>
+							</li>
+							<li class="nav-item nav-link">
+								<div class="separateur_navbar">|</div>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{% url 'garage:velos' %}">Velo</a>
+							</li>
+							<li class="nav-item nav-link">
+								<div class="separateur_navbar">|</div>
+							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="{% url 'garage:interventions' %}">Ordres de réparations</a>
 							</li>

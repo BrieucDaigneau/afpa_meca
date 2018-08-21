@@ -1,68 +1,64 @@
-{% extends "garage/base.html" %}
-{% load static %}
-
-{% block content %}
-{% comment %} <div class="row">
+{% extends "garage/base.html" %} {% load static %} {% block content %} {% comment %}
+<div class="row">
     <h1 class="mt-5">Liste des Clients</h1>
 
-<div class="row">
-    
-    <h4 class="col-md-12" >
-        <div class="row">
-            <div class=" col-md-3">Nom</div>
-            <div class=" col-md-3">Prénom</div>
-            <div class="col-md-3">N° AFPA</div>
-            <div class="col-md-3">E-mail</div>
-        </div>
-    </h4>
-{% for client in liste_clients %}
-<input type="radio" class="btn col-md-1 radio" id="{{client.id}}" name="btnClient" ondblclick="redirect()" onclick='javascript:document.clientChecked={{client.id}};' ></input>
-    
-<label for="{{client.id}}" id="elementListe" class="col-md-12">
-    <div class="row " ondblclick="redirect()">
-        <div class=" col-md-3">{{ client.nom_client }}</div>
-        <div class=" col-md-3">{{ client.prenom_client }}</div>
-        <div class="col-md-3">{{ client.numero_afpa_client }}</div>
-        <div class="col-md-3">{{ client.donnees_personnelles_client.mail_client }}</div>
-    </div>
-</label>
+    <div class="row">
 
-{% empty %}
-<p>aucun client</p>
-{% endfor %}
-
-<div class="row">
-        
-    <h1 class="mt-5">Liste des Vehicules</h1>
-    
-</div>
-
-    <div class="row">            
-        <h4 class="col-md-12" >
+        <h4 class="col-md-12">
             <div class="row">
-                <div class=" col-md-3">Modele </div>
+                <div class=" col-md-3">Nom</div>
+                <div class=" col-md-3">Prénom</div>
+                <div class="col-md-3">N° AFPA</div>
+                <div class="col-md-3">E-mail</div>
             </div>
         </h4>
+        {% for client in liste_clients %}
+        <input type="radio" class="btn col-md-1 radio" id="{{client.id}}" name="btnClient" ondblclick="redirect()" onclick='javascript:document.clientChecked={{client.id}};'></input>
 
-{% for vehicule in liste_vehicules %}
-            <input type="radio" class="btn col-md-1 radio" id="{{vehicule.id}}" name="btnVehicule" onclick='javascript:document.vehiculeChecked={{vehicule.id}}' >
-        </input>
-        
-        <label for="{{vehicule.id}}" id="elementListe" class="col-md-12 label_vehicule" ondblclick="redirect()" >
-            <div class="row ">
-                <div class="col-md-3">{{ vehicule.libelle_modele }}</div>
+        <label for="{{client.id}}" id="elementListe" class="col-md-12">
+            <div class="row " ondblclick="redirect()">
+                <div class=" col-md-3">{{ client.nom_client }}</div>
+                <div class=" col-md-3">{{ client.prenom_client }}</div>
+                <div class="col-md-3">{{ client.numero_afpa_client }}</div>
+                <div class="col-md-3">{{ client.donnees_personnelles_client.mail_client }}</div>
             </div>
         </label>
+
         {% empty %}
-        <p>aucun véhicule</p>
+        <p>aucun client</p>
         {% endfor %}
- {% endcomment %}
 
         <div class="row">
-            <h1 class="mt-5">Liste des Interventions</h1>
+
+            <h1 class="mt-5">Liste des Vehicules</h1>
+
         </div>
-       
-            <h4 class="col-md-12" >
+
+        <div class="row">
+            <h4 class="col-md-12">
+                <div class="row">
+                    <div class=" col-md-3">Modele </div>
+                </div>
+            </h4>
+
+            {% for vehicule in liste_vehicules %}
+            <input type="radio" class="btn col-md-1 radio" id="{{vehicule.id}}" name="btnVehicule" onclick='javascript:document.vehiculeChecked={{vehicule.id}}'>
+            </input>
+
+            <label for="{{vehicule.id}}" id="elementListe" class="col-md-12 label_vehicule" ondblclick="redirect()">
+                <div class="row ">
+                    <div class="col-md-3">{{ vehicule.libelle_modele }}</div>
+                </div>
+            </label>
+            {% empty %}
+            <p>aucun véhicule</p>
+            {% endfor %} {% endcomment %}
+
+            <div class="row">
+                <h1 class="mt-5">Liste des Interventions</h1>
+            </div>
+
+            <h4 class="col-md-12">
                 <div class="row">
                     <div class=" col-md-3">client</div>
                     <div class=" col-md-2">véhicule</div>
@@ -71,27 +67,27 @@
                     <div class="col-md-2">Statut</div>
                 </div>
             </h4>
-            
-    {% for intervention in liste_interventions %}
-    <input type="radio" class="btn col-md-1 radio" id="{{intervention.id}}" name="btnIntervention" onclick='javascript:document.interventionChecked={{intervention.id}};' ></input>
 
-    <label for="{{intervention.id}}" id="elementListe" class="col-md-12" ondblclick="redirect()">
-        <div class="row ">
-            <div class="col-md-3">{{ intervention.vehicule.client.nom_client }} {{ intervention.vehicule.client.prenom_client }}</div>
-            <div class="col-md-2">{{ intervention.vehicule }}</div>
-            <div class="col-md-2">{{ intervention.utilisateur }}</div>
-            <div class="col-md-3">{{ intervention.date_saisie_intervention }}</div>
-            <div class="col-md-2">{{ intervention.statut }}</div>
-        </div>
-    </label>
+            {% for intervention in liste_interventions %}
+            <input type="radio" class="btn col-md-1 radio" id="{{intervention.id}}" name="btnIntervention" onclick='javascript:document.interventionChecked={{intervention.id}};'></input>
 
-    {% empty %}
-    <p>aucune intervention</p>
-    {% endfor %}
-<div class="container">
-    <div class="col-md-12">
-        <img class="img-responsive mt-5" style="width:100%" src="{% static 'garage/img/accueil page.jpg' %}"></img>
-    </div>
-</div>
+            <label for="{{intervention.id}}" id="elementListe" class="col-md-12" ondblclick="redirect()">
+                <div class="row ">
+                    <div class="col-md-3">{{ intervention.vehicule.client.nom_client }} {{ intervention.vehicule.client.prenom_client }}</div>
+                    <div class="col-md-2">{{ intervention.vehicule }}</div>
+                    <div class="col-md-2">{{ intervention.utilisateur }}</div>
+                    <div class="col-md-3">{{ intervention.date_saisie_intervention }}</div>
+                    <div class="col-md-2">{{ intervention.statut }}</div>
+                </div>
+            </label>
 
-{% endblock %}
+            {% empty %}
+            <p>aucune intervention</p>
+            {% endfor %}
+            <div class="container">
+                <div class="col-md-12">
+                    <img class="img-responsive mt-5" style="width:100%" src="{% static 'garage/img/accueil page.jpg' %}"></img>
+                </div>
+            </div>
+
+            {% endblock %}

@@ -1,41 +1,29 @@
-{% extends 'garage/liste_clients.html' %}
-
-{% block recherche %}
+{% extends 'garage/liste_clients.html' %} {% block recherche %}
+</div>
+<div class="container">
+    <div class="col-md-2">
     </div>
-        <div class="container">
-            <div class="col-md-2">
-            </div>
-            <div class="row mb-5 mt-3">
-                
-                <div class="col-md-2 ">
-                    <a href="{% url 'garage:client-create' %}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</a>
-                </div>
+    <div class="row mb-5 mt-3">
+
+        <div class="col-md-2 ">
+            <a href="{% url 'garage:client-create' %}" class="btn btn-sm btn-primary btn-lg btn-block">Nouveau</a>
         </div>
     </div>
-{% endblock recherche %}
-
-
-{% block boutons %}
+</div>
+{% endblock recherche %} {% block boutons %}
 
 </div>
 <div class="row">
     <div class="container">
         <div class="row mt-5">
-                        <a href="{% url 'garage:accueil' %}" class=" btn btn-sm btn-primary col-md-1" >Annuler</a>
-                        <div class="col-md-3"></div>
-                        <button class=" btn btn-primary btn-sm col-md-2" onClick="redirect()">Modifier
-                        </button>
-                        <div class="col-md-1"></div>
-                        <button class="  btn btn-primary btn-sm col-md-5" onClick="redirect()">Valider et Attribuer un véhicule</button>
-                    </div>
-                </div>
-                
-            </div>
-
+            <a href="{% url 'garage:accueil' %}" class=" btn btn-sm btn-primary col-md-1">Annuler</a>
+            <div class="col-md-3"></div>
+            <button class=" btn btn-primary btn-sm col-md-2" onClick="redirect()">Modifier
+            </button>
+            <div class="col-md-1"></div>
+            <button class="  btn btn-primary btn-sm col-md-5" onClick="redirect()">Valider et Attribuer un véhicule</button>
         </div>
-{% endblock boutons %} 
-        
-        
-
-
-    
+    </div>
+</div>
+</div>
+{% endblock boutons %}

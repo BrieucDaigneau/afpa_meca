@@ -22,15 +22,6 @@ class Accueil(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(Accueil, self).get_context_data(**kwargs)
         context['liste_interventions'] = Intervention.objects.filter(utilisateur=self.request.user)
-        # context['liste_vehicules'] = []
-        # context['liste_clients'] = []
-        # context['liste_vehicules'] = Vehicule.objects.all()
-        # context['liste_clients'] = Client.objects.all()
-        # # for intervention in context['liste_interventions']:
-        # #     context['liste_vehicules'].append(Vehicule.objects.filter(id=intervention.vehicule))
-        # # for vehicule in context['liste_vehicules']:
-        # #     context['liste_clients'].append(Client.objects.filter(id=vehicule.client))
-        # # print("#####",context, "#################")
         return context
 
 
@@ -77,7 +68,6 @@ class ClientCreateView(View):
                         modelFormError = "Problème de connection à la base de données"                  
                         raise                                
 
-
                     city_form = dico['city_form']
                     if not city_form.is_valid():
                         modelFormError = "Une erreur interne est apparue sur la ville. Merci de recommencer votre saisie."                  
@@ -97,7 +87,6 @@ class ClientCreateView(View):
                         except DatabaseError:   
                             modelFormError = "Problème de connection à la base de données"                  
                             raise                                
-
 
                         address_form = dico['address_form']                       
                         if not address_form.is_valid():                         
@@ -148,26 +137,16 @@ class ClientCreateView(View):
          
         return render(request, 'garage/client_form.html', self.getForm( request ) )
 
-
 class ClientUpdate(UpdateView):
-    # model = Client
     template_name = 'garage/client_update.html'
     success_message = "Données mises à jour avec succès"
-    # form_class = ZipCodeForm
-    # second_form = CityForm
-    # third_form = AddressForm
-    # fourth_form = DonneesPersonnellesForm
-    # fifth_form = ClientForm
-    # success_url = reverse_lazy('garage/clients')
 
     def get(self, request, *args, **kwargs):
         client = Client.objects.get(pk=self.kwargs['pk'])
         address = client.adresse
         zipCode = address.zipCode
         city = address.city
-        print("############", zipCode.id)
         donneesPersonnelles = client.donnees_personnelles_client
-        # super(ClientUpdate, self).get(request, *args, **kwargs)
         form = ZipCodeForm(instance=zipCode)
         form2 = CityForm(instance=city)
         form3 = AddressUpdateForm(instance=address)
@@ -176,7 +155,6 @@ class ClientUpdate(UpdateView):
 
         context = {'form': form, 'form2': form2, 'form3': form3, 'form4': form4, 'form5': form5, }
         return render(request, self.template_name, context)
-        # return self.render_to_response(self.get_context_data(object=self.object, form=form, form2=form2, form3=form3, form4=form4, form5=form5))
 
     def post (self, request, *args, **kwargs):
         client = Client.objects.get(pk=self.kwargs['pk'])
@@ -201,10 +179,8 @@ class ClientUpdate(UpdateView):
             cityData.save()
             addressData.city = cityData
 
-
             zipCodeData.save()
             addressData.zipCode = zipCodeData
-
 
             addressData.save()
             clientData.adresse = addressData
@@ -216,10 +192,6 @@ class ClientUpdate(UpdateView):
             return redirect('garage:clients')
         context = {'form': form, 'form2': form2, 'form3': form3, 'form4': form4, 'form5': form5, }
         return render(request, self.template_name, context)
-            # return HttpResponseRedirect(self.get_success_url())
-        # else:
-        #     return self.render_to_response(
-        #       self.get_context_data(form=form, form2=form2, form3=form3, form4=form4, form5=form5))
 
     def get_context_data(self, **kwargs):
 
@@ -239,13 +211,7 @@ class ClientUpdate(UpdateView):
             context['form4'] = self.fourth_form(instance=donneesPersonnelles)
         if 'form5' not in context:
             context['form5'] = self.fifth_form(instance=client)
-        return context
-    
-    
-
-    # def get_success_url(self):
-    #     return reverse('garage/clients')
-            
+        return context            
 
 class ClientSelect(ListView):
     model = Client
@@ -330,7 +296,6 @@ class VoitureUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print("####################################################################", self.request, "###")
         context['liste_interventions'] = Intervention.objects.filter(vehicule=self.kwargs['pk'])
         return context
 
@@ -381,7 +346,6 @@ class MotoSelect(VehiculeSelect):
         context = super().get_context_data(**kwargs)
         context['liste_vehicule'] = self.get_queryset()
         context['curent_model'] = "Moto"
-        print("############################################################", context)
         return context
 
     def get_queryset(self):
@@ -512,82 +476,6 @@ class InterventionUpdate(UpdateView):
         context['vehicule'] = vehicule   
         return context  
 
-## dev en cours################################
-#################################################
-
-# class DevisCreate(CreateView):
-   
-#     template_name = 'garage/devis_form.html'   
-#     success_message = "devis créé"
-
-#     # def get_success_url(self, **kwargs):
-
-#     #     return reverse_lazy('garage:accueil',
-#     #                             current_app='garage')
-
-
-#     def get(self, request, *args, **kwargs):
-
-#         devis_form = DevisForm(request.POST)
-#         piece_fournisseur_devis_form = PieceFournisseurDevisForm(request.POST)
-#         fournisseur_form = FournisseurForm(request.POST)
-#         piece_form = PieceForm(request.POST)
-
-#         context = {'devis_form':devis_form, 'piece_fournisseur_devis_form':piece_fournisseur_devis_form, 'fournisseur_form':fournisseur_form, 'piece_form':piece_form, }
-#         return context
-        
-#     def post(self, request, *args, **kwargs):
-#         devis_form = DevisForm(request.POST)
-#         piece_fournisseur_devis_form = PieceFournisseurDevisForm(request.POST)
-#         fournisseur_form = FournisseurForm(request.POST)
-#         piece_form = PieceForm(request.POST)
-
-#         if devis_form.is_valid() and piece_fournisseur_devis_form.is_valid() and fournisseur_form.is_valid() and piece_form.is_valid():
-
-#             devisData = devis_form.save(commit=False)
-#             piece_fournisseur_devisData = piece_fournisseur_devis_form.save(commit=False)
-#             fournisseurData = fournisseur_form.save(commit=False)
-#             pieceData = piece_form.save(commit=False)
-
-#             devisData.intervention = Intervention.objects.get(pk=self.kwargs['intervention_id'])
-#             devisData.statut = 'Attente Formateur'
-#             # devisData.commande_fournisseur =
-#             # devisData.commande_piece =
-#             devisData.save()
-
-#             if pieceData.not_exist():
-#                 pieceData.save()
-#             fournisseurData.piece_fournisseur = pieceData
-#             if fournisseurData.not_exist():
-#                 fournisseurData.save()
-
-#             piece_fournisseur_devisData.devis = devisData
-#             piece_fournisseur_devisData.fournisseur = fournisseurData
-#             piece_fournisseur_devisData.piece = pieceData
-
-#             piece_fournisseur_devisData.save()
-#             return redirect('garage:accueil')
-#         context = {'devis_form':devis_form, 'piece_fournisseur_devis_form':piece_fournisseur_devis_form, 'fournisseur_form':fournisseur_form, 'piece_form':piece_form, }
-#         return render(request, self.template_name, context)
-
-
-    
-#     def get_contextData(self, **kwargs):
-#         context = super().get_contextData(**kwargs)
-#     #     if Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Voiture":
-#     #         vehicule = Voiture.objects.get(pk=self.kwargs['vehicule_id'])
-
-#     #     elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Moto":
-#     #         vehicule = Moto.objects.get(pk=self.kwargs['vehicule_id'])
-
-#     #     elif Vehicule.objects.get(pk=self.kwargs['vehicule_id']).type_vehicule == "Velo":
-#     #         vehicule = Velo.objects.get(pk=self.kwargs['vehicule_id'])
-
-#     #     context['vehicule'] = vehicule   
-#         return context
-
-
-
 def recherche(request):
     query = request.GET.get('query')
     if not query:
@@ -600,8 +488,6 @@ def recherche(request):
         'context_object_name': clients
     }
     return render(request, 'garage/recherche.html', context) 
-
-
    
 def ChoixVehicule(request):
     pass

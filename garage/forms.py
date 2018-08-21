@@ -1,5 +1,4 @@
 from django import forms
-
 from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea
 from django.forms.utils import ErrorList
 from .models import *
@@ -14,6 +13,7 @@ class ClientForm(forms.ModelForm):
             'prenom_client': TextInput(attrs={'class': 'form-control'}),
             'numero_afpa_client': NumberInput(attrs={'class': 'form-control'})
         }
+
 class DonneesPersonnellesUpdateForm(forms.ModelForm):
     class Meta:
         model = DonneesPersonnelles
@@ -72,7 +72,6 @@ class AddressForm(forms.ModelForm):
             raise forms.ValidationError("l'adresse existe déjà")
         return cleaned_data
 
-
 class ZipCodeForm(forms.ModelForm):
     class Meta:
         model = ZipCode
@@ -80,7 +79,6 @@ class ZipCodeForm(forms.ModelForm):
         widgets = {
             'zip_code': TextInput(attrs={'class': 'form-control'})
         }  
-
 
 class CityForm(forms.ModelForm):
     class Meta:
@@ -104,6 +102,7 @@ class VoitureForm(forms.ModelForm):
             'carte_grise_img': FileInput(attrs={'class': 'form-control'}),
             'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
         }
+
 class MotoForm(forms.ModelForm):
     class Meta:
         model = Moto
@@ -137,33 +136,3 @@ class InterventionForm(forms.ModelForm):
             'intervention_a_realiser' : Textarea(attrs={'class': 'form-control'}),
         }
 
-
-class DevisForm(forms.ModelForm):
-    class Meta:
-        model = Devis
-        fields = []
-        
-class PieceFournisseurDevisForm(forms.ModelForm):
-    class Meta:
-        model = Piece_Fournisseur_Devis
-        fields = ['quantite_pieces_necessaires', 'prix_ht', 'numero_devis_fournisseur']
-        widgets = {
-            'quantite_pieces_necessaires':NumberInput(attrs={'class': 'form-control'}),
-            'prix_ht':NumberInput(attrs={'class': 'form-control'}),
-            'numero_devis_fournisseur':NumberInput(attrs={'class': 'form-control'}),
-        }
-class FournisseurForm(forms.ModelForm):
-    class Meta:
-        model = Fournisseur
-        exclude = ('pieces_fournisseur',)
-        widgets = {
-            'libelle_fournisseur':TextInput(attrs={'class': 'form-control'}),
-        }
-
-class PieceForm(forms.ModelForm):
-    model = Piece
-    exclude = ()
-    widget = {
-        'reference_piece':TextInput(attrs={'class': 'form-control'}),
-        'libelle_piece':TextInput(attrs={'class': 'form-control'}),
-    }
