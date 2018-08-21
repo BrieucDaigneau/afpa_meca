@@ -21,8 +21,8 @@ class ClientInline(admin.TabularInline):
 class DonneesPersonnellesAdmin(admin.ModelAdmin):
     inlines = (ClientInline, )
 
-class ZipCodeInline(admin.TabularInline):        
-    model = City.zipCode.through
+class ZipCodeInline(admin.TabularInline):   
+    model = City.zip_codes.through
     verbose_name = "Code Postal"
     verbose_name_plural = "Codes Postaux"
         
@@ -31,8 +31,8 @@ class ZipCodeAdmin(admin.ModelAdmin):
     inlines = (ZipCodeInline, )
 
 class CityInline(admin.TabularInline):
-    model = City.zipCode.through
-    verbose_name = u"Ville"
+    model = City.zip_codes.through
+    verbose_name = "Ville"
 
 class CityAdmin(admin.ModelAdmin):
     exclude = ("zipCode", )
