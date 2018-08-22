@@ -1,3 +1,3 @@
-BUSINESS_APPLICATION = {
-   'VEHICULE': VOITURE
+VehiculeConfig = {
+   'vehicule': 'voiture'
 }

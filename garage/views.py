@@ -13,9 +13,13 @@ from django.contrib.auth import logout
 from django.db import DatabaseError, transaction
 from django.core.exceptions import ValidationError
 
+class Home(TemplateView):
+    template_name = 'garage/home.html')
 
-def accueil(request):
-    return render(request, 'garage/accueil.html')
+    def get_context_data(self, **kwargs):
+        context = super(Home, self).get_context_data(**kwargs)
+        context['intervention_list'] = Intervention.objects.filter(utilisateur=self.request.user)
+        return context
 
 
 class ClientCreateView(View):

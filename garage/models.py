@@ -1,3 +1,4 @@
+from garage.business_application import VehiculeConfig
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -66,6 +67,17 @@ class Client(models.Model):
 
     def __str__(self):
         return "{0}  {1}  N° AFPA : {2}".format(self.nom_client, self.prenom_client, self.numero_afpa_client)
+
+class MyManager(models.Manager):
+    def get_child(self, id):
+        if VehicleConfig['vehicle'] == 'car':
+            if Voiture.objects.filter(pk=id):
+                return Voiture.objects.get(pk=id)
+        if VehicleConfig['vehicle'] == 'bike': 
+            if Moto.objects.filter(pk=id):
+                return Moto.objects.get(pk=id)
+            if Velo.objects.filter(pk=id):
+                return Velo.objects.get(pk=id)
 
 
 class Vehicule(models.Model):
