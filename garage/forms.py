@@ -14,7 +14,6 @@ class CustomerForm(forms.ModelForm):
             'afpa_number': NumberInput(attrs={'class': 'form-control'})
         }
 
-
 class PersonalData(forms.ModelForm):
     class Meta:
         model = PersonalData
@@ -25,7 +24,7 @@ class PersonalData(forms.ModelForm):
             'afpa_card_img': FileInput(attrs={'class': 'form-control'})
         }  
 
-    # Clean suivi du nom du champ concerné ensuite géré dans le Html
+
     def clean_mail(self):
         mail = self.cleaned_data['mail'].lower()
         r = PersonalData.objects.filter(mail=mail)
@@ -44,7 +43,7 @@ class AddressForm(forms.ModelForm):
             'street_complement': TextInput(attrs={'class': 'form-control'})
         }
 
-    # Clean suivi du nom du champ concerné ensuite géré dans le Html
+
     def clean(self):
         cleaned_data = super().clean()
         street_number = self.cleaned_data['street_number']
@@ -72,6 +71,7 @@ class CityForm(forms.ModelForm):
             'city_name': TextInput(attrs={'class': 'form-control'})
         }  
 
+
 class CarForm(forms.ModelForm):
     class Meta:
         model = Car
@@ -86,6 +86,7 @@ class CarForm(forms.ModelForm):
             'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
             'insurance_img': FileInput(attrs={'class': 'form-control'})
         }
+       
        
 class ReparationOrderForm(forms.ModelForm):
     class Meta:
