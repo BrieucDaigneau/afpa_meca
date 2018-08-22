@@ -1,0 +1,91 @@
+
+
+
+body 
+{
+  /* width: calc(10%); */
+  margin: auto;
+  /* font-size: 0.9em;    */
+  /* height: 0.5em; */
+  /* border : solid 2px yellow; */
+  /* height: 200px ; */
+
+}
+
+[class*="col-"]
+{
+  /* border: 2px solid indigo; */
+  border-radius: 6px;
+}
+formulaire
+{
+  /* border : solid 2px red; */
+}
+
+afpa, vehicule
+{
+  /* border : solid 2px pink; */
+}
+
+#saisir
+{
+  /* height: 10% ; */
+  /* border : solid 2px black; */
+}
+
+/* #info_afpa
+{
+  margin-top: 10px;
+  margin-right: 200px; 
+  width: 200px ;
+  text-align: center;
+} */
+
+#identite
+{
+  /* height:   */
+  /* font-size: 0.6em;  */
+  /* height: 10px ; */
+}
+
+#btn_ident
+{
+  margin-top : 1px;
+  height: 1px;
+}
+
+
+
+footer
+{
+  /* border : solid 2px black; */
+}
+
+#titre
+{
+  font-family: serif;
+  font-size: 40px; 
+  text-align: center;
+}
+
+.border-top { border-top: 1px solid #e5e5e5; }
+.border-bottom { border-bottom: 1px solid #e5e5e5; }
+.border-top-gray { border-top-color: #adb5bd; }
+
+.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+
+.lh-condensed { line-height: 1.25; }
+
+
+#test:hover{
+  background-color: rgba(121, 126, 122, 0.541);
+}
+
+:checked + label{
+  background-color: rgba(70, 131, 180, 0.671);
+  
+}
+
+.radio{
+  display: none;
+}

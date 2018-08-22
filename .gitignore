@@ -1,2 +1,9 @@
 *.pyc
 database.py
+*root*
+garage/migrations/
+garage/migrations/0001_initial.py
+garage/migrations/*.py
+db.sqlite3
+settings.json
+launch.json
