@@ -4,8 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 from django.db import models
-
-        
+from afpa_meca.business_application import VehicleConfig
         
 class ZipCode(models.Model):
     zip_code = models.CharField(max_length=15, verbose_name = 'Code Postal',)
@@ -68,6 +67,19 @@ class Client(models.Model):
         return "{0}  {1}  N° AFPA : {2}".format(self.nom_client, self.prenom_client, self.numero_afpa_client)
 
 
+class MyManager(models.Manager):
+    def get_child(self, id):
+        if VehiculeConfig['vehicle'] == 'car' :
+            if Voiture.objects.filter(pk=id) :
+                return Voiture.objects.get(pk=id)
+
+        if VehiculeConfig['vehicle'] == 'bike' : 
+            if Moto.objects.filter(pk=id) :
+                return Moto.objects.get(pk=id)
+            if Velo.objects.filter(pk=id) :
+                return Velo.objects.get(pk=id)
+
+
 class Vehicule(models.Model):
     # VOITURE = 'VOITURE'
     # MOTO = 'MOTO'
@@ -86,6 +98,8 @@ class Vehicule(models.Model):
         # default=Type_vehicule_choice[0]
         # )
     client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
+
+    objects = MyManager() 
 
     def is_upperclass(self):
         return self.type_vehicule in (self.MOTO, self.VOITURE)
