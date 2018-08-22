@@ -1,3 +1,3 @@
-VehiculeConfig = {
-   'vehicule': 'voiture'
+VehicleConfig = {
+   'vehicle': 'car'
 }
