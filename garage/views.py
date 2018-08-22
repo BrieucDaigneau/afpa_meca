@@ -147,13 +147,6 @@ class ClientSelect(ListView):
 class VoitureCreate(CreateView):
     form_class = VoitureForm
     template_name = 'garage/voiture_form.html'
-    # success_url = reverse_lazy('garage:intervention-create',
-    #                             kwargs={'vehicule_id': self.object.id},
-    #                             current_app='garage')
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     return context
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('garage:intervention-create',
@@ -198,7 +191,7 @@ class MotoSelect(VehiculeSelect):
 
 class Intervention(CreateView):
     form_class = InterventionForm
-    template_name = 'garage/ordre_reparation.html'    
+    template_name = 'garage/intervention.html'    
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -212,44 +205,6 @@ class Intervention(CreateView):
         intervention.vehicule = vehicule
         intervention.save()
         return super().form_valid(form)
-
-
-  
-
-
-
-# class ordre_reparation(CreateView):
-#     model = Intervention
-#     fields = '__all__'
-#     #exclude = ('intervention_realisee', 'statut')
-#     def getForm(self, request):
-#         ordre_reparation_form = OrdreReparationForm(request.POST or None)
-#         return {
-#             'ordre_reparation_form' : ordre_reparation_form
-        
-#         }
-#     def get(self, request):
-#         myTemplate_name = "garage/ordre_reparation.html"
-#         return render(request, myTemplate_name, self.getForm( request ) )
-
-
-# def ordre_reparation(request, client_id, address_id, zipCode_id, city_id):
-#     client = Client.objects.get(pk=client_id)
-#     donnees = DonneesPersonnelles.objects.get(pk=client_id)
-#     address = Address.objects.get(pk=address_id)
-#     zipCode = ZipCode.objects.get(pk=zipCode_id)
-#     city = City.objects.get(pk=city_id)
-     
-#     context = {
-#         'donnees': donnees,
-#         'client': client,
-#         'address': address,    
-#         'zipCode': zipCode,
-#         'city': city,
-       
-#     }
-#     # client = get_object_or_404(Client, id=id)
-#     return render(request, 'garage/ordre_reparation.html', context)    
 
 
 def recherche(request):
