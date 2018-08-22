@@ -47,7 +47,6 @@ admin.site.register(City, CityAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
-admin.site.register(Vehicule)
 admin.site.register(Motorise)
 admin.site.register(Moto)
 admin.site.register(Voiture)
