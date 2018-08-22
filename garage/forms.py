@@ -14,7 +14,7 @@ class CustomerForm(forms.ModelForm):
             'afpa_number': NumberInput(attrs={'class': 'form-control'})
         }
 
-class PersonalData(forms.ModelForm):
+class PersonalDataForm(forms.ModelForm):
     class Meta:
         model = PersonalData
         fields = ["mail", "phone_number","afpa_card_img"]
