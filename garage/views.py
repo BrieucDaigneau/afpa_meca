@@ -18,27 +18,27 @@ class Home(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(Home, self).get_context_data(**kwargs)
-        context['intervention_list'] = Intervention.objects.filter(utilisateur=self.request.user)
+        context['reparation_order_list'] = ReparationOrder.objects.filter(user_profile=self.request.user)
         return context
 
 
-class ClientCreateView(View):
+class CustomerCreateView(View):
     def getForm(self, request):
         zipCode_form = ZipCodeForm(request.POST or None)
         city_form = CityForm(request.POST or None)
         address_form = AddressForm(request.POST or None)    
-        client_form = ClientForm(request.POST or None)   
-        donneesPersonnelles_form = DonneesPersonnellesForm(request.POST or None)
+        customer_form = CustomerForm(request.POST or None)   
+        personal_data_form = PersonalDataForm(request.POST or None)
 
-        return { 'client_form': client_form,
-            'donneesPersonnelles_form': donneesPersonnelles_form,
+        return { 'customer_form': customer_form,
+            'personal_data_form': personal_data_form,
             'address_form' : address_form,
             'city_form' : city_form,
             'zipCode_form' : zipCode_form
         }
     
     def get(self, request):
-        myTemplate_name = 'garage/client_form.html'
+        myTemplate_name = 'garage/customer_form.html'
         return render(request, myTemplate_name, self.getForm( request ) )
 
     @transaction.atomic
@@ -46,48 +46,48 @@ class ClientCreateView(View):
         try:
             modelFormError = ""
             with transaction.atomic():
-                dico = self.getForm( request )
+                dictio = self.getForm( request )
                     
-                zipCode_form = dico['zipCode_form']
+                zipCode_form = dictio['zipCode_form']
                 if not zipCode_form.is_valid():
                     modelFormError = "Une erreur interne est apparue sur le code postal. Merci de recommencer votre saisie."                  
                     raise ValidationError(modelFormError)
                 else :
                     try:
                         zip_code = zipCode_form.cleaned_data['zip_code']
-                        codepostal = ZipCode.objects.filter(zip_code=zip_code)
-                        if not codepostal.exists():
+                        current_zip_code = ZipCode.objects.filter(zip_code=zip_code)
+                        if not current_zip_code.exists():
                             zipCode = zipCode_form.save() 
                         else :
-                            zipCode = codepostal[0]
+                            zipCode = current_zip_code[0]
 
                     except DatabaseError:   
-                        modelFormError = "Problème de connection à la base de données"                  
+                        modelFormError = "Problème de connexion à la base de données"                  
                         raise                                
 
 
-                    city_form = dico['city_form']
+                    city_form = dictio['city_form']
                     if not city_form.is_valid():
-                        modelFormError = "Une erreur interne est apparue sur la ville. Merci de recommencer votre saisie."                  
+                        modelFormError = "Une erreur interne est apparue sur la current_city. Merci de recommencer votre saisie."                  
                         raise ValidationError(modelFormError)
                     else :
                         try:
                             city_name = city_form.cleaned_data['city_name']   
-                            ville = City.objects.filter(city_name=city_name)
-                            if not ville.exists():
+                            current_city = City.objects.filter(city_name=city_name)
+                            if not current_city.exists():
                                 city = city_form.save() 
                             else :
-                                city = ville[0]
+                                city = current_city[0]
 
                             city.zip_codes.add(zipCode)
                             city.save()
 
                         except DatabaseError:   
-                            modelFormError = "Problème de connection à la base de données"                  
+                            modelFormError = "Problème de connexion à la base de données"                  
                             raise                                
 
 
-                        address_form = dico['address_form']                       
+                        address_form = dictio['address_form']                       
                         if not address_form.is_valid():                         
                             modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
                             raise ValidationError(modelFormError)
@@ -99,42 +99,42 @@ class ClientCreateView(View):
                                 address.save()
 
                             except DatabaseError:   
-                                modelFormError = "Problème de connection à la base de données"                  
+                                modelFormError = "Problème de connexion à la base de données"                  
                                 raise                                
 
 
-                            donneesPersonnelles_form = dico['donneesPersonnelles_form'] 
-                            if not donneesPersonnelles_form.is_valid():
+                            personal_data_form = dictio['personal_data_form'] 
+                            if not personal_data_form.is_valid():
                                 modelFormError = "Une erreur interne est apparue sur les données personnelles. Merci de recommencer votre saisie."                  
                                 raise ValidationError(modelFormError)
                             else :
-                                donnees = donneesPersonnelles_form.save()    
+                                data = personal_data_form.save()    
 
 
-                                client_form = dico['client_form'] 
-                                if not client_form.is_valid():
+                                customer_form = dictio['customer_form'] 
+                                if not customer_form.is_valid():
                                     modelFormError = "Une erreur interne est apparue sur les données clients. Merci de recommencer votre saisie."                  
                                     raise ValidationError(modelFormError)
                                 else :
                                     try:
-                                        client = client_form.save(commit=False)
-                                        client.donnees_personnelles_client = donnees
-                                        client.adresse = address
-                                        client.save()                        
-                                        context = {'client_id':client.id}
+                                        customer = customer_form.save(commit=False)
+                                        customer.personal_data_form = data
+                                        customer.address = address
+                                        customer.save()                        
+                                        context = {'customer_id':customer.id}
 
                                     except DatabaseError:   
-                                        modelFormError = "Problème de connection à la base de données"                  
+                                        modelFormError = "Problème de connexion à la base de données"                  
                                         raise 
                                     
-                                    return redirect("garage:voiture-create", context['client_id'])
+                                    return redirect("garage:car-create", context['customer_id'])
 
         except (ValidationError, DatabaseError):
-            dicoError = self.getForm( request )
-            dicoError ['internal_error'] = modelFormError
-            return render(request, 'garage/client_form.html', dicoError )
+            dictioError = self.getForm( request )
+            dictioError ['internal_error'] = modelFormError
+            return render(request, 'garage/customer_form.html', dictioError )
          
-        return render(request, 'garage/client_form.html', self.getForm( request ) )
+        return render(request, 'garage/customer_form.html', self.getForm( request ) )
 
 class ClientSelect(ListView):
     model = Client
