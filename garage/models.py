@@ -46,7 +46,7 @@ class Address(models.Model):
     def __str__(self):
         return self.street_number + " " + str(self.street) + " " + self.street_complement + " " + str(self.zipCode) + " " + str(self.city)
 
-class DonneesPersonnelles(models.Model):
+class PersonalData(models.Model):
     mail_client = models.EmailField("Email Client", max_length=35, unique=True)
     telephone_client = models.CharField("Téléphone Client", blank=False, max_length=10, null=True)
     carte_AFPA_img = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
@@ -98,6 +98,7 @@ class Vehicule(models.Model):
         # default=Type_vehicule_choice[0]
         # )
     client = models.ForeignKey(Client, null=True, on_delete=models.CASCADE)
+    objects = MyManager()
 
     def is_upperclass(self):
         return self.type_vehicule in (self.MOTO, self.VOITURE)
