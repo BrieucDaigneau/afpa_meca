@@ -9,7 +9,7 @@
 
         <header class="row">
             <titre class="col-md-12">
-                <h1 id="titre">{% block monTitre %}Ordre de réparation{% endblock %}</h1> 
+                <h1 id="titre">{% block myTitle %}Ordre de réparation{% endblock myTitle %}</h1> 
                 <br/>                          
             </titre>
 
@@ -20,45 +20,45 @@
                 <hr>
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="nom" class="control-label">Nom : </label>
-                        {{ vehicule.client.nom_client }}
+                        <label for="name" class="control-label">Nom : </label>
+                        {{ vehicle.customer.lastname }}
                     </div>
                     <div class="col-md-6">
-                        <label for="email" class="control-label">Email : </label> 
-                        {{ vehicule.donneespersonnelles.mail_client }}
+                        <label for="mail" class="control-label">Email : </label> 
+                        {{ vehicle.personal_data.mail }}
                     </div> 
                 </div>  
                 
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="prenom" class="control-label">Prénom : </label>
-                        {{ vehicule.client.prenom_client }}
+                        <label for="firstname" class="control-label">Prénom : </label>
+                        {{ vehicle.customer.firstname }}
                     </div>
                     <div class="col-md-6">
-                        <label for="adresse" class="control-label">Adresse : </label>
-                        {{ vehicule.address.street }}
+                        <label for="address" class="control-label">Adresse : </label>
+                        {{ vehicle.customer.address.street }}
                     </div>
                 </div>                 
                 
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="telephone" class="control-label">Téléphone : </label>
-                        {{ vehicule.donnees.telephone_client }}
+                        <label for="phone" class="control-label">Téléphone : </label>
+                        {{ vehicle.customer.personal_data.telephone_client }}
                     </div>
                     
                     <div class="col-md-2">
-                        <label for="ville" class="control-label">Ville : </label>
-                        {{ vehicule.city.city_name }}
+                        <label for="city" class="control-label">Ville : </label>
+                        {{ vehicle.customer.address.city.city_name }}
                     </div>
                     <div class="col-md-2">
-                        <label for="codepostal" class="control-label">Code Postal : </label>
-                        {{ vehicule.zipCode.zip_code }}
+                        <label for="zipcode" class="control-label">Code Postal : </label>
+                        {{ vehicle.customer.address.zipCode.zip_code }}
                     </div>
                     
 
                     <div class="col-md-2">
-                        <label for="numero_afpa_client" class="control-label">Numéro AFPA : </label>
-                        {{ vehicule.client.numero_afpa_client }}
+                        <label for="afpa_number" class="control-label">Numéro AFPA : </label>
+                        {{ vehicle.client.afpa_number }}
                     </div>
                 </div>
                 <br/>
@@ -69,7 +69,7 @@
             
         </header>
         
-        <vehicule class="col-md-12">
+        <vehicle class="col-md-12">
             <h3>Véhicule :</h3>
             <hr>
             <div class="row">
@@ -107,10 +107,10 @@
 
             </div>
 
-        </vehicule>
+        </vehicle>
         <hr>
         <form class="" action="" method="post">
-            <div id="saisir">
+            <div id="input">
                 <div class="form-group">
                     <label for="textarea">Description des symptômes du client (si diagnostic) </label>
                     <textarea id="textarea" class="form-control" rows="4"></textarea>

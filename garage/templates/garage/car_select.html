@@ -1,4 +1,4 @@
-{% extends 'garage/liste_vehicules.html' %} {% block recherche %}
+{% extends 'garage/vehicles_list.html' %} {% block search %}
 
 <div class="container">
     {% comment %} <div class="row">
@@ -17,17 +17,17 @@
     <div class="row mb-5 mt-3">
 
         <div class="col-md-2 ">
-            <button onClick="voiture_create()" id="nouveau" value="{{client_id}}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</button>
+            <button onClick="car_create()" id="new" value="{{customer_id}}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</button>
         </div>
     </div>
 </div>
-{% endblock recherche %} {% block bouttons %}
+{% endblock search %} {% block buttons %}
 
 
 <div class="container">
     <div class="row mt-5">
         
-        <a href="{% url 'garage:client-select' %}" class=" btn btn-sm btn-primary col-md-1" onClick="redirect()">Annuler</a>
+        <a href="{% url 'garage:customer-select' %}" class=" btn btn-sm btn-primary col-md-1" onClick="redirect()">Annuler</a>
         <div class="col-md-3"></div>
         <button class=" btn btn-primary btn-sm col-md-2" onClick="redirect()">Modifier
         </button>
@@ -44,10 +44,10 @@
 <script type="text/javascript">
 
     function redirect() {
-        window.location = "{% url 'garage:intervention-create' 1 %}".replace(1, document.vehiculeChecked)
+        window.location = "{% url 'garage:reparation-order-create' 1 %}".replace(1, document.vehicleChecked)
     }
 
-    function voiture_create() { 
+    function car_create() { 
 
 //expression régulière qui récupère l'id client
 //[/] = recherche le caractère "/" dans l'ulr
@@ -55,8 +55,8 @@
 // "+" cherche entre 1 et plusieurs fois le paramètre saisi avant 
 // window.location.href.match(/[/](\d+)[/]/) retourne un tableau = [/nombre/, nombre]
 
-        let chaineATrouver = window.location.href.match(/[/](\d+)[/]/)
-        window.location = "{% url 'garage:voiture-create' 1 %}".replace(1, chaineATrouver[1])
+        let stringToFind = window.location.href.match(/[/](\d+)[/]/)
+        window.location = "{% url 'garage:car-create' 1 %}".replace(1, stringToFind[1])
         }
-</script> {% endblock bouttons %}
+</script> {% endblock buttons %}
 </div>

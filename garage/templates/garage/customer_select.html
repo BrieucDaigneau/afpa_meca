@@ -17,7 +17,7 @@
                     <div class="row mb-5 mt-3">
                 
                         <div class="col-md-2 ">
-                           <a href="{% url 'garage:client-create' %}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</a>
+                           <a href="{% url 'garage:customer-create' %}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</a>
                         </div>
                     </div>
                 </div>
@@ -35,16 +35,16 @@
         
         
         
-        {% for client in liste_client %}
-        <input type="radio" class="btn col-md-1 radio" id="{{client.id}}" name="btnClient" onclick='javascript:document.clientChecked={{client.id}};' >
+        {% for customer in customer_list %}
+        <input type="radio" class="btn col-md-1 radio" id="{{customer.id}}" name="btnCustomer" onclick='javascript:document.customerChecked={{customer.id}};' >
     </input>
     
-    <label for="{{client.id}}" id="test" class="col-md-12">
+    <label for="{{customer.id}}" id="listing" class="col-md-12">
         <div class="row ">
-            <div class=" col-md-3">{{ client.nom_client }}</div>
-            <div class=" col-md-3">{{ client.prenom_client }}</div>
-            <div class="col-md-3">{{ client.numero_afpa_client }}</div>
-            <div class="col-md-3">{{ client. }}</div>
+            <div class=" col-md-3">{{ customer.lastname }}</div>
+            <div class=" col-md-3">{{ customer.firstname }}</div>
+            <div class="col-md-3">{{ customer.afpa_number }}</div>
+            <div class="col-md-3">{{ customer.PersonalData.mail }}</div>
         </div>
         
     </label>
@@ -58,7 +58,7 @@
 <div class="row">
         <div class="container">
                 <div class="row mt-5">
-                    <a href="{% url 'garage:accueil' %}" class=" btn btn-sm btn-primary col-md-1" >Annuler</a>
+                    <a href="{% url 'garage:home' %}" class=" btn btn-sm btn-primary col-md-1" >Annuler</a>
                     <div class="col-md-3"></div>
                     <button class=" btn btn-primary btn-sm col-md-2" onClick="redirect()">Modifier
                     </button>
@@ -77,7 +77,7 @@
             <script type="text/javascript">
             
                 function redirect() {
-                    window.location = "{% url 'garage:voiture-select' 1 %}".replace(1, document.clientChecked)            
+                    window.location = "{% url 'garage:car-select' 1 %}".replace(1, document.customerChecked)            
                 }
             </script>
 {% endblock %}
