@@ -16,7 +16,7 @@ urlpatterns = [
         name='login'),
     url(r'déconnexion', LogoutView.as_view(template_name="garage/logout.html"), name='logout'),
     
-    url(r'^recherche/$', login_required(views.recherche), name='recherche'),
+    url(r'^recherche/$', login_required(views.recherche), name='search'),
     path('accueil/', login_required(views.Home.as_view()), name='home'),
 
     path('création-client', login_required(views.CustomerCreateView.as_view()), name='customer-create'),   
@@ -27,9 +27,9 @@ urlpatterns = [
     path('sélection-véhicule/<int:customer_id>/', login_required(views.VehicleSelect.as_view()), name="vehicle-select"),
     path('création-voiture/<int:customer_id>/', login_required(views.VehicleCreate.as_view()), name='vehicle-create'),
     path('consultation-vehicules', login_required(views.VehicleList.as_view()), name="vehicles"),
-    path('nouveau-choix-vehicule', views.ChoiceVehicle, name="choiceVehicle"),
+    path('nouveau-choix-vehicule', views.ChoiceVehicle, name="vehicule-choice"),
     
     # path('reparation/<int:client_id>/', login_required(views.ordre_reparation), name='ordre_reparation'),
     # path('reparation/', login_required(views.ordre_reparation.as_view()), name='ordre_reparation'),
-    path('création-ordre-réparation/<int:vehicle_id>/', login_required(views.ReparationOrder.as_view()), name='reparation-ordre-create'),
+    path('création-ordre-réparation/<int:vehicle_id>/', login_required(views.ReparationOrder.as_view()), name='reparation-order-create'),
 ]

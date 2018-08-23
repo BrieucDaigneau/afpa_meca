@@ -1,25 +1,25 @@
 from django.contrib import admin
 from .models import *
-from .models import Utilisateur
+from .models import UserProfile
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
 # Register your models here.
 
-class UtilisateurInline(admin.StackedInline):
-    model = Utilisateur
+class UserProfileInline(admin.StackedInline):
+    model = UserProfile
     can_delete = False
     verbose_name_plural = 'Utilisateurs'
 
 class UserAdmin(BaseUserAdmin):
-    inlines = (UtilisateurInline, )
+    inlines = (UserProfileInline, )
 
-class ClientInline(admin.TabularInline):
-    model = Client
+class CustomerInline(admin.TabularInline):
+    model = Customer
     can_delete = False
 
-class DonneesPersonnellesAdmin(admin.ModelAdmin):
-    inlines = (ClientInline, )
+class PersonalDataAdmin(admin.ModelAdmin):
+    inlines = (CustomerInline, )
 
 class ZipCodeInline(admin.TabularInline):   
     model = City.zip_codes.through
@@ -47,15 +47,15 @@ admin.site.register(City, CityAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
-admin.site.register(Motorise)
-admin.site.register(Moto)
-admin.site.register(Voiture)
-admin.site.register(Velo)
+admin.site.register(Motorized)
+admin.site.register(Motorbike)
+admin.site.register(Car)
+admin.site.register(Bike)
 
 
-admin.site.register(Intervention)
-admin.site.register(Devis)
-admin.site.register(Piece)
-admin.site.register(Fournisseur)
-admin.site.register(DonneesPersonnelles, DonneesPersonnellesAdmin)
-admin.site.register(Piece_Fournisseur_Devis)
+admin.site.register(ReparationOrder)
+admin.site.register(Estimate)
+admin.site.register(Component)
+admin.site.register(Supplier)
+admin.site.register(PersonalData, PersonalDataAdmin)
+admin.site.register(Component_Supplier_Estimate)
