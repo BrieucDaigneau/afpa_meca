@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea
 from django.forms.utils import ErrorList
+
 from .models import *
 
 class CustomerForm(forms.ModelForm):

@@ -1,11 +1,10 @@
 from django.urls import path
-
 from django.views.generic import ListView
-from . import views
 from django.contrib.auth.views import LoginView, LogoutView
 from django.conf.urls import url, include
 from django.contrib.auth.decorators import login_required
 
+from . import views
 
 app_name = 'garage'
 
