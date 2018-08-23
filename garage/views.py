@@ -221,12 +221,6 @@ def search(request):
     }
     return render(request, 'garage/search.html', context) 
 
-<<<<<<< HEAD
-   
-def ChoixVehicule(request):
-    pass
-=======
 
 class VehicleList(VehicleSelect):
     template_name = 'garage/vehicles.html'
->>>>>>> 3c13cec516b1a91f466c1ec71737f5172114c0ae

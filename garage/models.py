@@ -227,9 +227,5 @@ class Component_Supplier_Estimate(models.Model):
         verbose_name_plural = "Commandes"
 
     def __str__(self):
-<<<<<<< HEAD
-        return str(self.fournisseur) + " devis n°" +str(self.devis) + " pièce : " + str(self.piece)
-=======
         return str(self.supplier) + " devis n°" +str(self.estimate) + " pièce : " + str(self.component)
 
->>>>>>> 3c13cec516b1a91f466c1ec71737f5172114c0ae
