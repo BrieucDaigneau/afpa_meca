@@ -56,7 +56,7 @@
 // window.location.href.match(/[/](\d+)[/]/) retourne un tableau = [/nombre/, nombre]
 
         let stringToFind = window.location.href.match(/[/](\d+)[/]/)
-        window.location = "{% url 'garage:car-create' 1 %}".replace(1, stringToFind[1])
+        window.location = "{% url 'garage:vehicle-create' 1 %}".replace(1, stringToFind[1])
         }
 </script> {% endblock buttons %}
 </div>

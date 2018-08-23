@@ -8,13 +8,13 @@
     
             <titre class="col-md-12">
                 <div class="col-md-12">
-                    <h1 id="title" class="title">Création nouveau customer</h1>
+                    <h1 id="title" class="title">Création nouveau client</h1>
                 </div>
             </titre>
         </br>
         
             <formulaire class="col-md-9">
-                <h4>customer</h4>
+                <h4>client</h4>
                 <form class="needs-validation" action="{% url 'garage:customer-create' %}" method="post">
                     {% csrf_token %}
                     <div class="row">
@@ -45,12 +45,12 @@
                         </div>
                         <div class="col-md-6">
                             <label for="{{ form.phone_number.id_for_label }}" class="control-label">Téléphone</label>
-                            {{ PersonalData_form.phone_number }}
+                            {{ personal_data_form.phone_number }}
                         </div>
                         <div class="col-md-6">
                             <label for="{{ form.mail.id_for_label }}" class="control-label">Email</label>
-                            {{ PersonalData_form.mail }}
-                            <div> {{ PersonalData_form.mail.errors }} </div>
+                            {{ personal_data_form.mail }}
+                            <div> {{ personal_data_form.mail.errors }} </div>
                         </div>
                     </div> 
                     
@@ -80,7 +80,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="{{ form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img</label>
-                            {{ PersonalData_form.afpa_card_img }}
+                            {{ personal_data_form.afpa_card_img }}
                         </div>
                     </div>
                     <div> {{ address_form.non_field_errors }} </div>

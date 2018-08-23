@@ -1,25 +1,25 @@
 from django.http import HttpResponse
-from .models import *
-
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from .forms import ClientForm, DonneesPersonnellesForm, AddressForm, ZipCodeForm, CityForm, VoitureForm, InterventionForm
-from django.views.generic import CreateView, ListView, View, FormView, DetailView
+from django.views.generic import CreateView, ListView, View, FormView, DetailView, TemplateView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
-from . import urls
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
 from django.db import DatabaseError, transaction
 from django.core.exceptions import ValidationError
 
-class Home(TemplateView):
-    template_name = 'garage/home.html')
+from .models import *
+from .forms import *
+from . import urls
 
-    def get_context_data(self, **kwargs):
-        context = super(Home, self).get_context_data(**kwargs)
-        context['reparation_order_list'] = ReparationOrder.objects.filter(user_profile=self.request.user)
-        return context
+
+class Home(TemplateView):
+    template_name = 'garage/home.html'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super(Home, self).get_context_data(**kwargs)
+    #     context['reparation_order_list'] = ReparationOrder.objects.filter(user_profile=self.request.user)
+    #     return context
 
 
 class CustomerCreateView(View):
@@ -62,7 +62,7 @@ class CustomerCreateView(View):
                             zipCode = current_zip_code[0]
 
                     except DatabaseError:   
-                        modelFormError = "Problème de connexion à la base de données"                  
+                        modelFormError = "Problème de connexion à la base de données 1"                  
                         raise                                
 
 
@@ -83,7 +83,7 @@ class CustomerCreateView(View):
                             city.save()
 
                         except DatabaseError:   
-                            modelFormError = "Problème de connexion à la base de données"                  
+                            modelFormError = "Problème de connexion à la base de données 2"                  
                             raise                                
 
 
@@ -99,7 +99,7 @@ class CustomerCreateView(View):
                                 address.save()
 
                             except DatabaseError:   
-                                modelFormError = "Problème de connexion à la base de données"                  
+                                modelFormError = "Problème de connexion à la base de données 3"                  
                                 raise                                
 
 
@@ -118,16 +118,16 @@ class CustomerCreateView(View):
                                 else :
                                     try:
                                         customer = customer_form.save(commit=False)
-                                        customer.personal_data_form = data
+                                        customer.personal_data = data
                                         customer.address = address
-                                        customer.save()                        
+                                        customer.save()   
                                         context = {'customer_id':customer.id}
 
                                     except DatabaseError:   
-                                        modelFormError = "Problème de connexion à la base de données"                  
+                                        modelFormError = "Problème de connexion à la base de données 4"                  
                                         raise 
                                     
-                                    return redirect("garage:car-create", context['customer_id'])
+                                    return redirect("garage:vehicle-create", context['customer_id'])
 
         except (ValidationError, DatabaseError):
             dictioError = self.getForm( request )
@@ -164,7 +164,7 @@ class CarCreate(CreateView):
         return super().form_valid(form)
 
 
-class CarSelect(ListView):
+class VehicleSelect(ListView):
     model = Car
     template_name = 'garage/car_select.html'
     
@@ -190,8 +190,6 @@ class MotorbikeSelect(VehicleSelect):
         return Motorbike.objects.filter(customer_id=self.kwargs['customer_id'])
 
     
-
-
 class ReparationOrder(CreateView):
     form_class = ReparationOrderForm
     template_name = 'garage/reparation_order.html'    
@@ -223,10 +221,6 @@ def search(request):
     }
     return render(request, 'garage/search.html', context) 
 
+
 class VehicleList(VehicleSelect):
     template_name = 'garage/vehicles.html'
-
-   
-def VehicleChoice(request):
-    pass
-
