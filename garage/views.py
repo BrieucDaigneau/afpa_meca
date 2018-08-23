@@ -190,19 +190,25 @@ class MotorbikeSelect(VehicleSelect):
         return Motorbike.objects.filter(customer_id=self.kwargs['customer_id'])
 
     
-class ReparationOrder(CreateView):
+class ReparationOrderCreate(CreateView):
     form_class = ReparationOrderForm
     template_name = 'garage/reparation_order.html'    
-    
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('garage:accueil',
+                                current_app='garage')    
+    BAA
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        vehicle = Vehicle.objects.get(pk=self.kwargs['vehicle_id'])
+        vehicle = Vehicle.objects.filter_child(self.kwargs['client_id'])       
         context['vehicle'] = vehicle   
         return context
 
     def form_valid(self, form):
-        vehicle = Vehicle.objects.get(pk=self.kwargs['vehicle_id'])
-        reparation_order = form.save()
+        vehicle = Vehicle.objects.filter_child(self.kwargs['client_id'])     
+        user = self.request.user          
+        reparation_order = form.save(commit=False)
+        reparation_order.utilisateur = user
         reparation_order.vehicle = vehicle
         reparation_order.save()
         return super().form_valid(form)
@@ -224,3 +230,45 @@ def search(request):
 
 class VehicleList(VehicleSelect):
     template_name = 'garage/vehicles.html'
+
+
+class VehiculeSelect(ListView):
+    model = Vehicule
+    template_name = 'garage/voiture-select.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['liste_vehicule'] = self.get_queryset()
+        context['voiture_id'] = None
+        return context
+        
+    def get_queryset(self):
+        # print(Vehicule.objects.get_child(self.kwargs['client_id']))
+        return Vehicule.objects.filter_child(self.kwargs['client_id'])
+
+
+class VehicleCreate(CreateView):
+    template_name = 'garage/vehicle_form.html'
+
+    def get_form_class(self) :
+        if VehicleConfig['vehicle'] == 'car' :
+            return CarForm    
+        elif VehicleConfig['vehicle'] == 'bike' :
+            return BikeForm   
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('garage:intervention-create',
+                                kwargs={'vehicule_id': self.object.id},
+                                current_app='garage')
+
+    def form_valid(self, form):
+        client = Client.objects.get(pk=self.kwargs['client_id'])
+
+        # Attention vehicule est une instance de Voiture, Velo ou Moto
+        vehicle = form.save()
+        # print(Vehicule.objects.get_child(self.kwargs['client_id']))        
+        vehicle.client = client
+        vehicle.save()
+        return super().form_valid(form)        
+
+

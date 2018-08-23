@@ -79,27 +79,29 @@ class MyManager(models.Manager):
                 return Bike.objects.get(pk=id)
         return None
 
+
     def filter_child(self, id):
         if VehicleConfig['vehicle'] == 'car' :
-            if Voiture.objects.filter(client=id) :
-                return Voiture.objects.filter(client=id)
+            if Car.objects.filter(client=id) :
+                return Car.objects.filter(client=id)
 
         if VehicleConfig['vehicle'] == 'bike' : 
-            if Moto.objects.filter(client=id) :
-                return Moto.objects.filter(client=id)
-            if Velo.objects.filter(client=id) :
-                return Velo.objects.filter(client=id)
+            if Motorbike.objects.filter(client=id) :
+                return Motorbike.objects.filter(client=id)
+            if Bike.objects.filter(client=id) :
+                return Bike.objects.filter(client=id)
+
 
     def get_model(self, id):
         if VehicleConfig['vehicle'] == 'car' :
-            if Voiture.objects.filter(pk=id) :
-                return Voiture
+            if Car.objects.filter(pk=id) :
+                return Car
 
         if VehicleConfig['vehicle'] == 'bike' : 
-            if Moto.objects.filter(pk=id) :
-                return Moto
-            if Velo.objects.filter(pk=id) :
-                return Velo
+            if Motorbike.objects.filter(pk=id) :
+                return Motorbike
+            if Bike.objects.filter(pk=id) :
+                return Bike
 
 
 
