@@ -9,16 +9,32 @@ from . import views
 app_name = 'garage'
 
 urlpatterns = [    
-    url(r'login', LoginView.as_view(redirect_authenticated_user=True, template_name="garage/login.html"),
+    url(r'login', LoginView.as_view(redirect_authenticated_user=True, template_name='garage/login.html'),
         name='login'),
-    url(r'logout', LogoutView.as_view(template_name="garage/logout.html"), name='logout'), 
+    url(r'logout', LogoutView.as_view(template_name='garage/logout.html'), name='logout'), 
+
     url(r'^recherche/$', login_required(views.search), name='search'),
     path('accueil/', login_required(views.Home.as_view()), name='home'),
+
     path('création-client', login_required(views.CustomerCreateView.as_view()), name='customer-create'),   
-    path('sélection-client/', login_required(views.CustomerSelect.as_view()), name="customer-select"),
-    path('sélection-moto/<int:customer_id>/', login_required(views.MotorbikeSelect.as_view()), name="motorbike-select"),
-    path('sélection-véhicule/<int:customer_id>/', login_required(views.VehicleSelect.as_view()), name="vehicle-select"),
-    path('création-voiture/<int:customer_id>/', login_required(views.CarCreate.as_view()), name='vehicle-create'),
-    path('consultation-vehicules', login_required(views.VehicleList.as_view()), name="vehicles"),      
-    path('création-ordre-réparation/<int:vehicle_id>/', login_required(views.ReparationOrder.as_view()), name='reparation-order-create'),
+    path('selection-client/', login_required(views.CustomerSelect.as_view()), name='customer-select'),
+    path('consultation-clients'), login_required(views.Customers.as_view()), name='customers',
+    path('actualisation-client'), login_required(views.CustomersUpdate.as_view()), name='customer-update',  
+    
+    path('création-vehicule'), login_required(views.VehiclesCreate.as_view()), name='vehicle-create',
+    path('selection-vehicule'), login_required(views.VehicleSelect.as_view()), name='vehicle-select',
+    path('consultation-vehicle'), login_required(views.Vehicles.as_view()), name='vehicles',
+    path('actualisation-vehicule'), login_required(views.VehicleUpdate.as_view()), name='vehicle-update'
+
+    path('création-intervention', login_required(views.ReparationOrderCreateView.as_view()), name='reparation-order-create'),   
+    path('consultation-interventions'), login_required(views.ReparationOrders.as_view()), name='reparation-orders',
+    path('actualisation-intervention'), login_required(views.ReparationOrderUpdate.as_view()), name='reparation-order-update',  
+
+
+    # path('sélection-moto/<int:customer_id>/', login_required(views.MotorbikeSelect.as_view()), name='motorbike-select'),
+    # path('sélection-véhicule/<int:customer_id>/', login_required(views.VehicleSelect.as_view()), name='vehicle-select'),
+
+    # path('création-voiture/<int:customer_id>/', login_required(views.CarCreate.as_view()), name='vehicle-create'),
+    # path('consultation-vehicules', login_required(views.VehicleList.as_view()), name='vehicles'),      
+    # path('création-ordre-réparation/<int:vehicle_id>/', login_required(views.ReparationOrder.as_view()), name='reparation-order-create'),
 ]

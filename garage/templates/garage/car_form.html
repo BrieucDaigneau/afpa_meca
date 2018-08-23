@@ -3,16 +3,16 @@
 
 {% block content %}
 <div class="container">
-        <titre class="col-md-12">
+        <title class="col-md-12">
                 <div class="col-md-12">
                     <h1 id="title" class="title">Création nouveau Véhicule</h1>
                 </div>     
-        </titre>
+            </title>
     <br/>
 
         
 
-        <formulaire class="col-md-9">
+        <div class="col-md-9">
             <h4>Véhicule</h4>
             <form class="" action="" method="post">
                 {% csrf_token %}
@@ -87,7 +87,7 @@
 
             </form>
 
-        </formulaire>
+        </div>
 </div>
 
 {% endblock %}

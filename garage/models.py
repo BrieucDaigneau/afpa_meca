@@ -68,17 +68,40 @@ class Customer(models.Model):
 
 
 class MyManager(models.Manager):
-    def get_child(self, id):
-        isAutoConfig = True #VehicleConfig['vehicle']
-        if  isAutoConfig == 'car':
+    def dispenser(self, id, car, motorbike, bike):
+        if  VehicleConfig['vehicle'] == 'car':
             if Car.objects.filter(pk=id):
-                return Car.objects.get(pk=id)
-        elif isAutoConfig == 'bike': 
+                return car
+        elif VehicleConfig['vehicle'] == 'bike': 
             if Motorbike.objects.filter(pk=id):
-                return Motorbike.objects.get(pk=id)
+                return motorbike
             if Bike.objects.filter(pk=id):
-                return Bike.objects.get(pk=id)
+                return bike
         return None
+
+    def get_child(self, id):
+        return self.dispenser(
+                        id          = id, 
+                        car         = Car.objects.get(pk=self.kwargs['vehicle_id']),
+                        motorbike   = Motorbike.objects.get(pk=self.kwargs['vehicle_id']),
+                        bike        = Bike.objects.get(pk=self.kwargs['vehicle_id']) 
+        )
+
+    def get_filter(self, id):
+        return self.dispenser(
+                        id          = id, 
+                        car         = Car.objects.filter(pk=self.kwargs['customer_id']),
+                        motorbike   = Motorbike.objects.filter(pk=self.kwargs['customer_id']),
+                        bike        = Bike.objects.filter(pk=self.kwargs['customer_id']) 
+        )
+
+    def get_model(self, id):
+        return self.dispenser(
+                        id          = id, 
+                        car         = Car,
+                        motorbike   = Motorbike,
+                        bike        = Bike,
+        )
 
 
 class Vehicle(models.Model):
