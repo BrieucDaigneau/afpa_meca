@@ -16,6 +16,7 @@ urlpatterns = [
     path('accueil/', login_required(views.Home.as_view()), name='home'),
     path('création-client', login_required(views.CustomerCreateView.as_view()), name='customer-create'),   
     path('sélection-client/', login_required(views.CustomerSelect.as_view()), name="customer-select"),
+    path('clients/', login_required(views.Customers.as_view()), name="customers"),
     path('sélection-moto/<int:customer_id>/', login_required(views.MotorbikeSelect.as_view()), name="motorbike-select"),
     path('sélection-véhicule/<int:customer_id>/', login_required(views.VehicleSelect.as_view()), name="vehicle-select"),
     path('création-voiture/<int:customer_id>/', login_required(views.CarCreate.as_view()), name='vehicle-create'),
