@@ -8,10 +8,6 @@ page d'accueil:
 	view: views.Accueil.as_view()
 	name: "accueil"
 
-
-
-
-
 page nouveau - liste clients:
 	url: meca/nouveau-etape-1
 	view: views.PremiereEtape.as_view()
