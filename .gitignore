@@ -7,3 +7,4 @@ garage/migrations/*.py
 db.sqlite3
 settings.json
 launch.json
+/db/*.sqlite3

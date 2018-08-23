@@ -8,19 +8,15 @@
 
 
 <div class="container">
-    
     <div class="row">
-        
-        <h1 class="mt-5">Liste des Vehicules</h1>
-        
+        <h1 class="mt-5">Liste des Vehicules</h1> 
     </div>
     
     <div class="row">
-        {% block recherche %}{% endblock recherche %}
+        {% block search %}{% endblock search %}
     </div>
+
     <div class="row">
-        
-        
         <h4 class="col-md-12" >
             <div class="row">
                 <div class=" col-md-3">Modele </div>
@@ -30,18 +26,16 @@
             </div>
         </h4>
         
-        
-        
-        {% for vehicule in liste_vehicule %}
-        <input type="radio" class="btn col-md-1 radio" id="{{vehicule.id}}" name="btnVehicule" onclick='javascript:document.vehiculeChecked={{vehicule.id}}' >
+        {% for vehicle in vehicle_list %}
+        <input type="radio" class="btn col-md-1 radio" id="{{vehicle.id}}" name="VehicleBtn" onclick='javascript:document.vehicleChecked={{vehicle.id}}' >
     </input>
     
-    <label for="{{vehicule.id}}" id="test" class="col-md-12 label_vehicule">
+    <label for="{{vehicle.id}}" id="listing" class="col-md-12 label_vehicle">
         <div class="row ">
-            <div class="col-md-3">{{ vehicule.libelle_modele }}</div>
-            <div class="col-md-3">{{ vehicule.libelle_marque }}</div>
-            <div class="col-md-3">{{ vehicule.vin }}</div>
-            <div class="col-md-3">{{ vehicule.immatriculation }}</div>
+            <div class="col-md-3">{{ vehicle.model }}</div>
+            <div class="col-md-3">{{ vehicle.brand }}</div>
+            <div class="col-md-3">{{ vehicle.vin }}</div>
+            <div class="col-md-3">{{ vehicle.license_plate }}</div>
         </div>
         
     </label>
@@ -49,11 +43,11 @@
     {% empty %}
     <p>aucun véhicule</p>
     {% endfor %}
-    
-    
-</div>
+      
+    </div>
+
 <div class="row">
-    {% block bouttons %}{% endblock bouttons %}
+    {% block buttons %}{% endblock buttons %}
 </div>
 
 </div>

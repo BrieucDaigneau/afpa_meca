@@ -19,7 +19,7 @@
 			<div class="col-md-4" id="logo">
 				<img src="{% static 'garage/img/logo_afpa2.png' %}" width="250" height="170"></img>
 			</div>
-			<div class="col-md-4" id="titre">
+			<div class="col-md-4" id="title">
 				<h1>Pôle Mécanique</h1>
 			</div>
 			<div class="col-md-4" id="logout">
@@ -53,46 +53,46 @@
 				</button>
 
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<div id="navbar-contenu">
+					<div id="navbar-content">
 						<ul class="navbar-nav mr-auto">
 							<li class="nav-item nav-link">
-								<div id="separateur_navbar">|</div>
+								<div id="separator_navbar">|</div>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="{% url 'garage:accueil' %}">Accueil</a>
+								<a class="nav-link" href="{% url 'garage:home' %}">Accueil</a>
 							</li>
 							<li class="nav-item nav-link">
-								<div id="separateur_navbar">|</div>
+								<div id="separator_navbar">|</div>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="{% url 'garage:client-select' %}">Nouveau</a>
+								<a class="nav-link" href="{% url 'garage:customer-select' %}">Nouveau</a>
 							</li>
 							<li class="nav-item nav-link">
-								<div id="separateur_navbar">|</div>
+								<div id="separator_navbar">|</div>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="#">Clients</a>
 							</li>
 							<li class="nav-item nav-link">
-								<div id="separateur_navbar">|</div>
+								<div id="separator_navbar">|</div>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="#">Véhicules</a>
 							</li>
 							<li class="nav-item nav-link">
-								<div id="separateur_navbar">|</div>
+								<div id="separator_navbar">|</div>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="#">Ordres de réparations</a>
 							</li>
 							<li class="nav-item nav-link">
-								<div id="separateur_navbar">|</div>
+								<div id="separator_navbar">|</div>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="#">Utilisateurs</a>
 							</li>
 							<li class="nav-item nav-link">
-								<div id="separateur_navbar">|</div>
+								<div id="separator_navbar">|</div>
 							</li>
 						</ul>
 					</div>
@@ -107,7 +107,7 @@
 	<div class="container">
 		<div class='row'>
 			<div class="col-md-12">
-				{% block content %}{% endblock %}
+				{% block content %}{% endblock content%}
 			</div>
 		</div>
 	</div>
@@ -134,7 +134,7 @@
 
 		$(document).ready(function () {
 
-			$("#navbar-contenu a").each(function (index) {
+			$("#navbar-content a").each(function (index) {
 				if (this.href == document.location.href) {
 					$(this).addClass('active');
 				}

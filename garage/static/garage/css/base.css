@@ -6,25 +6,21 @@
     background-color: rgba(3, 145, 3, 0.877); 
     height: 47px;
     box-sizing: border-box;
-    
 }
 
 .nav-link{
-    color: whitesmoke;
-      
+    color: whitesmoke;    
 }
 
 .active{
     background-color: #0d6607;
     height: 100%;
-
 }
 
 .nav-item a:hover {
     background-color: rgba(129, 190, 104, 0.664);
     color: white;
-    height: 100%;
-    
+    height: 100%;  
 }
 
 .nav-item{
@@ -40,7 +36,7 @@ ul.navbar-nav li {
     padding-left: 70px;
 }
 
-#titre{
+#title{
     text-align: center;
     align-content: center;
     padding-top: 50px;
@@ -62,18 +58,10 @@ ul.navbar-nav li {
     padding-top : 60px;
 }
 
-#separateur_navbar{
+#separator_navbar{
     font-size: 110%;
     padding-top: 80%;
 }
-
-/* .nav-link::after{
-   color: white; 
-   content: "|";
-  padding-right: 20px;
-} */
-
-
 
 footer{
     background-color: rgba(3, 145, 3, 0.877);

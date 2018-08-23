@@ -35,20 +35,24 @@ body {
   padding: 10px;
   font-size: 12px;
 }
+
 .form-signin .form-control:focus {
   z-index: 2;
 }
+
 .form-signin input[type="email"] {
   margin-bottom: 2px;
   border-bottom-right-radius: 2;
   border-bottom-left-radius: 2;
   border-width: 5px;
 }
+
 .form-signin input[type="password"] {
   margin-bottom: 10px;
   border-top-left-radius: 2;
   border-top-right-radius: 2;
 }
+
 #id_form.username.label_tag{
   color :green
 }

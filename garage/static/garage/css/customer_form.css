@@ -1,40 +1,24 @@
-
-body 
-{
-  /* width: calc(10%); */
+body {
   margin: auto;
-  /* font-size: 0.9em;    */
-  /* height: 0.5em; */
-  /* border : solid 2px yellow; */
-  /* height: 200px ; */
-
 }
 
-#bouton{
+#button {
   margin-top: 50px;
 }
 
-[class*="col-"]
-{
-  /* border: 2px solid indigo; */
+[class*="col-"] {
   border-radius: 6px;
 }
 
 
-#btn_ident
-{
+#btn_ident {
   margin-top : 1px;
   height: 1px;
 }
 
 
-.title{
+.title {
   font-size: 35px;
-}
-
-#title_nouveau_client{
-  text-align: center;
-  margin-bottom: 50px;
 }
 
 .border-top { border-top: 1px solid #e5e5e5; }
@@ -45,8 +29,6 @@ body
 
 .lh-condensed { line-height: 1.25; }
 
-
-#msgError
-{
+#msgErrorn {
   color: red;
 }

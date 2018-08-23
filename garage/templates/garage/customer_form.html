@@ -1,36 +1,36 @@
 {% extends 'garage/base.html' %}
 {% load static %}
 
-{% block css %}"{% static 'garage/css/client_form.css' %}"{% endblock css %}
+{% block css %}"{% static 'garage/css/customer_form.css' %}"{% endblock css %}
 
 {% block content %}
     <div class="container">
     
             <titre class="col-md-12">
                 <div class="col-md-12">
-                    <h1 id="titre" class="title">Création nouveau client</h1>
+                    <h1 id="title" class="title">Création nouveau client</h1>
                 </div>
             </titre>
         </br>
         
             <formulaire class="col-md-9">
-                <h4>Client</h4>
-                <form class="needs-validation" action="{% url 'garage:client-create' %}" method="post">
+                <h4>client</h4>
+                <form class="needs-validation" action="{% url 'garage:customer-create' %}" method="post">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group {% if client_form.nom_client.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ client_form.nom_client.id_for_label }}" class="control-label">Nom</label>
-                                {{ client_form.nom_client }}
+                            <div class="form-group {% if customer_form.lastname.errors %}has-warning has-feedback{% endif %}">
+                                <label for="{{ customer_form.lastname.id_for_label }}" class="control-label">Nom</label>
+                                {{ customer_form.lastname }}
                             </div>
                             <div class="invalid-feedback">
                                 Saisie du nom est obligatoire
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group {% if client_form.prenom_client.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ client_form.prenom_client.id_for_label }}" class="control-label">Prenom</label>
-                                {{ client_form.prenom_client }}
+                            <div class="form-group {% if customer_form.firstname.errors %}has-warning has-feedback{% endif %}">
+                                <label for="{{ customer_form.firstname.id_for_label }}" class="control-label">Prenom</label>
+                                {{ customer_form.firstname }}
                             </div>
                             <div class="invalid-feedback">
                                 Saisie du prenom est obligatoire
@@ -40,17 +40,17 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="{{ client_form.numero_afpa_client.id_for_label }}" class="control-label">Numéro carte AFPA</label>
-                            {{ client_form.numero_afpa_client }}
+                            <label for="{{ customer_form.afpa_number.id_for_label }}" class="control-label">Numéro carte AFPA</label>
+                            {{ customer_form.afpa_number }}
                         </div>
                         <div class="col-md-6">
-                            <label for="{{ form.telephone_client.id_for_label }}" class="control-label">Téléphone</label>
-                            {{ donneesPersonnelles_form.telephone_client }}
+                            <label for="{{ form.phone_number.id_for_label }}" class="control-label">Téléphone</label>
+                            {{ personal_data_form.phone_number }}
                         </div>
                         <div class="col-md-6">
-                            <label for="{{ form.mail_client.id_for_label }}" class="control-label">Email</label>
-                            {{ donneesPersonnelles_form.mail_client }}
-                            <div> {{ donneesPersonnelles_form.mail_client.errors }} </div>
+                            <label for="{{ form.mail.id_for_label }}" class="control-label">Email</label>
+                            {{ personal_data_form.mail }}
+                            <div> {{ personal_data_form.mail.errors }} </div>
                         </div>
                     </div> 
                     
@@ -78,6 +78,10 @@
                             <label for="{{ city_form.city_name.id_for_label }}" class="control-label">Ville</label>
                             {{ city_form.city_name }}
                         </div>
+                        <div class="col-md-4">
+                            <label for="{{ form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img</label>
+                            {{ personal_data_form.afpa_card_img }}
+                        </div>
                     </div>
                     <div> {{ address_form.non_field_errors }} </div>
 
@@ -85,15 +89,15 @@
 
                     <div class="row">
                         <div class="col-md-3">
-                            <a href="{% url 'garage:client-select' %}" class="btn btn-primary btn-lg btn-block" id="bouton">Annuler</a>
+                            <a href="{% url 'garage:customer-select' %}" class="btn btn-primary btn-lg btn-block" id="button">Annuler</a>
                         </div>
                         <div class="col-md-2">
                         </div>         
                         <div class="col-md-4">
-                                <button class="btn btn-primary btn-lg btn-block" type="submit" id="bouton">Valider et retour Accueil</button>
+                                <button class="btn btn-primary btn-lg btn-block" type="submit" id="button">Valider et retour Accueil</button>
                             </div>     
                         <div class="col-md-3">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="bouton">Etape suivante</button>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="button">Etape suivante</button>
                         </div>
                     </div>   
 

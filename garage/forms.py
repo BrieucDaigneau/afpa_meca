@@ -1,37 +1,35 @@
 from django import forms
-
-from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput
+from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea
 from django.forms.utils import ErrorList
-from .models import Client, DonneesPersonnelles, Address, ZipCode, City, Motorise, Voiture, Intervention
 
-class ClientForm(forms.ModelForm):
+from .models import *
+
+class CustomerForm(forms.ModelForm):
     class Meta:
-        model = Client
-        # fields = '__all__'
-        fields = ["nom_client", "prenom_client", "numero_afpa_client"]
+        model = Customer
+        fields = ["lastname", "firstname", "afpa_number"]
         widgets = {
-            'nom_client': TextInput(attrs={'class': 'form-control'}),
-            'prenom_client': TextInput(attrs={'class': 'form-control'}),
-            'numero_afpa_client': TextInput(attrs={'class': 'form-control'})
+            'lastname': TextInput(attrs={'class': 'form-control'}),
+            'firstname': TextInput(attrs={'class': 'form-control'}),
+            'afpa_number': NumberInput(attrs={'class': 'form-control'})
         }
 
 
-class DonneesPersonnellesForm(forms.ModelForm):
+class PersonalDataForm(forms.ModelForm):
     class Meta:
-        model = DonneesPersonnelles
-        fields = ["mail_client", "telephone_client"]
+        model = PersonalData
+        fields = ["mail", "phone_number"]
         widgets = {
-            'mail_client': TextInput(attrs={'class': 'form-control'}),
-            'telephone_client': TextInput(attrs={'class': 'form-control'})
+            'mail': TextInput(attrs={'class': 'form-control'}),
+            'phone_number': TextInput(attrs={'class': 'form-control'})
         }  
 
-    # Clean suivi du nom du champ concerné ensuite géré dans le Html
-    def clean_mail_client(self):
-        mail_client = self.cleaned_data['mail_client'].lower()
-        r = DonneesPersonnelles.objects.filter(mail_client=mail_client)
+    def clean_mail(self):
+        mail = self.cleaned_data['mail'].lower()
+        r = PersonalData.objects.filter(mail=mail)
         if r.count():
             raise  forms.ValidationError("Email existe déjà")
-        return mail_client
+        return mail
 
 
 class AddressForm(forms.ModelForm):
@@ -44,7 +42,6 @@ class AddressForm(forms.ModelForm):
             'street_complement': TextInput(attrs={'class': 'form-control'})
         }
 
-    # Clean suivi du nom du champ concerné ensuite géré dans le Html
     def clean(self):
         cleaned_data = super().clean()
         street_number = self.cleaned_data['street_number']
@@ -72,30 +69,34 @@ class CityForm(forms.ModelForm):
             'city_name': TextInput(attrs={'class': 'form-control'})
         }  
 
-class VoitureForm(forms.ModelForm):
+
+class CarForm(forms.ModelForm):
     class Meta:
-        model = Voiture
-        exclude = ('client', 'carte_grise_img', 'carte_assurance_img' )
+        model = Car
+        exclude = ('customer', 'grey_doc_img', 'insurance_img' )
         widgets = {
-            'libelle_marque': TextInput(attrs={'class': 'form-control'}),
-            'libelle_modele': TextInput(attrs={'class': 'form-control'}),
-            'immatriculation': TextInput(attrs={'class': 'form-control'}),
+            'brand': TextInput(attrs={'class': 'form-control'}),
+            'model': TextInput(attrs={'class': 'form-control'}),
+            'license_plate': TextInput(attrs={'class': 'form-control'}),
             'vin': TextInput(attrs={'class': 'form-control'}),
-            'kilometrage': NumberInput(attrs={'class': 'form-control'}),
-            'date_mec':  SelectDateWidget(attrs={'class': 'form-control'}),
-            'carte_grise_img': FileInput(attrs={'class': 'form-control'}),
-            'carte_assurance_img': FileInput(attrs={'class': 'form-control'})
+            'mileage': NumberInput(attrs={'class': 'form-control'}),
+            'circulation_date': DateInput(attrs={'class': 'form-control'}),
+            'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
+            'insurance_img': FileInput(attrs={'class': 'form-control'})
         }
        
-class OrdreReparationForm(forms.ModelForm):
+       
+class ReparationOrderForm(forms.ModelForm):
     class Meta:
-        model = Intervention
-        fields = '__all__'
-        #exclude = ('intervention_realisee', 'statut')
-        # widgets = {
-        #     'date_saisie_intervention': 
-        #     'date_restitution_prevu'
-        #     'diagnostic'
-        #     'intervention_a_realiser'
-        # }
+        model = ReparationOrder
+        fields = ["committed_date","return_date","diagnostic","to_do_actions"]
+        widgets = {
+            'committed_date': DateInput(attrs={'class': 'form-control'}),            
+            'return_date': DateInput(attrs={'class': 'form-control'}),    
+            'diagnostic' : Textarea(attrs={'class': 'form-control'}),  
+            'to_do_actions' : Textarea(attrs={'class': 'form-control'})
+        }
+
+
+
 
