@@ -20,5 +20,6 @@ urlpatterns = [
     path('sélection-véhicule/<int:customer_id>/', login_required(views.VehicleSelect.as_view()), name="vehicle-select"),
     path('création-voiture/<int:customer_id>/', login_required(views.CarCreate.as_view()), name='vehicle-create'),
     path('consultation-vehicules', login_required(views.VehicleList.as_view()), name="vehicles"),      
-    path('création-ordre-réparation/<int:vehicle_id>/', login_required(views.ReparationOrder.as_view()), name='reparation-order-create'),
+    path('création-ordre-réparation/<int:vehicle_id>/', login_required(views.ReparationOrderCreate.as_view()), name='reparation-order-create'),
+    path('creation-vehicle/<int:customer_id>/', login_required(views.VehicleCreate.as_view()), name='vehicle-create'),
 ]

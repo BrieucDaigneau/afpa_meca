@@ -197,7 +197,7 @@ class ReparationOrderCreate(CreateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy('garage:accueil',
                                 current_app='garage')    
-    BAA
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         vehicle = Vehicle.objects.filter_child(self.kwargs['client_id'])       
@@ -233,7 +233,7 @@ class VehicleList(VehicleSelect):
 
 
 class VehiculeSelect(ListView):
-    model = Vehicule
+    model = Vehicle
     template_name = 'garage/voiture-select.html'
     
     def get_context_data(self, **kwargs):
