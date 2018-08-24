@@ -207,7 +207,7 @@ class ReparationOrderCreate(CreateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        vehicle = Vehicle.objects.filter_child(self.kwargs['vehicle_id'])  
+        vehicle = Vehicle.objects.get_child(self.kwargs['vehicle_id'])  
         print(vehicle.model)     
         context['vehicle'] = vehicle   
         return context
