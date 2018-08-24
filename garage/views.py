@@ -338,14 +338,14 @@ class VehicleUpdate(UpdateView):
 
 class VehicleSelect(ListView):
     model = Vehicle
-    def get_template_names(self):
-        return Vehicule.objects.dispenser(
-            id          = self.kwargs['customer_id'],
-            car         = 'garage/car_form.html',
-            motorbike   = 'garage/two-wheeler_form.html.html',
-            bike        = 'garage/two-wheeler_form.html.html',
-            template_name = 'garage/car_select.html'
-        )
+    # def get_template_names(self):
+    #     return Vehicle.objects.dispenser(
+    #         id          = self.kwargs['customer_id'],
+    #         car         = 'garage/car_form.html',
+    #         motorbike   = 'garage/two-wheeler_form.html.html',
+    #         bike        = 'garage/two-wheeler_form.html.html',
+    #     )
+    template_name = 'garage/car_select.html'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -379,7 +379,8 @@ class ReparationOrderCreateView(CreateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        vehicle = Vehicle.objects.filter_child(self.kwargs['vehicle_id'])       
+        vehicle = Vehicle.objects.get_child(self.kwargs['vehicle_id'])       
+        print(vehicle)
         context['vehicle'] = vehicle   
         return context
 
@@ -387,7 +388,7 @@ class ReparationOrderCreateView(CreateView):
         vehicle = Vehicle.objects.filter_child(self.kwargs['vehicle_id'])     
         user = self.request.user          
         reparation_order = form.save(commit=False)
-        reparation_order.utilisateur = user
+        reparation_order.user_profile = user
         reparation_order.vehicle = vehicle
         reparation_order.save()
         return super().form_valid(form)
