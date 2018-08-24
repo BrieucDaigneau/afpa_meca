@@ -8,7 +8,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="{% static 'garage/css/base.css' %}" />
-	<link href= {% block css %}{% endblock css %} rel="stylesheet">
+	<link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
+	<link href={% block css %}{% endblock css %} rel="stylesheet"> 
 	{% block head %}{% endblock head %}
 </head>
 
@@ -17,26 +18,20 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-4" id="logo">
-				<img src="{% static 'garage/img/logo_afpa2.png' %}" width="250" height="170"></img>
+				<img src="{% static 'garage/img/logo_afpa2.png' %}"/>
 			</div>
 			<div class="col-md-4" id="title">
 				<h1>Pôle Mécanique</h1>
 			</div>
-			<div class="col-md-4" id="logout">
-				{% if user.is_authenticated %} {% endif %}
+			<div class="col-md-3" id="logout">
+				<div class="container col-md-8" id="logoutBox">
 
-				<img src="{% static 'garage/img/logo_logout.jpg' %}" width="30" height="30"></img>
-				{% if user.is_authenticated %}
-				<li>Bonjour, {{ user.get_username }}</li>
-				<li>
-					<a href="{% url 'garage:logout' %}">Déconnexion</a>
-				</li>
-				{% else %}
-				<li>
-					<a href="{% url 'garage:login' %}?next={{request.path}}">Login</a>
-				</li>
-				{% endif %}
-				</ul>
+					<img class="mt-2" src="{% static 'garage/img/logo_logout.png' %}" width="30" height="30">
+					<div class="userConected">Bonjour, {{ user.get_username }}</div>
+					<a href="{% url 'garage:logout' %}" class=" deconection userConected mb-2">Déconnexion</a>
+				</div>
+
+
 			</div>
 		</div>
 	</div>
@@ -45,54 +40,69 @@
 	<div class='row'>
 		<div class='col-md-12'>
 
-			<nav class="navbar navbar-expand-lg" id="navbar">
+			<nav class="navbar navbar-expand-lg " id="navbar">
 
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+				<!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
 				 aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
+				</button> -->
+				<button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+					&#9776;
 				</button>
 
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<div id="navbar-content">
-						<ul class="navbar-nav mr-auto">
+				<div class="collapse navbar-collapse navbar-toggleable-md" id="navbarSupportedContent">
+					<div id="navbar-contain">
+						<ul class="nav  navbar-nav mr-auto  pull-md-right">
 							<li class="nav-item nav-link">
-								<div id="separator_navbar">|</div>
+								<div class="separator_navbar">|</div>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="{% url 'garage:home' %}">Accueil</a>
 							</li>
 							<li class="nav-item nav-link">
-								<div id="separator_navbar">|</div>
+								<div class="separator_navbar">|</div>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="{% url 'garage:customer-select' %}">Nouveau</a>
 							</li>
 							<li class="nav-item nav-link">
-								<div id="separator_navbar">|</div>
+								<div class="separator_navbar">|</div>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="#">Clients</a>
+								<a class="nav-link" href="{% url 'garage:customers' %}">Clients</a>
 							</li>
 							<li class="nav-item nav-link">
-								<div id="separator_navbar">|</div>
+								<div class="separator_navbar">|</div>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="#">Véhicules</a>
+								{% comment %} <a class="nav-link" href="{% url 'garage:cars' %}">Voitures</a> {% endcomment %}
 							</li>
 							<li class="nav-item nav-link">
-								<div id="separator_navbar">|</div>
+								<div class="separator_navbar">|</div>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="#">Ordres de réparations</a>
+								{% comment %} <a class="nav-link" href="{% url 'garage:motorbikes' %}">Moto</a> {% endcomment %}
 							</li>
 							<li class="nav-item nav-link">
-								<div id="separator_navbar">|</div>
+								<div class="separator_navbar">|</div>
+							</li>
+							<li class="nav-item">
+								{% comment %} <a class="nav-link" href="{% url 'garage:bikes' %}">Velo</a> {% endcomment %}
+							</li>
+							<li class="nav-item nav-link">
+								<div class="separator_navbar">|</div>
+							</li>
+							<li class="nav-item">
+								{% comment %} <a class="nav-link" href="{% url 'garage:reparation-orders' %}">Ordres de réparations</a> {% endcomment %}
+							</li>
+							<li class="nav-item nav-link">
+								<div class="separator_navbar">|</div>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="#">Utilisateurs</a>
 							</li>
 							<li class="nav-item nav-link">
-								<div id="separator_navbar">|</div>
+								<div class="separator_navbar">|</div>
 							</li>
 						</ul>
 					</div>
@@ -107,7 +117,7 @@
 	<div class="container">
 		<div class='row'>
 			<div class="col-md-12">
-				{% block content %}{% endblock content%}
+				{% block content %}{% endblock %}
 			</div>
 		</div>
 	</div>
@@ -131,10 +141,8 @@
 	<script src="{% static 'garage/js/jquery-slim.min.js' %}"></script>
 	<script src="{% static 'garage/js/holder.min.js' %}"></script>
 	<script>
-
 		$(document).ready(function () {
-
-			$("#navbar-content a").each(function (index) {
+			$("#navbar-contenu a").each(function (index) {
 				if (this.href == document.location.href) {
 					$(this).addClass('active');
 				}

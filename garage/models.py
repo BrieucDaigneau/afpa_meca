@@ -68,17 +68,49 @@ class Customer(models.Model):
 
 
 class MyManager(models.Manager):
-    def get_child(self, id):
-        isAutoConfig = True #VehicleConfig['vehicle']
-        if  isAutoConfig == 'car':
+    def dispenser(self, id, car, motorbike, bike):
+        if  VehicleConfig['vehicle'] == 'car':
             if Car.objects.filter(pk=id):
-                return Car.objects.get(pk=id)
-        elif isAutoConfig == 'bike': 
+                return car
+        elif VehicleConfig['vehicle'] == 'bike': 
             if Motorbike.objects.filter(pk=id):
-                return Motorbike.objects.get(pk=id)
+                return motorbike
             if Bike.objects.filter(pk=id):
-                return Bike.objects.get(pk=id)
+                return bike
         return None
+
+    def get_child(self, id):
+        car, motorbike, bike = None, None, None
+        if Car.objects.filter(pk=id):
+            car         = Car.objects.get(pk=id)
+        if Motorbike.objects.filter(pk=id):
+            motorbike   = Motorbike.objects.get(pk=id)
+        if Bike.objects.filter(pk=id):
+            bike        = Bike.objects.get(pk=id)
+    
+        return self.dispenser(
+                        id          = id, 
+                        car         = car,
+                        motorbike   = motorbike,
+                        bike        = bike
+        )
+
+    def filter_child(self, id):
+        return self.dispenser(
+                        id          = id, 
+                        car         = Car.objects.filter(pk=id),
+                        motorbike   = Motorbike.objects.filter(pk=id),
+                        bike        = Bike.objects.filter(pk=id) 
+        )
+
+    def get_model(self, id):
+        return self.dispenser(
+                        id          = id, 
+                        car         = Car,
+                        motorbike   = Motorbike,
+                        bike        = Bike,
+        )
+
 
 
 class Vehicle(models.Model):
@@ -104,7 +136,7 @@ class Motorized(Vehicle):
         verbose_name_plural = "Motorisés"
 
     def __str__(self):
-        return self.license_plate + " " + self.model + " " + self.brand
+        return str(self.license_plate) + " " + str(self.model) + " " + str(self.brand)
 
 
 class Car(Motorized):
@@ -136,7 +168,7 @@ class ReparationOrder(models.Model):
     to_do_actions           = models.TextField("interventions prévus", max_length=300, null=True)
     actions_done            = models.BooleanField("intervention réalisée", null=False, default=False)
     
-    AwaitingInstructor   = 'AI'
+    AwaitingInstructor   = "AI"
     InstructorValidation = "IV"
     InstructorDenial     = "ID"
     AwaitingEstimate     = "AE"
