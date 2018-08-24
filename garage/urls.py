@@ -16,17 +16,17 @@ urlpatterns = [
     # url(r'^recherche/$', login_required(views.search), name='search'),
     path('accueil/', login_required(views.Home.as_view()), name='home'),
 
-    path('création-client', login_required(views.CustomerCreateView.as_view()), name='customer-create'),   
+    path('creation-client', login_required(views.CustomerCreateView.as_view()), name='customer-create'),   
     path('selection-client/', login_required(views.CustomerSelect.as_view()), name='customer-select'),
     path('consultation-clients', login_required(views.Customers.as_view()), name='customers'),
     path('actualisation-client/<pk>/', login_required(views.CustomerUpdate.as_view()), name='customer-update'),  
     
-    path('création-vehicule/<int:customer_id>/', login_required(views.VehicleCreate.as_view()), name='vehicle-create'),
+    path('creation-vehicule/<int:customer_id>/', login_required(views.VehicleCreate.as_view()), name='vehicle-create'),
     path('selection-vehicule/<int:customer_id>/', login_required(views.VehicleSelect.as_view()), name='vehicle-select'),
     # path('consultation-vehicles', login_required(views.Vehicles.as_view()), name='vehicles',
     path('actualisation-vehicule/<pk>/', login_required(views.VehicleUpdate.as_view()), name='vehicle-update'),
 
-    path('création-intervention/<int:vehicle_id>', login_required(views.ReparationOrderCreateView.as_view()), name='reparation-order-create')  
+    path('creation-intervention/<int:vehicle_id>', login_required(views.ReparationOrderCreateView.as_view()), name='reparation-order-create')  
 ]
     # path('consultation-interventions'), login_required(views.ReparationOrders.as_view()), name='reparation-orders'),
     # path('actualisation-intervention/<pk>/'), login_required(views.ReparationOrderUpdate.as_view()), name='reparation-order-update'),  
@@ -36,9 +36,9 @@ urlpatterns = [
 
 
 ######################################################################################################################################""
-    # path('sélection-moto/<int:customer_id>/', login_required(views.MotorbikeSelect.as_view()), name='motorbike-select'),
+    # path('selection-moto/<int:customer_id>/', login_required(views.MotorbikeSelect.as_view()), name='motorbike-select'),
     # path('sélection-véhicule/<int:customer_id>/', login_required(views.VehicleSelect.as_view()), name='vehicle-select'),
 
-    # path('création-voiture/<int:customer_id>/', login_required(views.CarCreate.as_view()), name='vehicle-create'),
+    # path('creation-voiture/<int:customer_id>/', login_required(views.CarCreate.as_view()), name='vehicle-create'),
     # path('consultation-vehicules', login_required(views.VehicleList.as_view()), name='vehicles'),      
-    # path('création-ordre-réparation/<int:vehicle_id>/', login_required(views.ReparationOrder.as_view()), name='reparation-order-create'),
+    # path('creation-ordre-réparation/<int:vehicle_id>/', login_required(views.ReparationOrder.as_view()), name='reparation-order-create'),
