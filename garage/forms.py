@@ -86,7 +86,7 @@ class CarForm(forms.ModelForm):
         }
        
 
-class BikeForm(forms.ModelForm):
+class MotorbikeForm(forms.ModelForm):
     class Meta:
         model = Motorbike
         exclude = ('customer', 'grey_doc_img', 'insurance_img' )

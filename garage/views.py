@@ -263,7 +263,7 @@ class VehicleCreate(CreateView):
         if VehicleConfig['vehicle'] == 'car' :
             return CarForm    
         elif VehicleConfig['vehicle'] == 'bike' :
-            return Motorbike   
+            return MotorbikeForm  
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('garage:reparation-order-create',
