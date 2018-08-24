@@ -68,40 +68,48 @@ class Customer(models.Model):
 
 
 class MyManager(models.Manager):
-    def get_child(self, id):
-        if VehicleConfig['vehicle'] == 'car':
+    def dispenser(self, id, car, motorbike, bike):
+        if  VehicleConfig['vehicle'] == 'car':
             if Car.objects.filter(pk=id):
-                return Car.objects.get(pk=id)
+                return car
         elif VehicleConfig['vehicle'] == 'bike': 
             if Motorbike.objects.filter(pk=id):
-                return Motorbike.objects.get(pk=id)
+                return motorbike
             if Bike.objects.filter(pk=id):
-                return Bike.objects.get(pk=id)
+                return bike
         return None
 
+    def get_child(self, id):
+        car, motorbike, bike = None, None, None
+        if Car.objects.filter(pk=id):
+            car         = Car.objects.get(pk=id)
+        if Motorbike.objects.filter(pk=id):
+            motorbike   = Motorbike.objects.get(pk=id)
+        if Bike.objects.filter(pk=id):
+            bike        = Bike.objects.get(pk=id)
+    
+        return self.dispenser(
+                        id          = id, 
+                        car         = car,
+                        motorbike   = motorbike,
+                        bike        = bike
+        )
 
     def filter_child(self, id):
-        if VehicleConfig['vehicle'] == 'car' :
-            if Car.objects.filter(customer=id) :
-                return Car.objects.filter(customer=id)
-
-        if VehicleConfig['vehicle'] == 'bike' : 
-            if Motorbike.objects.filter(customer=id) :
-                return Motorbike.objects.filter(customer=id)
-            if Bike.objects.filter(customer=id) :
-                return Bike.objects.filter(customer=id)
-
+        return self.dispenser(
+                        id          = id, 
+                        car         = Car.objects.filter(pk=id),
+                        motorbike   = Motorbike.objects.filter(pk=id),
+                        bike        = Bike.objects.filter(pk=id) 
+        )
 
     def get_model(self, id):
-        if VehicleConfig['vehicle'] == 'car' :
-            if Car.objects.filter(pk=id) :
-                return Car
-
-        if VehicleConfig['vehicle'] == 'bike' : 
-            if Motorbike.objects.filter(pk=id) :
-                return Motorbike
-            if Bike.objects.filter(pk=id) :
-                return Bike
+        return self.dispenser(
+                        id          = id, 
+                        car         = Car,
+                        motorbike   = Motorbike,
+                        bike        = Bike,
+        )
 
 
 

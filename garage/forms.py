@@ -4,6 +4,7 @@ from django.forms.utils import ErrorList
 
 from .models import *
 
+
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
@@ -11,11 +12,11 @@ class CustomerForm(forms.ModelForm):
         widgets = {
             'lastname': TextInput(attrs={'class': 'form-control'}),
             'firstname': TextInput(attrs={'class': 'form-control'}),
-            'afpa_number': NumberInput(attrs={'class': 'form-control'})
+            'afpa_number': TextInput(attrs={'class': 'form-control'})
         }
 
 
-class PersonalDataForm(forms.ModelForm):
+class PersonalDataUpdateForm(forms.ModelForm):
     class Meta:
         model = PersonalData
         fields = ["mail", "phone_number"]
@@ -24,12 +25,34 @@ class PersonalDataForm(forms.ModelForm):
             'phone_number': TextInput(attrs={'class': 'form-control'})
         }  
 
+
+class PersonalDataForm(forms.ModelForm):
+    class Meta:
+        model = PersonalData
+        fields = ["mail", "phone_number", "afpa_card_img"]
+        widgets = {
+            'mail': TextInput(attrs={'class': 'form-control'}),
+            'phone_number': TextInput(attrs={'class': 'form-control'}),
+            'afpa_card_img': FileInput(attrs={'class': 'form-control'})
+        }  
+
     def clean_mail(self):
         mail = self.cleaned_data['mail'].lower()
         r = PersonalData.objects.filter(mail=mail)
         if r.count():
             raise  forms.ValidationError("Email existe déjà")
         return mail
+
+
+class AddressUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ["street","street_number","street_complement"]
+        widgets = {
+            'street': TextInput(attrs={'class': 'form-control'}),
+            'street_number': NumberInput(attrs={'class': 'form-control'}),
+            'street_complement': TextInput(attrs={'class': 'form-control'})
+        }
 
 
 class AddressForm(forms.ModelForm):
@@ -70,23 +93,27 @@ class CityForm(forms.ModelForm):
         }  
 
 
-class CarForm(forms.ModelForm):
+class MotorizedForm(forms.ModelForm):
     class Meta:
         model = Car
-        exclude = ('customer', 'grey_doc_img', 'insurance_img' )
+        exclude = ('customer',)
         widgets = {
             'brand': TextInput(attrs={'class': 'form-control'}),
             'model': TextInput(attrs={'class': 'form-control'}),
             'license_plate': TextInput(attrs={'class': 'form-control'}),
             'vin': TextInput(attrs={'class': 'form-control'}),
             'mileage': NumberInput(attrs={'class': 'form-control'}),
-            'circulation_date': DateInput(attrs={'class': 'form-control'}),
+            'circulation_date': DateInput(attrs={'class': 'form-control', 'type':'date'}), 
             'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
             'insurance_img': FileInput(attrs={'class': 'form-control'})
         }
-       
 
-class MotorbikeForm(forms.ModelForm):
+       
+class CarForm(MotorizedForm):
+    pass
+
+
+class MotorbikeForm(MotorizedForm):
     class Meta:
         model = Motorbike
         exclude = ('customer', 'grey_doc_img', 'insurance_img' )
@@ -99,15 +126,23 @@ class MotorbikeForm(forms.ModelForm):
             'circulation_date': DateInput(attrs={'class': 'form-control'}),
             'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
             'insurance_img': FileInput(attrs={'class': 'form-control'})
-        }    
+        }
+
+
+class BikeForm(forms.ModelForm):
+    class Meta:
+        model = Bike
+        fields = ['model']
+        widgets = {
+            'model': TextInput(attrs={'class': 'form-control'}),
+        }
        
 
 class ReparationOrderForm(forms.ModelForm):
     class Meta:
         model = ReparationOrder
-        fields = ["committed_date","return_date","diagnostic","to_do_actions"]
+        fields = ["return_date","diagnostic","to_do_actions"]
         widgets = {
-            'committed_date': DateInput(attrs={'class': 'form-control'}),            
             'return_date': DateInput(attrs={'class': 'form-control'}),    
             'diagnostic' : Textarea(attrs={'class': 'form-control'}),  
             'to_do_actions' : Textarea(attrs={'class': 'form-control'})
