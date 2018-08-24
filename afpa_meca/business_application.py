@@ -1,3 +1,3 @@
 VehicleConfig = {
-   'vehicle': 'car'
+   'vehicle': 'bike'
 }
