@@ -15,7 +15,7 @@
         
             <formulaire class="col-md-9">
                 <h4>client</h4>
-                <form class="needs-validation" action="{% url 'garage:customer-create' %}" method="post">
+                <form class="needs-validation" action="{% url 'garage:customer-create' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-6">

@@ -12,7 +12,7 @@ class CustomerForm(forms.ModelForm):
         widgets = {
             'lastname': TextInput(attrs={'class': 'form-control'}),
             'firstname': TextInput(attrs={'class': 'form-control'}),
-            'afpa_number': NumberInput(attrs={'class': 'form-control'})
+            'afpa_number': TextInput(attrs={'class': 'form-control'})
         }
 
 
@@ -29,10 +29,11 @@ class PersonalDataUpdateForm(forms.ModelForm):
 class PersonalDataForm(forms.ModelForm):
     class Meta:
         model = PersonalData
-        fields = ["mail", "phone_number"]
+        fields = ["mail", "phone_number", "afpa_card_img"]
         widgets = {
             'mail': TextInput(attrs={'class': 'form-control'}),
-            'phone_number': TextInput(attrs={'class': 'form-control'})
+            'phone_number': TextInput(attrs={'class': 'form-control'}),
+            'afpa_card_img': FileInput(attrs={'class': 'form-control'})
         }  
 
     def clean_mail(self):
@@ -95,14 +96,14 @@ class CityForm(forms.ModelForm):
 class MotorizedForm(forms.ModelForm):
     class Meta:
         model = Car
-        exclude = ('customer', 'grey_doc_img', 'insurance_img' )
+        exclude = ('customer',)
         widgets = {
             'brand': TextInput(attrs={'class': 'form-control'}),
             'model': TextInput(attrs={'class': 'form-control'}),
             'license_plate': TextInput(attrs={'class': 'form-control'}),
             'vin': TextInput(attrs={'class': 'form-control'}),
             'mileage': NumberInput(attrs={'class': 'form-control'}),
-            'circulation_date': DateInput(attrs={'class': 'form-control'}),
+            'circulation_date': DateInput(attrs={'class': 'form-control', 'type':'date'}), 
             'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
             'insurance_img': FileInput(attrs={'class': 'form-control'})
         }
@@ -142,7 +143,12 @@ class ReparationOrderForm(forms.ModelForm):
         model = ReparationOrder
         fields = ["return_date","diagnostic","to_do_actions"]
         widgets = {
+<<<<<<< HEAD
             'return_date': DateInput(attrs={'class': 'form-control'}),    
+=======
+            'committed_date': DateInput(attrs={'class': 'form-control', 'type':'date'}),            
+            'return_date': DateInput(attrs={'class': 'form-control', 'type':'date'}),    
+>>>>>>> f62aa85fd0838350203100b8556a902ed271b2f3
             'diagnostic' : Textarea(attrs={'class': 'form-control'}),  
             'to_do_actions' : Textarea(attrs={'class': 'form-control'})
         }

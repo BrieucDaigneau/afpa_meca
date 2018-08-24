@@ -8,3 +8,5 @@ db.sqlite3
 settings.json
 launch.json
 /db/*.sqlite3
+*.jpg
+*.png

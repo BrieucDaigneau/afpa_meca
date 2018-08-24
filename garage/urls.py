@@ -28,6 +28,7 @@ urlpatterns = [
 
     path('creation-intervention/<int:vehicle_id>', login_required(views.ReparationOrderCreateView.as_view()), name='reparation-order-create')  
 ]
+<<<<<<< HEAD
     # path('consultation-interventions'), login_required(views.ReparationOrders.as_view()), name='reparation-orders'),
     # path('actualisation-intervention/<pk>/'), login_required(views.ReparationOrderUpdate.as_view()), name='reparation-order-update'),  
 
@@ -42,3 +43,6 @@ urlpatterns = [
     # path('creation-voiture/<int:customer_id>/', login_required(views.CarCreate.as_view()), name='vehicle-create'),
     # path('consultation-vehicules', login_required(views.VehicleList.as_view()), name='vehicles'),      
     # path('creation-ordre-réparation/<int:vehicle_id>/', login_required(views.ReparationOrder.as_view()), name='reparation-order-create'),
+=======
+
+>>>>>>> f62aa85fd0838350203100b8556a902ed271b2f3
