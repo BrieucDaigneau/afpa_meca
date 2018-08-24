@@ -81,7 +81,7 @@ class CarForm(forms.ModelForm):
             'license_plate': TextInput(attrs={'class': 'form-control'}),
             'vin': TextInput(attrs={'class': 'form-control'}),
             'mileage': NumberInput(attrs={'class': 'form-control'}),
-            'circulation_date': SelectDateWidget(attrs={'class': 'form-control'}, years=[d for d in range(1980, 2030)]),
+            'circulation_date': DateInput(attrs={'class': 'form-control', 'type':'date'}), 
             'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
             'insurance_img': FileInput(attrs={'class': 'form-control'})
         }
@@ -108,8 +108,8 @@ class ReparationOrderForm(forms.ModelForm):
         model = ReparationOrder
         fields = ["committed_date","return_date","diagnostic","to_do_actions"]
         widgets = {
-            'committed_date': DateInput(attrs={'class': 'form-control'}),            
-            'return_date': DateInput(attrs={'class': 'form-control'}),    
+            'committed_date': DateInput(attrs={'class': 'form-control', 'type':'date'}),            
+            'return_date': DateInput(attrs={'class': 'form-control', 'type':'date'}),    
             'diagnostic' : Textarea(attrs={'class': 'form-control'}),  
             'to_do_actions' : Textarea(attrs={'class': 'form-control'})
         }
