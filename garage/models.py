@@ -136,7 +136,7 @@ class ReparationOrder(models.Model):
     to_do_actions           = models.TextField("interventions prévus", max_length=300, null=True)
     actions_done            = models.BooleanField("intervention réalisée", null=False, default=False)
     
-    AwaitingInstructor   = 'AI'
+    AwaitingInstructor   = "AI"
     InstructorValidation = "IV"
     InstructorDenial     = "ID"
     AwaitingEstimate     = "AE"
