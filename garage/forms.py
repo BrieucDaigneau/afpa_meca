@@ -143,12 +143,7 @@ class ReparationOrderForm(forms.ModelForm):
         model = ReparationOrder
         fields = ["return_date","diagnostic","to_do_actions"]
         widgets = {
-<<<<<<< HEAD
             'return_date': DateInput(attrs={'class': 'form-control'}),    
-=======
-            'committed_date': DateInput(attrs={'class': 'form-control', 'type':'date'}),            
-            'return_date': DateInput(attrs={'class': 'form-control', 'type':'date'}),    
->>>>>>> f62aa85fd0838350203100b8556a902ed271b2f3
             'diagnostic' : Textarea(attrs={'class': 'form-control'}),  
             'to_do_actions' : Textarea(attrs={'class': 'form-control'})
         }
