@@ -82,14 +82,14 @@ class MyManager(models.Manager):
 
     def filter_child(self, id):
         if VehicleConfig['vehicle'] == 'car' :
-            if Car.objects.filter(client=id) :
-                return Car.objects.filter(client=id)
+            if Car.objects.filter(customer=id) :
+                return Car.objects.filter(customer=id)
 
         if VehicleConfig['vehicle'] == 'bike' : 
-            if Motorbike.objects.filter(client=id) :
-                return Motorbike.objects.filter(client=id)
-            if Bike.objects.filter(client=id) :
-                return Bike.objects.filter(client=id)
+            if Motorbike.objects.filter(customer=id) :
+                return Motorbike.objects.filter(customer=id)
+            if Bike.objects.filter(customer=id) :
+                return Bike.objects.filter(customer=id)
 
 
     def get_model(self, id):

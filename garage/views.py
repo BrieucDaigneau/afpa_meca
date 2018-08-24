@@ -195,17 +195,17 @@ class ReparationOrderCreate(CreateView):
     template_name = 'garage/reparation_order.html'    
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('garage:accueil',
+        return reverse_lazy('garage:home',
                                 current_app='garage')    
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        vehicle = Vehicle.objects.filter_child(self.kwargs['client_id'])       
+        vehicle = Vehicle.objects.filter_child(self.kwargs['vehicle_id'])       
         context['vehicle'] = vehicle   
         return context
 
     def form_valid(self, form):
-        vehicle = Vehicle.objects.filter_child(self.kwargs['client_id'])     
+        vehicle = Vehicle.objects.filter_child(self.kwargs['vehicle_id'])     
         user = self.request.user          
         reparation_order = form.save(commit=False)
         reparation_order.utilisateur = user
@@ -243,8 +243,8 @@ class VehiculeSelect(ListView):
         return context
         
     def get_queryset(self):
-        # print(Vehicule.objects.get_child(self.kwargs['client_id']))
-        return Vehicule.objects.filter_child(self.kwargs['client_id'])
+        # print(Vehicule.objects.get_child(self.kwargs['customer_id']))
+        return Vehicule.objects.filter_child(self.kwargs['customer_id'])
 
 
 class VehicleCreate(CreateView):
@@ -257,17 +257,17 @@ class VehicleCreate(CreateView):
             return BikeForm   
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('garage:intervention-create',
-                                kwargs={'vehicule_id': self.object.id},
+        return reverse_lazy('garage:reparation-order-create',
+                                kwargs={'vehicle_id': self.object.id},
                                 current_app='garage')
 
     def form_valid(self, form):
-        client = Client.objects.get(pk=self.kwargs['client_id'])
+        customer = Customer.objects.get(pk=self.kwargs['customer_id'])
 
         # Attention vehicule est une instance de Voiture, Velo ou Moto
         vehicle = form.save()
-        # print(Vehicule.objects.get_child(self.kwargs['client_id']))        
-        vehicle.client = client
+        # print(Vehicule.objects.get_child(self.kwargs['customer_id']))        
+        vehicle.customer = customer
         vehicle.save()
         return super().form_valid(form)        
 
