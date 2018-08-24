@@ -28,7 +28,7 @@ class CustomerCreateView(View):
         city_form = CityForm(request.POST or None)
         address_form = AddressForm(request.POST or None)    
         customer_form = CustomerForm(request.POST or None)   
-        personal_data_form = PersonalDataForm(request.POST or None)
+        personal_data_form = PersonalDataForm(request.POST or None, request.FILES)
 
         return { 'customer_form': customer_form,
             'personal_data_form': personal_data_form,

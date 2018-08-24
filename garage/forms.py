@@ -80,7 +80,7 @@ class CarForm(forms.ModelForm):
             'license_plate': TextInput(attrs={'class': 'form-control'}),
             'vin': TextInput(attrs={'class': 'form-control'}),
             'mileage': NumberInput(attrs={'class': 'form-control'}),
-            'circulation_date': DateInput(attrs={'class': 'form-control'}),
+            'circulation_date': SelectDateWidget(attrs={'class': 'form-control'}, years=[d for d in range(1980, 2030)]),
             'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
             'insurance_img': FileInput(attrs={'class': 'form-control'})
         }
