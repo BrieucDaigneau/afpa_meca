@@ -86,7 +86,23 @@ class CarForm(forms.ModelForm):
             'insurance_img': FileInput(attrs={'class': 'form-control'})
         }
        
+
+class BikeForm(forms.ModelForm):
+    class Meta:
+        model = Bike
+        exclude = ('customer', 'grey_doc_img', 'insurance_img' )
+        widgets = {
+            'brand': TextInput(attrs={'class': 'form-control'}),
+            'model': TextInput(attrs={'class': 'form-control'}),
+            'license_plate': TextInput(attrs={'class': 'form-control'}),
+            'vin': TextInput(attrs={'class': 'form-control'}),
+            'mileage': NumberInput(attrs={'class': 'form-control'}),
+            'circulation_date': DateInput(attrs={'class': 'form-control'}),
+            'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
+            'insurance_img': FileInput(attrs={'class': 'form-control'})
+        }    
        
+
 class ReparationOrderForm(forms.ModelForm):
     class Meta:
         model = ReparationOrder
