@@ -104,6 +104,31 @@ class MyManager(models.Manager):
         )
 
 
+    def filter_child(self, id):
+        if VehicleConfig['vehicle'] == 'car' :
+            if Car.objects.filter(customer=id) :
+                return Car.objects.filter(customer=id)
+
+        if VehicleConfig['vehicle'] == 'bike' : 
+            if Motorbike.objects.filter(customer=id) :
+                return Motorbike.objects.filter(customer=id)
+            if Bike.objects.filter(customer=id) :
+                return Bike.objects.filter(customer=id)
+
+
+    def get_model(self, id):
+        if VehicleConfig['vehicle'] == 'car' :
+            if Car.objects.filter(pk=id) :
+                return Car
+
+        if VehicleConfig['vehicle'] == 'bike' : 
+            if Motorbike.objects.filter(pk=id) :
+                return Motorbike
+            if Bike.objects.filter(pk=id) :
+                return Bike
+
+
+
 class Vehicle(models.Model):
     model       = models.CharField("libellé modèle", blank=False, max_length=50)
     customer    = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE)
