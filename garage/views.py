@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from django.views.generic import CreateView, ListView, View, FormView, DetailView, TemplateView
+from django.views.generic import CreateView, ListView, View, FormView, DetailView, TemplateView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,6 +11,7 @@ from django.core.exceptions import ValidationError
 from .models import *
 from .forms import *
 from . import urls
+from afpa_meca.business_application import VehicleConfig
 
 
 class Home(TemplateView):
@@ -136,7 +137,7 @@ class CustomerCreateView(View):
          
         return render(request, 'garage/customer_form.html', self.getForm( request ) )
 
-class CustomerUpdate(UpdateVie):
+class CustomerUpdate(UpdateView):
     template_name = 'garage/customer_update.html'
     success_message = "Données mises à jour avec succès"
 
@@ -145,12 +146,12 @@ class CustomerUpdate(UpdateVie):
         address = customer.address
         zipCode = address.zipCode
         city = address.city
-        personnalData = customer.personal_data
+        personalData = customer.personal_data
 
         zipCodeForm = ZipCodeForm(instance=zipCode)
         cityForm = CityForm(instance=city)
         addressForm = AddressUpdateForm(instance=address)
-        presonnalDataForm = PersonalDataUpdateForm(instance=donneesPersonnelles)
+        presonnalDataForm = PersonalDataUpdateForm(instance=personalData)
         customerForm = CustomerForm(instance=customer)
 
         context = {'zipCodeForm': zipCodeForm, 'cityForm': cityForm, 'addressForm': addressForm, 'presonnalDataForm': presonnalDataForm, 'customerForm': customerForm, }
@@ -166,7 +167,7 @@ class CustomerUpdate(UpdateVie):
         zipCodeForm = ZipCodeForm(request.POST, instance=zipCode)
         cityForm = CityForm(request.POST, instance=city)
         addressForm = AddressUpdateForm(request.POST, instance=address)
-        presonnalDataForm = DonneesPersonnellesUpdateForm(request.POST, instance=donneesPersonnelles)
+        presonnalDataForm = PersonalDataUpdateForm(request.POST, instance=personalData)
         customerForm = CustomerForm(request.POST, instance=customer)
 
         if zipCodeForm.is_valid() and cityForm.is_valid() and addressForm.is_valid() and presonnalDataForm.is_valid() and customerForm.is_valid(): 
@@ -207,10 +208,10 @@ class CustomerUpdate(UpdateVie):
         if 'addressForm' not in context:
             context['addressForm'] = AddressUpdateForm(instance=address)
         if 'presonnalDataForm' not in context:
-            context['presonnalDataForm'] = DonneesPersonnellesUpdateForm(instance=donneesPersonnelles)
+            context['presonnalDataForm'] = PersonalDataUpdateForm(instance=personalData)
         if 'presonnalDataForm' not in context:
             context['presonnalDataForm'] = CustomerForm(instance=customer)
-return context 
+        return context 
 
 
 class CustomerSelect(ListView):
@@ -231,16 +232,16 @@ class Customers(CustomerSelect):
         return context
 
 
-class vehicleCreate(CreateView):
+class VehicleCreate(CreateView):
     if  VehicleConfig['vehicle'] == 'car':
         form_class = CarForm
 
-    def get_template_name(self):
-        if  VehicleConfig == 'car':
+    def get_template_names(self):
+        if  VehicleConfig['vehicle'] == 'car':
             return 'garage/car_form.html',
-        # elif VehicleConfig == 'bike':
+        # elif VehicleConfig['vehicle'] == 'bike':
         #     return 'garage/two-wheeler_form.html.html',
-        )
+        
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('garage:reparation-order-create',
@@ -248,7 +249,7 @@ class vehicleCreate(CreateView):
                                 current_app='garage')
 
     def form_valid(self, form):
-        if  VehicleConfig == 'car':
+        if  VehicleConfig['vehicle'] == 'car':
             customer = Customer.objects.get(pk=self.kwargs['customer_id'])
             car = form.save()
             car.customer = customer 
@@ -256,19 +257,19 @@ class vehicleCreate(CreateView):
             return super().form_valid(form)
     
     # def getForm(self, request):
-    #     if  VehicleConfig == 'bike':
+    #     if  VehicleConfig['vehicle'] == 'bike':
     #         motorbike_form = MotorbikeForm(request.POST or None)
     #         bike_form = BikeForm(request.POST or None)
     #         return {'Motorbike_form': Motorbike_form, 'Bike_form': Bike_form}
     
     # def get(self, request):
-    #     if  VehicleConfig == 'bike':
+    #     if  VehicleConfig['vehicle'] == 'bike':
     #         myTemplate_name = 'garage/two-wheeler_form.html.html'
     #         return render(request, myTemplate_name, self.getForm(request))
     
     # @transaction.atomic
     # def post(self, request):
-    #     if  VehicleConfig == 'bike':
+    #     if  VehicleConfig['vehicle'] == 'bike':
     #         try:
     #             modelFormError = ""
     #             with transaction.atomic():
@@ -307,7 +308,7 @@ class vehicleCreate(CreateView):
 
 
 class VehicleUpdate(UpdateView):
-    model = get_model()
+    model = Car
     template_name = 'garage/vehicle_update'
     if  VehicleConfig['vehicle'] == 'car':
             form_class = CarForm
@@ -315,7 +316,7 @@ class VehicleUpdate(UpdateView):
     def get_model(self):
         return Vehicle.objects.get_model(self.kwargs['pk'])
         
-    # def get_template_name(self):
+    # def get_template_names(self):
     #     return Vehicule.objects.dispenser(
     #         id          = self.kwargs['pk'],
     #         car         = 'garage/car_update',
@@ -330,13 +331,14 @@ class VehicleUpdate(UpdateView):
 
 class VehicleSelect(ListView):
     model = Vehicle
-    def get_template_name(self):
+    def get_template_names(self):
         return Vehicule.objects.dispenser(
             id          = self.kwargs['customer_id'],
             car         = 'garage/car_form.html',
             motorbike   = 'garage/two-wheeler_form.html.html',
             bike        = 'garage/two-wheeler_form.html.html',
-        )    template_name = 'garage/car_select.html'
+            template_name = 'garage/car_select.html'
+        )
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -348,19 +350,19 @@ class VehicleSelect(ListView):
         return Car.objects.filter(customer_id=self.kwargs['customer_id'])
 
 
-class MotorbikeSelect(VehicleSelect):
-    model = Motorbike
+# class MotorbikeSelect(VehicleSelect):
+#     model = Motorbike
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['vehicle_list'] = self.get_queryset()
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['vehicle_list'] = self.get_queryset()
+#         return context
 
-    def get_queryset(self):
-        return Motorbike.objects.filter(customer_id=self.kwargs['customer_id'])
+#     def get_queryset(self):
+#         return Motorbike.objects.filter(customer_id=self.kwargs['customer_id'])
 
     
-class ReparationOrder(CreateView):
+class ReparationOrderCreateView(CreateView):
     form_class = ReparationOrderForm
     template_name = 'garage/reparation_order.html'    
     

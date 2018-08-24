@@ -92,7 +92,7 @@ class CityForm(forms.ModelForm):
         }  
 
 
-class MotorizedForm(form.ModelForm):
+class MotorizedForm(forms.ModelForm):
     class Meta:
         model = Car
         exclude = ('customer', 'grey_doc_img', 'insurance_img' )
@@ -114,11 +114,21 @@ class CarForm(MotorizedForm):
 
 class MotorbikeForm(MotorizedForm):
     class Meta:
+        model = Motorbike
+        exclude = ('customer', 'grey_doc_img', 'insurance_img' )
+        widgets = {
+            'brand': TextInput(attrs={'class': 'form-control'}),
+            'model': TextInput(attrs={'class': 'form-control'}),
+            'license_plate': TextInput(attrs={'class': 'form-control'}),
+            'vin': TextInput(attrs={'class': 'form-control'}),
+            'mileage': NumberInput(attrs={'class': 'form-control'}),
+            'circulation_date': DateInput(attrs={'class': 'form-control'}),
+            'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
+            'insurance_img': FileInput(attrs={'class': 'form-control'})
+        }
 
-        model = MotorBike
 
-
-class BikeForm(formes.ModelForm):
+class BikeForm(forms.ModelForm):
     class Meta:
         model = Bike
         fields = ['model']

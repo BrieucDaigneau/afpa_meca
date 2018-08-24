@@ -54,7 +54,7 @@
             window.location = "{% url 'garage:customer-update' 1 %}".replace(1, document.customerChecked)
         }
         else if (window.location.href.indexOf("selection") >= 0){
-            window.location = "{% url 'garage:voiture-select' 1 %}".replace(1, document.customerChecked)  
+            window.location = "{% url 'garage:vehicle-select' 1 %}".replace(1, document.customerChecked)  
         }          
     }
     function modifier() {
