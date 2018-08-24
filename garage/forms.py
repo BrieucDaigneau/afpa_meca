@@ -88,7 +88,7 @@ class CarForm(forms.ModelForm):
 
 class BikeForm(forms.ModelForm):
     class Meta:
-        model = Bike
+        model = Motorbike
         exclude = ('customer', 'grey_doc_img', 'insurance_img' )
         widgets = {
             'brand': TextInput(attrs={'class': 'form-control'}),

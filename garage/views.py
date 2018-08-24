@@ -257,11 +257,13 @@ class VehiculeSelect(ListView):
 class VehicleCreate(CreateView):
     template_name = 'garage/vehicle_form.html'
 
+    print(VehicleConfig['vehicle'])
+
     def get_form_class(self) :
         if VehicleConfig['vehicle'] == 'car' :
             return CarForm    
         elif VehicleConfig['vehicle'] == 'bike' :
-            return BikeForm   
+            return Motorbike   
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('garage:reparation-order-create',
