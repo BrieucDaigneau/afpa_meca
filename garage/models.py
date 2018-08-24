@@ -69,16 +69,40 @@ class Customer(models.Model):
 
 class MyManager(models.Manager):
     def get_child(self, id):
-        isAutoConfig = True #VehicleConfig['vehicle']
-        if  isAutoConfig == 'car':
+        if VehicleConfig['vehicle'] == 'car':
             if Car.objects.filter(pk=id):
                 return Car.objects.get(pk=id)
-        elif isAutoConfig == 'bike': 
+        elif VehicleConfig['vehicle'] == 'bike': 
             if Motorbike.objects.filter(pk=id):
                 return Motorbike.objects.get(pk=id)
             if Bike.objects.filter(pk=id):
                 return Bike.objects.get(pk=id)
         return None
+
+
+    def filter_child(self, id):
+        if VehicleConfig['vehicle'] == 'car' :
+            if Car.objects.filter(customer=id) :
+                return Car.objects.filter(customer=id)
+
+        if VehicleConfig['vehicle'] == 'bike' : 
+            if Motorbike.objects.filter(customer=id) :
+                return Motorbike.objects.filter(customer=id)
+            if Bike.objects.filter(customer=id) :
+                return Bike.objects.filter(customer=id)
+
+
+    def get_model(self, id):
+        if VehicleConfig['vehicle'] == 'car' :
+            if Car.objects.filter(pk=id) :
+                return Car
+
+        if VehicleConfig['vehicle'] == 'bike' : 
+            if Motorbike.objects.filter(pk=id) :
+                return Motorbike
+            if Bike.objects.filter(pk=id) :
+                return Bike
+
 
 
 class Vehicle(models.Model):
