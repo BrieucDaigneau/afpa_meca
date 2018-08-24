@@ -128,7 +128,7 @@ class Motorized(Vehicle):
         verbose_name_plural = "Motorisés"
 
     def __str__(self):
-        return self.license_plate + " " + self.model + " " + self.brand
+        return str(self.license_plate) + " " + str(self.model) + " " + str(self.brand)
 
 
 class Car(Motorized):
@@ -160,7 +160,7 @@ class ReparationOrder(models.Model):
     to_do_actions           = models.TextField("interventions prévus", max_length=300, null=True)
     actions_done            = models.BooleanField("intervention réalisée", null=False, default=False)
     
-    AwaitingInstructor   = 'AI'
+    AwaitingInstructor   = "AI"
     InstructorValidation = "IV"
     InstructorDenial     = "ID"
     AwaitingEstimate     = "AE"

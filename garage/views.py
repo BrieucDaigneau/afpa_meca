@@ -207,7 +207,8 @@ class ReparationOrderCreate(CreateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        vehicle = Vehicle.objects.filter_child(self.kwargs['vehicle_id'])       
+        vehicle = Vehicle.objects.get_child(self.kwargs['vehicle_id'])  
+        print(vehicle.model)     
         context['vehicle'] = vehicle   
         return context
 
@@ -215,7 +216,7 @@ class ReparationOrderCreate(CreateView):
         vehicle = Vehicle.objects.filter_child(self.kwargs['vehicle_id'])     
         user = self.request.user          
         reparation_order = form.save(commit=False)
-        reparation_order.utilisateur = user
+        reparation_order.user_profile = user
         reparation_order.vehicle = vehicle
         reparation_order.save()
         return super().form_valid(form)
