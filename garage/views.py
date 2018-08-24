@@ -379,13 +379,12 @@ class ReparationOrderCreateView(CreateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        vehicle = Vehicle.objects.get_child(self.kwargs['vehicle_id'])       
-        print(vehicle)
+        vehicle = Vehicle.objects.get_child(self.kwargs['vehicle_id'])  
         context['vehicle'] = vehicle   
         return context
 
     def form_valid(self, form):
-        vehicle = Vehicle.objects.filter_child(self.kwargs['vehicle_id'])     
+        vehicle = Vehicle.objects.get(pk=self.kwargs['vehicle_id'])     
         user = self.request.user          
         reparation_order = form.save(commit=False)
         reparation_order.user_profile = user
@@ -423,7 +422,6 @@ class VehiculeSelect(ListView):
         return context
         
     def get_queryset(self):
-        # print(Vehicule.objects.get_child(self.kwargs['customer_id']))
         return Vehicule.objects.filter_child(self.kwargs['customer_id'])
 
 
@@ -446,7 +444,6 @@ class VehicleCreate(CreateView):
 
         # Attention vehicule est une instance de Voiture, Velo ou Moto
         vehicle = form.save()
-        # print(Vehicule.objects.get_child(self.kwargs['customer_id']))        
         vehicle.customer = customer
         vehicle.save()
         return super().form_valid(form)        
