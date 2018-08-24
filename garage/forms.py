@@ -75,6 +75,7 @@ class AddressForm(forms.ModelForm):
         return cleaned_data
 
 
+
 class ZipCodeForm(forms.ModelForm):
     class Meta:
         model = ZipCode
@@ -143,7 +144,7 @@ class ReparationOrderForm(forms.ModelForm):
         model = ReparationOrder
         fields = ["return_date","diagnostic","to_do_actions"]
         widgets = {
-            'return_date': DateInput(attrs={'class': 'form-control'}),    
+            'return_date': DateInput(attrs={'class': 'form-control','type':'date'}),    
             'diagnostic' : Textarea(attrs={'class': 'form-control'}),  
             'to_do_actions' : Textarea(attrs={'class': 'form-control'})
         }
