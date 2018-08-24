@@ -11,17 +11,18 @@ class CustomerForm(forms.ModelForm):
         widgets = {
             'lastname': TextInput(attrs={'class': 'form-control'}),
             'firstname': TextInput(attrs={'class': 'form-control'}),
-            'afpa_number': NumberInput(attrs={'class': 'form-control'})
+            'afpa_number': TextInput(attrs={'class': 'form-control'})
         }
 
 
 class PersonalDataForm(forms.ModelForm):
     class Meta:
         model = PersonalData
-        fields = ["mail", "phone_number"]
+        fields = ["mail", "phone_number", "afpa_card_img"]
         widgets = {
             'mail': TextInput(attrs={'class': 'form-control'}),
-            'phone_number': TextInput(attrs={'class': 'form-control'})
+            'phone_number': TextInput(attrs={'class': 'form-control'}),
+            'afpa_card_img': FileInput(attrs={'class': 'form-control'})
         }  
 
     def clean_mail(self):
@@ -73,7 +74,7 @@ class CityForm(forms.ModelForm):
 class CarForm(forms.ModelForm):
     class Meta:
         model = Car
-        exclude = ('customer', 'grey_doc_img', 'insurance_img' )
+        exclude = ('customer',)
         widgets = {
             'brand': TextInput(attrs={'class': 'form-control'}),
             'model': TextInput(attrs={'class': 'form-control'}),
