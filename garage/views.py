@@ -350,29 +350,65 @@ class VehiculeSelect(ListView):
         return Vehicule.objects.filter_child(self.kwargs['customer_id'])
 
 
-class VehicleCreate(CreateView):
-    template_name = 'garage/vehicle_form.html'
+class VehicleCreate(View):
+    myTemplate_name = 'garage/vehicle_form.html'
+    success_url = reverse_lazy('garage:home')
 
-    print(VehicleConfig['vehicle'])
+    def getForm(self, request ) :
+        form = {}
 
-    def get_form_class(self) :
         if VehicleConfig['vehicle'] == 'car' :
-            return CarForm    
+            form = {
+                "form": CarForm(request.POST, request.FILES),
+                "bike": "no"
+            }
         elif VehicleConfig['vehicle'] == 'bike' :
-            return MotorbikeForm  
+            form = {
+                "form": MotorbikeForm(request.POST, request.FILES),
+                "bike_form": BikeForm(request.POST),
+                "bike": "bike"
+            }
+        return form  
 
-    def get_success_url(self, **kwargs):
-        return reverse_lazy('garage:reparation-order-create',
-                                kwargs={'vehicle_id': self.object.id},
-                                current_app='garage')
+    def get(self, request, *args, **kwargs):
+        return render(request, self.myTemplate_name, self.getForm(request) )
 
-    def form_valid(self, form):
+    def post(self, request, *args, **kwargs):
+        forms = self.getForm(request)
+        form = forms['form']
+
+        if isinstance( form, BikeForm ) :
+            form = forms['bike_form']
+        else :
+            form = forms['form']
+
         customer = Customer.objects.get(pk=self.kwargs['customer_id'])
 
         # Attention vehicule est une instance de Voiture, Velo ou Moto
-        vehicle = form.save()
+        vehicle = form.save(commit=False)
         vehicle.customer = customer
         vehicle.save()
-        return super().form_valid(form)        
+
+        context['vehicle_id'] = vehicle.id
+
+        return redirect("garage:reparation-order-create", context)  
+
+    
+
+    # def get_success_url(self, **kwargs):
+        # return reverse_lazy('garage:reparation-order-create',
+                                # kwargs={'vehicle_id': self.object.id},
+                                # current_app='garage')
+
+        # if not form["bike_form"]:
+        #     customer = Customer.objects.get(pk=self.kwargs['customer_id'])
+
+        #     # Attention vehicule est une instance de Voiture, Velo ou Moto
+        #     vehicle = form.save()
+        #     vehicle.customer = customer
+        #     vehicle.save()
+        return super().form_valid(form) 
+        # else:
+
 
 

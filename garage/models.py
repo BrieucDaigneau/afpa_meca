@@ -68,6 +68,7 @@ class Customer(models.Model):
 
 
 class MyManager(models.Manager):
+
     def dispenser(self, id, car, motorbike, bike):
         if  VehicleConfig['vehicle'] == 'car':
             if Car.objects.filter(pk=id):
@@ -80,28 +81,10 @@ class MyManager(models.Manager):
         return None
 
     def get_child(self, id):
-        car, motorbike, bike = None, None, None
-        if Car.objects.filter(pk=id):
-            car         = Car.objects.get(pk=id)
-        if Motorbike.objects.filter(pk=id):
-            motorbike   = Motorbike.objects.get(pk=id)
-        if Bike.objects.filter(pk=id):
-            bike        = Bike.objects.get(pk=id)
-    
-        return self.dispenser(
-                        id          = id, 
-                        car         = car,
-                        motorbike   = motorbike,
-                        bike        = bike
-        )
+        return self.get_model( id ).objects.get(pk=id)
 
     def filter_child(self, id):
-        return self.dispenser(
-                        id          = id, 
-                        car         = Car.objects.filter(pk=id),
-                        motorbike   = Motorbike.objects.filter(pk=id),
-                        bike        = Bike.objects.filter(pk=id) 
-        )
+        return self.get_model( id ).objects.filter(pk=id)
 
     def get_model(self, id):
         return self.dispenser(

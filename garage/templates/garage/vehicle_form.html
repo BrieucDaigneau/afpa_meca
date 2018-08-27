@@ -2,7 +2,20 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
+
+{% if bike == "bike" %}
+    <label class="checkmark">
+        <input type="radio" value="Moto" id="motorbike_radio" onclick='javascript:select_twoWheeler(this);' name="optradio" checked="checked">
+        Moto
+    </label>
+    <div class="col-md-1"></div>
+    <label class="checkmark">
+        <input type="radio" value="Velo" id="bike_radio" onclick='javascript:select_twoWheeler(this);' name="optradio">
+        Velo
+    </label>
+{% endif %}
+
+<div class="container" id="form">
         <titre class="col-md-12">
                 <div class="col-md-12">
                     <h1 id="title" class="title">Création nouveau Véhicule</h1>
@@ -90,4 +103,48 @@
         </formulaire>
 </div>
 
+{% if bike == "bike" %}
+    <div class="container-fluid" id="bike">
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <h1 id="title" class="title" >Création nouveau Vélo</h1>
+            </div>     
+        </div>
+
+        <div class="col-md-9">
+            <form class="" action="" method="post">
+                {% csrf_token %}
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group {% if bike_form.model_vehicle.errors %}has-warning has-feedback{% endif %}">
+                            <label for="{{ bike_form.model_vehicle.id_for_label }}" class="control-label">Modèle</label>
+                            {{ bike_form.model_vehicle }}
+                        </div>
+                        <div class="invalid-feedback">
+                            Saisie du modèle est obligatoire
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
+                </div>               
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function select_twoWheeler(){
+            if (document.getElementById("motorbike_radio").checked){
+                document.getElementById("bike").style.display = "none";
+                document.getElementById("form").style.display = "block";
+
+            } else if (document.getElementById("bike_radio").checked){
+                console.log(document.getElementById("motorbike_form"))
+                document.getElementById("form").style.display = "none";
+                document.getElementById("bike").style.display = "block";
+            }
+        }
+    </script>
+{% endif %}
 {% endblock %}

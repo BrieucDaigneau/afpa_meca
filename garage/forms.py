@@ -111,13 +111,25 @@ class MotorizedForm(forms.ModelForm):
 
        
 class CarForm(MotorizedForm):
-    pass
+    class Meta:
+        model = Car
+        exclude = ('customer',)
+        widgets = {
+            'brand': TextInput(attrs={'class': 'form-control'}),
+            'model': TextInput(attrs={'class': 'form-control'}),
+            'license_plate': TextInput(attrs={'class': 'form-control'}),
+            'vin': TextInput(attrs={'class': 'form-control'}),
+            'mileage': NumberInput(attrs={'class': 'form-control'}),
+            'circulation_date': DateInput(attrs={'class': 'form-control', 'type':'date'}), 
+            'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
+            'insurance_img': FileInput(attrs={'class': 'form-control'})
+        }
 
 
 class MotorbikeForm(MotorizedForm):
     class Meta:
         model = Motorbike
-        exclude = ('customer', 'grey_doc_img', 'insurance_img' )
+        exclude = ('customer',)
         widgets = {
             'brand': TextInput(attrs={'class': 'form-control'}),
             'model': TextInput(attrs={'class': 'form-control'}),

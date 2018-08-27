@@ -37,9 +37,10 @@ body {
   display: none;
 }
 
-#bike_form{
+#bike{
   display: none;
 }
+
 #loginBox{
   border: 1px solid black;
   background-color: white;
