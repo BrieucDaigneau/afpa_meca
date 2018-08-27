@@ -227,100 +227,22 @@ class CustomerSelect(ListView):
 class Customers(CustomerSelect):
     template_name = "garage/customers.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-class Customers(CustomerSelect):
-    template_name = "garage/customers.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
-
-class VehicleCreate(CreateView):
-    if  VehicleConfig['vehicle'] == 'car':
-        form_class = CarForm
-
-    def get_template_names(self):
-        if  VehicleConfig['vehicle'] == 'car':
-            return 'garage/car_form.html',
-        # elif VehicleConfig['vehicle'] == 'bike':
-        #     return 'garage/two-wheeler_form.html.html',
-        
-
-    def get_success_url(self, **kwargs):
-        return reverse_lazy('garage:reparation-order-create',
-                                kwargs={'vehicle_id': self.object.id},
-                                current_app='garage')
-
-    def form_valid(self, form):
-        if  VehicleConfig['vehicle'] == 'car':
-            customer = Customer.objects.get(pk=self.kwargs['customer_id'])
-            car = form.save()
-            car.customer = customer 
-            car.save()
-            return super().form_valid(form)
-    
-    # def getForm(self, request):
-    #     if  VehicleConfig['vehicle'] == 'bike':
-    #         motorbike_form = MotorbikeForm(request.POST or None)
-    #         bike_form = BikeForm(request.POST or None)
-    #         return {'Motorbike_form': Motorbike_form, 'Bike_form': Bike_form}
-    
-    # def get(self, request):
-    #     if  VehicleConfig['vehicle'] == 'bike':
-    #         myTemplate_name = 'garage/two-wheeler_form.html.html'
-    #         return render(request, myTemplate_name, self.getForm(request))
-    
-    # @transaction.atomic
-    # def post(self, request):
-    #     if  VehicleConfig['vehicle'] == 'bike':
-    #         try:
-    #             modelFormError = ""
-    #             with transaction.atomic():
-    #                 dictio = self.getForm(request)
-
-    #                 motorbike_form = dictio['motorbike_form']
-    #                 if not motorbike_form.is_valid():
-    #                     modelFormError = "Une erreur interne est apparue. Merci de recommencer votre saisie."
-    #                     raise ValidationError(modelFormError)
-    #                 else:
-    #                     try:
-    #                         motorbike = motorbike_form.save()
-
-
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['customers_list'] = self.get_queryset()
-    #     return context
-
-# class CarCreate(CreateView):
-#     form_class = CarForm
-#     template_name = 'garage/car_form.html'
-
-#     def get_success_url(self, **kwargs):
-#         return reverse_lazy('garage:reparation-order-create',
-#                                 kwargs={'vehicle_id': self.object.id},
-#                                 current_app='garage')
-
-#     def form_valid(self, form):
-#         customer = Customer.objects.get(pk=self.kwargs['customer_id'])
-#         car = form.save()
-#         car.customer = customer
-#         car.save()
-#         return super().form_valid(form)
-
 
 class VehicleUpdate(UpdateView):
-    model = Car
     template_name = 'garage/vehicle_update'
+
+    def get_form_class(self) :
+        if VehicleConfig['vehicle'] == 'car' :
+            return CarForm    
+        elif VehicleConfig['vehicle'] == 'bike' :
+            return MotorbikeForm      
+
     if  VehicleConfig['vehicle'] == 'car':
             form_class = CarForm
             success_url = reverse_lazy('garage:cars')
-    def get_model(self):
+
+
+    def get_object(self):
         return Vehicle.objects.get_model(self.kwargs['pk'])
         
     # def get_template_names(self):
@@ -336,8 +258,8 @@ class VehicleUpdate(UpdateView):
         context['reparation_orders_list'] = ReparationOrder.objects.filter(vehicle=self.kwargs['pk'])
         return context
 
+
 class VehicleSelect(ListView):
-    model = Vehicle
     # def get_template_names(self):
     #     return Vehicle.objects.dispenser(
     #         id          = self.kwargs['customer_id'],
@@ -345,7 +267,10 @@ class VehicleSelect(ListView):
     #         motorbike   = 'garage/two-wheeler_form.html.html',
     #         bike        = 'garage/two-wheeler_form.html.html',
     #     )
-    template_name = 'garage/car_select.html'
+    template_name = 'garage/vehicle_select.html'
+
+    def get_object(self):
+        return Vehicle.objects.get_model(self.kwargs['pk'])    
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -354,7 +279,7 @@ class VehicleSelect(ListView):
         return context
         
     def get_queryset(self):
-        return Car.objects.filter(customer_id=self.kwargs['customer_id'])
+        return Vehicle.objects.filter_child(customer_id=self.kwargs['customer_id'])
 
 
 # class MotorbikeSelect(VehicleSelect):
