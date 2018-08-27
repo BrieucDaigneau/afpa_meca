@@ -19,10 +19,11 @@ class CustomerForm(forms.ModelForm):
 class PersonalDataUpdateForm(forms.ModelForm):
     class Meta:
         model = PersonalData
-        fields = ["mail", "phone_number"]
+        fields = ["mail", "phone_number", "afpa_card_img"]
         widgets = {
             'mail': TextInput(attrs={'class': 'form-control'}),
-            'phone_number': TextInput(attrs={'class': 'form-control'})
+            'phone_number': TextInput(attrs={'class': 'form-control'}),
+            'afpa_card_img': FileInput(attrs={'class': 'form-control'})
         }  
 
 
@@ -136,7 +137,7 @@ class MotorbikeForm(MotorizedForm):
             'license_plate': TextInput(attrs={'class': 'form-control'}),
             'vin': TextInput(attrs={'class': 'form-control'}),
             'mileage': NumberInput(attrs={'class': 'form-control'}),
-            'circulation_date': DateInput(attrs={'class': 'form-control'}),
+            'circulation_date': DateInput(attrs={'class': 'form-control','type':'date'}),
             'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
             'insurance_img': FileInput(attrs={'class': 'form-control'})
         }
