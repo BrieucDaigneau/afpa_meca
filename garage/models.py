@@ -69,16 +69,11 @@ class Customer(models.Model):
 
 class MyManager(models.Manager):
 
-    def dispenser(self, id, car, motorbike, bike):
-        if  VehicleConfig['vehicle'] == 'car':
-            if Car.objects.filter(pk=id):
-                return car
-        elif VehicleConfig['vehicle'] == 'bike': 
-            if Motorbike.objects.filter(pk=id):
-                return motorbike
-            if Bike.objects.filter(pk=id):
-                return bike
-        return None
+    def filter_type(self, dico): # pas d'accés à la bdd
+        if VehicleConfig['vehicle'] == 'bike':         
+            return [ v for v in dico if isinstance(v, Bike) or isinstance(v, Motorbike) ]
+        elif VehicleConfig['vehicle'] == 'car':
+            return [ v for v in dico if isinstance(v, Car) ]
 
     def get_child(self, id):
         return self.get_model( id ).objects.get(pk=id)
@@ -87,14 +82,17 @@ class MyManager(models.Manager):
         return self.get_model( id ).objects.filter(pk=id)
 
     def get_model(self, id):
-        return self.dispenser(
-                        id          = id, 
-                        car         = Car,
-                        motorbike   = Motorbike,
-                        bike        = Bike,
-        )
+        if Car.objects.filter(pk=id):
+            return Car
+        elif Motorbike.objects.filter(pk=id):
+            return Motorbike
+        elif Bike.objects.filter(pk=id):
+            return Bike
 
-
+    def filter_by_user(self, id_customer):
+        vehicles =  Vehicle.objects.filter(customer=id_customer) 
+        typed_vehicles = [Vehicle.objects.get_child(v.id) for v in vehicles ]
+        return Vehicle.objects.filter_type( typed_vehicles )
 
 class Vehicle(models.Model):
     model       = models.CharField("libellé modèle", blank=False, max_length=50)

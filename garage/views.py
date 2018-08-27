@@ -273,7 +273,27 @@ class VehicleCreate(View):
         return redirect("garage:reparation-order-create", context['vehicle_id'])  
 
 
+class VehicleSelect(ListView):
+    model = Vehicle
+    template_name = "garage/vehicle_select.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['vehicle_list'] = Vehicle.objects.filter_by_user(self.kwargs['customer_id'])
+        return context  
+
 #.......................................
+
+class Vehicles(ListView):
+    model = Vehicle
+    def get_template_names(self):
+        return 'garage/vehicles.html'
+
+    def get_context_data(self, **kwargs):    
+        context = super().get_context_data(**kwargs)   
+        context['vehicle_list'] = [Vehicle.objects.filter_by_user(c.id) for c in Customer.objects.all()]
+        return context
+        
 class VehicleUpdate(UpdateView):
     template_name = 'garage/vehicle_update'
 
@@ -303,41 +323,6 @@ class VehicleUpdate(UpdateView):
         context = super().get_context_data(**kwargs)
         context['reparation_orders_list'] = ReparationOrder.objects.filter(vehicle=self.kwargs['pk'])
         return context
-
-
-class VehicleSelect(ListView):
-    # def get_template_names(self):
-    #     return Vehicle.objects.dispenser(
-    #         id          = self.kwargs['customer_id'],
-    #         car         = 'garage/car_form.html',
-    #         motorbike   = 'garage/two-wheeler_form.html.html',
-    #         bike        = 'garage/two-wheeler_form.html.html',
-    #     )
-    template_name = 'garage/vehicle_select.html'
-
-    def get_object(self):
-        return Vehicle.objects.get_model(self.kwargs['pk'])    
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['vehicle_list'] = self.get_queryset()
-        context['car_id'] = None
-        return context
-        
-    def get_queryset(self):
-        return Vehicle.objects.filter_child(customer_id=self.kwargs['customer_id'])
-
-
-# class MotorbikeSelect(VehicleSelect):
-#     model = Motorbike
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['vehicle_list'] = self.get_queryset()
-#         return context
-
-#     def get_queryset(self):
-#         return Motorbike.objects.filter(customer_id=self.kwargs['customer_id'])
 
     
 class ReparationOrderCreateView(CreateView):
@@ -376,24 +361,6 @@ def search(request):
         'context_object_name': customers
     }
     return render(request, 'garage/search.html', context) 
-
-
-class VehicleList(VehicleSelect):
-    template_name = 'garage/vehicles.html'
-
-
-class VehiculeSelect(ListView):
-    model = Vehicle
-    template_name = 'garage/voiture-select.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['liste_vehicule'] = self.get_queryset()
-        context['voiture_id'] = None
-        return context
-        
-    def get_queryset(self):
-        return Vehicule.objects.filter_child(self.kwargs['customer_id'])
 
 
 
