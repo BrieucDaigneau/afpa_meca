@@ -282,8 +282,6 @@ class VehicleSelect(ListView):
         context['vehicle_list'] = Vehicle.objects.filter_by_user(self.kwargs['customer_id'])
         return context  
 
-#.......................................
-
 class Vehicles(ListView):
     model = Vehicle
     def get_template_names(self):
@@ -291,8 +289,14 @@ class Vehicles(ListView):
 
     def get_context_data(self, **kwargs):    
         context = super().get_context_data(**kwargs)   
-        context['vehicle_list'] = [Vehicle.objects.filter_by_user(c.id) for c in Customer.objects.all()]
-        return context
+        vehicles = [Vehicle.objects.get_child(v.id) for v in Vehicle.objects.all()]
+        context['vehicle_list'] = Vehicle.objects.filter_type(vehicles)
+        return context        
+
+#.......................................
+
+
+
         
 class VehicleUpdate(UpdateView):
     template_name = 'garage/vehicle_update'
