@@ -44,21 +44,21 @@
                         </div>
                         <div class="col-md-6">
                             <label for="{{ personal_data_form.phone_number.id_for_label }}" class="control-label">Téléphone</label>
-                            {{ presonnalDataForm.telephone_customer }}
+                            {{ personnalDataForm.phone_number }}
                         </div>
                         <div class="col-md-6">
                             <label for="{{ personal_data_form.mail.id_for_label }}" class="control-label">Email</label>
-                            {{ presonnalDataForm.mail }}
-                            <div> {{ presonnalDataForm.mail.errors }} </div>
+                            {{ personnalDataForm.mail }}
+                            <div> {{ personnalDataForm.mail.errors }} </div>
                         </div>
                     </div> 
                     
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label for="{{ address_form.street_number.id_for_label }}" class="control-label">Numéro de rue :</label>
                             {{ addressForm.street_number }}
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <label for="{{ address_form.street.id_for_label }}" class="control-label">Adresse</label>
                             {{ addressForm.street }}
                         </div>
@@ -79,7 +79,7 @@
                         </div>
                         <div class="col-md-4">
                             <label for="{{ personal_data_form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img</label>
-                            {{ presonnalDataForm.afpa_card_img }}
+                            {{ personnalDataForm.afpa_card_img }}
                         </div>
                     </div>
                     <div> {{ addressForm.non_field_errors }} </div>

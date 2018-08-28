@@ -8,6 +8,10 @@ db.sqlite3
 settings.json
 launch.json
 /db/*.sqlite3
+<<<<<<< HEAD
 /media/*.jpg
 /media/*.png
 .vscode/*
+=======
+/media/img/*
+>>>>>>> b37e99daddd74fb1683b435f273d255997282658
