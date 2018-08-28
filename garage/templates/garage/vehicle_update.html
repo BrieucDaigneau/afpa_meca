@@ -1,6 +1,23 @@
 {% extends 'garage/vehicle_form.html' %}
 
+{% block title_form %}Actualisation Véhicule{% endblock %}
 
+{% block radio %}
+{% endblock radio %}
+ 
+    <!-- {% block vehicle_update %} 
+    <div class="col-md-6">
+        <div class="form-group {% if form.model.errors %}has-warning has-feedback{% endif %}">
+            <label for="{{ form.model.id_for_label }}" class="control-label">Modèle</label>
+            {{ form.model }}
+        </div>
+        <div class="invalid-feedback">
+            Saisie du prenom est obligatoire
+        </div>
+    </div>
+    {% endblock vehicle_update %} -->
+
+                   
 
 {% block button_motorised %}{% endblock button_motorised %}
 {% block button_bike %}{% endblock button_bike %}

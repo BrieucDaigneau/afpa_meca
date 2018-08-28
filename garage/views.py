@@ -237,21 +237,21 @@ class VehicleCreate(View):
         if VehicleConfig['vehicle'] == 'car' :
             dico = {
                 "form": CarForm(request.POST, request.FILES),
-                "bike": "None",
+                "vehicle_type": "motorised",
                 "bike_form": "None"
             }
         elif VehicleConfig['vehicle'] == 'bike' :
             dico = {
                 "form": MotorbikeForm(request.POST, request.FILES),
                 "bike_form": BikeForm(request.POST),
-                "bike": "bike"
+                "vehicle_type": "twowheelers"
             }
         return dico  
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, **kwargs):
         return render(request, self.myTemplate_name, self.getForm( request ) )
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, **kwargs):
         forms = self.getForm(request)
         form = forms['form']
 
@@ -291,39 +291,36 @@ class Vehicles(ListView):
         context = super().get_context_data(**kwargs)   
         vehicles = [Vehicle.objects.get_child(v.id) for v in Vehicle.objects.all()]
         context['vehicle_list'] = Vehicle.objects.filter_type(vehicles)
-        return context        
+        return context  
+
+
+class VehicleUpdate(UpdateView):
+    template_name = 'garage/vehicle_update.html'
+    success_url = reverse_lazy('garage:vehicles')
+
+    def get_form_class(self) :
+        if isinstance((Vehicle.objects.get_child(self.kwargs['pk'])), Car) :
+            return CarForm   
+        if isinstance((Vehicle.objects.get_child(self.kwargs['pk'])), Motorbike) :
+            return MotorbikeForm             
+        if isinstance((Vehicle.objects.get_child(self.kwargs['pk'])), Bike) :
+            return BikeForm
+
+    def get_object(self):
+        return Vehicle.objects.get_child(self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reparation_order_list'] = ReparationOrder.objects.filter(vehicle=self.kwargs['pk'])
+        context['vehicle_type'] = "bike" if self.get_form_class() == BikeForm else "motorised"
+        return context
 
 #.......................................
 
 
 
         
-class VehicleUpdate(UpdateView):
-    template_name = 'garage/vehicle_update.html'
-    success_url = reverse_lazy('garage:vehicles')
 
-    def get_form_class(self) :
-        if VehicleConfig['vehicle'] == 'car' :
-            return CarForm    
-        elif VehicleConfig['vehicle'] == 'bike' :
-            return MotorbikeForm      
-
-
-    def get_object(self):
-        return Vehicle.objects.get_model(self.kwargs['pk'])
-        
-    # def get_template_names(self):
-    #     return Vehicule.objects.dispenser(
-    #         id          = self.kwargs['pk'],
-    #         car         = 'garage/car_update',
-    #         motorbike   = 'garage/motorbike_update',
-    #         bike        = 'garage/bike_update',
-    #     )
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['reparation_orders_list'] = ReparationOrder.objects.filter(vehicle=self.kwargs['pk'])
-        return context
 
     
 class ReparationOrderCreateView(CreateView):
