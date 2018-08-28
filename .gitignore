@@ -10,4 +10,4 @@ launch.json
 /db/*.sqlite3
 /media/*.jpg
 /media/*.png
-.vscode
+.vscode/*

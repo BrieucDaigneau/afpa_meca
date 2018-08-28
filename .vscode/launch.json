@@ -9,7 +9,7 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "pythonPath": "C:/_Projets/virtualenvs/django_env/Scripts/python.exe"
+            "pythonPath": "/home/afpa/Documents/vEnv/django_env/bin/python.exe"
         },
         {
             "name": "Python: Attach",
