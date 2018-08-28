@@ -27,7 +27,6 @@
                 </div>     
             </titre>
             
-            <div class="col-md-9 mt-3">
                 <h4>Véhicule</h4>
                 <form class="" action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -83,26 +82,8 @@
                             <label for="{{ car_form.insurance_img.id_for_label }}" class="control-label">Carte assurance</label>
                             {{ form.insurance_img }}
                         </div>
-                    </div>
-                        
-                    {% block button_motorised %} 
-                    <div class="row mt-3">
-                        <div class="col-md-3">
-                            <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
-                        </div>
-                        <div class="col-md-3">
-                        </div>        
-                        <div class="col-md-3">
-                        </div>        
-                        <div class="col-md-3">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
-                        </div>
-                    </div>   
-                    {% endblock button_motorised %} 
-
-                    {% block button_update %}{% endblock button_update %}    
+                    </div>                        
                 </form>
-            </div>
         </div>
     {% endif %}
 
@@ -139,26 +120,30 @@
                                 </div>
                             </div>
                         </div>
-                        {% block button_bike %}
-                        <div class="row">
-                                <div class="col-md-3">
-                                    <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
-                                </div>
-                                <div class="col-md-3">
-                                </div>        
-                                <div class="col-md-3">
-                                </div>        
-                                <div class="col-md-3">
-                                    <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
-                                </div>
-                            </div>   
-                        {% endblock button_bike %}               
                     </form>
                 </div>
-        {% if vehicle_type == "twowheelers" %}
+                {% if vehicle_type == "twowheelers" %}
             </div>
-        {% endif %}
+            {% endif %}
         </div>
+    {% endif %}
+
+        {% block button %}
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
+                </div>
+                <div class="col-md-3">
+                </div>        
+                <div class="col-md-3">
+                </div>        
+                <div class="col-md-3">
+                    <button class="btn btn-primary btn-lg btn-block" onclick="submit()" type="submit">Etape suivante</button>
+                </div>
+            </div>   
+        {% endblock button %}    
+        
+    {% if vehicle_type == "bike" or  vehicle_type == "twowheelers" %}        
         <script>
             function select_twoWheeler(){
                 if (document.getElementById("motorbike_radio").checked){
@@ -173,5 +158,15 @@
             }
         </script>
     {% endif %}
+
+        <script>
+            function submit(){
+                if (document.getElementById("motorbike_radio").checked || document.getElementById("bike_form") == "None"){
+                    document.forms[0].submit
+                } else if (document.getElementById("bike_radio").checked){
+                    document.forms[1].submit
+                }
+            }
+        </script>
     {% block reparation_order_list %}{% endblock reparation_order_list %}
 {% endblock content%}
