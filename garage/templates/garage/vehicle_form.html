@@ -82,9 +82,8 @@
                         {{ form.insurance_img }}
                     </div>
                 </div>
-               
-                <br/>
-                <div class="row">
+                {% block button_motorised %} 
+                <div class="row mt-3">
                     <div class="col-md-3">
                         <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
                     </div>
@@ -96,6 +95,8 @@
                         <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
                     </div>
                 </div>   
+                {% endblock button_motorised %} 
+                {% block button_update %}{% endblock button_update %}    
                 {{form.customer}}
 
             </form>
@@ -126,13 +127,23 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                        <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
-                </div>               
+                {% block button_bike %}
+                <div class="row">
+                        <div class="col-md-3">
+                            <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
+                        </div>
+                        <div class="col-md-3">
+                        </div>        
+                        <div class="col-md-3">
+                        </div>        
+                        <div class="col-md-3">
+                            <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
+                        </div>
+                    </div>   
+                {% endblock button_bike %}               
             </form>
         </div>
     </div>
-
     <script>
         function select_twoWheeler(){
             if (document.getElementById("motorbike_radio").checked){
@@ -147,4 +158,5 @@
         }
     </script>
 {% endif %}
+{% block reparation_order_list %}{% endblock reparation_order_list %}
 {% endblock %}

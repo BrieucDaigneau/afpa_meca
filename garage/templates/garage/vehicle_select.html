@@ -6,7 +6,7 @@
     <div class="row mb-5 mt-3">
 
         <div class="col-md-2 ">
-            <button onClick="car_create()" id="new" value="{{customer_id}}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</button>
+            <button onClick="vehcile_create()" id="new" value="{{customer_id}}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</button>
         </div>
     </div>
 </div>
@@ -30,7 +30,7 @@
 
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     function redirect() {
         window.location = "{% url 'garage:reparation-order-create' 1 %}".replace(1, document.vehicleChecked)
     }
@@ -43,5 +43,6 @@
         let stringToFind = window.location.href.match(/[/](\d+)[/]/)
         window.location = "{% url 'garage:vehicle-create' 1 %}".replace(1, stringToFind[1])
         }
-</script> {% endblock buttons %}
+</script> -->
+{% endblock buttons %}
 </div>

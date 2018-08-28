@@ -299,17 +299,14 @@ class Vehicles(ListView):
 
         
 class VehicleUpdate(UpdateView):
-    template_name = 'garage/vehicle_update'
+    template_name = 'garage/vehicle_update.html'
+    success_url = reverse_lazy('garage:vehicles')
 
     def get_form_class(self) :
         if VehicleConfig['vehicle'] == 'car' :
             return CarForm    
         elif VehicleConfig['vehicle'] == 'bike' :
             return MotorbikeForm      
-
-    if  VehicleConfig['vehicle'] == 'car':
-            form_class = CarForm
-            success_url = reverse_lazy('garage:cars')
 
 
     def get_object(self):
@@ -352,6 +349,27 @@ class ReparationOrderCreateView(CreateView):
         reparation_order.save()
         return super().form_valid(form)
 
+
+class ReparationOrderUpdate(UpdateView):
+    # model = ReparationOrder
+    form_class = ReparationOrderForm
+    template_name = 'garage/reparation_order_update.html'   
+    success_url = reverse_lazy('garage:reparation_orders')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # intervention = Intervention.objects.get(pk=self.kwargs['pk'])
+        # if intervention.vehicule.type_vehicule == "Voiture":
+        #     vehicule = Voiture.objects.get(pk=intervention.vehicule)
+
+        # elif intervention.vehicule.type_vehicule == "Moto":
+        #     vehicule = Moto.objects.get(pk=intervention.vehicule)
+
+        # elif intervention.vehicule.type_vehicule == "Velo":
+        #     vehicule = Velo.objects.get(pk=intervention.vehicule)
+
+        # context['vehicule'] = vehicule   
+        return context  
 
 def search(request):
     query = request.GET.get('query')
