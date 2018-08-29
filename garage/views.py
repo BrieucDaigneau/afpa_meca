@@ -299,11 +299,12 @@ class VehicleUpdate(UpdateView):
     success_url = reverse_lazy('garage:vehicles')
 
     def get_form_class(self) :
-        if isinstance((Vehicle.objects.get_child(self.kwargs['pk'])), Car) :
+        v = Vehicle.objects.get_child(self.kwargs['pk'])
+        if isinstance(v, Car) :
             return CarForm   
-        if isinstance((Vehicle.objects.get_child(self.kwargs['pk'])), Motorbike) :
+        if isinstance(v, Motorbike) :
             return MotorbikeForm             
-        if isinstance((Vehicle.objects.get_child(self.kwargs['pk'])), Bike) :
+        if isinstance(v, Bike) :
             return BikeForm
 
     def get_object(self):
@@ -315,14 +316,7 @@ class VehicleUpdate(UpdateView):
         context['vehicle_type'] = "bike" if self.get_form_class() == BikeForm else "motorised"
         return context
 
-#.......................................
 
-
-
-        
-
-
-    
 class ReparationOrderCreateView(CreateView):
     form_class = ReparationOrderForm
     template_name = 'garage/reparation_order.html'    
@@ -344,29 +338,43 @@ class ReparationOrderCreateView(CreateView):
         reparation_order.user_profile = user
         reparation_order.vehicle = vehicle
         reparation_order.save()
-        return super().form_valid(form)
+        return super().form_valid(form)        
 
+#.......................................
 
-class ReparationOrderUpdate(UpdateView):
-    # model = ReparationOrder
-    form_class = ReparationOrderForm
-    template_name = 'garage/reparation_order_update.html'   
-    success_url = reverse_lazy('garage:reparation_orders')
+class ReparationOrderSelect(ListView):
+    model = ReparationOrder
+    template_name = "garage/reparation_orders_select.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # intervention = Intervention.objects.get(pk=self.kwargs['pk'])
-        # if intervention.vehicule.type_vehicule == "Voiture":
-        #     vehicule = Voiture.objects.get(pk=intervention.vehicule)
+        context['reparation_order_list'] = self.get_queryset()
+        return context
 
-        # elif intervention.vehicule.type_vehicule == "Moto":
-        #     vehicule = Moto.objects.get(pk=intervention.vehicule)
 
-        # elif intervention.vehicule.type_vehicule == "Velo":
-        #     vehicule = Velo.objects.get(pk=intervention.vehicule)
+class ReparationOrders(ReparationOrderSelect):
+    template_name = "garage/reparation_orders.html"
 
-        # context['vehicule'] = vehicule   
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+
+class ReparationOrderUpdate(UpdateView):
+    template_name = 'garage/reparation_order_update.html'   
+    success_url = reverse_lazy('garage:reparation_orders')
+    model = ReparationOrder
+    form_class = ReparationOrderForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # ReparationOrder.objects.filter(vehicle_id__icontains=reparationorder_)
+        # print(context)
+        vehicle = Vehicle.objects.get_child(self.kwargs['vehicle_id'])  
+        context['vehicle'] = vehicle   
         return context  
+
 
 def search(request):
     query = request.GET.get('query')

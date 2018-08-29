@@ -27,9 +27,9 @@ urlpatterns = [
     path('actualisation-vehicule/<pk>/', login_required(views.VehicleUpdate.as_view()), name='vehicle-update'),
 
     path('creation-intervention/<int:vehicle_id>', login_required(views.ReparationOrderCreateView.as_view()), name='reparation-order-create'),  
+    path('consultation-interventions', login_required(views.ReparationOrders.as_view()), name='reparation-orders'),
     path('actualisation-intervention/<pk>/', login_required(views.ReparationOrderUpdate.as_view()), name='reparation-order-update'),  
 ]
-    # path('consultation-interventions'), login_required(views.ReparationOrders.as_view()), name='reparation-orders'),
 
 
 
