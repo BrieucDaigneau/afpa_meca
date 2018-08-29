@@ -4,61 +4,79 @@
 {% block head %}
 <link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
 {% endblock head %}
+
 {% block content %}
 
-<div class="container">
-    <div class="row">
-        <h1 class="mt-5">Liste des Clients</h1>
-    </div>
-    <div class="row">
+    <div class="row mt-5">
+        <h1 class="col-md-5">{% block title %}Liste des Clients{% endblock title %}</h1>
+        
         {% block search %}{% endblock search %}
     </div>
-    <div class="row">
-        
-        <h4 class="col-md-12" >
-            <div class="row">
-                <div class=" col-md-3">Nom</div>
-                <div class=" col-md-3">Prénom</div>
-                <div class="col-md-3">N° AFPA</div>
-                <div class="col-md-3">E-mail</div>
-            </div>
-        </h4>
-        
-        
-        
+
+    {% block list %}
+ 
+            <h4 class="col-md-12 mt-5" >
+                <div class="row">
+                    <div class=" col-md-3">Nom</div>
+                    <div class=" col-md-3">Prénom</div>
+                    <div class="col-md-3">N° AFPA</div>
+                    <div class="col-md-3">E-mail</div>
+                </div>
+            </h4>
+ 
+            
         {% for customer in customers_list %}
-        <input type="radio" class="btn col-md-1 radio" id="{{customer.id}}" name="btnCustomer" ondblclick="redirect()" onclick='javascript:document.customerChecked={{customer.id}};' />
-    
-        <label for="{{customer.id}}" id="elementList" class="col-md-12">
-            <div class="row " ondblclick="redirect()">
-                <div class=" col-md-3">{{ customer.lastname }}</div>
-                <div class=" col-md-3">{{ customer.firstname }}</div>
-                <div class="col-md-3">{{ customer.afpa_number }}</div>
-                <div class="col-md-3">{{ customer.personal_data.mail }}</div>
-            </div>
-        </label>
-    
-        {% empty %}
-        <p>aucun client</p>
+            <input type="radio" class="btn col-md-1 radio" id="{{customer.id}}" name="btnCustomer" ondblclick="redirect()" onclick='javascript:document.customerChecked={{customer.id}};' />
+        
+            <label for="{{customer.id}}" id="listing" class="col-md-12">
+                <div class="row " ondblclick="redirect()">
+                    <div class=" col-md-3">{{ customer.lastname }}</div>
+                    <div class=" col-md-3">{{ customer.firstname }}</div>
+                    <div class="col-md-3">{{ customer.afpa_number }}</div>
+                    <div class="col-md-3">{{ customer.personal_data.mail }}</div>
+                </div>
+            </label>
+        
+            {% empty %}
+            <p>aucun client</p>
+
         {% endfor %}
-        {% block buttons %}{% endblock buttons %}
-    </div>
+        <div id="error" class=" col-md-12 mt-2"></div>
+    {% endblock list %}  
 
-</div>
-
+    {% block buttons %}
+        <div class="row">
+            <div class="container">
+                    <div class="row mt-5">
+                        <a href="{% url 'garage:home' %}" class=" btn btn-sm btn-primary col-md-1" >Annuler</a>
+                        <div class="col-md-3"></div>
+                        <button class=" btn btn-primary btn-sm col-md-2" onClick="modifier()">Modifier</button>
+                        <div class="col-md-1"></div>
+                        <button class="  btn btn-primary btn-sm col-md-5" onClick="redirect()">Valider et Attribuer un véhicule</button>
+                    </div>
+                </div>
+                  
+        </div>
+    {% endblock buttons %}
 
 <script type="text/javascript">
             
     function redirect() {
-        if (window.location.href.indexOf("clients") >= 0){
+        if (window.location.href.indexOf("clients") >= 0 && document.customerChecked){
             window.location = "{% url 'garage:customer-update' 1 %}".replace(1, document.customerChecked)
         }
-        else if (window.location.href.indexOf("selection") >= 0){
+        else if (window.location.href.indexOf("selection") >= 0 && document.customerChecked){
             window.location = "{% url 'garage:vehicle-select' 1 %}".replace(1, document.customerChecked)  
-        }          
+        }  else {
+            document.getElementById("error").innerHTML = "veuillez selectionner un client."
+        }        
     }
     function modifier() {
-        window.location = "{% url 'garage:customer-update' 1 %}".replace(1, document.customerChecked)            
+        if (document.customerChecked){
+            window.location = "{% url 'garage:customer-update' 1 %}".replace(1, document.customerChecked)      
+        } else {
+            document.getElementById("error").innerHTML = "veuillez selectionner un client."
+        }       
     }
 </script>
 {% endblock content %}

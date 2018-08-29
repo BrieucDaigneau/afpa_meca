@@ -1,15 +1,10 @@
-{% extends 'garage/vehicles_list.html' %} {% block search %}
+{% extends 'garage/vehicles_list.html' %} 
 
-<div class="container">
-    <div class="col-md-2">
+{% block search %}            
+<div class="col-md-4 "></div>
+    <div class="col-md-3 ">
+        <a href="{% url 'garage:customer-create' %}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</a>
     </div>
-    <div class="row mb-5 mt-3">
-
-        <div class="col-md-2 ">
-            <button onClick="vehicle_create()" id="new" value="{{customer_id}}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</button>
-        </div>
-    </div>
-</div>
 {% endblock search %} {% block buttons %}
 
 
