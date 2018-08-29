@@ -327,7 +327,9 @@ class ReparationOrderCreateView(CreateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        print(context)
         vehicle = Vehicle.objects.get_child(self.kwargs['vehicle_id'])  
+        print(vehicle)
         context['vehicle'] = vehicle   
         return context
 
@@ -354,10 +356,10 @@ class ReparationOrderSelect(ListView):
 
 class ReparationOrders(ReparationOrderSelect):
     template_name = "garage/reparation_orders.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     return context
 
 
 
@@ -369,14 +371,14 @@ class ReparationOrderUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # ReparationOrder.objects.filter(vehicle_id__icontains=reparationorder_)
-        # print(context)
-        vehicle = Vehicle.objects.get_child(self.kwargs['vehicle_id'])  
-        context['vehicle'] = vehicle   
+        reparationorder = ReparationOrder.objects.get(pk=self.kwargs['pk'])  
+        context['reparationorder'] = reparationorder   
         return context  
+
 
 def car_condition(request):
     return render(request, 'garage/car_condition.html')
+
 
 def search(request):
     query = request.GET.get('query')
