@@ -1,0 +1,58 @@
+{% extends 'garage/base.html' %}
+
+{% load static %}
+{% block head %}
+<link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
+{% endblock head %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h1 class="mt-5">Liste des Interventions</h1>
+    </div>
+    <div class="row">
+        {% block recherche %}{% endblock recherche %}
+    </div>
+    <div class="row">
+        
+        <h4 class="col-md-12" >
+            <div class="row">
+                <div class=" col-md-3">Client</div>
+                <div class=" col-md-2">Véhicule</div>
+                <div class="col-md-2">Réceptionnaire</div>
+                <div class="col-md-3">Date de réception</div>
+                <div class="col-md-2">Statut</div>
+            </div>
+        </h4>
+        
+        
+        
+        {% for reparation_order in reparation_order_list %}
+        <input type="radio" class="btn col-md-1 radio" id="{{reparation_order.id}}" name="reparation_order" onclick='javascript:document.reparation_orderChecked={{reparation_order.id}};' ></input>
+    
+        <label for="{{reparation_order.id}}" id="listing" class="col-md-12" ondblclick="redirect()">
+            <div class="row ">
+                <div class="col-md-3">{{ reparation_order.vehicle.customer.lastname }} {{ reparation_order.vehicle.customer.firstname }}</div>
+                <div class="col-md-2">{{ reparation_order.vehicle }}</div>
+                <div class="col-md-2">{{ reparation_order.user_profile }}</div>
+                <div class="col-md-3">{{ reparation_order.committed_date }}</div>
+                <!-- <div class="col-md-2">{{ reparation_order.status }}</div> -->
+                
+            </div>
+        </label>
+    
+        {% empty %}
+        <p>aucune intervention</p>
+        {% endfor %}
+        {% block buttons %}{% endblock buttons %}
+    </div>
+</div>
+
+<script type="text/javascript">
+            
+    function redirect() {
+        window.location = "{% url 'garage:reparation-order-update' 1 %}".replace(1, document.reparation_orderChecked)
+            
+    }
+</script>
+{% endblock content %}
