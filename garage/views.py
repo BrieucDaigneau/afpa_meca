@@ -148,13 +148,13 @@ class CustomerUpdate(UpdateView):
         city = address.city
         personalData = customer.personal_data
 
-        zipCodeForm = ZipCodeForm(instance=zipCode)
-        cityForm = CityForm(instance=city)
-        addressForm = AddressUpdateForm(instance=address)
-        personnalDataForm = PersonalDataUpdateForm(instance=personalData)
-        customerForm = CustomerForm(instance=customer)
+        zipCode_Form = ZipCodeForm(instance=zipCode)
+        city_Form = CityForm(instance=city)
+        address_Form = AddressUpdateForm(instance=address)
+        personnalData_Form = PersonalDataUpdateForm(instance=personalData)
+        customer_Form = CustomerForm(instance=customer)
 
-        context = {'zipCode_form': zipCodeForm, 'city_form': cityForm, 'address_form': addressForm, 'personnal_data_form': personnalDataForm, 'customer_form': customerForm, }
+        context = {'zipCode_form': zipCode_Form, 'city_form': city_Form, 'address_form': address_Form, 'personal_data_form': personnalData_Form, 'customer_form': customer_Form, }
         return render(request, self.template_name, context)
 
     def post (self, request, *args, **kwargs):
@@ -164,18 +164,18 @@ class CustomerUpdate(UpdateView):
         city = address.city
         personalData = customer.personal_data
 
-        zipCodeForm = ZipCodeForm(request.POST, instance=zipCode)
-        cityForm = CityForm(request.POST, instance=city)
-        addressForm = AddressUpdateForm(request.POST, instance=address)
-        personnalDataForm = PersonalDataUpdateForm(request.POST, instance=personalData)
-        customerForm = CustomerForm(request.POST, instance=customer)
+        zipCode_Form = ZipCodeForm(request.POST, instance=zipCode)
+        city_Form = CityForm(request.POST, instance=city)
+        address_Form = AddressUpdateForm(request.POST, instance=address)
+        personnalData_Form = PersonalDataUpdateForm(request.POST, instance=personalData)
+        customer_Form = CustomerForm(request.POST, instance=customer)
 
-        if zipCodeForm.is_valid() and cityForm.is_valid() and addressForm.is_valid() and personnalDataForm.is_valid() and customerForm.is_valid(): 
-            zipCodeData = zipCodeForm.save(commit=False) 
-            cityData = cityForm.save(commit=False)
-            addressData = addressForm.save(commit=False)
-            personalDataData = personnalDataForm.save(commit=False)
-            customerData = customerForm.save(commit=False)
+        if zipCode_Form.is_valid() and city_Form.is_valid() and address_Form.is_valid() and personnalData_Form.is_valid() and customer_Form.is_valid(): 
+            zipCodeData = zipCode_Form.save(commit=False) 
+            cityData = city_Form.save(commit=False)
+            addressData = address_Form.save(commit=False)
+            personalDataData = personnalData_Form.save(commit=False)
+            customerData = customer_Form.save(commit=False)
             
             cityData.save()
             addressData.city = cityData
@@ -190,8 +190,12 @@ class CustomerUpdate(UpdateView):
             customerData.personal_data = personalDataData
 
             customerData.save()
-            return redirect('garage:customers')
-        context = {'zipCode_form': zipCodeForm, 'city_form': cityForm, 'address_form': addressForm, 'personnal_data_form': personnalDataForm, 'customer_form': customerForm, }
+            if "selection" in request.META.get('HTTP_REFERER') :
+                template = 'garage:customer-select'
+            else:
+                template = 'garage:customers'
+            return redirect(template)
+        context = {'zipCode_form': zipCode_Form, 'city_form': city_Form, 'address_form': address_Form, 'personal_data_form': personnalData_Form, 'customer_form': customer_Form, }
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
@@ -207,10 +211,10 @@ class CustomerUpdate(UpdateView):
             context['city_form'] = CityForm(instance=city)
         if 'address_form' not in context:
             context['address_form'] = AddressUpdateForm(instance=address)
-        if 'personnal_data_form' not in context:
-            context['personnal_data_form'] = PersonalDataUpdateForm(instance=personalData)
-        if 'personnal_data_form' not in context:
-            context['personnal_data_form'] = CustomerForm(instance=customer)
+        if 'personal_data_form' not in context:
+            context['personal_data_form'] = PersonalDataUpdateForm(instance=personalData)
+        if 'personal_data_form' not in context:
+            context['personal_data_form'] = CustomerForm(instance=customer)
         return context 
 
 

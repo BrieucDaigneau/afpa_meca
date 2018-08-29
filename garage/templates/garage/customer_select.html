@@ -1,27 +1,10 @@
 {% extends 'garage/customers_list.html' %}
 
 {% block search %}
-        <div class="row mb-5 mt-3">
-            <div class="col-md-5 ">
+            <div class="col-md-4 "></div>
+            <div class="col-md-3 ">
                 <a href="{% url 'garage:customer-create' %}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</a>
             </div>
-    </div>
 {% endblock search %}
 
-{% block buttons %}
-<div class="row">
-    <div class="container">
-            <div class="row mt-5">
-                <a href="{% url 'garage:home' %}" class=" btn btn-sm btn-primary col-md-1" >Annuler</a>
-                <div class="col-md-3"></div>
-                <button class=" btn btn-primary btn-sm col-md-2" onClick="redirect()">Modifier
-                </button>
-                <div class="col-md-1"></div>
-                <button class="  btn btn-primary btn-sm col-md-5" onClick="redirect()">Valider et Attribuer un véhicule</button>
-            </div>
-        </div>
-          
-</div>
-</div>
-{% endblock buttons %}
 
