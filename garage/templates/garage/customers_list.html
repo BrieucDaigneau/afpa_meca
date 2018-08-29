@@ -68,14 +68,14 @@
         else if (window.location.href.indexOf("selection") >= 0 && document.customerChecked){
             window.location = "{% url 'garage:vehicle-select' 1 %}".replace(1, document.customerChecked)  
         }  else {
-            document.getElementById("error").innerHTML = "veuillez selectionner un client."
+            document.getElementById("error").innerHTML = "Veuillez selectionner un client."
         }        
     }
     function modifier() {
         if (document.customerChecked){
             window.location = "{% url 'garage:customer-update' 1 %}".replace(1, document.customerChecked)      
         } else {
-            document.getElementById("error").innerHTML = "veuillez selectionner un client."
+            document.getElementById("error").innerHTML = "Veuillez selectionner un client."
         }       
     }
 </script>

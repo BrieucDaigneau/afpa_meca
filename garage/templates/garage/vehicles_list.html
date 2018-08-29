@@ -3,20 +3,19 @@
 {% load static %}
 {% block head %}
 <link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
-{% endblock %}
+{% endblock head %}
+
 {% block content %}
 
-
-<div class="container">
     <div class="row mt-5">
-        <h1 class="col-md-5">Liste des Vehicules</h1> 
+        <h1 class="col-md-5">{% block title %}Liste des Vehicules{% endblock title %}</h1> 
         
         {% block search %}{% endblock search %}
     </div>
 
-
-    <div class="row">
-        <h4 class="col-md-12" >
+    {% block list %}
+    
+        <h4 class="col-md-12 mt-5" >
             <div class="row">
                 <div class=" col-md-3">Modele </div>
                 <div class=" col-md-3">Marque</div>
@@ -35,32 +34,50 @@
             <div class="col-md-3">{{ vehicle.brand }}</div>
             <div class="col-md-3">{{ vehicle.vin }}</div>
             <div class="col-md-3">{{ vehicle.license_plate }}</div>
-        </div>
-        
+        </div> 
     </label>
     
     {% empty %}
     <p>aucun véhicule</p>
+
     {% endfor %}
       
-    </div>
+    <div id="error" class=" col-md-12 mt-2"></div>
+    {% endblock list %}
 
-<div class="row">
-    {% block buttons %}{% endblock buttons %}
-</div>
 
-</div>
+    {% block buttons %}
+        <div class="row">
+            <div class="container">
+                    <div class="row mt-5">
+                        <a href="{% url 'garage:home' %}" class=" btn btn-sm btn-primary col-md-1" >Annuler</a>
+                        <div class="col-md-3"></div>
+                        <button class=" btn btn-primary btn-sm col-md-2" onClick="modifier()">Modifier</button>
+                        <div class="col-md-1"></div>
+                        <button class="  btn btn-primary btn-sm col-md-5" onClick="redirect()">Valider et Attribuer un véhicule</button>
+                    </div>
+                </div>
+                  
+        </div>
+    {% endblock buttons %}
+
+
+
 
 
 <script type="text/javascript">
+
     function redirect() {
         if (window.location.href.indexOf("vehicles") >= 0){
             window.location = "{% url 'garage:vehicle-update' 1 %}".replace(1, document.vehicleChecked)
         }
         else if (window.location.href.indexOf("select") >= 0){
             window.location = "{% url 'garage:reparation-order-create' 1 %}".replace(1, document.vehicleChecked)
-        }
+        } else {
+            document.getElementById("error").innerHTML = "Veuillez selectionner un véhicule."
+        }       
     }
+    
     function vehicle_create() { 
 //expression régulière qui récupère l'id client
 //[/] = recherche le caractère "/" dans l'ulr
@@ -71,8 +88,12 @@
         window.location = "{% url 'garage:vehicle-create' 1 %}".replace(1, stringToFind[1])
         }
     function modifier() {
+        if (document.vehicleChecked){
         window.location = "{% url 'garage:vehicle-update' 1 %}".replace(1, document.vehicleChecked)            
-    }
+    } else {
+        document.getElementById("error").innerHTML = "Veuillez selectionner un véhicule."
+    }       
+}
 </script> 
 
 

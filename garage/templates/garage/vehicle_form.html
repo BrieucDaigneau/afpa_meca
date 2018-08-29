@@ -3,7 +3,6 @@
 
 {% block content %}
 
-
     {% block radio %}
         {% if vehicle_type == "twowheelers" %}
             <label class="checkmark">
@@ -23,11 +22,11 @@
         <div class="container" id="form">
             <titre class="col-md-12">
                 <div class="col-md-12">
-                    <h1 id="title" class="title">{% block title_form %}Création nouveau Véhicule{% endblock %}</h1>                    
+                    <h1 id="title" class="title">{% block title %}Création nouveau Véhicule{% endblock title %}</h1>                    
                 </div>     
             </titre>
             
-                <h4>Véhicule</h4>
+
                 <form class="" action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
 
@@ -38,7 +37,7 @@
                                 {{ form.brand }}
                             </div>
                             <div class="invalid-feedback">
-                                Saisie du nom est obligatoire
+                                La saisie de la marque est obligatoire
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -47,7 +46,7 @@
                                 {{ form.model }}
                             </div>
                             <div class="invalid-feedback">
-                                Saisie du prenom est obligatoire
+                                La saisie du modèle est obligatoire.
                             </div>
                         </div>
                     </div>
@@ -62,7 +61,7 @@
                             {{ form.vin }}
                         </div>
                         <div class="col-md-6">
-                            <label for="{{ form.mileage.id_for_label }}" class="control-label">kilometrage</label>
+                            <label for="{{ form.mileage.id_for_label }}" class="control-label">Kilometrage</label>
                             {{ form.mileage }}
                         </div>
                     </div> 
@@ -116,7 +115,7 @@
                                     
                                 </div>
                                 <div class="invalid-feedback">
-                                    Saisie du modèle est obligatoire
+                                    La saisie du modèle est obligatoire
                                 </div>
                             </div>
                         </div>
@@ -128,20 +127,24 @@
         </div>
     {% endif %}
 
-        {% block button %}
-            <div class="row">
+    <div class="msgError"> {{ internal_error }} </div>  
+
+       
+            <div class="row mt-5">
                 <div class="col-md-3">
                     <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
                 </div>
-                <div class="col-md-3">
-                </div>        
-                <div class="col-md-3">
+                <div class="col-md-2">
+                </div>     
+                <div class="col-md-4">   
+                {% block back_home %}   
+                                <button class="btn btn-primary btn-lg btn-block" type="submit" id="button">Valider et retour Accueil</button>
+                {% endblock back_home %}
                 </div>        
                 <div class="col-md-3">
                     <button class="btn btn-primary btn-lg btn-block" onClick="submitButton()" type="submit">Etape suivante</button>
                 </div>
-            </div>   
-        {% endblock button %}    
+            </div>     
         
     {% if vehicle_type == "bike" or  vehicle_type == "twowheelers" %}        
         <script>

@@ -19,12 +19,6 @@ Pre-requis :    -pip install -r requirements.txt pour être à jour au niveau de
                                         }
                                     }
 
-                -puis dans settings.py :
-
-                                from .database import DATABASES_DEV
-                                ...
-                                DATABASES=DATABASES_DEV
-                    
 
                 -renommer db.sqlite3_test en db.sqlite3 pour avoir une BDD pré-remplie
 
