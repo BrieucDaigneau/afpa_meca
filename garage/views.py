@@ -63,7 +63,7 @@ class CustomerCreateView(View):
                             zipCode = current_zip_code[0]
 
                     except DatabaseError:   
-                        modelFormError = "Problème de connexion à la base de données 1"                  
+                        modelFormError = "Problème de connexion à la base de données"                  
                         raise                                
 
 
@@ -84,7 +84,7 @@ class CustomerCreateView(View):
                             city.save()
 
                         except DatabaseError:   
-                            modelFormError = "Problème de connexion à la base de données 2"                  
+                            modelFormError = "Problème de connexion à la base de données"                  
                             raise                                
 
 
@@ -100,7 +100,7 @@ class CustomerCreateView(View):
                                 address.save()
 
                             except DatabaseError:   
-                                modelFormError = "Problème de connexion à la base de données 3"                  
+                                modelFormError = "Problème de connexion à la base de données"                  
                                 raise                                
 
 
@@ -125,7 +125,7 @@ class CustomerCreateView(View):
                                         context = {'customer_id':customer.id}
 
                                     except DatabaseError:   
-                                        modelFormError = "Problème de connexion à la base de données 4"                  
+                                        modelFormError = "Problème de connexion à la base de données "                  
                                         raise 
                                     
                                     return redirect("garage:vehicle-create", context['customer_id'])
@@ -154,7 +154,7 @@ class CustomerUpdate(UpdateView):
         personnalDataForm = PersonalDataUpdateForm(instance=personalData)
         customerForm = CustomerForm(instance=customer)
 
-        context = {'zipCodeForm': zipCodeForm, 'cityForm': cityForm, 'addressForm': addressForm, 'personnalDataForm': personnalDataForm, 'customerForm': customerForm, }
+        context = {'zipCode_form': zipCodeForm, 'city_form': cityForm, 'address_form': addressForm, 'personnal_data_form': personnalDataForm, 'customer_form': customerForm, }
         return render(request, self.template_name, context)
 
     def post (self, request, *args, **kwargs):
@@ -191,7 +191,7 @@ class CustomerUpdate(UpdateView):
 
             customerData.save()
             return redirect('garage:customers')
-        context = {'zipCodeForm': zipCodeForm, 'cityForm': cityForm, 'addressForm': addressForm, 'personnalDataForm': personnalDataForm, 'customerForm': customerForm, }
+        context = {'zipCode_form': zipCodeForm, 'city_form': cityForm, 'address_form': addressForm, 'personnal_data_form': personnalDataForm, 'customer_form': customerForm, }
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
@@ -201,16 +201,16 @@ class CustomerUpdate(UpdateView):
         city = address.city
         personalData = customer.personal_data
         context = super(CustomerUpdate, self).get_context_data(**kwargs)
-        if 'zipCodeForm' not in context:
-            context['zipCodeForm'] = ZipCodeForm(instance=zipCode)
-        if 'cityForm' not in context:
-            context['cityForm'] = CityForm(instance=city)
-        if 'addressForm' not in context:
-            context['addressForm'] = AddressUpdateForm(instance=address)
-        if 'personnalDataForm' not in context:
-            context['personnalDataForm'] = PersonalDataUpdateForm(instance=personalData)
-        if 'personnalDataForm' not in context:
-            context['personnalDataForm'] = CustomerForm(instance=customer)
+        if 'zipCode_form' not in context:
+            context['zipCode_form'] = ZipCodeForm(instance=zipCode)
+        if 'city_form' not in context:
+            context['city_form'] = CityForm(instance=city)
+        if 'address_form' not in context:
+            context['address_form'] = AddressUpdateForm(instance=address)
+        if 'personnal_data_form' not in context:
+            context['personnal_data_form'] = PersonalDataUpdateForm(instance=personalData)
+        if 'personnal_data_form' not in context:
+            context['personnal_data_form'] = CustomerForm(instance=customer)
         return context 
 
 

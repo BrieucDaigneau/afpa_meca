@@ -1,18 +1,11 @@
-{% extends 'garage/customer_list.html' %}
+{% extends 'garage/customers_list.html' %}
 
 {% block search %}
-<div class="row">
-    <div class="container">
-            <div class="col-md-2">
+        <div class="row mb-5 mt-3">
+            <div class="col-md-5 ">
+                <a href="{% url 'garage:customer-create' %}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</a>
             </div>
-            <div class="row mb-5 mt-3">
-        
-                <div class="col-md-2 ">
-                   <a href="{% url 'garage:customer-create' %}" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</a>
-                </div>
-            </div>
-        </div>
-</div>
+    </div>
 {% endblock search %}
 
 {% block buttons %}

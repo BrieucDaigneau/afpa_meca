@@ -4,48 +4,47 @@
 {% block head %}
 <link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
 {% endblock head %}
+
 {% block content %}
 
 <div class="container">
     <div class="row">
-        <h1 class="mt-5">Liste des Clients</h1>
+        <h1 class="mt-5">{% block title %}Liste des Clients{% endblock title %}</h1>
     </div>
-    <div class="row">
-        {% block search %}{% endblock search %}
-    </div>
-    <div class="row">
-        
-        <h4 class="col-md-12" >
-            <div class="row">
-                <div class=" col-md-3">Nom</div>
-                <div class=" col-md-3">Prénom</div>
-                <div class="col-md-3">N° AFPA</div>
-                <div class="col-md-3">E-mail</div>
-            </div>
-        </h4>
-        
-        
-        
+    {% block search %}{% endblock search %}
+
+    {% block list %}
+        <div class="row">  
+            <h4 class="col-md-12" >
+                <div class="row">
+                    <div class=" col-md-3">Nom</div>
+                    <div class=" col-md-3">Prénom</div>
+                    <div class="col-md-3">N° AFPA</div>
+                    <div class="col-md-3">E-mail</div>
+                </div>
+            </h4>
+        </div>  
+            
         {% for customer in customers_list %}
-        <input type="radio" class="btn col-md-1 radio" id="{{customer.id}}" name="btnCustomer" ondblclick="redirect()" onclick='javascript:document.customerChecked={{customer.id}};' />
-    
-        <label for="{{customer.id}}" id="elementList" class="col-md-12">
-            <div class="row " ondblclick="redirect()">
-                <div class=" col-md-3">{{ customer.lastname }}</div>
-                <div class=" col-md-3">{{ customer.firstname }}</div>
-                <div class="col-md-3">{{ customer.afpa_number }}</div>
-                <div class="col-md-3">{{ customer.personal_data.mail }}</div>
-            </div>
-        </label>
-    
-        {% empty %}
-        <p>aucun client</p>
+            <input type="radio" class="btn col-md-1 radio" id="{{customer.id}}" name="btnCustomer" ondblclick="redirect()" onclick='javascript:document.customerChecked={{customer.id}};' />
+        
+            <label for="{{customer.id}}" id="listing" class="col-md-12">
+                <div class="row " ondblclick="redirect()">
+                    <div class=" col-md-3">{{ customer.lastname }}</div>
+                    <div class=" col-md-3">{{ customer.firstname }}</div>
+                    <div class="col-md-3">{{ customer.afpa_number }}</div>
+                    <div class="col-md-3">{{ customer.personal_data.mail }}</div>
+                </div>
+            </label>
+        
+            {% empty %}
+            <p>aucun client</p>
+
         {% endfor %}
-        {% block buttons %}{% endblock buttons %}
-    </div>
+    {% endblock list %}  
 
+    {% block buttons %}{% endblock buttons %}
 </div>
-
 
 <script type="text/javascript">
             
