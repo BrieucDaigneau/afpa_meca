@@ -1,0 +1,61 @@
+{% extends 'garage/base.html' %}
+
+{% load static %}
+{% block head %}
+<link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
+{% endblock head %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <h1 class="mt-5">Liste des Clients</h1>
+    </div>
+
+    {% block search %}{% endblock search %}  
+    {% block list %}
+    
+    <h4 class="col-md-12 mt-5" >
+        <div class="row">
+            <div class=" col-md-3">Nom</div>
+            <div class=" col-md-3">Prénom</div>
+            <div class="col-md-3">N° AFPA</div>
+            <div class="col-md-3">E-mail</div>
+        </div>
+    </h4>
+    
+    
+    {% for customer in customer_list %}
+    <input type="radio" class="btn col-md-1 radio" id="{{customer.id}}" name="btnCustomer" onClick='javascript:document.customerChecked={{customer.id}};' >
+</input>
+
+<label for="{{customer.id}}" id="listing" class="col-md-12" ondblclick="redirect()">
+    <div class="row ">
+        <div class=" col-md-3">{{ customer.lastname }}</div>
+        <div class=" col-md-3">{{ customer.firstname }}</div>
+        <div class="col-md-3">{{ customer.afpa_number }}</div>
+        <div class="col-md-3">{{ customer.personal_data.mail }}</div>
+    </div>
+    
+</label>
+
+{% empty %}
+<p>aucun client</p>
+{% endfor %}
+
+
+</div>
+
+{% endblock list %}  
+{% block buttons %}{% endblock buttons %}  
+
+
+
+
+
+            <script type="text/javascript">
+            
+                function redirect() {
+                    window.location = "{% url 'garage:vehicle-select' 1 %}".replace(1, document.customerChecked)            
+                }
+            </script>
+{% endblock content %}

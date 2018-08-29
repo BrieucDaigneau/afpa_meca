@@ -96,6 +96,9 @@ class CityForm(forms.ModelForm):
 
 
 class MotorizedForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(MotorizedForm, self).__init__(*args, **kwargs)    
+
     class Meta:
         model = Car
         exclude = ('customer',)
@@ -112,37 +115,15 @@ class MotorizedForm(forms.ModelForm):
 
        
 class CarForm(MotorizedForm):
-    class Meta:
+    class Meta(MotorizedForm.Meta) :
         model = Car
-        exclude = ('customer',)
-        widgets = {
-            'brand': TextInput(attrs={'class': 'form-control'}),
-            'model': TextInput(attrs={'class': 'form-control'}),
-            'license_plate': TextInput(attrs={'class': 'form-control'}),
-            'vin': TextInput(attrs={'class': 'form-control'}),
-            'mileage': NumberInput(attrs={'class': 'form-control'}),
-            'circulation_date': DateInput(attrs={'class': 'form-control', 'type':'date'}), 
-            'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
-            'insurance_img': FileInput(attrs={'class': 'form-control'})
-        }
-
+ 
 
 class MotorbikeForm(MotorizedForm):
-    class Meta:
+    class Meta(MotorizedForm.Meta) :
         model = Motorbike
-        exclude = ('customer',)
-        widgets = {
-            'brand': TextInput(attrs={'class': 'form-control'}),
-            'model': TextInput(attrs={'class': 'form-control'}),
-            'license_plate': TextInput(attrs={'class': 'form-control'}),
-            'vin': TextInput(attrs={'class': 'form-control'}),
-            'mileage': NumberInput(attrs={'class': 'form-control'}),
-            'circulation_date': DateInput(attrs={'class': 'form-control','type':'date'}),
-            'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
-            'insurance_img': FileInput(attrs={'class': 'form-control'})
-        }
-
-
+ 
+ 
 class BikeForm(forms.ModelForm):
     class Meta:
         model = Bike
