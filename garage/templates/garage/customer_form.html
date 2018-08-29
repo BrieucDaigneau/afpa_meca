@@ -6,15 +6,14 @@
 {% block content %}
     <div class="container">
     
-            <titre class="col-md-12">
+            <div class="col-md-12">
                 <div class="col-md-12">
                     <h1 id="title" class="title">{% block title %}Création nouveau client{% endblock title %}</h1>
                 </div>
-            </titre>
-        </br>
+            </div>
         
-            <formulaire class="col-md-9">
-                <form class="needs-validation" action="{% url 'garage:customer-create' %}" method="post" enctype="multipart/form-data">
+            <div class="col-md-12 mt-5">
+                <form class="needs-validation" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-6">
@@ -43,13 +42,12 @@
                             {{ customer_form.afpa_number }}
                         </div>
                         <div class="col-md-6">
-                            <label for="{{ form.phone_number.id_for_label }}" class="control-label">Téléphone</label>
+                            <label for="{{ personal_data_form.phone_number.id_for_label }}" class="control-label">Téléphone</label>
                             {{ personal_data_form.phone_number }}
                         </div>
                         <div class="col-md-6">
-                            <label for="{{ form.mail.id_for_label }}" class="control-label">Email</label>
+                            <label for="{{ personal_data_form.mail.id_for_label }}" class="control-label">Email</label>
                             {{ personal_data_form.mail }}
-                            <div> {{ personal_data_form.mail.errors }} </div>
                         </div>
                     </div> 
                     
@@ -78,7 +76,7 @@
                             {{ city_form.city_name }}
                         </div>
                         <div class="col-md-4">
-                            <label for="{{ form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img</label>
+                            <label for="{{ personal_data_form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img</label>
                             {{ personal_data_form.afpa_card_img }}
                         </div>
                     </div>
@@ -86,30 +84,27 @@
 
                     <div class="msgError"> {{ internal_error }} </div>     
 
-                    <div class="row">
+                    <div class="row mt-5">
                         <div class="col-md-3">
-                            <a href="{% url 'garage:customer-select' %}" class="btn btn-primary btn-lg btn-block" id="button">Annuler</a>
+                            <a href="{% url 'garage:customer-select' %}" class="btn btn-primary btn-sm btn-block button" id="button">Annuler</a>
                         </div>
                         <div class="col-md-2">
                         </div>      
                         <div class="col-md-4">
                             {% block back_home %}   
-                                <button class="btn btn-primary btn-lg btn-block" type="submit" id="button">Valider et retour Accueil</button>
+                                <button class="btn btn-primary btn-sm btn-block button" type="submit" id="validerAccuiel">Valider et retour Accueil</button>
                             {% endblock back_home %}    
                         </div> 
                         <div class="col-md-3">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="button">{% block next %}Etape suivante{% endblock next %}</button>
+                            <button class="btn btn-primary btn-sm btn-block button" type="submit" id="valider">{% block next %}Etape suivante{% endblock next %}</button>
                         </div>
                     </div>   
 
                 </form>
 
-
-
-            </formulaire>
+            </div>
 
     </div>
-
 
         {% endblock content %}
 

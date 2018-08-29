@@ -2,10 +2,6 @@ body {
   margin: auto;
 }
 
-#button {
-  margin-top: 50px;
-}
-
 [class*="col-"] {
   border-radius: 6px;
 }

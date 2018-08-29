@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.views.generic import CreateView, ListView, View, FormView, DetailView, TemplateView, UpdateView
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpRequest
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
@@ -141,34 +141,34 @@ class CustomerUpdate(UpdateView):
     template_name = 'garage/customer_update.html'
     success_message = "Données mises à jour avec succès"
 
-    def get(self, request, *args, **kwargs):
+    def my_get_form(self, param):
         customer = Customer.objects.get(pk=self.kwargs['pk'])
         address = customer.address
         zipCode = address.zipCode
         city = address.city
         personalData = customer.personal_data
 
-        zipCode_Form = ZipCodeForm(instance=zipCode)
-        city_Form = CityForm(instance=city)
-        address_Form = AddressUpdateForm(instance=address)
-        personnalData_Form = PersonalDataUpdateForm(instance=personalData)
-        customer_Form = CustomerForm(instance=customer)
+        zipCode_Form = ZipCodeForm(param, instance=zipCode)
+        city_Form = CityForm(param, instance=city)
+        address_Form = AddressUpdateForm(param, instance=address)
+        personnalData_Form = PersonalDataUpdateForm(param, instance=personalData)
+        customer_Form = CustomerForm(param, instance=customer)
+    
+        return {'zipCode_form': zipCode_Form, 'city_form': city_Form, 
+                'address_form': address_Form, 'personal_data_form': personnalData_Form,
+                'customer_form': customer_Form,}
 
-        context = {'zipCode_form': zipCode_Form, 'city_form': city_Form, 'address_form': address_Form, 'personal_data_form': personnalData_Form, 'customer_form': customer_Form, }
-        return render(request, self.template_name, context)
+    def get(self, request, **kwargs):       
+        return render(request, self.template_name, self.my_get_form(None))
 
-    def post (self, request, *args, **kwargs):
-        customer = Customer.objects.get(pk=self.kwargs['pk'])
-        address = customer.address
-        zipCode = address.zipCode
-        city = address.city
-        personalData = customer.personal_data
-
-        zipCode_Form = ZipCodeForm(request.POST, instance=zipCode)
-        city_Form = CityForm(request.POST, instance=city)
-        address_Form = AddressUpdateForm(request.POST, instance=address)
-        personnalData_Form = PersonalDataUpdateForm(request.POST, instance=personalData)
-        customer_Form = CustomerForm(request.POST, instance=customer)
+    def post (self, request, **kwargs):
+        dico = self.my_get_form(request.POST)
+        
+        zipCode_Form = dico['zipCode_form']
+        city_Form = dico['city_form']
+        address_Form = dico['address_form']
+        personnalData_Form = dico['personal_data_form']
+        customer_Form = dico['customer_form']
 
         if zipCode_Form.is_valid() and city_Form.is_valid() and address_Form.is_valid() and personnalData_Form.is_valid() and customer_Form.is_valid(): 
             zipCodeData = zipCode_Form.save(commit=False) 
@@ -190,12 +190,10 @@ class CustomerUpdate(UpdateView):
             customerData.personal_data = personalDataData
 
             customerData.save()
-            if "selection" in request.META.get('HTTP_REFERER') :
-                template = 'garage:customer-select'
-            else:
-                template = 'garage:customers'
-            return redirect(template)
-        context = {'zipCode_form': zipCode_Form, 'city_form': city_Form, 'address_form': address_Form, 'personal_data_form': personnalData_Form, 'customer_form': customer_Form, }
+            
+            return redirect('garage:customers')
+
+        context = {'zipCode_form': zipCode_Form, 'city_form': city_Form, 'address_form': address_Form, 'personal_data_form': personnalData_Form, 'customer_form': customer_Form,}
         return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
