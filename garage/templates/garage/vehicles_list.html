@@ -68,7 +68,6 @@
 // "+" cherche entre 1 et plusieurs fois le paramètre saisi avant 
 // window.location.href.match(/[/](\d+)[/]/) retourne un tableau = [/nombre/, nombre]
         let stringToFind = window.location.href.match(/[/](\d+)[/]/)
-        console.log(stringToFind)
         window.location = "{% url 'garage:vehicle-create' 1 %}".replace(1, stringToFind[1])
         }
     function modifier() {

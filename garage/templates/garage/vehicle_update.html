@@ -24,7 +24,7 @@
 {% block button %}
 <div class="row mt-4">
         <div class="col-md-3">
-            <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
+            <a href="#" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
         </div>
         <div class="col-md-3">
         </div>        
@@ -34,7 +34,7 @@
             <button class="btn btn-primary btn-lg btn-block" onClick="submitButton()" type="submit">Valider</button>
         </div>
 </div> 
-{% endblock button %}  
+{% endblock button %} 
 
 {% block reparation_order_list %}
 <div class="row mt-5">
@@ -66,7 +66,7 @@
         </label>
     
         {% empty %}
-        <p>aucune reparation_order</p>
+        <p>aucune intervention avec ce véhicule.</p>
         {% endfor %}
     </div>
 </div>
