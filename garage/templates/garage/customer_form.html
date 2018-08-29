@@ -8,13 +8,12 @@
     
             <titre class="col-md-12">
                 <div class="col-md-12">
-                    <h1 id="title" class="title">Création nouveau client</h1>
+                    <h1 id="title" class="title">{% block title %}Création nouveau client{% endblock title %}</h1>
                 </div>
             </titre>
         </br>
         
             <formulaire class="col-md-9">
-                <h4>client</h4>
                 <form class="needs-validation" action="{% url 'garage:customer-create' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
@@ -92,12 +91,14 @@
                             <a href="{% url 'garage:customer-select' %}" class="btn btn-primary btn-lg btn-block" id="button">Annuler</a>
                         </div>
                         <div class="col-md-2">
-                        </div>         
+                        </div>      
                         <div class="col-md-4">
+                            {% block back_home %}   
                                 <button class="btn btn-primary btn-lg btn-block" type="submit" id="button">Valider et retour Accueil</button>
-                            </div>     
+                            {% endblock back_home %}    
+                        </div> 
                         <div class="col-md-3">
-                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="button">Etape suivante</button>
+                            <button class="btn btn-primary btn-lg btn-block" type="submit" id="button">{% block next %}Etape suivante{% endblock next %}</button>
                         </div>
                     </div>   
 
@@ -108,6 +109,8 @@
             </formulaire>
 
     </div>
+
+
         {% endblock content %}
 
     

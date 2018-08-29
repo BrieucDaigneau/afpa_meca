@@ -25,7 +25,7 @@
     
     
     {% for customer in customer_list %}
-    <input type="radio" class="btn col-md-1 radio" id="{{customer.id}}" name="btnCustomer" onclick='javascript:document.customerChecked={{customer.id}};' >
+    <input type="radio" class="btn col-md-1 radio" id="{{customer.id}}" name="btnCustomer" onClick='javascript:document.customerChecked={{customer.id}};' >
 </input>
 
 <label for="{{customer.id}}" id="listing" class="col-md-12" ondblclick="redirect()">
