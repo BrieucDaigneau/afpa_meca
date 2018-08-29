@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   {% load static %}
   <title>AFPA Méca. Authent</title>
+  <link rel="shortcut icon" type="image/png" href="{% static 'garage/img/favicon.ico' %}"/>
   <link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
   <link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'garage/css/test.css' %}" rel="stylesheet">
@@ -29,10 +30,10 @@
         {% endif %}
         {% if next %}
           {% if user.is_authenticated %}
-            <p>Your account doesn't have access to this page. To proceed,
+            <p>Votre compte n'a pas accès a cette page. To proceed,
               please login with an account that has access.</p>
           {% else %}
-            <p>Please login to see this page.</p>
+            <p>Veuillez vous connecter pour voir cette page.</p>
           {% endif %}
         {% endif %}
 
