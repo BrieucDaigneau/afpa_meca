@@ -31,7 +31,7 @@
         <div class="col-md-3">
         </div>        
         <div class="col-md-3">
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Valider</button>
+            <button class="btn btn-primary btn-lg btn-block" onClick="submitButton()" type="submit">Valider</button>
         </div>
 </div> 
 {% endblock button %}  
@@ -78,3 +78,12 @@
 
 </script>
 {% endblock reparation_order_list %}
+
+{% block myscript %}
+    <script>
+
+        function submitButton(){
+                document.forms[0].submit() 
+        }
+    </script>
+{% endblock myscript %}

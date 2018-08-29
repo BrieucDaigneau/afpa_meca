@@ -29,6 +29,7 @@ urlpatterns = [
     path('creation-intervention/<int:vehicle_id>', login_required(views.ReparationOrderCreateView.as_view()), name='reparation-order-create'),  
     path('consultation-interventions', login_required(views.ReparationOrders.as_view()), name='reparation-orders'),
     path('actualisation-intervention/<pk>/', login_required(views.ReparationOrderUpdate.as_view()), name='reparation-order-update'),  
+    path('car_condition', login_required(views.car_condition), name='car_condition'),    
 ]
 
 

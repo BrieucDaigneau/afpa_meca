@@ -138,7 +138,7 @@
                 <div class="col-md-3">
                 </div>        
                 <div class="col-md-3">
-                    <button class="btn btn-primary btn-lg btn-block" onclick="submit()" type="submit">Etape suivante</button>
+                    <button class="btn btn-primary btn-lg btn-block" onClick="submitButton()" type="submit">Etape suivante</button>
                 </div>
             </div>   
         {% endblock button %}    
@@ -159,14 +159,28 @@
         </script>
     {% endif %}
 
+{% if bike_form == "None"  %}        
         <script>
-            function submit(){
-                if (document.getElementById("motorbike_radio").checked || document.getElementById("bike_form") == "None"){
-                    document.forms[0].submit
+            function submitButton(){
+                    document.forms[0].submit()
+            }
+        </script>
+{% else %}
+
+    {% block myscript %}
+        <script>
+
+            function submitButton(){
+                if (document.getElementById("motorbike_radio").checked){
+                    document.forms[0].submit()
                 } else if (document.getElementById("bike_radio").checked){
-                    document.forms[1].submit
+                    console.log("kikou")
+                    document.forms[1].submit()
                 }
             }
         </script>
+    {% endblock myscript %}}
+
+{% endif %}
     {% block reparation_order_list %}{% endblock reparation_order_list %}
 {% endblock content%}
