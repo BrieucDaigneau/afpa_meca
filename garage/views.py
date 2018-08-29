@@ -368,6 +368,9 @@ class ReparationOrderUpdate(UpdateView):
         # context['vehicule'] = vehicule   
         return context  
 
+def car_condition(request):
+    return render(request, 'garage/car_condition.html')
+
 def search(request):
     query = request.GET.get('query')
     if not query:
