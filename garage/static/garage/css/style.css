@@ -36,3 +36,10 @@ body {
 .radio{
   display: none;
 }
+
+
+#loginBox{
+  border: 1px solid black;
+  background-color: white;
+  opacity: 0.85;
+}

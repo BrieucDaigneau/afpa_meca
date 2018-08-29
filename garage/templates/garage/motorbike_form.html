@@ -1,0 +1,93 @@
+{% extends "garage/two-wheeler_form.html" %}
+
+{% block motorbike %}
+
+<div class="container">
+    <title class="col-md-12">
+        <div class="col-md-12">
+            <h1 id="title" class="title">Création nouveau Véhicule</h1>
+        </div>     
+    </title>
+    <br/>
+    
+    
+
+    <div class="col-md-9">
+        <h4>Véhicule</h4>
+        <form class="" action="" method="post">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group {% if form.brand.errors %}has-warning has-feedback{% endif %}">
+                        <label for="{{ form.brand.id_for_label }}" class="control-label">Marque</label>
+                        {{ form.brand }}
+                    </div>
+                    <div class="invalid-feedback">
+                        Saisie du nom est obligatoire
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group {% if form.model.errors %}has-warning has-feedback{% endif %}">
+                        <label for="{{ form.model.id_for_label }}" class="control-label">Modèle</label>
+                        {{ form.model }}
+                    </div>
+                    <div class="invalid-feedback">
+                        Saisie du prenom est obligatoire
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="{{ customer_form.license_plate.id_for_label }}" class="control-label">Immatriculation</label>
+                    {{ form.license_plate }}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.vin.id_for_label }}" class="control-label">Vin</label>
+                    {{ form.vin }}
+                </div>
+                <div class="col-md-6">
+                    <label for="{{ form.mileage.id_for_label }}" class="control-label">kilometrage</label>
+                    {{ form.mileage }}
+                </div>
+            </div> 
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="{{ car_form.circulation_date.id_for_label }}" class="control-label">Date mise en circulation</label>
+                    {{ form.circulation_date }}
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="{{ car_form.grey_doc_img.id_for_label }}" class="control-label">Carte grise</label>
+                    {{ form.grey_doc_img }}
+                </div>
+                
+                <div class="col-md-4">
+                    <label for="{{ car_form.insurance_img.id_for_label }}" class="control-label">Carte assurance</label>
+                    {{ form.insurance_img }}
+                </div>
+            </div>
+           
+            <br/>
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
+                </div>
+                <div class="col-md-3">
+                </div>        
+                <div class="col-md-3">
+                </div>        
+                <div class="col-md-3">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Etape suivante</button>
+                </div>
+            </div>   
+            {{form.customer}}
+            
+        </form>
+        
+    </div>
+</div>
+
+{% endblock motorbike %}
