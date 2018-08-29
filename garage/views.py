@@ -213,7 +213,7 @@ class ReparationOrderCreate(CreateView):
         return context
 
     def form_valid(self, form):
-        vehicle = Vehicle.objects.filter_child(self.kwargs['vehicle_id'])     
+        vehicle = Vehicle.objects.get(pk=self.kwargs['vehicle_id'])     
         user = self.request.user          
         reparation_order = form.save(commit=False)
         reparation_order.user_profile = user
