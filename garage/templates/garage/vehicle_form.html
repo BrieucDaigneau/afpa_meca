@@ -5,20 +5,24 @@
 
     {% block radio %}
         {% if vehicle_type == "twowheelers" %}
-            <label class="checkmark">
-                <input type="radio" value="Moto" id="motorbike_radio" onclick='javascript:select_twoWheeler(this);' name="optradio" checked="checked">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <input class="radio listing btnradio" type="radio" value="Moto" id="motorbike_radio" onclick='javascript:select_twoWheeler(this);' name="optradio" checked="checked"></input>    
+            <label for="motorbike_radio" class="checkmark mt-5 col-md-3" id="listing">
                 Moto
             </label>
-            <div class="col-md-1"></div>
-            <label class="checkmark">
-                <input type="radio" value="Velo" id="bike_radio" onclick='javascript:select_twoWheeler(this);' name="optradio">
+            <input class="radio listing"  type="radio" value="Velo" id="bike_radio" onclick='javascript:select_twoWheeler(this);' name="optradio"></input> 
+            <label for="bike_radio" class="checkmark mt-5 col-md-3"  id="listing">
                 Velo
             </label>
-        {% endif %}
+        </div>
+        <hr  id="myhr" >
+            {% endif %}
     {% endblock radio %}
 
 
-    {% if vehicle_type == "twowheelers" or vehicle_type == "motorised" %}     
+    {% if vehicle_type == "twowheelers" or vehicle_type == "motorised" %}    
+
         <div class="container" id="form">
             <titre class="col-md-12">
                 <div class="col-md-12">
@@ -27,7 +31,7 @@
             </titre>
             
 
-                <form class="" action="" method="post" enctype="multipart/form-data">
+                <form class="needs-validation" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
 
                     <div class="row">
@@ -132,17 +136,17 @@
        
             <div class="row mt-5">
                 <div class="col-md-3">
-                    <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
+                    <a href="" onClick="history.back()" class="btn btn-primary btn-sm btn-block">Annuler</a>
                 </div>
                 <div class="col-md-2">
                 </div>     
                 <div class="col-md-4">   
                 {% block back_home %}   
-                                <button class="btn btn-primary btn-lg btn-block" type="submit" id="button">Valider et retour Accueil</button>
+                                <button class="btn btn-primary btn-sm btn-block" type="submit" id="button">Valider et retour Accueil</button>
                 {% endblock back_home %}
                 </div>        
                 <div class="col-md-3">
-                    <button class="btn btn-primary btn-lg btn-block" onClick="submitButton()" type="submit">Etape suivante</button>
+                    <button class="btn btn-primary btn-sm btn-block" onClick="submitButton()" type="submit">Etape suivante</button>
                 </div>
             </div>     
         
