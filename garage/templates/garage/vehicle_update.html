@@ -6,18 +6,6 @@
 {% block radio %}
 {% endblock radio %}
  
-    <!-- {% block vehicle_update %} 
-    <div class="col-md-6">
-        <div class="form-group {% if form.model_name.errors %}has-warning has-feedback{% endif %}">
-            <label for="{{ form.model_name.id_for_label }}" class="control-label">Modèle</label>
-            {{ form.model_name }}
-        </div>
-        <div class="invalid-feedback">
-            Saisie du prenom est obligatoire
-        </div>
-    </div>
-    {% endblock vehicle_update %} -->
-
                    
 
 {% block button_motorised %}{% endblock button_motorised %}
@@ -36,7 +24,8 @@
 {% endblock buttons %} 
 
 {% block reparation_order_list %}
-<div class="row mt-5">
+<h2 class="mt-5">Liste des ordres de réparation rattachés</h2>
+<div class="row mt-4">
         
         <h4 class="col-md-12" >
             <div class="row">
@@ -65,7 +54,7 @@
         </label>
     
         {% empty %}
-        <p>aucune intervention avec ce véhicule.</p>
+        <p class="col-md-12">aucune intervention avec ce véhicule.</p>
         {% endfor %}
         <div id="error"></div>
     </div>
