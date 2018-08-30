@@ -9,3 +9,5 @@ settings.json
 launch.json
 /db/*.sqlite3
 /media/img/*
+.vscode/*
+
