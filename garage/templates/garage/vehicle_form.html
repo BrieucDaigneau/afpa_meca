@@ -15,24 +15,24 @@
                 Velo
             </label>
         </div>
-        <hr  id="myhr" >
+                <div id="folder">
             {% endif %}
-    {% endblock radio %}
-
-
-    {% if vehicle_type == "twowheelers" or vehicle_type == "motorised" %}    
-
-        <div class="container" id="form">
-            <div class="col-md-12">
-                <div class="col-md-12">
-                    <h1 id="title" class="title mb-5">{% block title %}Création nouveau Véhicule{% endblock title %}</h1>                    
-                </div>     
-            </div>
+            {% endblock radio %}
             
-
+            
+            {% if vehicle_type == "twowheelers" or vehicle_type == "motorised" %}    
+            
+            <div class="container" id="form">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <h1 id="title" class="title mb-5">{% block title %}Création nouveau Véhicule{% endblock title %}</h1>                    
+                    </div>     
+                </div>
+                
+                
                 <form class="needs-validation" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-
+                    
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group {% if form.brand.errors %}has-warning has-feedback{% endif %}">
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="row">
                         <div class="col-md-6">
                             <label for="{{ customer_form.license_plate.id_for_label }}" class="control-label">Immatriculation</label>
@@ -68,25 +68,26 @@
                             {{ form.mileage }}
                         </div>
                     </div> 
-
+                    
                     <div class="row">
                         <div class="col-md-4">
                             <label for="{{ car_form.circulation_date.id_for_label }}" class="control-label">Date mise en circulation</label>
                             {{ form.circulation_date }}
                         </div>
-
+                        
                         <div class="col-md-4">
                             <label for="{{ car_form.grey_doc_img.id_for_label }}" class="control-label">Carte grise</label>
                             {{ form.grey_doc_img }}
                         </div>
-
+                        
                         <div class="col-md-4">
                             <label for="{{ car_form.insurance_img.id_for_label }}" class="control-label">Carte assurance</label>
                             {{ form.insurance_img }}
                         </div>
                     </div>                        
                 </form>
-        </div>
+            </div>
+        
     {% endif %}
 
     {% if vehicle_type == "bike" or  vehicle_type == "twowheelers" %}        
@@ -131,7 +132,9 @@
     {% endif %}
 
     <div class="msgError"> {{ internal_error }} </div>  
-
+    {% if vehicle_type == "twowheelers" %}    
+        </div>
+    {% endif %} 
         {% block buttons %}
             <div class="row mt-5">
                 <div class="col-md-2">
@@ -152,42 +155,40 @@
             </div>
         {% endblock buttons %}     
         
-    {% if vehicle_type == "bike" or  vehicle_type == "twowheelers" %}        
-        <script>
-            function select_twoWheeler(){
-                if (document.getElementById("motorbike_radio").checked){
-                    document.getElementById("bike").style.display = "none";
-                    document.getElementById("form").style.display = "block";
+{% if vehicle_type == "bike" or  vehicle_type == "twowheelers" %}        
+    <script>
+        function select_twoWheeler(){
+            if (document.getElementById("motorbike_radio").checked){
+                document.getElementById("bike").style.display = "none";
+                document.getElementById("form").style.display = "block";
 
-                } else if (document.getElementById("bike_radio").checked){
-                    console.log(document.getElementById("motorbike_form"))
-                    document.getElementById("form").style.display = "none";
-                    document.getElementById("bike").style.display = "block";
-                }
+            } else if (document.getElementById("bike_radio").checked){
+                console.log(document.getElementById("motorbike_form"))
+                document.getElementById("form").style.display = "none";
+                document.getElementById("bike").style.display = "block";
             }
-        </script>
-    {% endif %}
-
-{% if bike_form == "None"  %}        
-        <script>
-            function submitButton(){
-                    document.forms[0].submit()
+        }
+    </script>
+{% endif %}
+{% if vehicle_type == "twowheelers"  %}        
+    <script>    
+        function submitButton(){
+            console.log(document.forms)
+            if (document.getElementById("motorbike_radio").checked){
+                document.forms[0].submit()
+            } else if (document.getElementById("bike_radio").checked){
+                document.forms[1].submit()
             }
-        </script>
+        }
+    </script>
 {% else %}
+    <script>
+        function submitButton(){
+            document.forms[0].submit()
+        }
+    </script>
 
-    {% block myscript %}
-        <script>
-
-            function submitButton(){
-                if (document.getElementById("motorbike_radio").checked){
-                    document.forms[0].submit()
-                } else if (document.getElementById("bike_radio").checked){
-                    document.forms[1].submit()
-                }
-            }
-        </script>
-    {% endblock myscript %}
+{% block myscript %}{% endblock myscript %}
 
 {% endif %}
     {% block reparation_order_list %}{% endblock reparation_order_list %}
