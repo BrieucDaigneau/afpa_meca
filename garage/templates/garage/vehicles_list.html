@@ -16,7 +16,7 @@
     {% block list %}
     
         <h4 class="col-md-12 mt-5" >
-            <div class="row">
+            <div class="row mb-3">
                 <div class=" col-md-3">Modele </div>
                 <div class=" col-md-3">Marque</div>
                 <div class="col-md-3">N° VIN</div>
@@ -53,8 +53,8 @@
                         <a href="{% url 'garage:home' %}" class=" btn btn-sm btn-primary col-md-1" >Annuler</a>
                         <div class="col-md-3"></div>
                         <button class=" btn btn-primary btn-sm col-md-2" onClick="modifier()">Modifier</button>
-                        <div class="col-md-1"></div>
-                        <button class="  btn btn-primary btn-sm col-md-5" onClick="redirect()">Valider et Attribuer un véhicule</button>
+                        <div class="col-md-2"></div>
+                        <button class="  btn btn-primary btn-sm col-md-4" onClick="redirect()">Valider et Attribuer un véhicule</button>
                     </div>
                 </div>
                   
@@ -68,14 +68,14 @@
 <script type="text/javascript">
 
     function redirect() {
-        if (window.location.href.indexOf("vehicles") >= 0){
+        if (document.vehicleChecked && window.location.href.indexOf("vehicles") >= 0){
             window.location = "{% url 'garage:vehicle-update' 1 %}".replace(1, document.vehicleChecked)
         }
-        else if (window.location.href.indexOf("select") >= 0){
+        else if (document.vehicleChecked && window.location.href.indexOf("select") >= 0){
             window.location = "{% url 'garage:reparation-order-create' 1 %}".replace(1, document.vehicleChecked)
         } else {
             document.getElementById("error").innerHTML = "Veuillez selectionner un véhicule."
-        }       
+        }     
     }
     
     function vehicle_create() { 

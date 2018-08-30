@@ -17,10 +17,10 @@ from afpa_meca.business_application import VehicleConfig
 class Home(TemplateView):
     template_name = 'garage/home.html'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(Home, self).get_context_data(**kwargs)
-    #     context['reparation_order_list'] = ReparationOrder.objects.filter(user_profile=self.request.user)
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super(Home, self).get_context_data(**kwargs)
+        context['reparation_order_list'] = ReparationOrder.objects.filter(user_profile=self.request.user)
+        return context
 
 
 class CustomerCreateView(View):
@@ -350,10 +350,10 @@ class ReparationOrderSelect(ListView):
     model = ReparationOrder
     template_name = "garage/reparation_orders_select.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['reparation_order_list'] = self.get_queryset()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['reparation_order_list'] = self.get_queryset()
+    #     return context
 
 
 class ReparationOrders(ReparationOrderSelect):

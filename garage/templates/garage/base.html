@@ -24,13 +24,13 @@
 			<div class="col-md-4" id="title">
 				<h1>Pôle Mécanique</h1>
 			</div>
-			<div class="col-md-3" id="logout">
-				<div class="container col-md-8" id="logoutBox">
+			<div class="col-md-4" id="logout">
+				
 
-					<img class="mt-2" src="{% static 'garage/img/logo_logout.jpg' %}" width="30" height="30">
+					<img src="{% static 'garage/img/logo_logout.jpg' %}" width="30" height="30">
 					<div class="userConected">Bonjour, {{ user.get_username }}</div>
 					<a href="{% url 'garage:logout' %}" class=" deconection userConected mb-2">Déconnexion</a>
-				</div>
+				
 
 
 			</div>

@@ -96,9 +96,7 @@ class CityForm(forms.ModelForm):
 
 
 class MotorizedForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(MotorizedForm, self).__init__(*args, **kwargs)    
-
+  
     class Meta:
         model = Car
         exclude = ('customer',)
