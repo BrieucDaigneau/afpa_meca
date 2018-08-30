@@ -92,7 +92,7 @@
         if (document.vehicleChecked){
         window.location = "{% url 'garage:vehicle-update' 1 %}".replace(1, document.vehicleChecked)            
     } else {
-        document.getElementById("error").innerHTML = "Veuillez selectionner un véhicule."
+        document.getElementById("error").innerHTML = "Veuillez selectionner un véhicule"
     }       
 }
 </script> 

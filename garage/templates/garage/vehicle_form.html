@@ -135,7 +135,7 @@
         {% block buttons %}
             <div class="row mt-5">
                 <div class="col-md-2">
-                    <a href="javascript:window.history.go(-2);" class="btn btn-primary btn-sm btn-block">Annuler</a>
+                    <a href="javascript:window.history.go(-1);" class="btn btn-primary btn-sm btn-block">Annuler</a>
                 </div>
                 <div class="col-md-4">
                 </div>     
@@ -183,7 +183,6 @@
                 if (document.getElementById("motorbike_radio").checked){
                     document.forms[0].submit()
                 } else if (document.getElementById("bike_radio").checked){
-                    console.log("kikou")
                     document.forms[1].submit()
                 }
             }

@@ -25,7 +25,7 @@
 {% block buttons %}
 <div class="row mt-4">
         <div class="col-md-2">
-            <a href="#" onClick="history.back()" class="btn btn-primary btn-sm btn-block">Annuler</a>
+            <a href="javascript:history.go(-1);" class="btn btn-primary btn-sm btn-block">Annuler</a>
         </div>
         <div class="col-md-8">
         </div>               
@@ -67,16 +67,22 @@
         {% empty %}
         <p>aucune intervention avec ce véhicule.</p>
         {% endfor %}
+        <div id="error"></div>
     </div>
 </div>
 
 {% endblock reparation_order_list %}
 
 {% block myscript %}
-    <script>
-
+    <script>      
+        function redirect() {
+            console.log("ok")
+            if ( window.location.href.indexOf("actualisation") >= 0){
+                window.location = "{% url 'garage:reparation-order-update' 1 %}".replace(1, document.reparation_orderChecked)
+        }
         function submitButton(){
                 document.forms[0].submit() 
         }
+    }
     </script>
 {% endblock myscript %}

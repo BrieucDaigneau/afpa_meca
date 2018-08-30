@@ -70,3 +70,7 @@ h1{
   font-weight: bold;
   color: rgb(26, 95, 151);
 }
+
+#error{
+  color: red;
+}
