@@ -194,9 +194,9 @@ class Supplier(models.Model):
 
 
 class Estimate(models.Model):
-    number          = models.IntegerField(unique=True )
-    date            = models.DateField("Date du devis", blank=False, null=False)
-    signed_img      = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis")  
+    number            = models.IntegerField(unique=True )
+    date              = models.DateField("Date du devis", blank=False, null=False)
+    signed_img        = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis")  
     
     AwaitingInstructor      = "AI"
     InstructorValidation    = "IV"
@@ -213,13 +213,14 @@ class Estimate(models.Model):
         ("AwaitingCustomer", 'AttenteClient'),
         ("CustomerDenial", 'RefusClient'),
     )
-    status          = models.CharField(
+    status            = models.CharField(
         max_length      = 20,
         choices         = Status_choice,
         default         = Status_choice[0],
     )
-    suppliers       = models.ManyToManyField(Supplier, through='Component_Supplier_Estimate', related_name="estimates")
-    components      = models.ManyToManyField(Component, through='Component_Supplier_Estimate', related_name="estimates")
+    suppliers         = models.ManyToManyField(Supplier, through='Component_Supplier_Estimate', related_name="estimates")
+    components        = models.ManyToManyField(Component, through='Component_Supplier_Estimate', related_name="estimates")
+    reparation_order  = models.ForeignKey(ReparationOrder, on_delete=models.CASCADE, related_name="estimate")
 
     class Meta():
         verbose_name_plural = "Devis"
