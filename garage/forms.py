@@ -15,18 +15,6 @@ class CustomerForm(forms.ModelForm):
             'afpa_number': TextInput(attrs={'class': 'form-control'})
         }
 
-
-class PersonalDataUpdateForm(forms.ModelForm):
-    class Meta:
-        model = PersonalData
-        fields = ["mail", "phone_number", "afpa_card_img"]
-        widgets = {
-            'mail': TextInput(attrs={'class': 'form-control'}),
-            'phone_number': TextInput(attrs={'class': 'form-control'}),
-            'afpa_card_img': FileInput(attrs={'class': 'form-control'})
-        }  
-
-
 class PersonalDataForm(forms.ModelForm):
     class Meta:
         model = PersonalData
@@ -36,14 +24,6 @@ class PersonalDataForm(forms.ModelForm):
             'phone_number': TextInput(attrs={'class': 'form-control'}),
             'afpa_card_img': FileInput(attrs={'class': 'form-control'})
         }  
-
-    def clean_mail(self):
-        mail = self.cleaned_data['mail'].lower()
-        r = PersonalData.objects.filter(mail=mail)
-        if r.count():
-            raise  forms.ValidationError("Email existe déjà")
-        return mail
-
 
 class AddressUpdateForm(forms.ModelForm):
     class Meta:
@@ -96,9 +76,6 @@ class CityForm(forms.ModelForm):
 
 
 class MotorizedForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(MotorizedForm, self).__init__(*args, **kwargs)    
-
     class Meta:
         model = Car
         exclude = ('customer',)
