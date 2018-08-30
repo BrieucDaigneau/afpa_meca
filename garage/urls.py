@@ -9,8 +9,7 @@ from . import views
 app_name = 'garage'
 
 urlpatterns = [    
-    url(r'login', LoginView.as_view(redirect_authenticated_user=True, template_name='garage/login.html'),
-        name='login'),
+    
     url(r'logout', LogoutView.as_view(template_name='garage/logout.html'), name='logout'), 
 
     # url(r'^recherche/$', login_required(views.search), name='search'),
