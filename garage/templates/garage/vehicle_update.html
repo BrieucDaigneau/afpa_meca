@@ -53,7 +53,7 @@
         {% for reparation_order in reparation_order_list %}
         <input type="radio" class="btn col-md-1 radio" id="{{reparation_order.id}}" name="reparation_order" onclick='javascript:document.reparation_orderChecked={{reparation_order.id}};' ></input>
     
-        <label for="{{reparation_order.id}}" id="elementListe" class="col-md-12" ondblclick="redirect()">
+        <label for="{{reparation_order.id}}" id="listing" class="col-md-12" ondblclick="redirect()">
             <div class="row ">
                 <div class="col-md-3">{{ reparation_order.vehicle.customer.lastname }} {{ reparation_order.vehicle.customer.firstname }}</div>
                 <div class="col-md-2">{{ reparation_order.vehicle }}</div>
