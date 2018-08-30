@@ -16,7 +16,7 @@
     {% block list %}
  
             <h4 class="col-md-12 mt-5" >
-                <div class="row">
+                <div class="row mb-3">
                     <div class=" col-md-3">Nom</div>
                     <div class=" col-md-3">Prénom</div>
                     <div class="col-md-3">N° AFPA</div>
@@ -51,8 +51,8 @@
                         <a href="{% url 'garage:home' %}" class=" btn btn-sm btn-primary col-md-1" >Annuler</a>
                         <div class="col-md-3"></div>
                         <button class=" btn btn-primary btn-sm col-md-2" onClick="modifier()">Modifier</button>
-                        <div class="col-md-1"></div>
-                        <button class="  btn btn-primary btn-sm col-md-5" onClick="redirect()">Valider et Attribuer un véhicule</button>
+                        <div class="col-md-3"></div>
+                        <button class="  btn btn-primary btn-sm col-md-3" onClick="redirect()">Valider/étape suivante</button>
                     </div>
                 </div>
                   
@@ -68,14 +68,14 @@
         else if (window.location.href.indexOf("selection") >= 0 && document.customerChecked){
             window.location = "{% url 'garage:vehicle-select' 1 %}".replace(1, document.customerChecked)  
         }  else {
-            document.getElementById("error").innerHTML = "veuillez selectionner un client."
+            document.getElementById("error").innerHTML = "Veuillez selectionner un client."
         }        
     }
     function modifier() {
         if (document.customerChecked){
             window.location = "{% url 'garage:customer-update' 1 %}".replace(1, document.customerChecked)      
         } else {
-            document.getElementById("error").innerHTML = "veuillez selectionner un client."
+            document.getElementById("error").innerHTML = "Veuillez selectionner un client."
         }       
     }
 </script>

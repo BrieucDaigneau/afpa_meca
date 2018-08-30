@@ -4,6 +4,7 @@ body {
 
 [class*="col-"] {
   border-radius: 6px;
+  /* border: 1px solid indigo;  */
 }
 
 #btn_ident {
@@ -43,3 +44,24 @@ body {
   background-color: white;
   opacity: 0.85;
 }
+
+.checkmark{
+  text-align: center;
+  border : 3px solid rgb(45, 110, 172);
+
+}
+
+#myhr{
+  margin-top: -11px; 
+  margin-left: -8px; 
+  height: 2px;
+  background-color: rgb(45, 110, 172);
+}
+
+h4, h2{
+  color: steelblue;
+}
+h1{
+  color: rgb(26, 95, 151);
+}
+

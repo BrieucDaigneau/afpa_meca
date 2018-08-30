@@ -66,7 +66,8 @@ class Customer(models.Model):
     def __str__(self):
         return "{0}  {1}  N° AFPA : {2}".format(self.lastname, self.firstname, self.afpa_number)
 
-
+#surcharge du manager django pour le modele vehicle, methodes qui permettent
+# d'agir directement sur le type de vehicule (moto, vélo, ou voiture). 
 class MyManager(models.Manager):
 
     def filter_type(self, dico): # pas d'accés à la bdd
@@ -143,7 +144,7 @@ class UserProfile(models.Model):
 
 
 class ReparationOrder(models.Model):
-    committed_date          = models.DateTimeField("date d'intervention", null=True, blank=False, default=datetime.now )
+    committed_date          = models.DateTimeField("date de reception", null=True, blank=False, default=datetime.now )
     return_date             = models.DateField("Date de restitution prévisionnelle", null=True)
     diagnostic              = models.TextField(max_length=300, null=True)
     to_do_actions           = models.TextField("interventions prévus", max_length=300, null=True)
@@ -163,7 +164,7 @@ class ReparationOrder(models.Model):
     status                  = models.CharField(
         max_length  = 20,
         choices     = Status_choice,
-        default     = Status_choice[0]
+        default     = "AttenteFormateur"
     )
     user_profile            = models.ForeignKey(User, on_delete=models.CASCADE)
     vehicle                 = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name="reparation_order")
