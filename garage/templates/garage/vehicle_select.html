@@ -1,9 +1,9 @@
 {% extends 'garage/vehicles_list.html' %} 
 
 {% block search %}            
-<div class="col-md-4 "></div>
-    <div class="col-md-3 ">
-        <a href="#" onClick="vehicle_create()" class="btn btn-sm btn-primary btn-lg btn-block" >Nouveau</a>
+<div class="col-md-5 "></div>
+    <div class="col-md-2 ">
+        <a href="#" onClick="vehicle_create()" class="btn btn-sm btn-primary btn-sm btn-block" >Nouveau</a>
     </div>
 {% endblock search %} {% block buttons %}
 
@@ -11,12 +11,12 @@
 <div class="container">
     <div class="row mt-5">
         
-        <a href="{% url 'garage:customer-select' %}" class=" btn btn-sm btn-primary col-md-1" onClick="redirect()">Annuler</a>
-        <div class="col-md-3"></div>
-        <button class=" btn btn-primary btn-sm col-md-2" onClick="redirect()">Modifier
+        <a href="{% url 'garage:customer-select' %}" class=" btn btn-sm btn-primary col-md-2" onClick="redirect()">Annuler</a>
+        <div class="col-md-4"></div>
+        <button class=" btn btn-primary btn-sm col-md-2" onClick="modifier()">Modifier
         </button>
-        <div class="col-md-3"></div>
-        <button class="  btn btn-primary btn-sm col-md-3" onClick="redirect()">Valider</button>
+        <div class="col-md-2"></div>
+        <button class="  btn btn-primary btn-sm col-md-2" onClick="redirect()">Valider</button>
     </div>
 </div>
 

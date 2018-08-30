@@ -8,10 +8,10 @@
     <div>
 
         <header class="row">
-            <titre class="col-md-12 mt-5">
-                <h1 id="titre">{% block myTitle %}Ordre de réparation{% endblock myTitle %}</h1> 
+            <div class="col-md-12 mt-5">
+                <h1 id="title">{% block myTitle %}Modification de l'ordre de réparation{% endblock myTitle %}</h1> 
                 <br/>                          
-            </titre>
+            </div>
             
             <formulaire class="col-md-12">
                 <h2>Client :</h2>
@@ -71,22 +71,22 @@
             <h2>Véhicule :</h2>
             <hr>
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label class="control-label">Marque : </label> <br>
                     {{ reparationorder.vehicle.motorized.brand }}
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label class="control-label">Modele : </label><br> 
-                    {{ reparationorder.vehicle.model }}
+                    {{ reparationorder.vehicle.model_name }}
                 </div>
                 
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label class="control-label">Immatriculation : </label><br> 
                     {{ reparationorder.vehicle.motorized.license_plate }}
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label class="control-label">Réceptionnaire : </label><br> 
                     {{ user.get_username }}
                 </div>
@@ -97,35 +97,33 @@
         <form class="" action="" method="post">
             {% csrf_token %}
             <div class="form-group">
-                    <label for="textarea">date de restitution prévisionnelle du véhicule</label>
+                    <label for="textarea" class="control-label">date de restitution prévisionnelle du véhicule</label>
                     <div class="col-md-2">
                         {{form.return_date}}
                     </div>
                 </div>
             <div id="input">
                 <div class="form-group">
-                    <label for="textarea">Description des symptômes du client (si diagnostic) </label>
+                    <label for="textarea" class="control-label">Description des symptômes du client (si diagnostic) </label>
                     <div row="4">{{ form.diagnostic }}</div>
                     <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="textarea">Intervention à réaliser</label>
+                    <label for="textarea" class="control-label">Intervention à réaliser</label>
                     <div row="4">{{ form.to_do_actions }}</div>
                     <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
                 </div>
             </div>
 
             <div class="row mt-4">
-                <div class="col-md-3">
-                    <a href="" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
+                <div class="col-md-2">
+                    <a href="javascript:history.go(-1);" class="btn btn-primary btn-sm btn-block">Annuler</a>
                 </div>
-                <div class="col-md-3">
-                </div>        
-                <div class="col-md-3">
-                </div>        
-                <div class="col-md-3">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Valider</button>
+                <div class="col-md-8">
+                </div>               
+                <div class="col-md-2">
+                    <button class="btn btn-primary btn-sm btn-block" type="submit">Valider</button>
                 </div>
             </div> 
 

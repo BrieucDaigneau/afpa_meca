@@ -61,7 +61,16 @@ body {
 h4, h2{
   color: steelblue;
 }
+
 h1{
   color: rgb(26, 95, 151);
 }
 
+.control-label{
+  font-weight: bold;
+  color: rgb(26, 95, 151);
+}
+
+#error{
+  color: red;
+}

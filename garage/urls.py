@@ -9,8 +9,7 @@ from . import views
 app_name = 'garage'
 
 urlpatterns = [    
-    url(r'login', LoginView.as_view(redirect_authenticated_user=True, template_name='garage/login.html'),
-        name='login'),
+    
     url(r'logout', LogoutView.as_view(template_name='garage/logout.html'), name='logout'), 
 
     # url(r'^recherche/$', login_required(views.search), name='search'),
@@ -23,7 +22,7 @@ urlpatterns = [
     
     path('creation-vehicule/<int:customer_id>/', login_required(views.VehicleCreate.as_view()), name='vehicle-create'),
     path('selection-vehicule/<int:customer_id>/', login_required(views.VehicleSelect.as_view()), name='vehicle-select'),
-    path('consultation-vehicles', login_required(views.Vehicles.as_view()), name='vehicles'),
+    path('consultation-vehicules', login_required(views.Vehicles.as_view()), name='vehicles'),
     path('actualisation-vehicule/<pk>/', login_required(views.VehicleUpdate.as_view()), name='vehicle-update'),
 
     path('creation-intervention/<int:vehicle_id>', login_required(views.ReparationOrderCreateView.as_view()), name='reparation-order-create'),  

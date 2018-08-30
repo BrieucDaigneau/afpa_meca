@@ -8,10 +8,10 @@
     <div>
 
         <header class="row">
-            <titre class="col-md-12">
-                <h1 id="titre">{% block myTitle %}Ordre de réparation{% endblock myTitle %}</h1> 
+            <div class="col-md-12 mt-5">
+                <h1 id="title">{% block myTitle %}Ordre de réparation{% endblock myTitle %}</h1> 
                 <br/>                          
-            </titre>
+            </div>
             
             <div class="col-md-12">
                 <h2>Client :</h2>
@@ -68,7 +68,7 @@
         </header>
         
         <vehicle class="col-md-12">
-            <h3>Véhicule :</h3>
+            <h2>Véhicule :</h2>
             <hr>
             <div class="row">
                 <div class="col-md-2">
@@ -78,7 +78,7 @@
 
                 <div class="col-md-2">
                     <label class="control-label">Modele : </label><br> 
-                    {{ vehicle.model }}
+                    {{ vehicle.model_name }}
                 </div>
                 
                 <div class="col-md-2">
@@ -97,20 +97,20 @@
         <form class="" action="" method="post">
             {% csrf_token %}
             <div class="form-group">
-                    <label for="textarea">date de restitution prévisionnelle du véhicule</label>
+                    <label for="textarea" class="control-label">date de restitution prévisionnelle du véhicule</label>
                     <div class="col-md-2">
                         {{ form.return_date }}
                     </div>
                 </div>
             <div id="input">
                 <div class="form-group">
-                    <label for="textarea">Description des symptômes du client (si diagnostic) </label>
+                    <label for="textarea" class="control-label">Description des symptômes du client (si diagnostic) </label>
                     <div row="4">{{ form.diagnostic }}</div>
                     <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="textarea">Intervention à réaliser</label>
+                    <label for="textarea" class="control-label">Intervention à réaliser</label>
                     <div row="4">{{ form.to_do_actions }}</div>
                     <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
                 </div>
@@ -118,8 +118,8 @@
             <div class="row">
                 <div class="col-md-10">
                 </div>
-                <div class="col-md1-12">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Valider</button>
+                <div class="col-md-2">
+                    <button class="btn btn-primary btn-sm btn-block" type="submit">Valider</button>
                 </div>
             </div>
         </form>

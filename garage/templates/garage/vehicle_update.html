@@ -1,15 +1,16 @@
 {% extends 'garage/vehicle_form.html' %}
 
-{% block title_form %}Actualisation Véhicule{% endblock %}
+{% block title %}Modification Véhicule{% endblock title %}
+{% block title_bike %}Modification Vélo{% endblock title_bike %}
 
 {% block radio %}
 {% endblock radio %}
  
     <!-- {% block vehicle_update %} 
     <div class="col-md-6">
-        <div class="form-group {% if form.model.errors %}has-warning has-feedback{% endif %}">
-            <label for="{{ form.model.id_for_label }}" class="control-label">Modèle</label>
-            {{ form.model }}
+        <div class="form-group {% if form.model_name.errors %}has-warning has-feedback{% endif %}">
+            <label for="{{ form.model_name.id_for_label }}" class="control-label">Modèle</label>
+            {{ form.model_name }}
         </div>
         <div class="invalid-feedback">
             Saisie du prenom est obligatoire
@@ -21,28 +22,26 @@
 
 {% block button_motorised %}{% endblock button_motorised %}
 {% block button_bike %}{% endblock button_bike %}
-{% block button %}
+{% block buttons %}
 <div class="row mt-4">
-        <div class="col-md-3">
-            <a href="#" onClick="history.back()" class="btn btn-primary btn-lg btn-block">Annuler</a>
+        <div class="col-md-2">
+            <a href="javascript:history.go(-1);" class="btn btn-primary btn-sm btn-block">Annuler</a>
         </div>
-        <div class="col-md-3">
-        </div>        
-        <div class="col-md-3">
-        </div>        
-        <div class="col-md-3">
-            <button class="btn btn-primary btn-lg btn-block" onClick="submitButton()" type="submit">Valider</button>
+        <div class="col-md-8">
+        </div>               
+        <div class="col-md-2">
+            <button class="btn btn-primary btn-sm btn-block" onClick="submitButton()" type="submit">Valider</button>
         </div>
 </div> 
-{% endblock button %} 
+{% endblock buttons %} 
 
 {% block reparation_order_list %}
 <div class="row mt-5">
         
         <h4 class="col-md-12" >
             <div class="row">
-                <div class=" col-md-3">client</div>
-                <div class=" col-md-2">véhicule</div>
+                <div class=" col-md-3">Client</div>
+                <div class=" col-md-2">Véhicule</div>
                 <div class="col-md-2">Réceptionnaire</div>
                 <div class="col-md-3">Date de réception</div>
                 <div class="col-md-2">Statut</div>
@@ -68,22 +67,22 @@
         {% empty %}
         <p>aucune intervention avec ce véhicule.</p>
         {% endfor %}
+        <div id="error"></div>
     </div>
 </div>
-<script type="text/javascript">
-            
-    function redirect() {
-            window.location = "{% url 'garage:reparation-order-update' 1 %}".replace(1, document.reparation_orderChecked)
-    }
 
-</script>
 {% endblock reparation_order_list %}
 
 {% block myscript %}
-    <script>
-
+    <script>      
+        function redirect() {
+            console.log("ok")
+            if ( window.location.href.indexOf("actualisation") >= 0){
+                window.location = "{% url 'garage:reparation-order-update' 1 %}".replace(1, document.reparation_orderChecked)
+        }
         function submitButton(){
                 document.forms[0].submit() 
         }
+    }
     </script>
 {% endblock myscript %}
