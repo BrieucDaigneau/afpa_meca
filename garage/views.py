@@ -13,7 +13,6 @@ from .forms import *
 from . import urls
 from afpa_meca.business_application import VehicleConfig
 
-
 class Home(TemplateView):
     template_name = 'garage/home.html'
 
@@ -106,11 +105,10 @@ class CustomerCreateView(View):
 
                             personal_data_form = dictio['personal_data_form'] 
                             if not personal_data_form.is_valid():
-                                modelFormError = "Une erreur interne est apparue sur les données personnelles. Merci de recommencer votre saisie."                  
+                                modelFormError = "Un objet Donnée Personnelle avec ce champ Email existe déjà."
                                 raise ValidationError(modelFormError)
                             else :
                                 data = personal_data_form.save()    
-
 
                                 customer_form = dictio['customer_form'] 
                                 if not customer_form.is_valid():
@@ -151,7 +149,7 @@ class CustomerUpdate(UpdateView):
         zipCode_Form = ZipCodeForm(param, instance=zipCode)
         city_Form = CityForm(param, instance=city)
         address_Form = AddressUpdateForm(param, instance=address)
-        personnalData_Form = PersonalDataUpdateForm(param, instance=personalData)
+        personnalData_Form = PersonalDataForm(param, instance=personalData)
         customer_Form = CustomerForm(param, instance=customer)
     
         return {'zipCode_form': zipCode_Form, 'city_form': city_Form, 
@@ -210,7 +208,7 @@ class CustomerUpdate(UpdateView):
         if 'address_form' not in context:
             context['address_form'] = AddressUpdateForm(instance=address)
         if 'personal_data_form' not in context:
-            context['personal_data_form'] = PersonalDataUpdateForm(instance=personalData)
+            context['personal_data_form'] = PersonalDataForm(instance=personalData)
         if 'personal_data_form' not in context:
             context['personal_data_form'] = CustomerForm(instance=customer)
         return context 
@@ -220,15 +218,10 @@ class CustomerSelect(ListView):
     model = Customer
     template_name = "garage/customer_select.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['customers_list'] = self.get_queryset()
-        return context
-
-
 class Customers(CustomerSelect):
     template_name = "garage/customers.html"
 
+#........................................................
 
 class VehicleCreate(View):
     myTemplate_name = 'garage/vehicle_form.html'
@@ -270,9 +263,7 @@ class VehicleCreate(View):
         vehicle = form.save(commit=False)
         vehicle.customer = customer
         vehicle.save()
-        context = { 'vehicle_id': vehicle.id }
-
-        return redirect("garage:reparation-order-create", context['vehicle_id'])  
+        return redirect("garage:reparation-order-create", vehicle.id)  
 
 
 class VehicleSelect(ListView):
@@ -283,6 +274,7 @@ class VehicleSelect(ListView):
         context = super().get_context_data(**kwargs)
         context['vehicle_list'] = Vehicle.objects.filter_by_user(self.kwargs['customer_id'])
         return context  
+
 
 class Vehicles(ListView):
     model = Vehicle
@@ -302,6 +294,8 @@ class VehicleUpdate(UpdateView):
 
     def get_form_class(self) :
         v = Vehicle.objects.get_child(self.kwargs['pk'])
+
+        #todo : refactor si multi-utilisation
         if isinstance(v, Car) :
             return CarForm   
         if isinstance(v, Motorbike) :
@@ -324,14 +318,11 @@ class ReparationOrderCreateView(CreateView):
     template_name = 'garage/reparation_order.html'    
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('garage:home',
-                                current_app='garage')    
+        return reverse_lazy('garage:home', current_app='garage')    
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(context)
         vehicle = Vehicle.objects.get_child(self.kwargs['vehicle_id'])  
-        print(vehicle)
         context['vehicle'] = vehicle   
         return context
 
@@ -344,30 +335,20 @@ class ReparationOrderCreateView(CreateView):
         reparation_order.save()
         return super().form_valid(form)        
 
-#.......................................
 
 class ReparationOrderSelect(ListView):
     model = ReparationOrder
     template_name = "garage/reparation_orders_select.html"
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['reparation_order_list'] = self.get_queryset()
-    #     return context
-
 
 class ReparationOrders(ReparationOrderSelect):
     template_name = "garage/reparation_orders.html"
     
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     return context
-
-
 
 class ReparationOrderUpdate(UpdateView):
     template_name = 'garage/reparation_order_update.html'   
     success_url = reverse_lazy('garage:reparation_order')
+    # remarque : le projet plante sans le model et form_class 
     model = ReparationOrder
     form_class = ReparationOrderForm
 

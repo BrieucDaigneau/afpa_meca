@@ -25,7 +25,7 @@
             </h4>
  
             
-        {% for customer in customers_list %}
+        {% for customer in object_list %}
             <input type="radio" class="btn col-md-1 radio" id="{{customer.id}}" name="btnCustomer" ondblclick="redirect()" onclick='javascript:document.customerChecked={{customer.id}};' />
         
             <label for="{{customer.id}}" id="listing" class="col-md-12">
