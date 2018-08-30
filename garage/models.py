@@ -91,9 +91,12 @@ class MyManager(models.Manager):
             return Bike
 
     def filter_by_user(self, id_customer):
-        vehicles =  Vehicle.objects.filter(customer=id_customer) 
-        typed_vehicles = [Vehicle.objects.get_child(v.id) for v in vehicles ]
-        return Vehicle.objects.filter_type( typed_vehicles )
+        # many access to base but not to many
+        vehicles =  self.filter(customer=id_customer) 
+        typed_vehicles = [self.get_child(v.id) for v in vehicles ]
+        return self.filter_type( typed_vehicles )
+
+
 
 class Vehicle(models.Model):
     model       = models.CharField("libellé modèle", blank=False, max_length=50)

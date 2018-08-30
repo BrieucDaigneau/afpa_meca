@@ -248,7 +248,6 @@ class VehicleCreate(View):
 
     def post(self, request, **kwargs):
         forms = self.getForm(request)
-        form = forms['form']
 
         if forms['form'].is_valid():
             form = forms['form']
@@ -278,8 +277,7 @@ class VehicleSelect(ListView):
 
 class Vehicles(ListView):
     model = Vehicle
-    def get_template_names(self):
-        return 'garage/vehicles.html'
+    template_name = "garage/vehicles.html"    
 
     def get_context_data(self, **kwargs):    
         context = super().get_context_data(**kwargs)   

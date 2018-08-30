@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\34011-68-11\\AppData\\Local\\Programs\\Python\\Python36-32\\python.exe",
+    "python.pythonPath": "C:\\Users\\34011-68-12\\AppData\\Local\\Programs\\Python\\Python36-32\\python.exe",
     "python.linting.pylintEnabled": false,
     "python.linting.pylintArgs": [
         "--load-plugins=pylint_django"
