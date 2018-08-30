@@ -81,7 +81,7 @@ class MotorizedForm(forms.ModelForm):
         exclude = ('customer',)
         widgets = {
             'brand': TextInput(attrs={'class': 'form-control'}),
-            'model': TextInput(attrs={'class': 'form-control'}),
+            'model_name': TextInput(attrs={'class': 'form-control'}),
             'license_plate': TextInput(attrs={'class': 'form-control'}),
             'vin': TextInput(attrs={'class': 'form-control'}),
             'mileage': NumberInput(attrs={'class': 'form-control'}),
@@ -104,9 +104,9 @@ class MotorbikeForm(MotorizedForm):
 class BikeForm(forms.ModelForm):
     class Meta:
         model = Bike
-        fields = ['model']
+        fields = ['model_name']
         widgets = {
-            'model': TextInput(attrs={'class': 'form-control'}),
+            'model_name': TextInput(attrs={'class': 'form-control'}),
         }
        
 

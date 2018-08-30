@@ -85,17 +85,17 @@
                     <div class="msgError"> {{ internal_error }} </div>     
 
                     <div class="row mt-5">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <a href="{% url 'garage:customer-select' %}" class="btn btn-primary btn-sm btn-block button" id="button">Annuler</a>
                         </div>
+                        <div class="col-md-4"></div>      
                         <div class="col-md-2">
-                        </div>      
-                        <div class="col-md-4">
                             {% block back_home %}   
-                                <button class="btn btn-primary btn-sm btn-block button" type="submit" id="validerAccuiel">Valider et retour Accueil</button>
+                                <button class="btn btn-primary btn-sm btn-block button" type="submit" id="validerAccuiel">Valider/Retour Accueil</button>
                             {% endblock back_home %}    
                         </div> 
-                        <div class="col-md-3">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-2">
                             <button class="btn btn-primary btn-sm btn-block button" type="submit" id="valider">{% block next %}Etape suivante{% endblock next %}</button>
                         </div>
                     </div>   

@@ -44,9 +44,9 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group {% if form.model.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ form.model.id_for_label }}" class="control-label">Modèle</label>
-                                {{ form.model }}
+                            <div class="form-group {% if form.model_name.errors %}has-warning has-feedback{% endif %}">
+                                <label for="{{ form.model_name.id_for_label }}" class="control-label">Modèle</label>
+                                {{ form.model_name }}
                             </div>
                             <div class="invalid-feedback">
                                 La saisie du modèle est obligatoire.
@@ -97,7 +97,7 @@
             
                 <div class="col-md-12">
                     <div class="col-md-12">
-                        <h1 id="title" class="title" >Création nouveau Vélo</h1>
+                        <h1 id="title" class="title" >{% block title_bike %}Création nouveau Vélo{% endblock title_bike %}</h1>
                     </div>     
                 </div>
 
@@ -107,13 +107,13 @@
                         
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group {% if bike_form.model_vehicle.errors %}has-warning has-feedback{% endif %}">
-                                    <label for="{{ bike_form.model_vehicle.id_for_label }}" class="control-label">Modèle</label>
+                                <div class="form-group {% if bike_form.model_name.errors %}has-warning has-feedback{% endif %}">
+                                    <label for="{{ bike_form.model_name.id_for_label }}" class="control-label">Modèle</label>
                                     {% if vehicle_type == "twowheelers" %}
-                                        {{ bike_form.model }}
+                                        {{ bike_form.model_name }}
                                     {% endif %}
                                     {% if vehicle_type == "bike" %}
-                                        {{form.model}}
+                                        {{ form.model_name }}
                                     {% endif %}
                                     
                                 </div>
@@ -132,22 +132,25 @@
 
     <div class="msgError"> {{ internal_error }} </div>  
 
-       
+        {% block buttons %}
             <div class="row mt-5">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <a href="" onClick="history.back()" class="btn btn-primary btn-sm btn-block">Annuler</a>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                 </div>     
-                <div class="col-md-4">   
+                <div class="col-md-2">   
                 {% block back_home %}   
-                                <button class="btn btn-primary btn-sm btn-block" type="submit" id="button">Valider et retour Accueil</button>
+                                <button class="btn btn-primary btn-sm btn-block" type="submit" id="button">Valider/Retour Accueil</button>
                 {% endblock back_home %}
-                </div>        
-                <div class="col-md-3">
+                </div> 
+                <div class="col-md-2">
+                    </div>       
+                <div class="col-md-2">
                     <button class="btn btn-primary btn-sm btn-block" onClick="submitButton()" type="submit">Etape suivante</button>
                 </div>
-            </div>     
+            </div>
+        {% endblock buttons %}     
         
     {% if vehicle_type == "bike" or  vehicle_type == "twowheelers" %}        
         <script>

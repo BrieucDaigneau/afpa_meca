@@ -96,12 +96,12 @@ class MyManager(models.Manager):
         return Vehicle.objects.filter_type( typed_vehicles )
 
 class Vehicle(models.Model):
-    model       = models.CharField("libellé modèle", blank=False, max_length=50)
+    model_name  = models.CharField("libellé modèle", blank=False, max_length=50)
     customer    = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE)
     objects     = MyManager()
 
     def __str__(self):
-        return self.model
+        return self.model_name
     
 
 class Motorized(Vehicle):
@@ -118,7 +118,7 @@ class Motorized(Vehicle):
         verbose_name_plural = "Motorisés"
 
     def __str__(self):
-        return str(self.license_plate) + " " + str(self.model) + " " + str(self.brand)
+        return str(self.license_plate) + " " + str(self.model_name) + " " + str(self.brand)
 
 
 class Car(Motorized):
