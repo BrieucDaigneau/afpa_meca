@@ -347,7 +347,7 @@ class ReparationOrders(ReparationOrderSelect):
 
 class ReparationOrderUpdate(UpdateView):
     template_name = 'garage/reparation_order_update.html'   
-    success_url = reverse_lazy('garage:reparation_order')
+    success_url = reverse_lazy('garage:reparation-orders')
     # remarque : le projet plante sans le model et form_class 
     model = ReparationOrder
     form_class = ReparationOrderForm
