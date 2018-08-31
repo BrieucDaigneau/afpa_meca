@@ -8,6 +8,7 @@ from django.contrib.auth import logout
 from django.db import DatabaseError, transaction
 from django.core.exceptions import ValidationError
 
+
 from .models import *
 from .forms import *
 from . import urls
@@ -217,6 +218,9 @@ class CustomerUpdate(UpdateView):
 class CustomerSelect(ListView):
     model = Customer
     template_name = "garage/customer_select.html"
+
+   
+
 
 class Customers(CustomerSelect):
     template_name = "garage/customers.html"
