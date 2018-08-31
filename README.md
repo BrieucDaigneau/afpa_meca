@@ -1,12 +1,17 @@
 # afpa_meca
 Projet application web Pôle mécanique AFPA
 
+Pre-requis :    
 
-Pre-requis :    -pip install -r requirements.txt pour être à jour au niveau des librairies 
-                -créer database.py dans "afpa_meca/afpa_meca/"
-                -renommer db.sqlite3_test en db.sqlite3 pour avoir une BDD pré-remplie
-                -dans business.application.py, passer la valeur de vehicle à "car" pour créer des voitures ou "bike" pour créer des motos/vélos.
-                -ajouter dans database.py (pour sqlite3): 
+-pip install -r requirements.txt pour être à jour au niveau des librairies 
+
+-créer database.py dans "afpa_meca/afpa_meca/"
+
+-renommer db.sqlite3_test en db.sqlite3 pour avoir une BDD pré-remplie
+
+-dans business.application.py, passer la valeur de vehicle à "car" pour créer des voitures ou "bike" pour créer des motos/vélos.
+
+-ajouter dans database.py (pour sqlite3): 
                 
                                 import os
 
