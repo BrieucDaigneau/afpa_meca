@@ -66,22 +66,21 @@ class Customer(models.Model):
     def __str__(self):
         return "{0}  {1}  N° AFPA : {2}".format(self.lastname, self.firstname, self.afpa_number)
 
-#surcharge du manager django pour le modele vehicle, methodes qui permettent
-# d'agir directement sur le type de vehicule (moto, vélo, ou voiture). 
+# surcharge du manager django pour le modele vehicle
+# Car Bike et Motorbike héritent tous de Vehicle
+# donc vehicle_id == car_id ou bike_id ou motorbike_id
 class MyManager(models.Manager):
 
+# récupère les voitures pour l'app car, et les motos/velos pour l'app bike
+# dans un dico de véhicules passé en paramètre
     def filter_type(self, dico): # pas d'accés à la bdd
         if VehicleConfig['vehicle'] == 'bike':         
             return [ v for v in dico if isinstance(v, Bike) or isinstance(v, Motorbike) ]
         elif VehicleConfig['vehicle'] == 'car':
             return [ v for v in dico if isinstance(v, Car) ]
 
-    def get_child(self, id):
-        return self.get_model( id ).objects.get(pk=id)
-
-    def filter_child(self, id):
-        return self.get_model( id ).objects.filter(pk=id)
-
+# récupère le modèle enfant (voiture/moto/velo) 
+# en fonction de l'id du véhicule passé en paramètre
     def get_model(self, id):
         if Car.objects.filter(pk=id):
             return Car
@@ -90,8 +89,17 @@ class MyManager(models.Manager):
         elif Bike.objects.filter(pk=id):
             return Bike
 
+    def get_child(self, id):
+        return self.get_model( id ).objects.get(pk=id)
+
+    def filter_child(self, id):
+        return self.get_model( id ).objects.filter(pk=id)
+
+# filtre un dico de véhicules par application (car/bike) et par id_client
+# et retourne un dico avec les modèles correspondants (voiture ou velo/moto)
     def filter_by_user(self, id_customer):
         # many access to base but not to many
+        # on suppose qu'un client aurra tout au plus 5 véhicules
         vehicles =  self.filter(customer=id_customer) 
         typed_vehicles = [self.get_child(v.id) for v in vehicles ]
         return self.filter_type( typed_vehicles )
