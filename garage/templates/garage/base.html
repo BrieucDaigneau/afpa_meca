@@ -140,16 +140,11 @@
 					data: { q: request.term },
 					dataType: "json",
 					success: function (data) {
-						var postcodes = [];
 						response($.map(data, function (item) {
-							// Ici on est obligé d'ajouter les CP dans un array pour ne pas avoir plusieurs fois le même
-							if ($.inArray(item.codesPostaux, postcodes) == -1) {
-								postcodes.push(item.codesPostaux);
 								return { label: item.codesPostaux + " - " + item.nom, 
 										nom: item.nom,
 										value: item.codesPostaux
 								};
-							}
 						}));
 					}
 				});
@@ -159,6 +154,7 @@
 				$('#id_city').val(ui.item.nom);
 			}
 		});
+		
 		$("#id_city").autocomplete({
 			source: function (request, response) {
 				$.ajax({ 
@@ -166,16 +162,11 @@
 					data: { q: request.term },
 					dataType: "json",
 					success: function (data) {
-						var cities = [];
 						response($.map(data, function (item) {
-							// Ici on est obligé d'ajouter les villes dans un array pour ne pas avoir plusieurs fois la même
-							if ($.inArray(item.codesPostaux, cities) == -1) {
-								cities.push(item.codesPostaux);
 								return { label: item.codesPostaux + " - " + item.nom, 
 								codesPostaux: item.codesPostaux,
 										value: item.nom
 								};
-							}
 						}));
 					}
 				});
