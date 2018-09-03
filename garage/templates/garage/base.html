@@ -11,6 +11,7 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="{% static 'garage/css/base.css' %}" />
 	<link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
 	<link href={% block css %}{% endblock css %} rel="stylesheet"> 
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.7.3/themes/base/jquery-ui.css">	
 	{% block head %}{% endblock head %}
 </head>
 
@@ -129,7 +130,76 @@
 
 	<script src="{% static 'garage/js/jquery-slim.min.js' %}"></script>
 	<script src="{% static 'garage/js/holder.min.js' %}"></script>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 	<script>
+		$("#id_zip_code").autocomplete({
+			source: function (request, response) {
+				$.ajax({  
+					url: "https://geo.api.gouv.fr/communes?codePostal="+$("input[name='zip_code']").val(),  
+					data: { q: request.term },
+					dataType: "json",
+					success: function (data) {
+						var postcodes = [];
+						response($.map(data, function (item) {
+							// Ici on est obligé d'ajouter les CP dans un array pour ne pas avoir plusieurs fois le même
+							if ($.inArray(item.codesPostaux, postcodes) == -1) {
+								postcodes.push(item.codesPostaux);
+								return { label: item.codesPostaux + " - " + item.nom, 
+										nom: item.nom,
+										value: item.codesPostaux
+								};
+							}
+						}));
+					}
+				});
+			},
+			// On remplit aussi la ville
+			select: function(event, ui) {
+				$('#id_city').val(ui.item.nom);
+			}
+		});
+		$("#id_city").autocomplete({
+			source: function (request, response) {
+				$.ajax({ 
+					url: "https://geo.api.gouv.fr/communes?nom="+$("input[name='city']").val(),                
+					data: { q: request.term },
+					dataType: "json",
+					success: function (data) {
+						var cities = [];
+						response($.map(data, function (item) {
+							// Ici on est obligé d'ajouter les villes dans un array pour ne pas avoir plusieurs fois la même
+							if ($.inArray(item.codesPostaux, cities) == -1) {
+								cities.push(item.codesPostaux);
+								return { label: item.codesPostaux + " - " + item.nom, 
+								codesPostaux: item.codesPostaux,
+										value: item.nom
+								};
+							}
+						}));
+					}
+				});
+			},
+			// On remplit aussi le CP
+			select: function(event, ui) {
+				$('#id_zip_code').val(ui.item.codesPostaux);
+			}
+		});
+		$("#id_street_name").autocomplete({
+			source: function (request, response) {
+				$.ajax({
+					url: "https://api-adresse.data.gouv.fr/search/?postcode="+$("input[name='zip_code']").val(),
+					data: { q: request.term },
+					dataType: "json",
+					success: function (data) {
+						response($.map(data.features, function (item) {
+							return { label: item.properties.name, value: item.properties.name};
+						}));
+					}
+				});
+			}
+		});
+
 		$(document).ready(function () {
 			$("#navbar-contenu a").each(function (index) {
 				if (this.href == document.location.href) {

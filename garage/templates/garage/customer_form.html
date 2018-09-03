@@ -57,23 +57,23 @@
                             {{ address_form.street_number }}
                         </div>
                         <div class="col-md-5">
-                            <label for="{{ address_form.street.id_for_label }}" class="control-label">Adresse</label>
-                            {{ address_form.street }}
+                            <label for="{{ address_form.street_name.id_for_label }}" class="control-label">Adresse</label>
+                            {{ address_form.street_name }}
                         </div>
                         <div class="col-md-4">
-                            <label for="{{ address_form.street_complement.id_for_label }}" class="control-label">Complement d'adresse</label>
-                            {{ address_form.street_complement }}
+                            <label for="{{ address_form.national_reference.id_for_label }}" class="control-label">Complement d'adresse</label>
+                            {{ address_form.national_reference }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <label for="{{ zipCode_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
-                            {{ zipCode_form.zip_code }}
+                            <label for="{{ address_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
+                            {{ address_form.zip_code }}
                         </div>
                     
                         <div class="col-md-4">
-                            <label for="{{ city_form.city_name.id_for_label }}" class="control-label">Ville</label>
-                            {{ city_form.city_name }}
+                            <label for="{{ address_form.city.id_for_label }}" class="control-label">Ville</label>
+                            {{ address_form.city }}
                         </div>
                         <div class="col-md-4">
                             <label for="{{ personal_data_form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img</label>
