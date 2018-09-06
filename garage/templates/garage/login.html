@@ -20,9 +20,9 @@
 
 <body class="text-center mt-5">
   <div class="container img-responsive" id="loginImg">    
-      <img class="mb-5 mt-5" src="{% static 'garage/img/logo_afpa_modifie.png' %}" alt="" width="92" height="92"></img>
-
-      <div class="container col-lg-4 col-sm-5 mt-5" id="loginBox"> 
+    <div class="col-md-12 mb-5"> </div>
+    <div class="container col-lg-4 col-sm-5" id="loginBox"> 
+        <img class="mb-5 mt-3" src="{% static 'garage/img/logo_afpa2.png' %}" alt="" width="140" height="100"></img>
 
         <h1 class="h3 mb-3 font-weight-normal">Connectez vous</h1>
         {% if form.errors %}
@@ -52,7 +52,7 @@
             </div>
           </div>
       </div>
-    <div class="container col-md-3" > 
+      <div class="container col-md-3" > 
         <div class="row mt-2">
           <!-- <input type="submit" value="Connexion" /> -->
           <button class="btn btn-lg btn-primary btn-block" type="submit" value="Connexion">Connexion</button>
@@ -60,7 +60,8 @@
         </div>
         <div class="row">
           <p class="mt-5 mb-3 col-md-12" style="text-shadow: #000000 1px 1px, #000000 -1px 1px, #000000 -1px -1px, #000000 1px -1px; color: white">&copy;Afpa-2018</p>
+        </div>
       </div>
-    </div>
-  </form>
+    </form>
+  </div>
 </html>

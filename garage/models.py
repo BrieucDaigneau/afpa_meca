@@ -157,7 +157,7 @@ class UserProfile(models.Model):
 class ReparationOrder(models.Model):
     committed_date          = models.DateTimeField("date de reception", null=True, blank=False, default=datetime.now )
     return_date             = models.DateField("Date de restitution prévisionnelle", null=True)
-    diagnostic              = models.TextField(max_length=300, null=True)
+    diagnostic              = models.TextField(max_length=300, blank=False, null=True)
     to_do_actions           = models.TextField("interventions prévus", max_length=300, null=True)
     actions_done            = models.BooleanField("intervention réalisée", null=False, default=False)
     

@@ -255,7 +255,7 @@ class VehicleCreate(View):
 
         if forms['form'].is_valid():
             form = forms['form']
-        elif forms['bike_form'].is_valid():
+        elif forms['bike_form'] != "None" and forms['bike_form'].is_valid():
             form = forms['bike_form']
         else:
             return redirect( request, "garage:vehicle-create", self.getForm( request ))  

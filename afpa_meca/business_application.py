@@ -2,6 +2,6 @@
 ##'bike' pour créer des motos/vélos
 
 VehicleConfig = {
-   'vehicle': 'bike'
+   'vehicle': 'car'
 }
 
