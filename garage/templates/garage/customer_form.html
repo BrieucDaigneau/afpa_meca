@@ -51,7 +51,7 @@
                         </div>
                     </div> 
                     
-                    <div class="row">
+                    <div class="row" id="form_address">
                         <div class="col-md-3">
                             <label for="{{ address_form.street_number.id_for_label }}" class="control-label">Numéro de rue</label>
                             {{ address_form.street_number }}
@@ -65,8 +65,8 @@
                             {{ address_form.street_complement }}
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-4">
+                    <div class="row" id="form_address">
+                        <div class="col-md-4" >
                             <label for="{{ zipCode_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
                             {{ zipCode_form.zip_code }}
                         </div>
