@@ -57,23 +57,23 @@
                             {{ address_form.street_number }}
                         </div>
                         <div class="col-md-5">
-                            <label for="{{ address_form.street.id_for_label }}" class="control-label">Adresse</label>
-                            {{ address_form.street }}
+                            <label for="{{ address_form.street_name.id_for_label }}" class="control-label">Adresse</label>
+                            {{ address_form.street_name }}
                         </div>
-                        <div class="col-md-4">
-                            <label for="{{ address_form.street_complement.id_for_label }}" class="control-label">Complement d'adresse</label>
+                        <!-- <div class="col-md-4">
+                         <label for="{{ address_form.street_complement.id_for_label }}" class="control-label">Complement d'adresse</label>
                             {{ address_form.street_complement }}
-                        </div>
+                        </div>    -->
                     </div>
                     <div class="row" id="form_address">
                         <div class="col-md-4" >
-                            <label for="{{ zipCode_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
-                            {{ zipCode_form.zip_code }}
+                            <label for="{{  address_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
+                            {{  address_form.zip_code }}
                         </div>
                     
                         <div class="col-md-4">
-                            <label for="{{ city_form.city_name.id_for_label }}" class="control-label">Ville</label>
-                            {{ city_form.city_name }}
+                            <label for="{{ adress_form.city.id_for_label }}" class="control-label">Ville</label>
+                            {{ address_form.city }}
                         </div>
                         <div class="col-md-4">
                             <label for="{{ personal_data_form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img</label>
@@ -105,6 +105,14 @@
             </div>
 
     </div>
+    
+   
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>axios.defaults.xsrfCookieName = 'csrftoken';
+                axios.defaults.xsrfHeaderName = 'X-CSRFToken';</script>
+        <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+
 
         {% endblock content %}
 
