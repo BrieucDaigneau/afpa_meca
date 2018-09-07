@@ -59,7 +59,7 @@ class PersonalData(models.Model):
 class Customer(models.Model):
     lastname        = models.CharField("Nom Client", max_length=15)
     firstname       = models.CharField("Prenom Client", max_length=15)
-    afpa_number     = models.CharField("Numéro carte AFPA Client", max_length=10, default="extérieur")
+    afpa_number     = models.CharField("Numéro carte AFPA Client", max_length=10, blank=False)
     personal_data   = models.OneToOneField(PersonalData, on_delete=models.CASCADE)
     address         = models.OneToOneField(Address, null=True, on_delete=models.CASCADE, related_name="customer")
 
@@ -161,10 +161,10 @@ class ReparationOrder(models.Model):
     to_do_actions           = models.TextField("interventions prévus", max_length=300, null=True)
     actions_done            = models.BooleanField("intervention réalisée", null=False, default=False)
     
-    AwaitingInstructor   = "AI"
-    InstructorValidation = "IV"
-    InstructorDenial     = "ID"
-    AwaitingEstimate     = "AE"
+    AwaitingInstructor   = "AttenteFormateur"
+    InstructorValidation = "ValidationFormateur"
+    InstructorDenial     = "RefusFormateur"
+    AwaitingEstimate     = "AttenteDevis"
 
     Status_choice           = (
         (AwaitingInstructor, 'AttenteFormateur'),

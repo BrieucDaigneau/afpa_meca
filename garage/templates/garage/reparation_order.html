@@ -7,9 +7,28 @@
 
     <div>
 
-        <header class="row">
+        <header class="row ">
+            {% if reparations_orders %}
+                <p class=" alert col-md-12 mt-5">Attention !! il y à déjà :
+                    {% if nb_AF %}
+                    <br/>- {{nb_AF}} ordres de réparations en attente de validation du formateur
+                    {% endif %}
+                    {% if nb_VF %}
+                    <br/>- {{nb_VF}} ordres de réparations validés par le formateur
+                    {% endif %}
+                    {% if nb_AD %}
+                    <br/>- {{nb_AD}} ordres de réparations en attente de saisie de devis
+                    {% endif %}
+                    {% if nb_RF %}
+                    <br/>- {{nb_RF}} ordres de réparations refusés par le formateur qu'il faut modifier pour resoumettre
+                    {% endif %}
+                    <br/>&nbsp;
+                    <br/>allez dans votre tableau de bord ou dans l'onglet Ordres de réparations
+                    pour modifier les ordres de réparation déjà saisis</p>
+            {% endif %}
+            <div class="col-md-12"></div>
             <div class="col-md-12 mt-5">
-                <h1 id="title">{% block myTitle %}Ordre de réparation{% endblock myTitle %}</h1> 
+                <h1 id="title">{% block myTitle %}Création ordre de réparation{% endblock myTitle %}</h1> 
                 <br/>                          
             </div>
             
