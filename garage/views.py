@@ -379,5 +379,5 @@ def search(request):
     return render(request, 'garage/search.html', context) 
 
 
-
+    
 
