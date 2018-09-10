@@ -156,13 +156,13 @@ class ReparationOrder(models.Model):
     AwaitingInstructor   = "AI"
     InstructorValidation = "IV"
     InstructorDenial     = "ID"
-    AwaitingEstimate     = "AE"
+    AwaitingQuotation     = "AE"
 
     Status_choice           = (
         (AwaitingInstructor, 'AttenteFormateur'),
         (InstructorValidation, 'ValidationFormateur'),
         (InstructorDenial, 'RefusFormateur'),
-        (AwaitingEstimate, 'AttenteDevis'),  
+        (AwaitingQuotation, 'AttenteDevis'),  
     )
     status                  = models.CharField(
         max_length  = 20,
@@ -190,15 +190,15 @@ class Component(models.Model):
 
 class Supplier(models.Model):
     name        = models.CharField("Nom Fournisseur", blank=False, max_length=35)
-    components  = models.ManyToManyField(Component, through='Component_Supplier_Estimate', related_name="suppliers")
+    components  = models.ManyToManyField(Component, through='Component_Supplier_Quotation', related_name="suppliers")
   
     def __str__(self):
         return self.name
 
 
-class Estimate(models.Model):
+class Quotation(models.Model):
     number            = models.IntegerField(unique=True )
-    date              = models.DateField("Date du devis", blank=False, null=False)
+    date              = models.DateField("Date du devis", blank=False, null=False, default=datetime.now)
     signed_img        = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis")  
     
     AwaitingInstructor      = "AI"
@@ -221,9 +221,9 @@ class Estimate(models.Model):
         choices         = Status_choice,
         default         = Status_choice[0],
     )
-    suppliers         = models.ManyToManyField(Supplier, through='Component_Supplier_Estimate', related_name="estimates")
-    components        = models.ManyToManyField(Component, through='Component_Supplier_Estimate', related_name="estimates")
-    reparation_order  = models.ForeignKey(ReparationOrder, on_delete=models.CASCADE, related_name="estimate")
+    suppliers         = models.ManyToManyField(Supplier, through='Component_Supplier_Quotation', related_name="quotations")
+    components        = models.ManyToManyField(Component, through='Component_Supplier_Quotation', related_name="quotations")
+    reparation_order  = models.ForeignKey(ReparationOrder, on_delete=models.CASCADE, related_name="quotation")
 
     class Meta():
         verbose_name_plural = "Devis"
@@ -232,11 +232,11 @@ class Estimate(models.Model):
         return str(self.number)
 
 
-class Component_Supplier_Estimate(models.Model):
+class Component_Supplier_Quotation(models.Model):
     quantity            = models.IntegerField("Quantité de pièces nécessaires", blank=False, null=True, default=1)
     price               = models.IntegerField("Prix Hors Taxes", null=True, blank=False)
-    estimate_supplier   = models.CharField("Numéro du devis fournisseur", max_length=20, null=True, blank=False)
-    estimate            = models.ForeignKey(Estimate, null=True, on_delete=models.CASCADE, related_name="connection")
+    quotation_supplier   = models.CharField("Numéro du devis fournisseur", max_length=20, null=True, blank=False)
+    quotation            = models.ForeignKey(Quotation, null=True, on_delete=models.CASCADE, related_name="connection")
     supplier            = models.ForeignKey(Supplier, null=True, on_delete=models.CASCADE, related_name="connection")
     component           = models.ForeignKey(Component, null=True, on_delete=models.CASCADE, related_name="connection")
 
@@ -245,5 +245,7 @@ class Component_Supplier_Estimate(models.Model):
         verbose_name_plural = "Commandes"
 
     def __str__(self):
-        return str(self.supplier) + " devis n°" +str(self.estimate) + " pièce : " + str(self.component)
+        return str(self.supplier) + " devis n°" +str(self.quotation) + " pièce : " + str(self.component)
 
+
+    

@@ -375,5 +375,11 @@ def search(request):
     return render(request, 'garage/search.html', context) 
 
 
-
-
+class QuotationCreate(CreateView): 
+    model = ReparationOrder
+    Template_name = 'garage/quotation_create.html'
+    
+      
+  
+    
+  
