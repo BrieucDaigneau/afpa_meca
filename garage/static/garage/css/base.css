@@ -69,3 +69,7 @@ footer{
     color: whitesmoke;
     margin-top: 100px;
 }
+
+.mandatory{
+    color: red;
+}

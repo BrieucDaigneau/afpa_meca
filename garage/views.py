@@ -258,7 +258,7 @@ class VehicleCreate(View):
         elif forms['bike_form'] != "None" and forms['bike_form'].is_valid():
             form = forms['bike_form']
         else:
-            return redirect( request, "garage:vehicle-create", self.getForm( request ))  
+            return render( request, self.myTemplate_name, self.getForm( request ))  
 
         customer = Customer.objects.get(pk=self.kwargs['customer_id'])
 
