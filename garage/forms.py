@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea
+from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput
 from django.forms.utils import ErrorList
 
 from .models import *
@@ -120,6 +120,30 @@ class ReparationOrderForm(forms.ModelForm):
             'to_do_actions' : Textarea(attrs={'class': 'form-control'})
         }
 
+class QuotationForm(forms.ModelForm):
+    class Meta:
+        model = Quotation
+        fields =['signed_img','payoff_date']
+        widgets = {
+            'signed_img': FileInput(attrs={'class': 'form-control'}),
+            'payoff_date':  DateInput(attrs={'class': 'form-control','type':'date'}),    
+        }
 
+class SupplierForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = "__all__"
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'nb_quotation': TextInput(attrs={'class': 'form-control'}),
+        }
 
-
+class ComponentForm(forms.ModelForm):
+    class Meta:
+        model = Component
+        exclude = ('suppliers',)
+        widgets = {
+            'reference': TextInput(attrs={'class': 'form-control'}),
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'price': NumberInput(attrs={'class': 'form-control'}),
+        }

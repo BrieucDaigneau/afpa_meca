@@ -389,7 +389,23 @@ def search(request):
 
 
 class QuotationCreate(CreateView): 
-    model = ReparationOrder
+    myTemplate_name = 'garage/quotation_create.html'
+
+    def getForm(self, request):
+        
+        quotation_form = QuotationForm(request.POST)
+        component_form = ComponentForm(request.POST)
+        supplier_form = SupplierForm(request.POST)
+        dico = {
+            'quotation_form': quotation_form,
+            'component_form': component_form,
+            'supplier_form': supplier_form
+        }
+        return dico
+
+
+
+    model = Quotation
     Template_name = 'garage/quotation_create.html'
     
       

@@ -184,10 +184,20 @@ class ReparationOrder(models.Model):
         return str(self.vehicle) + " " + str(self.committed_date) + " " + str(self.user_profile) + " " + str(self.status)
 
 
+class Supplier(models.Model):
+    name         = models.CharField("Nom Fournisseur", max_length=35)
+    nb_quotation = models.CharField("Numéro devis Fournisseur", max_length=15)
+    
+    def __str__(self):
+        return self.name
+
 class Component(models.Model):
     reference   = models.CharField("référence pièce", max_length=20)
     name        = models.CharField("libellé de la pièce", max_length=50)
-    
+    price       = models.FloatField("prix unitaire", null=True)
+    supplier    = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="components")
+
+
     class Meta:
         verbose_name        = "Pièces"
         verbose_name_plural = "Pièces"
@@ -196,18 +206,14 @@ class Component(models.Model):
         return self.name
 
 
-class Supplier(models.Model):
-    name        = models.CharField("Nom Fournisseur", max_length=35)
-    components  = models.ManyToManyField(Component, through='Component_Supplier_Quotation', related_name="suppliers")
-  
-    def __str__(self):
-        return self.name
 
 
 class Quotation(models.Model):
-    number            = models.IntegerField(unique=True )
+    number            = models.CharField(unique=True, max_length=15)
     date              = models.DateField("Date du devis", null=False, default=datetime.now)
-    signed_img        = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis")  
+    signed_img        = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis") 
+    user_profile      = models.ForeignKey(User, on_delete=models.CASCADE)
+    payoff_date       = models.DateField("Date de payement", null=True)
     
     AwaitingInstructor      = "AI"
     InstructorValidation    = "IV"
@@ -229,8 +235,8 @@ class Quotation(models.Model):
         choices         = Status_choice,
         default         = Status_choice[0],
     )
-    suppliers         = models.ManyToManyField(Supplier, through='Component_Supplier_Quotation', related_name="quotations")
-    components        = models.ManyToManyField(Component, through='Component_Supplier_Quotation', related_name="quotations")
+    # suppliers         = models.ManyToManyField(Supplier, related_name="quotations")
+    components        = models.ManyToManyField(Component, related_name="quotations")
     reparation_order  = models.ForeignKey(ReparationOrder, on_delete=models.CASCADE, related_name="quotation")
 
     class Meta():
@@ -240,20 +246,20 @@ class Quotation(models.Model):
         return str(self.number)
 
 
-class Component_Supplier_Quotation(models.Model):
-    quantity            = models.IntegerField("Quantité de pièces nécessaires", null=True, default=1)
-    price               = models.IntegerField("Prix Hors Taxes", null=True)
-    quotation_supplier   = models.CharField("Numéro du devis fournisseur", max_length=20, null=True)
-    quotation            = models.ForeignKey(Quotation, null=True, on_delete=models.CASCADE, related_name="connection")
-    supplier            = models.ForeignKey(Supplier, null=True, on_delete=models.CASCADE, related_name="connection")
-    component           = models.ForeignKey(Component, null=True, on_delete=models.CASCADE, related_name="connection")
+# class Component_Supplier_Quotation(models.Model):
+#     quantity            = models.IntegerField("Quantité de pièces nécessaires", null=True, default=1)
+#     price               = models.IntegerField("Prix Hors Taxes", null=True)
+#     quotation_supplier   = models.CharField("Numéro du devis fournisseur", max_length=20, null=True)
+#     quotation            = models.ForeignKey(Quotation, null=True, on_delete=models.CASCADE, related_name="connection")
+#     supplier            = models.ForeignKey(Supplier, null=True, on_delete=models.CASCADE, related_name="connection")
+#     component           = models.ForeignKey(Component, null=True, on_delete=models.CASCADE, related_name="connection")
 
-    class Meta():
-        verbose_name        = "Commande"
-        verbose_name_plural = "Commandes"
+#     class Meta():
+#         verbose_name        = "Commande"
+#         verbose_name_plural = "Commandes"
 
-    def __str__(self):
-        return str(self.supplier) + " devis n°" +str(self.quotation) + " pièce : " + str(self.component)
+#     def __str__(self):
+#         return str(self.supplier) + " devis n°" +str(self.quotation) + " pièce : " + str(self.component)
 
 
     
