@@ -18,7 +18,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group {% if customer_form.lastname.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ customer_form.lastname.id_for_label }}" class="control-label">Nom</label>
+                                <label for="{{ customer_form.lastname.id_for_label }}" class="control-label">Nom<span class="mandatory"> *</span></div></label>
                                 {{ customer_form.lastname }}
                             </div>
                             <div class="invalid-feedback">
@@ -27,7 +27,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group {% if customer_form.firstname.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ customer_form.firstname.id_for_label }}" class="control-label">Prenom</label>
+                                <label for="{{ customer_form.firstname.id_for_label }}" class="control-label">Prenom<span class="mandatory"> *</span></label>
                                 {{ customer_form.firstname }}
                             </div>
                             <div class="invalid-feedback">
@@ -38,26 +38,36 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="{{ customer_form.afpa_number.id_for_label }}" class="control-label">Numéro carte AFPA</label>
-                            {{ customer_form.afpa_number }}
+                            <div class="row">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="salaried" onclick="hiddenNumber()">
+                                    <label class="form-check-label control-label" for="salaried">Salarié</label>
+                                </div>
+                            </div>
+                            <label id="afpaNumberLabel" class="col-md-6 control-label" for="{{ customer_form.afpa_number.id_for_label }}" class="control-label">Numéro carte AFPA<span class="mandatory"> *</span></label>
+                                <div id="afpaNumberInput" class="col-md-12">
+                                    {{ customer_form.afpa_number }}
+                                </div>
                         </div>
+
                         <div class="col-md-6">
-                            <label for="{{ personal_data_form.phone_number.id_for_label }}" class="control-label">Téléphone</label>
+                            <div class="row"><div>&nbsp;</div></div>
+                            <label for="{{ personal_data_form.phone_number.id_for_label }}" class="control-label">Téléphone<span class="mandatory"> *</span></label>
                             {{ personal_data_form.phone_number }}
                         </div>
                         <div class="col-md-6">
-                            <label for="{{ personal_data_form.mail.id_for_label }}" class="control-label">Email</label>
+                            <label for="{{ personal_data_form.mail.id_for_label }}" class="control-label">Email<span class="mandatory"> *</span></label>
                             {{ personal_data_form.mail }}
                         </div>
                     </div> 
                     
                     <div class="row">
                         <div class="col-md-3">
-                            <label for="{{ address_form.street_number.id_for_label }}" class="control-label">Numéro de rue</label>
+                            <label for="{{ address_form.street_number.id_for_label }}" class="control-label">Numéro de rue<span class="mandatory"> *</span></label>
                             {{ address_form.street_number }}
                         </div>
                         <div class="col-md-5">
-                            <label for="{{ address_form.street.id_for_label }}" class="control-label">Adresse</label>
+                            <label for="{{ address_form.street.id_for_label }}" class="control-label">Adresse<span class="mandatory"> *</span></label>
                             {{ address_form.street }}
                         </div>
                         <div class="col-md-4">
@@ -67,16 +77,16 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <label for="{{ zipCode_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
+                            <label for="{{ zipCode_form.zip_code.id_for_label }}" class="control-label">Code Postal<span class="mandatory"> *</span></label>
                             {{ zipCode_form.zip_code }}
                         </div>
                     
                         <div class="col-md-4">
-                            <label for="{{ city_form.city_name.id_for_label }}" class="control-label">Ville</label>
+                            <label for="{{ city_form.city_name.id_for_label }}" class="control-label">Ville<span class="mandatory"> *</span></label>
                             {{ city_form.city_name }}
                         </div>
                         <div class="col-md-4">
-                            <label for="{{ personal_data_form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img</label>
+                            <label for="{{ personal_data_form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img<span class="mandatory"> *</span></label>
                             {{ personal_data_form.afpa_card_img }}
                         </div>
                     </div>
@@ -105,6 +115,19 @@
             </div>
 
     </div>
+    <script>
+        function hiddenNumber(){
+            if (document.getElementById("salaried").checked == true){
+                document.getElementById("id_afpa_number").value = "Salarié"
+                document.getElementById("afpaNumberLabel").style.display = "none";
+                document.getElementById("afpaNumberInput").style.display = "none";
+            } else if (document.getElementById("salaried").checked == false){
+                document.getElementById("id_afpa_number").value = ""
+                document.getElementById("afpaNumberLabel").style.display = "block";
+                document.getElementById("afpaNumberInput").style.display = "block";
+            }
+        }
+    </script>
 
         {% endblock content %}
 

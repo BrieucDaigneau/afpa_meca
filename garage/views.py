@@ -8,6 +8,7 @@ from django.contrib.auth import logout
 from django.db import DatabaseError, transaction
 from django.core.exceptions import ValidationError
 
+
 from .models import *
 from .forms import *
 from . import urls
@@ -218,6 +219,9 @@ class CustomerSelect(ListView):
     model = Customer
     template_name = "garage/customer_select.html"
 
+   
+
+
 class Customers(CustomerSelect):
     template_name = "garage/customers.html"
 
@@ -251,10 +255,10 @@ class VehicleCreate(View):
 
         if forms['form'].is_valid():
             form = forms['form']
-        elif forms['bike_form'].is_valid():
+        elif forms['bike_form'] != "None" and forms['bike_form'].is_valid():
             form = forms['bike_form']
         else:
-            return redirect( request, "garage:vehicle-create", self.getForm( request ))  
+            return render( request, self.myTemplate_name, self.getForm( request ))  
 
         customer = Customer.objects.get(pk=self.kwargs['customer_id'])
 
@@ -320,6 +324,15 @@ class ReparationOrderCreateView(CreateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        reparations_orders = ReparationOrder.objects.filter(vehicle=self.kwargs['vehicle_id'])
+        context['reparations_orders'] = reparations_orders
+        if reparations_orders:
+            context['nb_AF'] = len(reparations_orders.filter(status="AttenteFormateur"))
+            context['nb_VF'] = len(reparations_orders.filter(status="ValidationFormateur"))
+            context['nb_RF'] = len(reparations_orders.filter(status="RefusFormateur"))
+            context['nb_AD'] = len(reparations_orders.filter(status="AttenteDevis"))
+
         vehicle = Vehicle.objects.get_child(self.kwargs['vehicle_id'])  
         context['vehicle'] = vehicle   
         return context
