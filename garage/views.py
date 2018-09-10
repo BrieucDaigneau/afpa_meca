@@ -25,7 +25,7 @@ class Home(TemplateView):
 
 class CustomerCreateView(View):
     def getForm(self, request):
-        zipCode_form = ZipCodeForm(request.POST or None)
+        zipCode_form = ZipCodeForm(request.POST or None) 
         city_form = CityForm(request.POST or None)
         address_form = AddressForm(request.POST or None)    
         customer_form = CustomerForm(request.POST or None)   
