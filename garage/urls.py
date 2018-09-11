@@ -15,23 +15,23 @@ urlpatterns = [
     # url(r'^recherche/$', login_required(views.search), name='search'),
     path('accueil/', login_required(views.Home.as_view()), name='home'),
 
-    path('creation-client', login_required(views.CustomerCreateView.as_view()), name='customer-create'),   
+    path('creation-client/', login_required(views.CustomerCreateView.as_view()), name='customer-create'),   
     path('selection-client/', login_required(views.CustomerSelect.as_view()), name='customer-select'),
-    path('consultation-clients', login_required(views.Customers.as_view()), name='customers'),
+    path('consultation-clients/', login_required(views.Customers.as_view()), name='customers'),
     path('actualisation-client/<pk>/', login_required(views.CustomerUpdate.as_view()), name='customer-update'),  
     
     path('creation-vehicule/<int:customer_id>/', login_required(views.VehicleCreate.as_view()), name='vehicle-create'),
     path('selection-vehicule/<int:customer_id>/', login_required(views.VehicleSelect.as_view()), name='vehicle-select'),
-    path('consultation-vehicules', login_required(views.Vehicles.as_view()), name='vehicles'),
+    path('consultation-vehicules/', login_required(views.Vehicles.as_view()), name='vehicles'),
     path('actualisation-vehicule/<pk>/', login_required(views.VehicleUpdate.as_view()), name='vehicle-update'),
 
-    path('creation-intervention/<int:vehicle_id>', login_required(views.ReparationOrderCreateView.as_view()), name='reparation-order-create'),  
-    path('consultation-interventions', login_required(views.ReparationOrders.as_view()), name='reparation-orders'),
+    path('creation-intervention/<int:vehicle_id>/', login_required(views.ReparationOrderCreateView.as_view()), name='reparation-order-create'),  
+    path('consultation-interventions/', login_required(views.ReparationOrders.as_view()), name='reparation-orders'),
     path('actualisation-intervention/<pk>/', login_required(views.ReparationOrderUpdate.as_view()), name='reparation-order-update'),  
     
-    path('creation-devis/<int:reparation_orders_id>', login_required(views.QuotationCreate.as_view()), name='quotation-create'),    
+    path('creation-devis/<int:reparation_orders_id>/', login_required(views.QuotationCreate.as_view()), name='quotation-create'),    
     
-    path('car_condition', login_required(views.car_condition), name='car_condition'),  
+    path('car_condition/', login_required(views.car_condition), name='car_condition'),  
 ]
 
 

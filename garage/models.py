@@ -161,16 +161,11 @@ class ReparationOrder(models.Model):
     to_do_actions           = models.TextField("interventions prévus", max_length=300, null=True)
     actions_done            = models.BooleanField("intervention réalisée", null=False, default=False)
     
-    AwaitingInstructor   = "AttenteFormateur"
-    InstructorValidation = "ValidationFormateur"
-    InstructorDenial     = "RefusFormateur"
-    AwaitingQuotation     = "AttenteDevis"
-
     Status_choice           = (
-        (AwaitingInstructor, 'AttenteFormateur'),
-        (InstructorValidation, 'ValidationFormateur'),
-        (InstructorDenial, 'RefusFormateur'),
-        (AwaitingQuotation, 'AttenteDevis'),  
+        ( "AttenteFormateur"    , 'AttenteFormateur'),
+        ( "ValidationFormateur" , 'ValidationFormateur'),
+        ("RefusFormateur"       , 'RefusFormateur'),
+        ("AttenteDevis"         , 'AttenteDevis'),  
     )
     status                  = models.CharField(
         max_length  = 20,
@@ -205,36 +200,41 @@ class Component(models.Model):
     def __str__(self):
         return self.name
 
-
+class Quantity(models.Model):
+    quantity     = models.IntegerField("quantité pièce", max_length=3)
 
 
 class Quotation(models.Model):
     number            = models.CharField(unique=True, max_length=15)
     date              = models.DateField("Date du devis", null=False, default=datetime.now)
-    signed_img        = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis") 
+    signed_img        = models.ImageField("Scan du devis signé", null=True, upload_to ="img/devis") 
     user_profile      = models.ForeignKey(User, on_delete=models.CASCADE)
-    payoff_date       = models.DateField("Date de payement", null=True)
+    payoff_date       = models.DateField("Date de paiement", null=True)
     
-    AwaitingInstructor      = "AI"
-    InstructorValidation    = "IV"
-    InstructorDenial        = "ID"
-    CustomerDenial          = "CD"
-    ApprovalCustomer        = "ApC"
-    AwaitingCustomer        = "AwC"
+    payoff_choice = (
+        ("Chèques", 'Chèques'),
+        ("Espèces", 'Espèces'),
+    )
+    payoff_type       = models.CharField(
+        max_length      = 7,
+        choices         = payoff_choice,
+        default         = payoff_choice[0],
+    )
     
     Status_choice   = (
-        ("AwaitingInstructor", 'AttenteFormateur'),
-        ("InstructorValidation", 'ValidationFormateur'),
-        ("InstructorDenial", 'RefusFormateur'),
-        ("ApprovalCustomer",'ValidationClient'),
-        ("AwaitingCustomer", 'AttenteClient'),
-        ("CustomerDenial", 'RefusClient'),
+        ("AttenteFormateur", 'AttenteFormateur'),
+        ("ValidationFormateur", 'ValidationFormateur'),
+        ("RefusFormateur", 'RefusFormateur'),
+        ("ValidationClient",'ValidationClient'),
+        ("AttenteClient", 'AttenteClient'),
+        ("RefusClient", 'RefusClient'),
     )
     status            = models.CharField(
         max_length      = 20,
         choices         = Status_choice,
         default         = Status_choice[0],
     )
+
     # suppliers         = models.ManyToManyField(Supplier, related_name="quotations")
     components        = models.ManyToManyField(Component, related_name="quotations")
     reparation_order  = models.ForeignKey(ReparationOrder, on_delete=models.CASCADE, related_name="quotation")

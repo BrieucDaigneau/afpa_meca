@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput
+from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput, Select
 from django.forms.utils import ErrorList
 
 from .models import *
@@ -123,10 +123,11 @@ class ReparationOrderForm(forms.ModelForm):
 class QuotationForm(forms.ModelForm):
     class Meta:
         model = Quotation
-        fields =['signed_img','payoff_date']
+        fields =['signed_img', 'payoff_date', 'payoff_type']
         widgets = {
             'signed_img': FileInput(attrs={'class': 'form-control'}),
-            'payoff_date':  DateInput(attrs={'class': 'form-control','type':'date'}),    
+            'payoff_date':  DateInput(attrs={'class': 'form-control','type':'date'}), 
+            'payoff_type': Select(attrs={'class': 'custom-select'}),
         }
 
 class SupplierForm(forms.ModelForm):
@@ -141,9 +142,18 @@ class SupplierForm(forms.ModelForm):
 class ComponentForm(forms.ModelForm):
     class Meta:
         model = Component
-        exclude = ('suppliers',)
+        exclude = ('supplier',)
         widgets = {
             'reference': TextInput(attrs={'class': 'form-control'}),
             'name': TextInput(attrs={'class': 'form-control'}),
             'price': NumberInput(attrs={'class': 'form-control'}),
+
+        }
+
+class QuantityForm(forms.ModelForm):
+    class Meta:
+        model = Quantity
+        fields = "__all__"
+        widgets = {
+            'quantity': NumberInput(attrs={'class': 'form-control'}),
         }

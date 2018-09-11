@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
 from django.db import DatabaseError, transaction
 from django.core.exceptions import ValidationError
-
+from django.db.models import Max
 
 from .models import *
 from .forms import *
@@ -39,7 +39,7 @@ class CustomerCreateView(View):
         }
     
     def get(self, request):
-        myTemplate_name = 'garage/customer_form.html'
+        myTemplate_name = 'garage/customer_form.html' 
         return render(request, myTemplate_name, self.getForm( request ) )
 
     @transaction.atomic
@@ -388,7 +388,7 @@ def search(request):
     return render(request, 'garage/search.html', context) 
 
 
-class QuotationCreate(CreateView): 
+class QuotationCreate(View): 
     myTemplate_name = 'garage/quotation_create.html'
 
     def getForm(self, request):
@@ -396,17 +396,56 @@ class QuotationCreate(CreateView):
         quotation_form = QuotationForm(request.POST)
         component_form = ComponentForm(request.POST)
         supplier_form = SupplierForm(request.POST)
+        quantity_form = QuantityForm(request.POST)
         dico = {
             'quotation_form': quotation_form,
             'component_form': component_form,
-            'supplier_form': supplier_form
+            'supplier_form': supplier_form,
+            'quantity_form': quantity_form,
         }
         return dico
 
+    def get(self, request, **kwargs):
+        return render(request, self.myTemplate_name, self.getForm( request ) )
+
+    def post(self, request, **kwargs):
+        forms = self.getForm(request)
+
+        if forms['component_form'].is_valid() and forms['supplier_form'].is_valid() and forms['quantity_form'].is_valid():
+                        
+            quotation = forms['quotation_form']
+            component = forms['component_form'].save(commit=False)
+            supplier = forms['supplier_form'].save()  
+            quantity = forms['quantity_form'].save()
+
+            component.supplier = supplier
+            component.save()
+            
+            quotation_id_max = list(Quotation.objects.all().aggregate(Max('id')).values())[0]
+            quotation_id_max = quotation_id_max if quotation_id_max is not None else 0
+
+            quotation.number = "D" + str(quotation_id_max + 1 )
+            quotation.user_profile = self.request.user
+            quotation.components = component
+            quotation.reparation_order = ReparationOrder.objects.get(pk=self.kwargs['reparation_orders_id'])
+            quotation.save()
+
+            return redirect('garage:home')
+        
+        else : 
+            return render(request, 'garage/quotation_create.html', self.getForm(request))
 
 
-    model = Quotation
-    Template_name = 'garage/quotation_create.html'
+    def get_context_data(self, **kwargs):
+        context = super(QuotationCreate, self).get_context_data(**kwargs)
+        context['reparation_order'] = ReparationOrder.object.get(pk=self.kwargs['reparation_orders_id'])
+        print("#######################", context)
+        return context
+
+
+
+
+   
     
       
   
