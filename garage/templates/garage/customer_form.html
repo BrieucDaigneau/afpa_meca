@@ -60,21 +60,44 @@
                             <label for="{{ address_form.street_name.id_for_label }}" class="control-label">Adresse</label>
                             {{ address_form.street_name }}
                         </div>
-                        <!-- <div class="col-md-4">
-                         <label for="{{ address_form.street_complement.id_for_label }}" class="control-label">Complement d'adresse</label>
-                            {{ address_form.street_complement }}
-                        </div>    -->
-                    </div>
-                    <div class="row" id="form_address">
-                        <div class="col-md-4" >
-                            <label for="{{  address_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
-                            {{  address_form.zip_code }}
-                        </div>
-                    
+                        
                         <div class="col-md-4">
-                            <label for="{{ adress_form.city.id_for_label }}" class="control-label">Ville</label>
-                            {{ address_form.city }}
+                            <label for="{{ address_form.city_zip_code.id_for_label }}" class="control-label">Ville ou Code postal</label>
+                            {{ address_form.city_zip_code }}
+                        <div class="panel-footer" v-if="citiesZipCodesList.length">
+                            <ul class="list-group">
+                            <li class="list-group-item" v-for="cityZip in citiesZipCodesList" @click="selectedCityZip(cityZip)">
+                                    [[ cityZip[0] ]] ([[ cityZip[1] ]])
+                            </li>
+                        </ul>
+                    </div> 
+                    <!-- <div class="col-md-4" >
+                        <label for="{{  address_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
+                        {{  address_form.zip_code }}
+                    </div>
+                
+                    <div class="col-md-4">
+                        <label for="{{ adress_form.city.id_for_label }}" class="control-label">Ville</label>
+                        {{ address_form.city }}
+                    </div> -->
+                    
+                    
                         </div>
+                    </div>
+                    <div class="input-group mb-3 mt-3">
+                            {{ address_form.address }} 
+                            <div class="panel-footer" v-if="addressesList.length">
+                                <ul class="list-group">
+                                <li class="list-group-item" v-for="address in addressesList" @click="selectedAddress(address)">
+                                        [[ address.properties.label ]] 
+                                </li>
+                                </ul>
+                            </div>
+                        </div>
+                
+                        <div>{{ form.json_hidden }}</div>
+                    
+                    
                         <div class="col-md-4">
                             <label for="{{ personal_data_form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img</label>
                             {{ personal_data_form.afpa_card_img }}
@@ -107,13 +130,14 @@
     </div>
     
    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
+        <script type="text/javascript" src="{% static 'garage/js/vue.js' %}"></script>
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script>axios.defaults.xsrfCookieName = 'csrftoken';
-                axios.defaults.xsrfHeaderName = 'X-CSRFToken';</script>
-        <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+            axios.defaults.xsrfHeaderName = 'X-CSRFToken';</script>
+            <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+            <script type="text/javascript" src="{% static 'garage/js/adress.js' %}"></script>
 
 
-        {% endblock content %}
+{% endblock content %}
 
     

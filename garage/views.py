@@ -88,47 +88,47 @@ class CustomerCreateView(View):
                 #             raise                                
 
 
-                        address_form = dictio['address_form']                       
-                        if not address_form.is_valid():                         
-                            modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
+                address_form = dictio['address_form']                       
+                if not address_form.is_valid():                         
+                    modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
+                    raise ValidationError(modelFormError)
+                else :
+                    try:
+                        # address = address_form.save(commit=False)
+                        # address.zipCode = zipCode
+                        # address.city = city
+                        address = address_form.save()
+                        address.save()
+
+                    except DatabaseError:   
+                        modelFormError = "Problème de connexion à la base de données"                  
+                        raise                                
+
+
+                    personal_data_form = dictio['personal_data_form'] 
+                    if not personal_data_form.is_valid():
+                        modelFormError = "Un objet Donnée Personnelle avec ce champ Email existe déjà."
+                        raise ValidationError(modelFormError)
+                    else :
+                        data = personal_data_form.save()    
+
+                        customer_form = dictio['customer_form'] 
+                        if not customer_form.is_valid():
+                            modelFormError = "Une erreur interne est apparue sur les données customers. Merci de recommencer votre saisie."                  
                             raise ValidationError(modelFormError)
                         else :
                             try:
-                                # address = address_form.save(commit=False)
-                                # address.zipCode = zipCode
-                                # address.city = city
-                                address = address_form.save()
-                                address.save()
+                                customer = customer_form.save(commit=False)
+                                customer.personal_data = data
+                                customer.address = address
+                                customer.save()   
+                                context = {'customer_id':customer.id}
 
                             except DatabaseError:   
-                                modelFormError = "Problème de connexion à la base de données"                  
-                                raise                                
-
-
-                            personal_data_form = dictio['personal_data_form'] 
-                            if not personal_data_form.is_valid():
-                                modelFormError = "Un objet Donnée Personnelle avec ce champ Email existe déjà."
-                                raise ValidationError(modelFormError)
-                            else :
-                                data = personal_data_form.save()    
-
-                                customer_form = dictio['customer_form'] 
-                                if not customer_form.is_valid():
-                                    modelFormError = "Une erreur interne est apparue sur les données customers. Merci de recommencer votre saisie."                  
-                                    raise ValidationError(modelFormError)
-                                else :
-                                    try:
-                                        customer = customer_form.save(commit=False)
-                                        customer.personal_data = data
-                                        customer.address = address
-                                        customer.save()   
-                                        context = {'customer_id':customer.id}
-
-                                    except DatabaseError:   
-                                        modelFormError = "Problème de connexion à la base de données "                  
-                                        raise 
-                                    
-                                    return redirect("garage:vehicle-create", context['customer_id'])
+                                modelFormError = "Problème de connexion à la base de données "                  
+                                raise 
+                            
+                            return redirect("garage:vehicle-create", context['customer_id'])
 
         except (ValidationError, DatabaseError):
             dictioError = self.getForm( request )

@@ -25,25 +25,33 @@ class PersonalDataForm(forms.ModelForm):
             'afpa_card_img': FileInput(attrs={'class': 'form-control'})
         }  
 class AddressForm(forms.ModelForm):
+    
     class Meta:
         model = Address
-        fields = ["city","zip_code", "street_name","street_number","national_reference"]
+        fields = ["city","zip_code", "street_name","street_number"]
         widgets = {
             'city': TextInput(attrs={'class': 'form-control'}),
             'zip_code': TextInput(attrs={'class': 'form-control'}),
             'street_name': TextInput(attrs={'class': 'form-control'}),
             'street_number': NumberInput(attrs={'class': 'form-control'}),
-            'national_reference': TextInput(attrs={'class': 'form-control'})
         }
 
-        city_zip_code = forms.CharField(widget=TextInput(attrs={'class': 'form-control require-input', 
-                                                            'v-model': 'cityZipCode', 'autocomplete': 'off'}),
-                                    label="Ville ou Code Postal", required=True)
+    city_zip_code = forms.CharField(widget=TextInput(attrs={'class': 'form-control require-input', 
+                                                        'v-model': 'cityZipCode', 'autocomplete': 'off'}),
+                                label="Ville ou Code Postal", required=True)
 
-        address = forms.CharField(widget=TextInput(attrs={'class': 'form-control require-input', 
-                                                            'v-model': 'address', 'autocomplete': 'off'}),
-                            label="Adresse", required=True)
-        json_hidden = forms.CharField(widget=forms.HiddenInput(attrs={'v-model': 'addressJSON'}))
+    address = forms.CharField(widget=TextInput(attrs={'class': 'form-control require-input', 
+                                                        'v-model': 'address', 'autocomplete': 'off'}),
+                        label="Adresse", required=True)
+
+    json_hidden = forms.CharField(widget=forms.HiddenInput(attrs={'v-model': 'addressJSON'}))
+
+    def clean(self):
+        json = self.cleaned_data.get('json_hidden')
+        if not json:
+            raise forms.ValidationError("Veuillez sélectionner une adresse")
+        return self.cleaned_data
+
 
 class AddressUpdateForm(AddressForm):
     class Meta(AddressForm.Meta) :

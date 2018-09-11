@@ -42,6 +42,7 @@ new Vue ({
                         city = response.data[key].nom
                         zipCode = app.cityZipCode
                         app.citiesZipCodesList.push([city, zipCode])
+                        
                       }
                     }
                 }, 500)
