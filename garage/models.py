@@ -189,9 +189,9 @@ class Supplier(models.Model):
 class Component(models.Model):
     reference   = models.CharField("référence pièce", max_length=20)
     name        = models.CharField("libellé de la pièce", max_length=50)
-    price       = models.FloatField("prix unitaire", null=True)
+    price       = models.FloatField("prix unitaire")
     supplier    = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="components")
-
+    quotations   = models.ManyToManyField('Quotation', through='QuotationLine', related_name='components')
 
     class Meta:
         verbose_name        = "Pièces"
@@ -200,44 +200,25 @@ class Component(models.Model):
     def __str__(self):
         return self.name
 
-class Quantity(models.Model):
-    quantity     = models.IntegerField("quantité pièce", max_length=3)
-
 
 class Quotation(models.Model):
+    payoff_choice   = ( ("Chèques", 'Chèques'), ("Espèces", 'Espèces'), )
+    Status_choice   = ( ("AttenteFormateur", 'AttenteFormateur'), ("ValidationFormateur", 'ValidationFormateur'),
+                        ("RefusFormateur", 'RefusFormateur'), ("ValidationClient",'ValidationClient'),
+                        ("AttenteClient", 'AttenteClient'), ("RefusClient", 'RefusClient'), )
+
     number            = models.CharField(unique=True, max_length=15)
     date              = models.DateField("Date du devis", null=False, default=datetime.now)
     signed_img        = models.ImageField("Scan du devis signé", null=True, upload_to ="img/devis") 
-    user_profile      = models.ForeignKey(User, on_delete=models.CASCADE)
     payoff_date       = models.DateField("Date de paiement", null=True)
+    payoff_type       = models.CharField(max_length=7, choices=payoff_choice, default=payoff_choice[0],)
+    status            = models.CharField( max_length=20,choices=Status_choice,default=Status_choice[0],)
+    amount            = models.FloatField("Total TTC")
     
-    payoff_choice = (
-        ("Chèques", 'Chèques'),
-        ("Espèces", 'Espèces'),
-    )
-    payoff_type       = models.CharField(
-        max_length      = 7,
-        choices         = payoff_choice,
-        default         = payoff_choice[0],
-    )
-    
-    Status_choice   = (
-        ("AttenteFormateur", 'AttenteFormateur'),
-        ("ValidationFormateur", 'ValidationFormateur'),
-        ("RefusFormateur", 'RefusFormateur'),
-        ("ValidationClient",'ValidationClient'),
-        ("AttenteClient", 'AttenteClient'),
-        ("RefusClient", 'RefusClient'),
-    )
-    status            = models.CharField(
-        max_length      = 20,
-        choices         = Status_choice,
-        default         = Status_choice[0],
-    )
-
-    # suppliers         = models.ManyToManyField(Supplier, related_name="quotations")
-    components        = models.ManyToManyField(Component, related_name="quotations")
+    user_profile      = models.ForeignKey(User, on_delete=models.CASCADE)
     reparation_order  = models.ForeignKey(ReparationOrder, on_delete=models.CASCADE, related_name="quotation")
+    # suppliers         = models.ManyToManyField(Supplier, related_name="quotations")
+
 
     class Meta():
         verbose_name_plural = "Devis"
@@ -245,6 +226,11 @@ class Quotation(models.Model):
     def __str__(self):
         return str(self.number)
 
+class QuotationLine(models.Model):
+    quantity     = models.IntegerField("quantité pièce")
+    component = models.ForeignKey(Component, related_name='line', on_delete=models.DO_NOTHING,)
+    qotation  = models.ForeignKey(Quotation, related_name='line', on_delete=models.DO_NOTHING,)
+    
 
 # class Component_Supplier_Quotation(models.Model):
 #     quantity            = models.IntegerField("Quantité de pièces nécessaires", null=True, default=1)
@@ -254,12 +240,12 @@ class Quotation(models.Model):
 #     supplier            = models.ForeignKey(Supplier, null=True, on_delete=models.CASCADE, related_name="connection")
 #     component           = models.ForeignKey(Component, null=True, on_delete=models.CASCADE, related_name="connection")
 
-#     class Meta():
-#         verbose_name        = "Commande"
-#         verbose_name_plural = "Commandes"
+    # class Meta():
+    #     verbose_name        = "Commande"
+    #     verbose_name_plural = "Commandes"
 
-#     def __str__(self):
-#         return str(self.supplier) + " devis n°" +str(self.quotation) + " pièce : " + str(self.component)
+    # def __str__(self):
+    #     return str(self.supplier) + " devis n°" +str(self.quotation) + " pièce : " + str(self.component)
 
 
     

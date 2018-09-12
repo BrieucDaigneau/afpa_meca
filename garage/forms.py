@@ -120,40 +120,58 @@ class ReparationOrderForm(forms.ModelForm):
             'to_do_actions' : Textarea(attrs={'class': 'form-control'})
         }
 
-class QuotationForm(forms.ModelForm):
-    class Meta:
-        model = Quotation
-        fields =['signed_img', 'payoff_date', 'payoff_type']
-        widgets = {
-            'signed_img': FileInput(attrs={'class': 'form-control'}),
-            'payoff_date':  DateInput(attrs={'class': 'form-control','type':'date'}), 
-            'payoff_type': Select(attrs={'class': 'custom-select'}),
-        }
 
-class SupplierForm(forms.ModelForm):
-    class Meta:
-        model = Supplier
-        fields = "__all__"
-        widgets = {
-            'name': TextInput(attrs={'class': 'form-control'}),
-            'nb_quotation': TextInput(attrs={'class': 'form-control'}),
-        }
+class ComponentForm(forms.Form):
+    
+    reference   = forms.CharField()
+    name        = forms.CharField()
+    price       = forms.FloatField()
+    quantity    = forms.IntegerField()
+              
+    reference.widget.attrs.update({'class': 'form-control'})
+    name.widget.attrs.update({'class': 'form-control'})
+    price.widget.attrs.update({'class': 'form-control'})
+    quantity.widget.attrs.update({'class': 'form-control'})
+        
 
-class ComponentForm(forms.ModelForm):
-    class Meta:
-        model = Component
-        exclude = ('supplier',)
-        widgets = {
-            'reference': TextInput(attrs={'class': 'form-control'}),
-            'name': TextInput(attrs={'class': 'form-control'}),
-            'price': NumberInput(attrs={'class': 'form-control'}),
 
-        }
+class QuotationForm(forms.Form):
 
-class QuantityForm(forms.ModelForm):
-    class Meta:
-        model = Quantity
-        fields = "__all__"
-        widgets = {
-            'quantity': NumberInput(attrs={'class': 'form-control'}),
-        }
+    signed_img  = forms.FileInput()
+    payoff_date = forms.DateInput()
+    payoff_type = forms.Select()
+
+    # signed_img.widget.attrs.update({'class': 'form-control'})
+    payoff_date.widget.attrs.update({'class': 'form-control'}) 
+    payoff_type.widget.attrs.update({'class': 'form-control'})
+        
+
+# class SupplierForm(forms.ModelForm):
+#     class Meta:
+#         model = Supplier
+#         fields = "__all__"
+#         widgets = {
+#             'name': TextInput(attrs={'class': 'form-control'}),
+#             'nb_quotation': TextInput(attrs={'class': 'form-control'}),
+#         }
+
+# class ComponentForm(forms.ModelForm):
+#     class Meta:
+#         model = Component
+#         exclude = ('supplier',)
+#         widgets = {
+#             'reference': TextInput(attrs={'class': 'form-control'}),
+#             'name': TextInput(attrs={'class': 'form-control'}),
+#             'price': NumberInput(attrs={'class': 'form-control'}),
+
+#         }
+
+# class QuantityForm(forms.ModelForm):
+#     class Meta:
+#         model = Quantity
+#         fields = "__all__"
+#         widgets = {
+#             'quantity': NumberInput(attrs={'class': 'form-control'}),
+#         }
+
+        # fields =['signed_img', 'payoff_date', 'payoff_type']
