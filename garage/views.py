@@ -395,13 +395,13 @@ class QuotationCreate(View):
         
         quotation_form = QuotationForm(request.POST)
         component_form = ComponentForm(request.POST)
-        supplier_form = SupplierForm(request.POST)
-        quantity_form = QuantityForm(request.POST)
+        # supplier_form = SupplierForm(request.POST)
+        # quantity_form = QuantityForm(request.POST)
         dico = {
             'quotation_form': quotation_form,
             'component_form': component_form,
-            'supplier_form': supplier_form,
-            'quantity_form': quantity_form,
+            # 'supplier_form': supplier_form,
+            # 'quantity_form': quantity_form,
         }
         return dico
 
@@ -411,12 +411,13 @@ class QuotationCreate(View):
     def post(self, request, **kwargs):
         forms = self.getForm(request)
 
-        if forms['component_form'].is_valid() and forms['supplier_form'].is_valid() and forms['quantity_form'].is_valid():
+        if forms['component_form'].is_valid() and forms['quotation_form'].is_valid() :
                         
-            quotation = forms['quotation_form']
-            component = forms['component_form'].save(commit=False)
-            supplier = forms['supplier_form'].save()  
-            quantity = forms['quantity_form'].save()
+            quotation = Quotation
+            component = forms['component_form']
+            supplier = Supplier
+            quotationLine = QuotationLine
+            supplier.name = forms['quotation_form'].name
 
             component.supplier = supplier
             component.save()

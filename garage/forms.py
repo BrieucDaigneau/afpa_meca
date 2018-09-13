@@ -123,28 +123,40 @@ class ReparationOrderForm(forms.ModelForm):
 
 class ComponentForm(forms.Form):
     
-    reference   = forms.CharField()
-    name        = forms.CharField()
-    price       = forms.FloatField()
-    quantity    = forms.IntegerField()
-              
+    reference = forms.CharField()
+    name = forms.CharField()
+    price = forms.FloatField()
+    quantity = forms.IntegerField()
+    
     reference.widget.attrs.update({'class': 'form-control'})
     name.widget.attrs.update({'class': 'form-control'})
     price.widget.attrs.update({'class': 'form-control'})
     quantity.widget.attrs.update({'class': 'form-control'})
-        
 
+    def save(self):
+        data = self.cleaned_data
+        component = Component(reference=data['reference'], name=data['name'], price=data['price'])
+        component.save(commit=False)
+        quotation_line = QuotationLine(quantity=data['quantity'],)
+        quotation_line.save(commit=False)
 
 class QuotationForm(forms.Form):
-
-    signed_img  = forms.FileInput()
-    payoff_date = forms.DateInput()
-    payoff_type = forms.Select()
-
-    # signed_img.widget.attrs.update({'class': 'form-control'})
-    payoff_date.widget.attrs.update({'class': 'form-control'}) 
-    payoff_type.widget.attrs.update({'class': 'form-control'})
+    
+    number = forms.CharField()
+    amount = forms.FloatField()
+    signed_img = forms.FileField()
+    payoff_date = forms.DateField()
+    payoff_type = forms.ChoiceField()
+    name = forms.CharField()
+    nb_quotation = forms.CharField()
         
+    number.widget.attrs.update({'class': 'form-control'})
+    amount.widget.attrs.update({'class': 'form-control'})
+    signed_img.widget.attrs.update({'class': 'form-control'})
+    payoff_date.widget.attrs.update({'class': 'form-control'})
+    payoff_type.widget.attrs.update({'class': 'form-control'})
+    name.widget.attrs.update({'class': 'form-control'})
+    nb_quotation.widget.attrs.update({'class': 'form-control'})
 
 # class SupplierForm(forms.ModelForm):
 #     class Meta:
@@ -174,4 +186,10 @@ class QuotationForm(forms.Form):
 #             'quantity': NumberInput(attrs={'class': 'form-control'}),
 #         }
 
+
         # fields =['signed_img', 'payoff_date', 'payoff_type']
+    # quantity     = models.IntegerField("quantité pièce", max_length=3)
+    # number       = models.CharField(unique=True, max_length=15)
+    # date         = models.DateField("Date du devis", null=False, default=datetime.now)
+    # signed_img   = models.ImageField("Scan du devis signé", null=True, upload_to ="img/devis")
+    # amount       = models.FloatField("Total TTC")
