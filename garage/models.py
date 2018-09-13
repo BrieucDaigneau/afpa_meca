@@ -20,8 +20,8 @@ class Address(models.Model):
         verbose_name = 'Adresse'
         verbose_name_plural = 'Adresses'
     
-    def __str__(self):
-        return self.address_label if self.address_label else "Adresse"        
+    # def __str__(self):
+    #     return "Ville: {0}, {1}, {2}".format(self.city, self.zip_code, self.street_name)        
         
 # class ZipCode(models.Model):
 #     zip_code = models.CharField(max_length=15, verbose_name = 'Code Postal',)
