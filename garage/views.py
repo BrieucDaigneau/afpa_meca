@@ -88,7 +88,8 @@ class CustomerCreateView(View):
                 #             raise                                
 
 
-                address_form = dictio['address_form']                       
+                address_form = dictio['address_form']
+                                     
                 if not address_form.is_valid():                         
                     modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
                     raise ValidationError(modelFormError)
@@ -114,7 +115,7 @@ class CustomerCreateView(View):
 
                         customer_form = dictio['customer_form'] 
                         if not customer_form.is_valid():
-                            modelFormError = "Une erreur interne est apparue sur les données customers. Merci de recommencer votre saisie."                  
+                            modelFormError = "Une erreur interne est apparue sur les données clients. Merci de recommencer votre saisie."                  
                             raise ValidationError(modelFormError)
                         else :
                             try:

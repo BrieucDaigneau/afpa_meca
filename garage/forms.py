@@ -28,12 +28,10 @@ class AddressForm(forms.ModelForm):
     
     class Meta:
         model = Address
-        fields = ["city","zip_code", "street_name","street_number"]
+        fields = ["city","zip_code"]
         widgets = {
             'city': TextInput(attrs={'class': 'form-control'}),
             'zip_code': TextInput(attrs={'class': 'form-control'}),
-            'street_name': TextInput(attrs={'class': 'form-control'}),
-            'street_number': NumberInput(attrs={'class': 'form-control'}),
         }
 
     city_zip_code = forms.CharField(widget=TextInput(attrs={'class': 'form-control require-input', 
@@ -44,7 +42,7 @@ class AddressForm(forms.ModelForm):
                                                         'v-model': 'address', 'autocomplete': 'off'}),
                         label="Adresse", required=True)
 
-    json_hidden = forms.CharField(widget=forms.HiddenInput(attrs={'v-model': 'addressJSON'}))
+    json_hidden = forms.CharField(widget=forms.TextInput(attrs={'v-model': 'addressJSON'}))
 
     def clean(self):
         json = self.cleaned_data.get('json_hidden')
@@ -53,9 +51,12 @@ class AddressForm(forms.ModelForm):
         return self.cleaned_data
 
 
-class AddressUpdateForm(AddressForm):
-    class Meta(AddressForm.Meta) :
+class AddressUpdateForm(forms.ModelForm):
+     class Meta:
         model = Address
+        fields = ["city","zip_code"]
+        
+        
  
 
 #    class Meta: 
