@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="address" class="control-label">Adresse : </label>
-                        {{ vehicle.customer.address.street }}
+                        {{ vehicle.customer.address.street_number }} {{ vehicle.customer.address.street_name }}
                     </div>
                 </div>                 
                 
@@ -46,11 +46,11 @@
                     
                     <div class="col-md-2">
                         <label for="city" class="control-label">Ville : </label>
-                        {{ vehicle.customer.address.city.city_name }}
+                        {{ vehicle.customer.address.city }}
                     </div>
                     <div class="col-md-2">
                         <label for="zipcode" class="control-label">Code Postal : </label>
-                        {{ vehicle.customer.address.zipCode.zip_code }}
+                        {{ vehicle.customer.address.zip_code }}
                     </div>
                     
 

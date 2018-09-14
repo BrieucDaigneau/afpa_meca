@@ -32,6 +32,7 @@ class AddressForm(forms.ModelForm):
         widgets = {
             'city': TextInput(attrs={'class': 'form-control'}),
             'zip_code': TextInput(attrs={'class': 'form-control'}),
+            
         }
 
     city_zip_code = forms.CharField(widget=TextInput(attrs={'class': 'form-control require-input', 
@@ -54,7 +55,15 @@ class AddressForm(forms.ModelForm):
 class AddressUpdateForm(forms.ModelForm):
      class Meta:
         model = Address
-        fields = ["city","zip_code"]
+        fields = ["city", "zip_code", "street_number","street_name"]
+        widgets = {
+            'city': TextInput(attrs={'class': 'form-control'}),
+            'zip_code': TextInput(attrs={'class': 'form-control'}),
+            'street_number': TextInput(attrs={'class': 'form-control'}),
+            'street_name': TextInput(attrs={'class': 'form-control'}),
+        }
+        
+
         
         
  

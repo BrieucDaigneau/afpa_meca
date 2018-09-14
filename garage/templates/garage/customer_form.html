@@ -51,6 +51,7 @@
                         </div>
                     </div> 
                     <div id="form_address">
+                    {% block addressupdate %}
                     <div class="row">
                             <div class="col-md-8">
                                     <label for="{{ address_form.address.id_for_label }}" class="control-label">Adresse</label>
@@ -92,6 +93,7 @@
                     
                         </div>
                     </div>
+                    {% endblock addressupdate %}
 
                 
                         <div>{{ address_form.json_hidden }}</div>
@@ -136,7 +138,7 @@
         <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
         <script type="text/javascript" src="{% static 'garage/static/garage/js/adress.js' %}"></script>
 
-
+{% block script %}{% endblock script %}
 {% endblock content %}
 
     

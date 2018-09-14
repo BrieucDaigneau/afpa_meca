@@ -9,7 +9,7 @@ from django.db import DatabaseError, transaction
 from django.core.exceptions import ValidationError
 
 import json
-# from .mixins import AddressMixin
+
 from .models import *
 from .forms import *
 from . import urls
@@ -96,40 +96,20 @@ class CustomerCreateView(View):
                     raise ValidationError(modelFormError)
                 else :
                     try:
-                        print('try')
-                        # address = address_form.save(commit=False)
-                        # address.zip_code = zipCode
-                        # address.city = city
-                        # address = address_form.save()
-                        # address.save()
                         address = address_form.save(commit=False)
-                        print(address)
                         json_data = json.loads(address_form.cleaned_data['json_hidden'])
-                        print(json_data)
                         prop = json_data['properties']
-                        print('try3 ')
-                        
                         address.city = prop['city']
-                        print('try4', address.city)
                         address.zip_code = prop['postcode']
-                        print('try5 ', address.zip_code)
                         street = prop.get('street')
-                        print('try6', street)
                         street_number = prop.get('housenumber')
-                        print('try7', street_number)
                         name = prop.get('name')
-                        print('try8', name)
                         if street and street_number:
-                            print('try9')
                             address.street_number = street_number
-                            print('try10', address.street_number)
                             address.street_name = street
-                            print('try11', address.street_name)
                         else:
                             address.street_name = name
-                        print(address)    
                         address.save()
-                        print('FIN')
                     
                        
 
@@ -236,8 +216,10 @@ class CustomerUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         customer = Customer.objects.filter(pk=self.kwargs['pk'])
         address = customer.address
-        zipCode = address.zipCode
-        city = address.city
+        # street_name = address.street_name
+        # street_number = address.street_number
+        # zipCode = address.zip_code
+        # city = address.city
         personalData = customer.personal_data
         context = super(CustomerUpdate, self).get_context_data(**kwargs)
         # if 'zipCode_form' not in context:
