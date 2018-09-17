@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.shortcuts import render, get_object_or_404, redirect, reverse, render_to_response
 from django.views.generic import CreateView, ListView, View, FormView, DetailView, TemplateView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest
 from django.urls import reverse_lazy
@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
 from django.db import DatabaseError, transaction
 from django.core.exceptions import ValidationError
-from django.db.models import Max
+from django.db.models import Max, Sum
 
 from .models import *
 from .forms import *
@@ -391,10 +391,9 @@ def search(request):
 class QuotationCreate(View): 
     myTemplate_name = 'garage/quotation_create.html'
 
-    def getForm(self, request):
-        
-        quotation_form = QuotationForm(request.POST)
-        component_form = ComponentForm(request.POST)
+    def getForm(self, requ):
+        quotation_form = QuotationForm(requ)
+        component_form = ComponentForm(requ)
         # supplier_form = SupplierForm(request.POST)
         # quantity_form = QuantityForm(request.POST)
         dico = {
@@ -404,37 +403,55 @@ class QuotationCreate(View):
             # 'quantity_form': quantity_form,
         }
         return dico
-
+    
     def get(self, request, **kwargs):
-        return render(request, self.myTemplate_name, self.getForm( request ) )
-
+        return render(request, self.myTemplate_name, self.getForm( None ) )
+    
     def post(self, request, **kwargs):
-        forms = self.getForm(request)
+        forms = self.getForm(request.POST)
 
-        if forms['component_form'].is_valid() and forms['quotation_form'].is_valid() :
-                        
-            quotation = Quotation
-            component = forms['component_form']
-            supplier = Supplier
-            quotationLine = QuotationLine
-            supplier.name = forms['quotation_form'].name
-
-            component.supplier = supplier
-            component.save()
-            
-            quotation_id_max = list(Quotation.objects.all().aggregate(Max('id')).values())[0]
-            quotation_id_max = quotation_id_max if quotation_id_max is not None else 0
-
-            quotation.number = "D" + str(quotation_id_max + 1 )
-            quotation.user_profile = self.request.user
-            quotation.components = component
-            quotation.reparation_order = ReparationOrder.objects.get(pk=self.kwargs['reparation_orders_id'])
-            quotation.save()
+        quotation_form = forms['quotation_form']
+        component_form = forms['component_form']
+        
+        if component_form.is_valid() :
+            quotation = quotation_form.clean()
+            component = component_form.save(quotation=quotation)
 
             return redirect('garage:home')
-        
+
         else : 
             return render(request, 'garage/quotation_create.html', self.getForm(request))
+
+    # def post(self, request, **kwargs):
+
+    #     if forms['component_form'].is_valid() and forms['quotation_form'].is_valid() :
+    #         quotation = Quotation
+    #         supplier = Supplier
+    #         component = Component
+    #         quotationLine = QuotationLine
+    #         component.reference = forms['component_form'].cleaned_data('reference')
+    #         component.name = forms['component_form'].cleaned_data('name')
+    #         component.price = forms['component_form'].cleaned_data('price')
+    #         component.quantity = forms['component_form'].cleaned_data('quantity')
+    #         supplier.name = forms['quotation_form'].cleaned_data('name')
+
+    #         component.supplier = supplier
+    #         component.save()
+    #         print('2###############################""""')
+            
+        #     quotations_id_max = list(Quotation.objects.all().aggregate(Max('id')).values())[0]
+        #     quotation_id_max = quotations_id_max if quotations_id_max is not None else 0
+
+        #     quotation.number = "D" + str(quotation_id_max + 1 )
+        #     quotation.user_profile = self.request.user
+        #     quotation.components = component
+        #     quotation.reparation_order = ReparationOrder.objects.get(pk=self.kwargs['reparation_orders_id'])
+        #     quotation.save()
+
+        #     return redirect('garage:home')
+        
+        # else : 
+        #     return render(request, 'garage/quotation_create.html', self.getForm(request))
 
 
     def get_context_data(self, **kwargs):

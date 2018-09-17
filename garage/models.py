@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 from django.contrib.auth.models import User
 
 from datetime import datetime
@@ -181,8 +182,7 @@ class ReparationOrder(models.Model):
 
 class Supplier(models.Model):
     name         = models.CharField("Nom Fournisseur", max_length=35)
-    nb_quotation = models.CharField("Numéro devis Fournisseur", max_length=15)
-    
+        
     def __str__(self):
         return self.name
 
@@ -207,18 +207,19 @@ class Quotation(models.Model):
                         ("RefusFormateur", 'RefusFormateur'), ("ValidationClient",'ValidationClient'),
                         ("AttenteClient", 'AttenteClient'), ("RefusClient", 'RefusClient'), )
 
-    number            = models.CharField(unique=True, max_length=15)
-    date              = models.DateField("Date du devis", null=False, default=datetime.now)
-    signed_img        = models.ImageField("Scan du devis signé", null=True, upload_to ="img/devis") 
-    payoff_date       = models.DateField("Date de paiement", null=True)
-    payoff_type       = models.CharField(max_length=7, choices=payoff_choice, default=payoff_choice[0],)
-    status            = models.CharField( max_length=20,choices=Status_choice,default=Status_choice[0],)
-    amount            = models.FloatField("Total TTC")
-    
-    user_profile      = models.ForeignKey(User, on_delete=models.CASCADE)
-    reparation_order  = models.ForeignKey(ReparationOrder, on_delete=models.CASCADE, related_name="quotation")
-    # suppliers         = models.ManyToManyField(Supplier, related_name="quotations")
+    number                  = models.CharField(unique=True, max_length=15)
+    date                    = models.DateField("Date du devis", null=False, default=datetime.now)
+    signed_img              = models.ImageField("Scan du devis signé", null=True, upload_to ="img/devis") 
+    payoff_date             = models.DateField("Date de paiement", null=True)
+    payoff_type             = models.CharField(max_length=7, null=True, choices=payoff_choice, default=payoff_choice[0],)
+    status                  = models.CharField( max_length=20,choices=Status_choice,default=Status_choice[0],)
+    amount                  = models.FloatField("Total TTC")
+    num_quotation_supplier  = models.CharField("Numéro devis Fournisseur", max_length=15)
 
+    user_profile            = models.ForeignKey(User, on_delete=models.CASCADE)
+    reparation_order        = models.ForeignKey(ReparationOrder, on_delete=models.CASCADE, related_name="quotation")
+    supplier                = models.ForeignKey(Supplier, related_name="quotations", on_delete=models.CASCADE)
+    
 
     class Meta():
         verbose_name_plural = "Devis"
@@ -229,7 +230,7 @@ class Quotation(models.Model):
 class QuotationLine(models.Model):
     quantity     = models.IntegerField("quantité pièce")
     component = models.ForeignKey(Component, related_name='line', on_delete=models.DO_NOTHING,)
-    qotation  = models.ForeignKey(Quotation, related_name='line', on_delete=models.DO_NOTHING,)
+    quotation  = models.ForeignKey(Quotation, related_name='line', on_delete=models.DO_NOTHING,)
     
 
 # class Component_Supplier_Quotation(models.Model):

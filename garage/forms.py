@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput, Select
 from django.forms.utils import ErrorList
+from django.db.models import Max
 
 from .models import *
 
@@ -133,30 +134,52 @@ class ComponentForm(forms.Form):
     price.widget.attrs.update({'class': 'form-control'})
     quantity.widget.attrs.update({'class': 'form-control'})
 
+    def clean(self):
+        cleaned_data = super().clean()
+
     def save(self):
-        data = self.cleaned_data
-        component = Component(reference=data['reference'], name=data['name'], price=data['price'])
-        component.save(commit=False)
-        quotation_line = QuotationLine(quantity=data['quantity'],)
-        quotation_line.save(commit=False)
+        data = self.clean()
+        component = Component(reference=data['reference'], name=data['name'], price=data['price'], supplier=quotation.supplier)
+        component.save()
+        quotation_line = QuotationLine(quantity=data['quantity'], component=component, quotation=quotation)
+        quotation_line.save()
 
 class QuotationForm(forms.Form):
-    
     number = forms.CharField()
     amount = forms.FloatField()
     signed_img = forms.FileField()
     payoff_date = forms.DateField()
     payoff_type = forms.ChoiceField()
-    name = forms.CharField()
-    nb_quotation = forms.CharField()
+    name = forms.ModelChoiceField(queryset=Supplier.objects.all(), widget=Select(attrs={'class': 'custom-select'}))
+                                            
+    num_quotation_supplier = forms.CharField()
         
     number.widget.attrs.update({'class': 'form-control'})
     amount.widget.attrs.update({'class': 'form-control'})
     signed_img.widget.attrs.update({'class': 'form-control'})
     payoff_date.widget.attrs.update({'class': 'form-control'})
     payoff_type.widget.attrs.update({'class': 'form-control'})
-    name.widget.attrs.update({'class': 'form-control'})
-    nb_quotation.widget.attrs.update({'class': 'form-control'})
+    num_quotation_supplier.widget.attrs.update({'class': 'form-control'})
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        data = cleaned_data
+        quotation_id_max = list(Quotation.objects.all().aggregate(Max('id')).values())[0]
+        number = quotation_id_max + 1 if quotation_id_max is not None else 0
+
+        supplier = Supplier(name=data['name'])
+        
+        quotation = Quotation(number=number, supplier=supplier,
+                             num_quotation_supplier=data['num_quotation_supplier'], 
+                             user_profile=self.request.user, 
+                             reparation_order=self.kwargs['reparation_order_id'],
+                             amount=0.00)
+        quotation.save()
+        return quotation
+
+    def save(self):
+        pass
+
 
 # class SupplierForm(forms.ModelForm):
 #     class Meta:
@@ -164,7 +187,7 @@ class QuotationForm(forms.Form):
 #         fields = "__all__"
 #         widgets = {
 #             'name': TextInput(attrs={'class': 'form-control'}),
-#             'nb_quotation': TextInput(attrs={'class': 'form-control'}),
+#             'num_quotation_supplier': TextInput(attrs={'class': 'form-control'}),
 #         }
 
 # class ComponentForm(forms.ModelForm):
