@@ -23,9 +23,9 @@ class PersonalDataForm(forms.ModelForm):
             'mail': TextInput(attrs={'class': 'form-control'}),
             'phone_number': TextInput(attrs={'class': 'form-control'}),
             'afpa_card_img': FileInput(attrs={'class': 'form-control'})
-        }  
-class AddressForm(forms.ModelForm):
-    
+        }
+
+class AddressForm(forms.ModelForm):  
     class Meta:
         model = Address
         fields = ["city","zip_code",]
@@ -63,72 +63,6 @@ class AddressUpdateForm(forms.ModelForm):
             'street_name': TextInput(attrs={'class': 'form-control'}),
         }
         
-
-        
-        
- 
-
-#    class Meta: 
-        # model = Address
-        # fields = ["city","zip_code", "street_name","street_number","national_reference"]
-        # widgets = {
-        #     'city': TextInput(attrs={'class': 'form-control'}),
-        #     'zip_code': TextInput(attrs={'class': 'form-control'}),
-        #     'street_name': TextInput(attrs={'class': 'form-control'}),
-        #     'street_number': NumberInput(attrs={'class': 'form-control'}),
-        #     'national_reference': TextInput(attrs={'class': 'form-control'})
-        # }
-
-
-
-# class AddressUpdateForm(forms.ModelForm):
-#     class Meta:
-#         model = Address
-#         fields = ["street","street_number","street_complement"]
-#         widgets = {
-#             'street': TextInput(attrs={'class': 'form-control'}),
-#             'street_number': NumberInput(attrs={'class': 'form-control'}),
-#             'street_complement': TextInput(attrs={'class': 'form-control'})
-#         }
-
-
-# class AddressForm(forms.ModelForm):
-#     class Meta:
-#         model = Address
-#         fields = ["street","street_number","street_complement"]
-#         widgets = {
-#             'street': TextInput(attrs={'class': 'form-control'}),
-#             'street_number': NumberInput(attrs={'class': 'form-control'}),
-#             'street_complement': TextInput(attrs={'class': 'form-control'})
-#         }
-
-#     def clean(self):
-#         cleaned_data = super().clean()
-#         street_number = self.cleaned_data['street_number']
-#         street = self.cleaned_data['street']
-#         r = Address.objects.filter(street_number=street_number,street=street)
-#         if r.count():
-#             raise forms.ValidationError("l'adresse existe déjà")
-#         return cleaned_data
-
-
-
-# class ZipCodeForm(forms.ModelForm):
-#     class Meta:
-#         model = ZipCode
-#         fields = ["zip_code"]
-#         widgets = {
-#             'zip_code': TextInput(attrs={'class': 'form-control'})
-#         }  
-
-
-# class CityForm(forms.ModelForm):
-#     class Meta:
-#         model = City
-#         fields = ["city_name"]
-#         widgets = {
-#             'city_name': TextInput(attrs={'class': 'form-control'})
-#         }  
 
 
 class MotorizedForm(forms.ModelForm):

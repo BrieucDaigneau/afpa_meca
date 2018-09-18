@@ -65,10 +65,6 @@
                                         </div>
                                     </div>
                   
-                        <!-- <div class="col-md-5">
-                            <label for="{{ address_form.street_name.id_for_label }}" class="control-label">Adresse</label>
-                            {{ address_form.street_name }}
-                        </div> -->
                         
                         <div class="col-md-4">
                             <label for="{{ address_form.city_zip_code.id_for_label }}" class="control-label">Ville ou Code postal</label>
@@ -79,24 +75,14 @@
                                     [[ cityZip[0] ]] ([[ cityZip[1] ]])
                             </li>
                         </ul>
-                    </div> 
-                    <!-- <div class="col-md-4" >
-                        <label for="{{  address_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
-                        {{  address_form.zip_code }}
                     </div>
-                
-                    <div class="col-md-4">
-                        <label for="{{ adress_form.city.id_for_label }}" class="control-label">Ville</label>
-                        {{ address_form.city }}
-                    </div> -->
                     
-                    
-                        </div>
+                    </div>
                     </div>
                     {% endblock addressupdate %}
 
                 
-                        <div>{{ address_form.json_hidden }}</div>
+                    <div>{{ address_form.json_hidden }}</div>
                     
                     </div>
                         <div class="col-md-4">
@@ -113,11 +99,7 @@
                             <a href="javascript:window.history.go(-1);" class="btn btn-primary btn-sm btn-block button" id="button">Annuler</a>
                         </div>
                         <div class="col-md-4"></div>      
-                        <div class="col-md-2">
-                            {% block back_home %}   
-                             {% comment %}   <button class="btn btn-primary btn-sm btn-block button" type="submit" id="validerAccueil">Valider/Retour Accueil</button> {% endcomment %}
-                            {% endblock back_home %}    
-                        </div> 
+                        <div class="col-md-2"></div> 
                         <div class="col-md-2"></div>
                         <div class="col-md-2">
                             <button class="btn btn-primary btn-sm btn-block button" type="submit" id="valider">{% block next %}Etape suivante{% endblock next %}</button>
