@@ -133,86 +133,19 @@ class ComponentForm(forms.Form):
     name.widget.attrs.update({'class': 'form-control'})
     price.widget.attrs.update({'class': 'form-control'})
     quantity.widget.attrs.update({'class': 'form-control'})
+   
 
-    def clean(self):
-        cleaned_data = super().clean()
+class QuotationForm(forms.ModelForm):
 
-    def save(self):
-        data = self.clean()
-        component = Component(reference=data['reference'], name=data['name'], price=data['price'], supplier=quotation.supplier)
-        component.save()
-        quotation_line = QuotationLine(quantity=data['quantity'], component=component, quotation=quotation)
-        quotation_line.save()
+    supplier = forms.ModelChoiceField(queryset=None, widget=Select(attrs={'class': 'custom-select'}), 
+                                            label="Départ" )                                                    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['supplier'].queryset = Supplier.objects.filter()
 
-class QuotationForm(forms.Form):
-    number = forms.CharField()
-    amount = forms.FloatField()
-    signed_img = forms.FileField()
-    payoff_date = forms.DateField()
-    payoff_type = forms.ChoiceField()
-    name = forms.ModelChoiceField(queryset=Supplier.objects.all(), widget=Select(attrs={'class': 'custom-select'}))
-                                            
-    num_quotation_supplier = forms.CharField()
-        
-    number.widget.attrs.update({'class': 'form-control'})
-    amount.widget.attrs.update({'class': 'form-control'})
-    signed_img.widget.attrs.update({'class': 'form-control'})
-    payoff_date.widget.attrs.update({'class': 'form-control'})
-    payoff_type.widget.attrs.update({'class': 'form-control'})
-    num_quotation_supplier.widget.attrs.update({'class': 'form-control'})
-    
-    def clean(self):
-        cleaned_data = super().clean()
-        data = cleaned_data
-        quotation_id_max = list(Quotation.objects.all().aggregate(Max('id')).values())[0]
-        number = quotation_id_max + 1 if quotation_id_max is not None else 0
-
-        supplier = Supplier(name=data['name'])
-        
-        quotation = Quotation(number=number, supplier=supplier,
-                             num_quotation_supplier=data['num_quotation_supplier'], 
-                             user_profile=self.request.user, 
-                             reparation_order=self.kwargs['reparation_order_id'],
-                             amount=0.00)
-        quotation.save()
-        return quotation
-
-    def save(self):
-        pass
-
-
-# class SupplierForm(forms.ModelForm):
-#     class Meta:
-#         model = Supplier
-#         fields = "__all__"
-#         widgets = {
-#             'name': TextInput(attrs={'class': 'form-control'}),
-#             'num_quotation_supplier': TextInput(attrs={'class': 'form-control'}),
-#         }
-
-# class ComponentForm(forms.ModelForm):
-#     class Meta:
-#         model = Component
-#         exclude = ('supplier',)
-#         widgets = {
-#             'reference': TextInput(attrs={'class': 'form-control'}),
-#             'name': TextInput(attrs={'class': 'form-control'}),
-#             'price': NumberInput(attrs={'class': 'form-control'}),
-
-#         }
-
-# class QuantityForm(forms.ModelForm):
-#     class Meta:
-#         model = Quantity
-#         fields = "__all__"
-#         widgets = {
-#             'quantity': NumberInput(attrs={'class': 'form-control'}),
-#         }
-
-
-        # fields =['signed_img', 'payoff_date', 'payoff_type']
-    # quantity     = models.IntegerField("quantité pièce", max_length=3)
-    # number       = models.CharField(unique=True, max_length=15)
-    # date         = models.DateField("Date du devis", null=False, default=datetime.now)
-    # signed_img   = models.ImageField("Scan du devis signé", null=True, upload_to ="img/devis")
-    # amount       = models.FloatField("Total TTC")
+    class Meta:
+        model = Quotation
+        fields =('supplier', 'num_quotation_supplier' )
+        widgets = {
+            'num_quotation_supplier' : TextInput(attrs={'class': 'form-control'})
+        }

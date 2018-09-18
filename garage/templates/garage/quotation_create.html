@@ -13,16 +13,16 @@
             <div class="row mt-5 supplier">
                 <div class="col-md-6">
                     <div class="row">
-                        <label class="col-md-4 form-group control-label" for="{{ supplier_form.name.id_for_label }}" >Fournisseur :<span class="mandatory"> *</span></label>
+                        <label class="col-md-4 form-group control-label" for="" >Fournisseur :<span class="mandatory"> *</span></label>
                         <div class="col-md-8">
-                            {{quotation_form.name}}
+                            {{quotation_form.supplier}}
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-6">
                     <div class="row">
-                        <label class="col-md-5 form-group control-label" for="{{ quotation.num_quotation_supplier.id_for_label }}" >N° Devis fournisseur :<span class="mandatory"> *</span></label>
+                        <label class="col-md-5 form-group control-label" for="" >N° Devis fournisseur :<span class="mandatory"> *</span></label>
                         <div class="col-md-7">
                             {{ quotation_form.num_quotation_supplier }}
                         </div>
@@ -32,7 +32,7 @@
             </div>
             <div class="row mt-4">
                 <div class="col-md-3">
-                    <label class=" form-group control-label" for="{{ supplier_form.name.id_for_label }}" >Quantité :<span class="mandatory"> *</span></label>
+                    <label class=" form-group control-label" for="" >Quantité :<span class="mandatory"> *</span></label>
                         {{ component_form.quantity }}
                 </div>
 

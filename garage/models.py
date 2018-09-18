@@ -190,9 +190,10 @@ class Component(models.Model):
     reference   = models.CharField("référence pièce", max_length=20)
     name        = models.CharField("libellé de la pièce", max_length=50)
     price       = models.FloatField("prix unitaire")
-    supplier    = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="components")
-    quotations   = models.ManyToManyField('Quotation', through='QuotationLine', related_name='components')
+    quantity     = models.IntegerField("quantité pièce")
 
+    supplier    = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="components")
+    quotation   = models.ForeignKey('Quotation', on_delete=models.CASCADE, related_name='components')
     class Meta:
         verbose_name        = "Pièces"
         verbose_name_plural = "Pièces"
@@ -227,10 +228,10 @@ class Quotation(models.Model):
     def __str__(self):
         return str(self.number)
 
-class QuotationLine(models.Model):
-    quantity     = models.IntegerField("quantité pièce")
-    component = models.ForeignKey(Component, related_name='line', on_delete=models.DO_NOTHING,)
-    quotation  = models.ForeignKey(Quotation, related_name='line', on_delete=models.DO_NOTHING,)
+# class QuotationLine(models.Model):
+    
+#     component = models.ForeignKey(Component, related_name='line', on_delete=models.DO_NOTHING,)
+#     quotation  = models.ForeignKey(Quotation, related_name='line', on_delete=models.DO_NOTHING,)
     
 
 # class Component_Supplier_Quotation(models.Model):

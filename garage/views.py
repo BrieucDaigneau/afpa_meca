@@ -24,6 +24,7 @@ class Home(TemplateView):
 
 
 class CustomerCreateView(View):
+
     def getForm(self, request):
         zipCode_form = ZipCodeForm(request.POST or None) 
         city_form = CityForm(request.POST or None)
@@ -394,13 +395,11 @@ class QuotationCreate(View):
     def getForm(self, requ):
         quotation_form = QuotationForm(requ)
         component_form = ComponentForm(requ)
-        # supplier_form = SupplierForm(request.POST)
-        # quantity_form = QuantityForm(request.POST)
+
         dico = {
             'quotation_form': quotation_form,
             'component_form': component_form,
-            # 'supplier_form': supplier_form,
-            # 'quantity_form': quantity_form,
+
         }
         return dico
     
@@ -412,15 +411,42 @@ class QuotationCreate(View):
 
         quotation_form = forms['quotation_form']
         component_form = forms['component_form']
+
+        print( "####" , quotation_form )
         
-        if component_form.is_valid() :
-            quotation = quotation_form.clean()
-            component = component_form.save(quotation=quotation)
+        if component_form.is_valid() and quotation_form.is_valid() :
+            
+            quotation = quotation_form.save(commit=False)
+            
+            # attribution d'un id de devis
+            quotation_id_max = list(Quotation.objects.all().aggregate(Max('id')).values())[0]
+            quotation.number = quotation_id_max + 1 if quotation_id_max is not None else 0   
+
+
+            quotation.reparation_order = ReparationOrder.objects.get(pk=self.kwargs['reparation_orders_id'])
+            quotation.user_profile = self.request.user
+
+            quotation.amount = 0 #component.price*component.quantity
+            quotation.save()
+
+            component = Component.objects.create(price=component_form.cleaned_data['price'],
+                                                reference=component_form.cleaned_data['reference'],
+                                                name=component_form.cleaned_data['name'],
+                                                quantity=component_form.cleaned_data['quantity'],
+                                                supplier=quotation.supplier,
+                                                quotation=quotation)
+            # quotation_line = QuotationLine.objects.create(quantity=component_form.cleaned_data['quantity'],
+            #                                               component=component, quotation=quotation)
+            # quotation_line.save()
+            
+
+            component.save()
 
             return redirect('garage:home')
-
+            
         else : 
-            return render(request, 'garage/quotation_create.html', self.getForm(request))
+            print( "################# quotation_form invalid")
+            return render(request, 'garage/quotation_create.html')
 
     # def post(self, request, **kwargs):
 
