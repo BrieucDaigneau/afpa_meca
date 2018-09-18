@@ -11,8 +11,6 @@ app_name = 'garage'
 urlpatterns = [    
     
     url(r'logout', LogoutView.as_view(template_name='garage/logout.html'), name='logout'), 
-
-    # url(r'^recherche/$', login_required(views.search), name='search'),
     path('accueil/', login_required(views.Home.as_view()), name='home'),
 
     path('creation-client', login_required(views.CustomerCreateView.as_view()), name='customer-create'),   
@@ -27,18 +25,8 @@ urlpatterns = [
 
     path('creation-intervention/<int:vehicle_id>', login_required(views.ReparationOrderCreateView.as_view()), name='reparation-order-create'),  
     path('consultation-interventions', login_required(views.ReparationOrders.as_view()), name='reparation-orders'),
-    path('actualisation-intervention/<pk>/', login_required(views.ReparationOrderUpdate.as_view()), name='reparation-order-update'),  
+    path('actualisation-intervention/<pk>/', login_required(views.ReparationOrderUpdate.as_view()), name='reparation-order-update'),
+      
     path('car_condition', login_required(views.car_condition), name='car_condition'),    
 ]
 
-
-
-
-
-######################################################################################################################################""
-    # path('selection-moto/<int:customer_id>/', login_required(views.MotorbikeSelect.as_view()), name='motorbike-select'),
-    # path('sélection-véhicule/<int:customer_id>/', login_required(views.VehicleSelect.as_view()), name='vehicle-select'),
-
-    # path('creation-voiture/<int:customer_id>/', login_required(views.CarCreate.as_view()), name='vehicle-create'),
-    # path('consultation-vehicules', login_required(views.VehicleList.as_view()), name='vehicles'),      
-    # path('creation-ordre-réparation/<int:vehicle_id>/', login_required(views.ReparationOrder.as_view()), name='reparation-order-create'),

@@ -36,7 +36,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group {% if form.brand.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ form.brand.id_for_label }}" class="control-label">Marque</label>
+                                <label for="{{ form.brand.id_for_label }}" class="control-label">Marque<span class="mandatory"> *</span></label>
                                 {{ form.brand }}
                             </div>
                             <div class="invalid-feedback">
@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group {% if form.model_name.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ form.model_name.id_for_label }}" class="control-label">Modèle</label>
+                                <label for="{{ form.model_name.id_for_label }}" class="control-label">Modèle<span class="mandatory"> *</span></label>
                                 {{ form.model_name }}
                             </div>
                             <div class="invalid-feedback">
@@ -56,11 +56,11 @@
                     
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="{{ customer_form.license_plate.id_for_label }}" class="control-label">Immatriculation</label>
+                            <label for="{{ customer_form.license_plate.id_for_label }}" class="control-label">Immatriculation<span class="mandatory"> *</span></label>
                             {{ form.license_plate }}
                         </div>
                         <div class="col-md-6">
-                            <label for="{{ form.vin.id_for_label }}" class="control-label">Vin</label>
+                            <label for="{{ form.vin.id_for_label }}" class="control-label">Vin<span class="mandatory"> *</span></label>
                             {{ form.vin }}
                         </div>
                         <div class="col-md-6">
@@ -71,17 +71,17 @@
                     
                     <div class="row">
                         <div class="col-md-4">
-                            <label for="{{ car_form.circulation_date.id_for_label }}" class="control-label">Date mise en circulation</label>
+                            <label for="{{ car_form.circulation_date.id_for_label }}" class="control-label">Date mise en circulation<span class="mandatory"> *</span></label>
                             {{ form.circulation_date }}
                         </div>
                         
                         <div class="col-md-4">
-                            <label for="{{ car_form.grey_doc_img.id_for_label }}" class="control-label">Carte grise</label>
+                            <label for="{{ car_form.grey_doc_img.id_for_label }}" class="control-label">Carte grise<span class="mandatory"> *</span></label>
                             {{ form.grey_doc_img }}
                         </div>
                         
                         <div class="col-md-4">
-                            <label for="{{ car_form.insurance_img.id_for_label }}" class="control-label">Carte assurance</label>
+                            <label for="{{ car_form.insurance_img.id_for_label }}" class="control-label">Carte assurance<span class="mandatory"> *</span></label>
                             {{ form.insurance_img }}
                         </div>
                     </div>                        

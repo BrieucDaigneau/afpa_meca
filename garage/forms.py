@@ -28,10 +28,11 @@ class PersonalDataForm(forms.ModelForm):
 class AddressForm(forms.ModelForm):  
     class Meta:
         model = Address
-        fields = ["city","zip_code",]
+        fields = ["city","zip_code", "street_complement"]
         widgets = {
             'city': TextInput(attrs={'class': 'form-control'}),
             'zip_code': TextInput(attrs={'class': 'form-control'}),
+            'street_complement': TextInput(attrs={'class': 'form-control'}),
             
         }
 
@@ -55,12 +56,13 @@ class AddressForm(forms.ModelForm):
 class AddressUpdateForm(forms.ModelForm):
      class Meta:
         model = Address
-        fields = ["city", "zip_code", "street_number","street_name"]
+        fields = ["city", "zip_code", "street_number","street_name", "street_complement"]
         widgets = {
             'city': TextInput(attrs={'class': 'form-control'}),
             'zip_code': TextInput(attrs={'class': 'form-control'}),
             'street_number': TextInput(attrs={'class': 'form-control'}),
             'street_name': TextInput(attrs={'class': 'form-control'}),
+            'street_complement': TextInput(attrs={'class': 'form-control'}),
         }
         
 

@@ -1,6 +1,7 @@
 # afpa_meca
 Projet application web Pôle mécanique AFPA
 
+Pre-requis :    
 
 Pre-requis :    
 
@@ -24,7 +25,4 @@ Pre-requis :
                                         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
                                         }
                                     }
-
-
-                            
 
