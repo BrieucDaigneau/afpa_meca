@@ -228,26 +228,3 @@ class Quotation(models.Model):
     def __str__(self):
         return str(self.number)
 
-# class QuotationLine(models.Model):
-    
-#     component = models.ForeignKey(Component, related_name='line', on_delete=models.DO_NOTHING,)
-#     quotation  = models.ForeignKey(Quotation, related_name='line', on_delete=models.DO_NOTHING,)
-    
-
-# class Component_Supplier_Quotation(models.Model):
-#     quantity            = models.IntegerField("Quantité de pièces nécessaires", null=True, default=1)
-#     price               = models.IntegerField("Prix Hors Taxes", null=True)
-#     quotation_supplier   = models.CharField("Numéro du devis fournisseur", max_length=20, null=True)
-#     quotation            = models.ForeignKey(Quotation, null=True, on_delete=models.CASCADE, related_name="connection")
-#     supplier            = models.ForeignKey(Supplier, null=True, on_delete=models.CASCADE, related_name="connection")
-#     component           = models.ForeignKey(Component, null=True, on_delete=models.CASCADE, related_name="connection")
-
-    # class Meta():
-    #     verbose_name        = "Commande"
-    #     verbose_name_plural = "Commandes"
-
-    # def __str__(self):
-    #     return str(self.supplier) + " devis n°" +str(self.quotation) + " pièce : " + str(self.component)
-
-
-    
