@@ -3,13 +3,13 @@
 
 {% block css %}"{% static 'garage/css/style.css' %}"{% endblock css %}
 
-    {% block content %}
+{% block content %}
 
-    <div>
-
-        <header class="row ">
+<div>
+    {% block alert %}
+        <div class="row ">
             {% if reparations_orders %}
-                <p class=" alert col-md-12 mt-5">Attention !! il y à déjà :
+                <p class=" alert col-md-12 mt-5">Attention !! il y a déjà :
                     {% if nb_AF %}
                     <br/>- {{nb_AF}} ordres de réparations en attente de validation du formateur
                     {% endif %}
@@ -24,116 +24,157 @@
                     {% endif %}
                     <br/>&nbsp;
                     <br/>allez dans votre tableau de bord ou dans l'onglet Ordres de réparations
-                    pour modifier les ordres de réparation déjà saisis</p>
+                    pour modifier les ordres de réparations déjà saisis
+                </p>    
             {% endif %}
-            <div class="col-md-12"></div>
-            <div class="col-md-12 mt-5">
-                <h1 id="title">{% block myTitle %}Création ordre de réparation{% endblock myTitle %}</h1> 
-                <br/>                          
-            </div>
-            
-            <div class="col-md-12">
-                <h2>Client :</h2>
-                <hr>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="name" class="control-label">Nom : </label>
-                        {{ vehicle.customer.lastname }}
-                    </div>
-                    <div class="col-md-6">
-                        <label for="mail" class="control-label">Email : </label> 
-                        {{ vehicle.customer.personal_data.mail }}
-                    </div> 
-                </div>  
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="firstname" class="control-label">Prénom : </label>
-                        {{ vehicle.customer.firstname }}
-                    </div>
-                    <div class="col-md-6">
-                        <label for="address" class="control-label">Adresse : </label>
-                        {{ vehicle.customer.address.street_number }} {{ vehicle.customer.address.street_name }}
-                    </div>
-                </div>                 
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="phone" class="control-label">Téléphone : </label>
-                        {{ vehicle.customer.personal_data.phone_number }}
-                    </div>
-                    
-                    <div class="col-md-2">
-                        <label for="city" class="control-label">Ville : </label>
-                        {{ vehicle.customer.address.city }}
-                    </div>
-                    <div class="col-md-2">
-                        <label for="zipcode" class="control-label">Code Postal : </label>
-                        {{ vehicle.customer.address.zip_code }}
-                    </div>
-                    
+        </div>
+    {% endblock alert %}
 
-                    <div class="col-md-2">
-                        <label for="afpa_number" class="control-label">Numéro AFPA : </label>
-                        {{ vehicle.customer.afpa_number }}
-                    </div>
-                </div>
-                <br/>
+    <div class="row">
+        <div class="col-md-12 mt-5">
+            <h1 id="title">
+                {% block myTitle %}
+                    Création ordre de réparation
+                {% endblock myTitle %}
+            </h1> 
+            <br/>                          
+        </div>
+    </div>  
 
-
-
-            </div>
-            
-        </header>
-        
-        <vehicle class="col-md-12">
-            <h2>Véhicule :</h2>
-            <hr>
-            <div class="row">
-                <div class="col-md-2">
-                    <label class="control-label">Marque : </label> <br>
-                    {{ vehicle.brand }}
-                </div>
-
-                <div class="col-md-2">
-                    <label class="control-label">Modele : </label><br> 
-                    {{ vehicle.model_name }}
-                </div>
-                
-                <div class="col-md-2">
-                    <label class="control-label">Immatriculation : </label><br> 
-                    {{ vehicle.license_plate }}
-                </div>
-
-                <div class="col-md-2">
-                    <label class="control-label">Réceptionnaire : </label><br> 
-                    {{ user.get_username }}
-                </div>
-            </div>
-
-        </vehicle>
+    {% block customer %}  
         <hr>
+        <h2>Client :</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="name" class="control-label">Nom : </label>
+                                {% block lastname %} 
+                                {{ vehicle.customer.lastname }}
+                                {% endblock lastname %} 
+                            </div>
+                            <div class="col-md-12">
+                                <label for="firstname" class="control-label">Prénom : </label>
+                                {% block firstname %} 
+                                {{ vehicle.customer.firstname }}
+                                {% endblock firstname %} 
+                            </div>
+                            <div class="col-md-12">
+                                <label for="mail" class="control-label">Email : </label> 
+                                {% block mail %} 
+                                {{ vehicle.customer.personal_data.mail }}
+                                {% endblock mail %} 
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="address" class="control-label">Adresse : </label>
+                                {% block address %} 
+                                {{ vehicle.customer.address.street_number }} 
+                                {{ vehicle.customer.address.street_name }} 
+                                {{ vehicle.customer.address.street_complement }}
+                                {% endblock address %} 
+                            </div>
+                            
+                            <div class="col-md-12">
+                                <label for="phone" class="control-label">Téléphone : </label>
+                                {% block phone_number %} 
+                                {{ vehicle.customer.personal_data.phone_number }}
+                                {% endblock phone_number %}
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label for="city" class="control-label">Ville : </label>
+                                {% block city %}
+                                {{ vehicle.customer.address.city }}
+                                {% endblock city %}    
+                            </div>
+                            <div class="col-md-4">
+                                <label for="zipcode" class="control-label">Code Postal : </label>
+                                {% block zip_code %}
+                                {{ vehicle.customer.address.zip_code }}
+                                {% endblock zip_code %}
+                            </div>                        
+                            <div class="col-md-4">
+                                <label for="afpa_number" class="control-label">N° AFPA : </label>
+                                {% block afpa_number %}
+                                {{ vehicle.customer.afpa_number }}
+                                {% endblock afpa_number %}
+                            </div> 
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br/>
+        </div> 
+    {% endblock customer %}
+
+    <hr>
+
+    {% block vehicle %}
+        <h2>Véhicule :</h2>
+        <div class="row">
+
+            {% if vehicle.motorized.brand %}
+                <div class="col-md-3">  
+                    <label class="control-label" id="field">Marque : </label>
+                    {{ vehicle.motorized.brand }}
+                </div>
+            {% endif %}
+
+            <div class="col-md-3">
+                <label class="control-label">Modele : </label> 
+                {{ vehicle.model_name }}
+            </div>
+
+            {% if vehicle.motorized.license_plate %}
+                <div class="col-md-3">
+                    <label class="control-label" id="field">Immatriculation : </label> 
+                    {{ vehicle.motorized.license_plate }}
+                </div>
+            {% endif %}
+
+            <div class="col-md-3">
+                <label class="control-label">Réceptionnaire : </label> 
+                {{ user.get_username }}
+            </div>
+        </div>
+    {% endblock vehicle %}
+
+    <hr>
+
+    {% block form %}
         <form class="" action="" method="post">
             {% csrf_token %}
             <div class="form-group">
-                    <label for="textarea" class="control-label">date de restitution prévisionnelle du véhicule<span class="mandatory"> *</span></label>
+                <label for="textarea" class="control-label">Date de restitution prévisionnelle du véhicule :<span class="mandatory"> *</span></label>
+                <div class="row">
                     <div class="col-md-3">
-                        {{ form.return_date }}
+                        {{form.return_date}}
                     </div>
                 </div>
+            </div>
             <div id="input">
                 <div class="form-group">
-                    <label for="textarea" class="control-label">Description des symptômes du client<span class="mandatory"> *</span></label>
+                    <label for="textarea" class="control-label">Description des symptômes du client :<span class="mandatory"> *</span></label>
                     <div row="4">{{ form.diagnostic }}</div>
                     <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="textarea" class="control-label">Intervention à réaliser<span class="mandatory"> *</span></label>
+                    <label for="textarea" class="control-label">Intervention à réaliser :<span class="mandatory"> *</span></label>
                     <div row="4">{{ form.to_do_actions }}</div>
                     <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
                 </div>
             </div>
+    {% endblock form %}
+
+    {% block button %}
             <div class="row">
                 <div class="col-md-10">
                 </div>
@@ -142,9 +183,10 @@
                 </div>
             </div>
         </form>
-    </div>
+        {% endblock button %}
+</div>
 
-
+{% block script %}
     <script src="{% static 'garage/js/jquery-slim.min.js' %}"></script>
     <script>
         window.jQuery || document.write('<script src="{% static "garage/js/jquery-slim.min.js" %}"><\/script>')
@@ -152,6 +194,6 @@
     <script src="{% static 'garage/js/popper.min.js' %}"></script>
     <script src="{% static 'garage/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'garage/js/holder.min.js' %}"></script>
-
+{% endblock script %}
 {% endblock content %}
 

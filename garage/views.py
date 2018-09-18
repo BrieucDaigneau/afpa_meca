@@ -311,7 +311,8 @@ class ReparationOrderUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         reparationorder = ReparationOrder.objects.get(pk=self.kwargs['pk'])  
-        context['reparationorder'] = reparationorder   
+        context['reparationorder'] = reparationorder
+        context['vehicle'] =  reparationorder.vehicle
         return context  
 
 
