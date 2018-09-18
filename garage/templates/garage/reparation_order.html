@@ -76,7 +76,9 @@
                                 {% block address %} 
                                 {{ vehicle.customer.address.street_number }} 
                                 {{ vehicle.customer.address.street_name }} 
-                                {{ vehicle.customer.address.street_complement }}
+                                {% if vehicle.customer.address.street_complement %}
+                                    {{ vehicle.customer.address.street_complement }}
+                                {% endif %}
                                 {% endblock address %} 
                             </div>
                             
