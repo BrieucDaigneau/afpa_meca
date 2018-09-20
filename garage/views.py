@@ -444,7 +444,6 @@ class QuotationCreate(View):
             print( "################# quotation_form invalid")
             return render(request, 'garage/quotation_create.html')
 
-
     def get_context_data(self, **kwargs):
         context = super(QuotationCreate, self).get_context_data(**kwargs)
         context['reparation_order'] = ReparationOrder.object.get(pk=self.kwargs['reparation_orders_id'])
