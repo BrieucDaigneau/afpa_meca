@@ -47,6 +47,7 @@ class CustomerCreateView(View):
                 dictio = self.getForm( request )   
 
                 address_form = dictio['address_form']
+                print("erreur 3", address_form)
                                      
                 if not address_form.is_valid():                         
                     modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
@@ -54,6 +55,7 @@ class CustomerCreateView(View):
                 else :
                     try:
                         address = address_form.save(commit=False)
+                        print("erreur 1")
                         json_data = json.loads(address_form.cleaned_data['json_hidden'])
                         prop = json_data['properties']
                         address.city = prop['city']
@@ -66,6 +68,7 @@ class CustomerCreateView(View):
                             address.street_name = street
                         else:
                             address.street_name = name
+                        print("erreur 2")
                         address.save()
                     
                     except DatabaseError:   
