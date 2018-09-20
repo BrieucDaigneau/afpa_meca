@@ -63,6 +63,17 @@
                     <div id="form_address">
                         {% block addressupdate %}
                         <div class="row">
+                            <div class="col-md-4">
+                                <label for="{{ address_form.city_zip_code.id_for_label }}" class="control-label">Ville ou Code postal<span class="mandatory"> *</span></label>
+                                {{ address_form.city_zip_code }}
+                                <div class="panel-footer" v-if="citiesZipCodesList.length">
+                                    <ul class="list-group">
+                                        <li class="list-group-item" v-for="cityZip in citiesZipCodesList" @click="selectedCityZip(cityZip)">
+                                                [[ cityZip[0] ]] ([[ cityZip[1] ]])
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                             <div class="col-md-8">
                                 <label for="{{ address_form.address.id_for_label }}" class="control-label">Adresse<span class="mandatory"> *</span></label>
                                 {{ address_form.address }} 
@@ -75,17 +86,6 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
-                                <label for="{{ address_form.city_zip_code.id_for_label }}" class="control-label">Ville ou Code postal<span class="mandatory"> *</span></label>
-                                {{ address_form.city_zip_code }}
-                                <div class="panel-footer" v-if="citiesZipCodesList.length">
-                                    <ul class="list-group">
-                                        <li class="list-group-item" v-for="cityZip in citiesZipCodesList" @click="selectedCityZip(cityZip)">
-                                                [[ cityZip[0] ]] ([[ cityZip[1] ]])
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
                         </div>
                         {% endblock addressupdate %}
                         <div>{{ address_form.json_hidden }}</div>
