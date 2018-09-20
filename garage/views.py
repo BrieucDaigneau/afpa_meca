@@ -57,7 +57,6 @@ class CustomerCreateView(View):
                 else :
                     try:
                         address = address_form.save(commit=False)
-                        print("erreur 1")
                         json_data = json.loads(address_form.cleaned_data['json_hidden'])
                         prop = json_data['properties']
                         address.city = prop['city']
@@ -70,7 +69,6 @@ class CustomerCreateView(View):
                             address.street_name = street
                         else:
                             address.street_name = name
-                        print("erreur 2")
                         address.save()
                     
                     except DatabaseError:   

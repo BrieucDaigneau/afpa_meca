@@ -96,7 +96,7 @@
                             <label for="{{ address_form.street_complement.id_for_label }}" class="control-label">Complément d'adresse</label>
                                 {{ address_form.street_complement }}
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-5" id="afpa_img">
                             <label for="{{ personal_data_form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img</label>
                             {{ personal_data_form.afpa_card_img }}
                         </div>
@@ -136,10 +136,12 @@
                 document.getElementById("id_afpa_number").value = "Salarié"
                 document.getElementById("afpaNumberLabel").style.display = "none";
                 document.getElementById("afpaNumberInput").style.display = "none";
+                document.getElementById("afpa_img").style.display = "none";
             } else if (document.getElementById("salaried").checked == false){
                 document.getElementById("id_afpa_number").value = ""
                 document.getElementById("afpaNumberLabel").style.display = "block";
                 document.getElementById("afpaNumberInput").style.display = "block";
+                document.getElementById("afpa_img").style.display = "block";
             }
         }
     </script>

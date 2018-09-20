@@ -31,8 +31,7 @@ class AddressForm(forms.ModelForm):
         model = Address
         fields = ["street_complement"]
         widgets = {
-            'street_complement': TextInput(attrs={'class': 'form-control'}),
-            
+            'street_complement': TextInput(attrs={'class': 'form-control'}),    
         }
 
     city_zip_code = forms.CharField(widget=TextInput(attrs={'class': 'form-control require-input', 
