@@ -6,43 +6,16 @@ from datetime import datetime
 
 from afpa_meca.business_application import VehicleConfig
 
-        
-class ZipCode(models.Model):
-    zip_code = models.CharField(max_length=15, verbose_name = 'Code Postal',)
-
-    def __str__(self):
-        return str( self.zip_code )
-
-    class Meta:
-        verbose_name        = "Code Postal"
-        verbose_name_plural = "Codes Postaux"
-
-
-class City(models.Model):
-    city_name   = models.CharField(max_length =25, verbose_name = "Ville",)
-    zip_codes   = models.ManyToManyField(ZipCode, verbose_name="Code Postal")
-
-    def __str__(self):
-        return  self.city_name
-
-    class Meta:
-        verbose_name        = "Ville"
-        verbose_name_plural = "Villes"   
-     
-
 class Address(models.Model):
-    street              = models.TextField(max_length=50, verbose_name = "Nom de la rue",)
-    street_number       = models.CharField(max_length = 30, null=True, blank = True, verbose_name = "Numéro de la rue",)
-    street_complement   = models.CharField(max_length =50, null=True, blank = True, verbose_name = "Complément d'adresse",)
-    city                = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name = 'Ville')
-    zipCode             = models.ForeignKey(ZipCode, on_delete=models.CASCADE, verbose_name = 'Code Postal')
- 
+    city               = models.CharField(max_length=100, null=True, verbose_name = 'Ville')
+    zip_code           = models.CharField(max_length=20, null=True, verbose_name = 'Code Postal')
+    street_name        = models.CharField(max_length=200, null=True, verbose_name = "Nom de la rue")
+    street_number      = models.CharField(max_length=10, null=True, blank=True, verbose_name = "Numéro de la rue")
+    street_complement  = models.CharField(max_length =50, null=True, blank = True, verbose_name = "Complément d'adresse",)    
     class Meta:
-        verbose_name = "Adresse"
-
-    def __str__(self):
-        return self.street_number + " " + str(self.street) + " " + self.street_complement + " " + str(self.zipCode) + " " + str(self.city)
-
+        verbose_name = 'Adresse'
+        verbose_name_plural = 'Adresses'
+  
 
 class PersonalData(models.Model):
     mail            = models.EmailField("Email ", max_length=35, unique=True)
@@ -99,12 +72,10 @@ class MyManager(models.Manager):
 # filtre un dico de véhicules par application (car/bike) et par id_client
 # et retourne un dico avec les modèles correspondants (voiture ou velo/moto)
     def filter_by_user(self, id_customer):
-        # many access to base but not to many
         # on suppose qu'un client aurra tout au plus 5 véhicules
         vehicles =  self.filter(customer=id_customer) 
         typed_vehicles = [self.get_child(v.id) for v in vehicles ]
         return self.filter_type( typed_vehicles )
-
 
 
 class Vehicle(models.Model):

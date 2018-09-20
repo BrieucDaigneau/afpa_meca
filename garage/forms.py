@@ -24,56 +24,48 @@ class PersonalDataForm(forms.ModelForm):
             'mail': TextInput(attrs={'class': 'form-control'}),
             'phone_number': TextInput(attrs={'class': 'form-control'}),
             'afpa_card_img': FileInput(attrs={'class': 'form-control'})
-        }  
-
-class AddressUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Address
-        fields = ["street","street_number","street_complement"]
-        widgets = {
-            'street': TextInput(attrs={'class': 'form-control'}),
-            'street_number': NumberInput(attrs={'class': 'form-control'}),
-            'street_complement': TextInput(attrs={'class': 'form-control'})
         }
 
-
-class AddressForm(forms.ModelForm):
+class AddressForm(forms.ModelForm):  
     class Meta:
         model = Address
-        fields = ["street","street_number","street_complement"]
+        fields = ["city","zip_code", "street_complement"]
         widgets = {
-            'street': TextInput(attrs={'class': 'form-control'}),
-            'street_number': NumberInput(attrs={'class': 'form-control'}),
-            'street_complement': TextInput(attrs={'class': 'form-control'})
+            'city': TextInput(attrs={'class': 'form-control'}),
+            'zip_code': TextInput(attrs={'class': 'form-control'}),
+            'street_complement': TextInput(attrs={'class': 'form-control'}),
+            
         }
+
+    city_zip_code = forms.CharField(widget=TextInput(attrs={'class': 'form-control require-input', 
+                                                        'v-model': 'cityZipCode', 'autocomplete': 'off'}),
+                                label="Ville ou Code Postal", required=True)
+
+    address = forms.CharField(widget=TextInput(attrs={'class': 'form-control require-input', 
+                                                        'v-model': 'address', 'autocomplete': 'off'}),
+                        label="Adresse", required=True)
+
+    json_hidden = forms.CharField(widget=forms.HiddenInput(attrs={'v-model': 'addressJSON'}))
 
     def clean(self):
-        cleaned_data = super().clean()
-        street_number = self.cleaned_data['street_number']
-        street = self.cleaned_data['street']
-        r = Address.objects.filter(street_number=street_number,street=street)
-        if r.count():
-            raise forms.ValidationError("l'adresse existe déjà")
-        return cleaned_data
+        json = self.cleaned_data.get('json_hidden')
+        if not json:
+            raise forms.ValidationError("Veuillez sélectionner une adresse")
+        return self.cleaned_data
 
 
-
-class ZipCodeForm(forms.ModelForm):
-    class Meta:
-        model = ZipCode
-        fields = ["zip_code"]
+class AddressUpdateForm(forms.ModelForm):
+     class Meta:
+        model = Address
+        fields = ["city", "zip_code", "street_number","street_name", "street_complement"]
         widgets = {
-            'zip_code': TextInput(attrs={'class': 'form-control'})
-        }  
-
-
-class CityForm(forms.ModelForm):
-    class Meta:
-        model = City
-        fields = ["city_name"]
-        widgets = {
-            'city_name': TextInput(attrs={'class': 'form-control'})
-        }  
+            'city': TextInput(attrs={'class': 'form-control'}),
+            'zip_code': TextInput(attrs={'class': 'form-control'}),
+            'street_number': TextInput(attrs={'class': 'form-control'}),
+            'street_name': TextInput(attrs={'class': 'form-control'}),
+            'street_complement': TextInput(attrs={'class': 'form-control'}),
+        }
+        
 
 
 class MotorizedForm(forms.ModelForm):
