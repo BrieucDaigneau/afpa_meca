@@ -69,7 +69,6 @@
 
     function redirect() {
         if (document.vehicleChecked && window.location.href.indexOf("vehicules") >= 0){
-            console.log(window.location.href)
             window.location = "{% url 'garage:vehicle-update' 1 %}".replace(1, document.vehicleChecked)
         }
         else if (document.vehicleChecked && window.location.href.indexOf("select") >= 0){

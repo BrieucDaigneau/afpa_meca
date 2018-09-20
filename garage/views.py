@@ -341,11 +341,11 @@ class QuotationCreate(View):
 
     def getForm(self, requ):
         quotation_form = QuotationForm(requ)
-        component_form = ComponentForm(requ)
+        component_forms = ComponentFormset(requ)
 
         dico = {
             'quotation_form': quotation_form,
-            'component_form': component_form,
+            'component_forms': component_forms,
 
         }
         return dico
@@ -353,15 +353,16 @@ class QuotationCreate(View):
     def get(self, request, **kwargs):
         return render(request, self.myTemplate_name, self.getForm( None ) )
     
+    
     def post(self, request, **kwargs):
         forms = self.getForm(request.POST)
 
         quotation_form = forms['quotation_form']
-        component_form = forms['component_form']
+        component_forms = forms['component_forms']
 
-        print( "####" , quotation_form )
+        print( "####" ,  component_forms)
         
-        if component_form.is_valid() and quotation_form.is_valid() :
+        if quotation_form.is_valid() and component_forms.is_valid() :
             
             quotation = quotation_form.save(commit=False)
             
@@ -376,14 +377,18 @@ class QuotationCreate(View):
             quotation.amount = 0 #component.price*component.quantity
             quotation.save()
 
-            component = Component.objects.create(price=component_form.cleaned_data['price'],
-                                                reference=component_form.cleaned_data['reference'],
-                                                name=component_form.cleaned_data['name'],
-                                                quantity=component_form.cleaned_data['quantity'],
-                                                supplier=quotation.supplier,
-                                                quotation=quotation)
+            print( "####" , component_forms )
 
-            component.save()
+            for component_form in component_forms :
+                
+                component = Component.objects.create(price=component_form.cleaned_data['price'],
+                                                    reference=component_form.cleaned_data['reference'],
+                                                    name=component_form.cleaned_data['name'],
+                                                    quantity=component_form.cleaned_data['quantity'],
+                                                    supplier=quotation.supplier,
+                                                    quotation=quotation)
+
+                component.save()
 
             return redirect('garage:home')
             

@@ -28,28 +28,45 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-            <div class="row mt-4">
-                <div class="col-md-3">
-                    <label class=" form-group control-label" for="" >Quantité :<span class="mandatory"> *</span></label>
-                        {{ component_form.quantity }}
+            {{ component_forms.management_form }}
+            <div class="row mt-4" style="text-align: center;">
+                    <div class="col-md-3">
+                        <label class=" form-group control-label" for="{{ component_form.quantity.id_for_label }}" >Quantité :<span class="mandatory"> *</span></label>
+                    </div>
+
+                    
+                    <div class="col-md-3">
+                        <label class=" form-group control-label" for="{{ component_form.reference.id_for_label }}" >Référence :<span class="mandatory"> *</span></label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class=" form-group control-label" for="{{ component_form.name.id_for_label }}" >Libellé :<span class="mandatory"> *</span></label>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label class=" form-group control-label" for="{{ component_form.price.id_for_label }}" >Prix :<span class="mandatory"> *</span></label>
+                    </div>
                 </div>
 
-                <div class="col-md-3">
-                    <label class=" form-group control-label" for="{{ component_form.reference.id_for_label }}" >Référence :<span class="mandatory"> *</span></label>
-                        {{ component_form.reference }}
+            {% for component_form in component_forms %}
+
+                <div class="row  mt-1">
+                    <div class="col-md-3">
+                            {{ component_form.quantity }}
+                    </div>
+
+                    <div class="col-md-3">
+                            {{ component_form.reference }}
+                    </div>
+                    <div class="col-md-3">
+                            {{ component_form.name }}
+                    </div>
+                    
+                    <div class="col-md-3">
+                            {{ component_form.price }}
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <label class=" form-group control-label" for="{{ component_form.name.id_for_label }}" >Libellé :<span class="mandatory"> *</span></label>
-                        {{ component_form.name }}
-                </div>
-                
-                <div class="col-md-3">
-                    <label class=" form-group control-label" for="{{ component_form.price.id_for_label }}" >Prix :<span class="mandatory"> *</span></label>
-                        {{ component_form.price }}
-                </div>
-            </div>
+            {% endfor %}
 
             {% block payoff %}
                 {% comment %}

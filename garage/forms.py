@@ -1,10 +1,9 @@
 from django import forms
-from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput, Select
+from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput, Select, formset_factory
 from django.forms.utils import ErrorList
 from django.db.models import Max
 
 from .models import *
-
 
 class CustomerForm(forms.ModelForm):
     class Meta:
@@ -112,7 +111,7 @@ class ReparationOrderForm(forms.ModelForm):
 
 
 class ComponentForm(forms.Form):
-    
+            
     reference = forms.CharField()
     name = forms.CharField()
     price = forms.FloatField()
@@ -122,7 +121,11 @@ class ComponentForm(forms.Form):
     name.widget.attrs.update({'class': 'form-control'})
     price.widget.attrs.update({'class': 'form-control'})
     quantity.widget.attrs.update({'class': 'form-control'})
-   
+    
+    # def formset_factory(self, form, formset=ComponentFormSet, extra=2):
+    #     formset = ComponentFormSet()
+
+ComponentFormset = formset_factory(ComponentForm, extra=2)
 
 class QuotationForm(forms.ModelForm):
 
@@ -138,3 +141,7 @@ class QuotationForm(forms.ModelForm):
         widgets = {
             'num_quotation_supplier' : TextInput(attrs={'class': 'form-control'})
         }
+
+
+# ComponentFormSet = formset_factory(ComponentForm, extra=2)
+# formset = ComponentFormSet

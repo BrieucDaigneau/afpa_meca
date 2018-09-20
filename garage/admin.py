@@ -25,3 +25,6 @@ class PersonalDataAdmin(admin.ModelAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Supplier)
+admin.site.register(Quotation)
+admin.site.register(ReparationOrder)
+admin.site.register(Component)
