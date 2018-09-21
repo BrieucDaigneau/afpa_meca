@@ -1,4 +1,4 @@
-# afpa_meca
+﻿# afpa_meca
 Projet application web Pôle mécanique AFPA
 
 Pre-requis :    
@@ -28,6 +28,4 @@ Pre-requis :
                                 
 
 
-
-pseudo Gaetan : Gama
 
