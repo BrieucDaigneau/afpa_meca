@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.shortcuts import render, get_object_or_404, redirect, reverse, render_to_response
 from django.views.generic import CreateView, ListView, View, FormView, DetailView, TemplateView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest
 from django.urls import reverse_lazy
@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import logout
 from django.db import DatabaseError, transaction
 from django.core.exceptions import ValidationError
+from django.db.models import Max, Sum
 
 import json
 
@@ -25,6 +26,7 @@ class Home(TemplateView):
 
 
 class CustomerCreateView(View):
+
     def getForm(self, request):
         address_form = AddressForm(request.POST or None)    
         customer_form = CustomerForm(request.POST or None)   
@@ -47,6 +49,7 @@ class CustomerCreateView(View):
                 dictio = self.getForm( request )   
 
                 address_form = dictio['address_form']
+                print("erreur 3", address_form)
                                      
                 if not address_form.is_valid():                         
                     modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
@@ -333,5 +336,63 @@ def search(request):
     return render(request, 'garage/search.html', context) 
 
 
-    
+class QuotationCreate(View): 
+    myTemplate_name = 'garage/quotation_create.html'
 
+    def getForm(self, requ):
+        quotation_form = QuotationForm(requ)
+        component_form = ComponentForm(requ)
+
+        dico = {
+            'quotation_form': quotation_form,
+            'component_form': component_form,
+
+        }
+        return dico
+    
+    def get(self, request, **kwargs):
+        return render(request, self.myTemplate_name, self.getForm( None ) )
+    
+    def post(self, request, **kwargs):
+        forms = self.getForm(request.POST)
+
+        quotation_form = forms['quotation_form']
+        component_form = forms['component_form']
+
+        print( "####" , quotation_form )
+        
+        if component_form.is_valid() and quotation_form.is_valid() :
+            
+            quotation = quotation_form.save(commit=False)
+            
+            # attribution d'un id de devis
+            quotation_id_max = list(Quotation.objects.all().aggregate(Max('id')).values())[0]
+            quotation.number = quotation_id_max + 1 if quotation_id_max is not None else 0   
+
+
+            quotation.reparation_order = ReparationOrder.objects.get(pk=self.kwargs['reparation_orders_id'])
+            quotation.user_profile = self.request.user
+
+            quotation.amount = 0 #component.price*component.quantity
+            quotation.save()
+
+            component = Component.objects.create(price=component_form.cleaned_data['price'],
+                                                reference=component_form.cleaned_data['reference'],
+                                                name=component_form.cleaned_data['name'],
+                                                quantity=component_form.cleaned_data['quantity'],
+                                                supplier=quotation.supplier,
+                                                quotation=quotation)
+
+            component.save()
+
+            return redirect('garage:home')
+            
+        else : 
+            print( "################# quotation_form invalid")
+            return render(request, 'garage/quotation_create.html')
+
+    def get_context_data(self, **kwargs):
+        context = super(QuotationCreate, self).get_context_data(**kwargs)
+        context['reparation_order'] = ReparationOrder.object.get(pk=self.kwargs['reparation_orders_id'])
+        print("#######################", context)
+        return context

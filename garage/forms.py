@@ -1,6 +1,7 @@
 from django import forms
-from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea
+from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput, Select
 from django.forms.utils import ErrorList
+from django.db.models import Max
 
 from .models import *
 
@@ -28,12 +29,9 @@ class PersonalDataForm(forms.ModelForm):
 class AddressForm(forms.ModelForm):  
     class Meta:
         model = Address
-        fields = ["city","zip_code", "street_complement"]
+        fields = ["street_complement"]
         widgets = {
-            'city': TextInput(attrs={'class': 'form-control'}),
-            'zip_code': TextInput(attrs={'class': 'form-control'}),
-            'street_complement': TextInput(attrs={'class': 'form-control'}),
-            
+            'street_complement': TextInput(attrs={'class': 'form-control'}),    
         }
 
     city_zip_code = forms.CharField(widget=TextInput(attrs={'class': 'form-control require-input', 
@@ -113,5 +111,30 @@ class ReparationOrderForm(forms.ModelForm):
         }
 
 
+class ComponentForm(forms.Form):
+    
+    reference = forms.CharField()
+    name = forms.CharField()
+    price = forms.FloatField()
+    quantity = forms.IntegerField()
+    
+    reference.widget.attrs.update({'class': 'form-control'})
+    name.widget.attrs.update({'class': 'form-control'})
+    price.widget.attrs.update({'class': 'form-control'})
+    quantity.widget.attrs.update({'class': 'form-control'})
+   
 
+class QuotationForm(forms.ModelForm):
 
+    supplier = forms.ModelChoiceField(queryset=None, widget=Select(attrs={'class': 'custom-select'}), 
+                                            label="Départ" )                                                    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['supplier'].queryset = Supplier.objects.filter()
+
+    class Meta:
+        model = Quotation
+        fields =('supplier', 'num_quotation_supplier' )
+        widgets = {
+            'num_quotation_supplier' : TextInput(attrs={'class': 'form-control'})
+        }

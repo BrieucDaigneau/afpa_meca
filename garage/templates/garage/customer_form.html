@@ -63,6 +63,17 @@
                     <div id="form_address">
                         {% block addressupdate %}
                         <div class="row">
+                            <div class="col-md-4">
+                                <label for="{{ address_form.city_zip_code.id_for_label }}" class="control-label">Ville ou Code postal<span class="mandatory"> *</span></label>
+                                {{ address_form.city_zip_code }}
+                                <div class="panel-footer" v-if="citiesZipCodesList.length">
+                                    <ul class="list-group">
+                                        <li class="list-group-item" v-for="cityZip in citiesZipCodesList" @click="selectedCityZip(cityZip)">
+                                                [[ cityZip[0] ]] ([[ cityZip[1] ]])
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                             <div class="col-md-8">
                                 <label for="{{ address_form.address.id_for_label }}" class="control-label">Adresse<span class="mandatory"> *</span></label>
                                 {{ address_form.address }} 
@@ -75,17 +86,6 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
-                                <label for="{{ address_form.city_zip_code.id_for_label }}" class="control-label">Ville ou Code postal<span class="mandatory"> *</span></label>
-                                {{ address_form.city_zip_code }}
-                                <div class="panel-footer" v-if="citiesZipCodesList.length">
-                                    <ul class="list-group">
-                                        <li class="list-group-item" v-for="cityZip in citiesZipCodesList" @click="selectedCityZip(cityZip)">
-                                                [[ cityZip[0] ]] ([[ cityZip[1] ]])
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
                         </div>
                         {% endblock addressupdate %}
                         <div>{{ address_form.json_hidden }}</div>
@@ -96,7 +96,7 @@
                             <label for="{{ address_form.street_complement.id_for_label }}" class="control-label">Complément d'adresse</label>
                                 {{ address_form.street_complement }}
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-5" id="afpa_img">
                             <label for="{{ personal_data_form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img</label>
                             {{ personal_data_form.afpa_card_img }}
                         </div>
@@ -136,10 +136,12 @@
                 document.getElementById("id_afpa_number").value = "Salarié"
                 document.getElementById("afpaNumberLabel").style.display = "none";
                 document.getElementById("afpaNumberInput").style.display = "none";
+                document.getElementById("afpa_img").style.display = "none";
             } else if (document.getElementById("salaried").checked == false){
                 document.getElementById("id_afpa_number").value = ""
                 document.getElementById("afpaNumberLabel").style.display = "block";
                 document.getElementById("afpaNumberInput").style.display = "block";
+                document.getElementById("afpa_img").style.display = "block";
             }
         }
     </script>

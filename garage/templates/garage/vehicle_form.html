@@ -63,13 +63,15 @@
                             <label for="{{ form.vin.id_for_label }}" class="control-label">Vin<span class="mandatory"> *</span></label>
                             {{ form.vin }}
                         </div>
+                    </div> 
+                    <div class="row mt-3">
                         <div class="col-md-6">
                             <label for="{{ form.mileage.id_for_label }}" class="control-label">Kilometrage</label>
                             {{ form.mileage }}
                         </div>
-                    </div> 
+                    </div>
                     
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col-md-4">
                             <label for="{{ car_form.circulation_date.id_for_label }}" class="control-label">Date mise en circulation<span class="mandatory"> *</span></label>
                             {{ form.circulation_date }}
