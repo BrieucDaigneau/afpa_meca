@@ -3,28 +3,32 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-11">
                 <h1 id="title" class="title">{% block title %}Création nouveau devis {% endblock title %}</h1>
                 {{ reparation_order.vehicle.customer.lastname }}
             </div>
         </div>
         <form class="needs-validation forms" method="post" enctype="multipart/form-data" id="my_form">
             {% csrf_token %}
-            <div class="row mt-5 supplier">
-                <div class="col-md-6">
-                    <div class="row">
-                        <label class="col-md-4 form-group control-label" for="" >Fournisseur :<span class="mandatory"> *</span></label>
-                        <div class="col-md-8">
-                            {{quotation_form.supplier}}
+            <div class="row">
+                <div class="col-md-11">
+                    <div class="row mt-5 supplier">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-4 form-group control-label" for="" >Fournisseur :<span class="mandatory"> *</span></label>
+                                <div class="col-md-8">
+                                    {{quotation_form.supplier}}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="row">
-                        <label class="col-md-5 form-group control-label" for="" >N° Devis fournisseur :<span class="mandatory"> *</span></label>
-                        <div class="col-md-7">
-                            {{ quotation_form.num_quotation_supplier }}
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label class="col-md-5 form-group control-label" for="" >N° Devis fournisseur :<span class="mandatory"> *</span></label>
+                                <div class="col-md-7">
+                                    {{ quotation_form.num_quotation_supplier }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -34,9 +38,7 @@
             <div class="row mt-4" style="text-align: center;">
                     <div class="col-md-1">
                         <label class=" form-group control-label" for="{{ component_form.quantity.id_for_label }}" >Qté :<span class="mandatory"> *</span></label>
-                    </div>
-
-                    
+                    </div>                    
                     <div class="col-md-4">
                         <label class=" form-group control-label" for="{{ component_form.reference.id_for_label }}" >Référence :<span class="mandatory"> *</span></label>
                     </div>
@@ -48,18 +50,20 @@
                         <label class=" form-group control-label" for="{{ component_form.price.id_for_label }}" >Prix :<span class="mandatory"> *</span></label>
                     </div>
                 </div>
+
                 <div id="formsetZone">
             {% for component_form in component_forms %}
-            <div class="nsorte row mt-1">
-                    {{ component_form.quantity }}
-                    {{ component_form.reference }}
-                    {{ component_form.name }}    
-                    {{ component_form.price }}
+            <div class="nsorte row">
+                    {{ component_form.quantity }}&nbsp;
+                    {{ component_form.reference }} &nbsp;
+                    {{ component_form.name }}&nbsp;
+                    {{ component_form.price }} &nbsp;
             </div>
             {% endfor %}
         </div>
-            <button class="btn btn-success btn-sm" id="bt_add_sorte" type="button">+</button>
-    
+        <div class="row">
+            <button class="btn btn-success mt-3" id="bt_add_sorte" type="button">+</button>
+        </div>
             {% block payoff %}
                 {% comment %}
                 <div class="row mt-5">
@@ -80,7 +84,7 @@
                     <div class="col-md-2">
                         <a href="javascript:window.history.go(-1);" class="btn btn-primary btn-sm btn-block button" id="button">Annuler</a>
                     </div>
-                    <div class="col-md-4"></div>      
+                    <div class="col-md-3"></div>      
                     <div class="col-md-2">
                         {% block back_home %}   
                          {% comment %}   <button class="btn btn-primary btn-sm btn-block button" type="submit" id="validerAccueil">Valider/Retour Accueil</button> {% endcomment %}
@@ -88,14 +92,16 @@
                     </div> 
                     <div class="col-md-2"></div>
                     <div class="col-md-2">
-                        <button class="btn btn-primary btn-sm btn-block button" type="submit" id="valider">{% block next %}Valider{% endblock next %}</button>
+                        <button class="btn btn-primary btn-block button" type="submit" id="valider">{% block next %}Valider{% endblock next %}</button>
                     </div>
                 </div>                    
         </form>
         <div style="display:none;">
             <div id="eform" class="nsorte row mt-1">
-                       {{ component_forms.empty_form }}
-                <div class="btn btn-warning btn-sm bt_rm_sorte">-</div>
+                {% for component in component_forms.empty_form %}
+                    {{ component }}&nbsp;
+                {% endfor %}
+                <div class="btn btn-warning bt_rm_sorte">-</div>
             </div>
         </div>
     </div>
