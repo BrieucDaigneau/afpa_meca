@@ -18,7 +18,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group {% if customer_form.lastname.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ customer_form.lastname.id_for_label }}" class="control-label">Nom</label>
+                                <label for="{{ customer_form.lastname.id_for_label }}" class="control-label">Nom<span class="mandatory"> *</span></label>
                                 {{ customer_form.lastname }}
                             </div>
                             <div class="invalid-feedback">
@@ -27,7 +27,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group {% if customer_form.firstname.errors %}has-warning has-feedback{% endif %}">
-                                <label for="{{ customer_form.firstname.id_for_label }}" class="control-label">Prenom</label>
+                                <label for="{{ customer_form.firstname.id_for_label }}" class="control-label">Prenom<span class="mandatory"> *</span></label>
                                 {{ customer_form.firstname }}
                             </div>
                             <div class="invalid-feedback">
@@ -38,74 +38,113 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="{{ customer_form.afpa_number.id_for_label }}" class="control-label">Numéro carte AFPA</label>
-                            {{ customer_form.afpa_number }}
+                            <div class="row">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="salaried" onclick="hiddenNumber()">
+                                    <label class="form-check-label control-label" for="salaried">Salarié</label>
+                                </div>
+                            </div>
+                            <label id="afpaNumberLabel" class="control-label" for="{{ customer_form.afpa_number.id_for_label }}" class="control-label">Numéro carte AFPA<span class="mandatory"> *</span></label>
+                                <div id="afpaNumberInput">
+                                    {{ customer_form.afpa_number }}
+                                </div>
                         </div>
+
                         <div class="col-md-6">
-                            <label for="{{ personal_data_form.phone_number.id_for_label }}" class="control-label">Téléphone</label>
+                            <div class="row"><div>&nbsp;</div></div>
+                            <label for="{{ personal_data_form.phone_number.id_for_label }}" class="control-label">Téléphone<span class="mandatory"> *</span></label>
                             {{ personal_data_form.phone_number }}
                         </div>
                         <div class="col-md-6">
-                            <label for="{{ personal_data_form.mail.id_for_label }}" class="control-label">Email</label>
+                            <label for="{{ personal_data_form.mail.id_for_label }}" class="control-label">Email<span class="mandatory"> *</span></label>
                             {{ personal_data_form.mail }}
                         </div>
                     </div> 
-                    
+                    <div id="form_address">
+                        {% block addressupdate %}
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="{{ address_form.address.id_for_label }}" class="control-label">Adresse<span class="mandatory"> *</span></label>
+                                {{ address_form.address }} 
+                                <div class="panel-footer" v-if="addressesList.length">
+                                    <ul class="list-group">
+                                        <li class="list-group-item" v-for="address in addressesList" @click="selectedAddress(address)">
+                                            [[ address.properties.label ]] 
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="{{ address_form.city_zip_code.id_for_label }}" class="control-label">Ville ou Code postal<span class="mandatory"> *</span></label>
+                                {{ address_form.city_zip_code }}
+                                <div class="panel-footer" v-if="citiesZipCodesList.length">
+                                    <ul class="list-group">
+                                        <li class="list-group-item" v-for="cityZip in citiesZipCodesList" @click="selectedCityZip(cityZip)">
+                                                [[ cityZip[0] ]] ([[ cityZip[1] ]])
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {% endblock addressupdate %}
+                        <div>{{ address_form.json_hidden }}</div>
+                    </div>
+
                     <div class="row">
-                        <div class="col-md-3">
-                            <label for="{{ address_form.street_number.id_for_label }}" class="control-label">Numéro de rue</label>
-                            {{ address_form.street_number }}
+                        <div class="col-md-7">
+                            <label for="{{ address_form.street_complement.id_for_label }}" class="control-label">Complément d'adresse</label>
+                                {{ address_form.street_complement }}
                         </div>
                         <div class="col-md-5">
-                            <label for="{{ address_form.street.id_for_label }}" class="control-label">Adresse</label>
-                            {{ address_form.street }}
-                        </div>
-                        <div class="col-md-4">
-                            <label for="{{ address_form.street_complement.id_for_label }}" class="control-label">Complement d'adresse</label>
-                            {{ address_form.street_complement }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <label for="{{ zipCode_form.zip_code.id_for_label }}" class="control-label">Code Postal</label>
-                            {{ zipCode_form.zip_code }}
-                        </div>
-                    
-                        <div class="col-md-4">
-                            <label for="{{ city_form.city_name.id_for_label }}" class="control-label">Ville</label>
-                            {{ city_form.city_name }}
-                        </div>
-                        <div class="col-md-4">
                             <label for="{{ personal_data_form.afpa_card_img.id_for_label }}" class="control-label">Carte AFPA img</label>
                             {{ personal_data_form.afpa_card_img }}
                         </div>
                     </div>
                     <div> {{ address_form.non_field_errors }} </div>
-
+                        
                     <div class="msgError"> {{ internal_error }} </div>     
-
+                    
                     <div class="row mt-5">
                         <div class="col-md-2">
                             <a href="javascript:window.history.go(-1);" class="btn btn-primary btn-sm btn-block button" id="button">Annuler</a>
                         </div>
                         <div class="col-md-4"></div>      
-                        <div class="col-md-2">
-                            {% block back_home %}   
-                             {% comment %}   <button class="btn btn-primary btn-sm btn-block button" type="submit" id="validerAccueil">Valider/Retour Accueil</button> {% endcomment %}
-                            {% endblock back_home %}    
-                        </div> 
+                        <div class="col-md-2"></div> 
                         <div class="col-md-2"></div>
                         <div class="col-md-2">
                             <button class="btn btn-primary btn-sm btn-block button" type="submit" id="valider">{% block next %}Etape suivante{% endblock next %}</button>
                         </div>
                     </div>   
-
+                        
                 </form>
 
             </div>
 
     </div>
+    
+   
+    <script type="text/javascript" src="{% static 'garage/js/vue.js' %}"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>axios.defaults.xsrfCookieName = 'csrftoken';
+        axios.defaults.xsrfHeaderName = 'X-CSRFToken';</script>
+    <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+    <script type="text/javascript" src="{% static 'garage/static/garage/js/adress.js' %}"></script>
+    <script>
+        function hiddenNumber(){
+            if (document.getElementById("salaried").checked == true){
+                document.getElementById("id_afpa_number").value = "Salarié"
+                document.getElementById("afpaNumberLabel").style.display = "none";
+                document.getElementById("afpaNumberInput").style.display = "none";
+            } else if (document.getElementById("salaried").checked == false){
+                document.getElementById("id_afpa_number").value = ""
+                document.getElementById("afpaNumberLabel").style.display = "block";
+                document.getElementById("afpaNumberInput").style.display = "block";
+            }
+        }
+    </script>
 
-        {% endblock content %}
+{% block script %}{% endblock script %}
+{% endblock content %}
 
     

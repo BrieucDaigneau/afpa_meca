@@ -3,6 +3,8 @@ Projet application web Pôle mécanique AFPA
 
 Pre-requis :    
 
+Pre-requis :    
+
 -pip install -r requirements.txt pour être à jour au niveau des librairies 
 
 -renommer db.sqlite3_test en db.sqlite3 pour avoir une BDD pré-remplie
@@ -24,8 +26,11 @@ Pre-requis :
                                         }
                                     }
 
+<<<<<<< HEAD
 
                                 
 
 
 
+=======
+>>>>>>> 0ef089478906aa827b84b07649f79de279628c74

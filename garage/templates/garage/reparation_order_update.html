@@ -1,145 +1,17 @@
-{% extends 'garage/base.html' %}
-{% load static %}
+{% extends 'garage/reparation_order.html' %}
 
-{% block css %}"{% static 'garage/css/style.css' %}"{% endblock css %}
-
-    {% block content %}
-
-    <div>
-
-        <header class="row">
-            <div class="col-md-12 mt-5">
-                <h1 id="title">{% block myTitle %}Modification de l'ordre de réparation{% endblock myTitle %}</h1> 
-                <br/>                          
-            </div>
-            
-            <formulaire class="col-md-12">
-                <h2>Client :</h2>
-                <hr>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="name" class="control-label">Nom : </label>
-                        {{ reparationorder.vehicle.customer.lastname }}
-                    </div>
-                    <div class="col-md-6">
-                        <label for="mail" class="control-label">Email : </label> 
-                        {{ reparationorder.vehicle.customer.personal_data.mail }}
-                    </div> 
-                </div>  
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="firstname" class="control-label">Prénom : </label>
-                        {{ reparationorder.vehicle.customer.firstname }}
-                    </div>
-                    <div class="col-md-6">
-                        <label for="address" class="control-label">Adresse : </label>
-                        {{ reparationorder.vehicle.customer.address.street }}
-                    </div>
-                </div>                 
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="phone" class="control-label">Téléphone : </label>
-                        {{ reparationorder.vehicle.customer.personal_data.phone_number }}
-                    </div>
-                    
-                    <div class="col-md-2">
-                        <label for="city" class="control-label">Ville : </label>
-                        {{ reparationorder.vehicle.customer.address.city.city_name }}
-                    </div>
-                    <div class="col-md-2">
-                        <label for="zipcode" class="control-label">Code Postal : </label>
-                        {{ reparationorder.vehicle.customer.address.zipCode.zip_code }}
-                    </div>
-                    
-
-                    <div class="col-md-2">
-                        <label for="afpa_number" class="control-label">Numéro AFPA : </label>
-                        {{ reparationorder.vehicle.customer.afpa_number }}
-                    </div>
-                </div>
-                <br/>
-
-
-
-            </formulaire>
-            
-        </header>
-        
-        <vehicle class="col-md-12">
-            <h2>Véhicule :</h2>
-            <hr>
-            <div class="row">
-                {% if reparationorder.vehicle.motorized.brand %}
-                <div class="col-md-3">  
-                    <label class="control-label" id="field">Marque : </label> <br>
-                    {{ reparationorder.vehicle.motorized.brand }}
-                </div>
-                {% endif %}
-                <div class="col-md-3">
-                    <label class="control-label">Modele : </label><br> 
-                    {{ reparationorder.vehicle.model_name }}
-                </div>
-                {% if reparationorder.vehicle.motorized.license_plate %}
-                <div class="col-md-3">
-                    <label class="control-label" id="field">Immatriculation : </label><br> 
-                    {{ reparationorder.vehicle.motorized.license_plate }}
-                </div>
-                {% endif %}
-                <div class="col-md-3">
-                    <label class="control-label">Réceptionnaire : </label><br> 
-                    {{ user.get_username }}
-                </div>
-            </div>
-
-        </vehicle>
-        <hr>
-        <form class="" action="" method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                    <label for="textarea" class="control-label">date de restitution prévisionnelle du véhicule</label>
-                    <div class="col-md-3">
-                        {{form.return_date}}
-                    </div>
-                </div>
-            <div id="input">
-                <div class="form-group">
-                    <label for="textarea" class="control-label">Description des symptômes du client (si diagnostic) </label>
-                    <div row="4">{{ form.diagnostic }}</div>
-                    <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
-                </div>
-
-                <div class="form-group">
-                    <label for="textarea" class="control-label">Intervention à réaliser</label>
-                    <div row="4">{{ form.to_do_actions }}</div>
-                    <small class="form-text text-muted">Vous pouvez agrandir la fenêtre</small>
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col-md-2">
-                    <a href="javascript:history.go(-1);" class="btn btn-primary btn-sm btn-block">Annuler</a>
-                </div>
-                <div class="col-md-8">
-                </div>               
-                <div class="col-md-2">
-                    <button class="btn btn-primary btn-sm btn-block" type="submit">Valider</button>
-                </div>
-            </div> 
-
-        </form>
-    </div>
-
-
-    <script src="{% static 'garage/js/jquery-slim.min.js' %}"></script>
-    <script>
-        window.jQuery || document.write('<script src="{% static "garage/js/jquery-slim.min.js" %}"><\/script>')
-    </script>
-    <script src="{% static 'garage/js/popper.min.js' %}"></script>
-    <script src="{% static 'garage/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'garage/js/holder.min.js' %}"></script>
-
-{% endblock content %}
-
+{% block alert %}{% endblock alert %}
+{% block myTitle %}Modification de l'ordre de réparation{% endblock myTitle %}
+{% block button %}
+    <div class="row mt-4">
+        <div class="col-md-2">
+            <a href="javascript:history.go(-1);" class="btn btn-primary btn-sm btn-block">Annuler</a>
+        </div>
+        <div class="col-md-8">
+        </div>               
+        <div class="col-md-2">
+            <button class="btn btn-primary btn-sm btn-block" type="submit">Valider</button>
+        </div>
+    </div> 
+{% endblock button %}
 

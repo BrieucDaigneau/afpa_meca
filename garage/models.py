@@ -5,47 +5,20 @@ from datetime import datetime
 
 from afpa_meca.business_application import VehicleConfig
 
-        
-class ZipCode(models.Model):
-    zip_code = models.CharField(max_length=15, verbose_name = 'Code Postal',)
-
-    def __str__(self):
-        return str( self.zip_code )
-
-    class Meta:
-        verbose_name        = "Code Postal"
-        verbose_name_plural = "Codes Postaux"
-
-
-class City(models.Model):
-    city_name   = models.CharField(max_length =25, verbose_name = "Ville",)
-    zip_codes   = models.ManyToManyField(ZipCode, verbose_name="Code Postal")
-
-    def __str__(self):
-        return  self.city_name
-
-    class Meta:
-        verbose_name        = "Ville"
-        verbose_name_plural = "Villes"   
-     
-
 class Address(models.Model):
-    street              = models.TextField(max_length=50, blank=False, verbose_name = "Nom de la rue",)
-    street_number       = models.CharField(max_length = 30, null=True, blank = True, verbose_name = "Numéro de la rue",)
-    street_complement   = models.CharField(max_length =50, null=True, blank = True, verbose_name = "Complément d'adresse",)
-    city                = models.ForeignKey(City, on_delete=models.CASCADE, verbose_name = 'Ville')
-    zipCode             = models.ForeignKey(ZipCode, on_delete=models.CASCADE, verbose_name = 'Code Postal')
- 
+    city               = models.CharField(max_length=100, null=True, verbose_name = 'Ville')
+    zip_code           = models.CharField(max_length=20, null=True, verbose_name = 'Code Postal')
+    street_name        = models.CharField(max_length=200, null=True, verbose_name = "Nom de la rue")
+    street_number      = models.CharField(max_length=10, null=True, blank=True, verbose_name = "Numéro de la rue")
+    street_complement  = models.CharField(max_length =50, null=True, blank = True, verbose_name = "Complément d'adresse",)    
     class Meta:
-        verbose_name = "Adresse"
-
-    def __str__(self):
-        return self.street_number + " " + str(self.street) + " " + self.street_complement + " " + str(self.zipCode) + " " + str(self.city)
-
+        verbose_name = 'Adresse'
+        verbose_name_plural = 'Adresses'
+  
 
 class PersonalData(models.Model):
     mail            = models.EmailField("Email ", max_length=35, unique=True)
-    phone_number    = models.CharField("Téléphone ", blank=False, max_length=10, null=True)
+    phone_number    = models.CharField("Téléphone ", max_length=10, null=True)
     afpa_card_img   = models.ImageField("Carte AFPA", null=True, blank=True, upload_to="img/carte_AFPA_client")
 
     class Meta:
@@ -59,7 +32,7 @@ class PersonalData(models.Model):
 class Customer(models.Model):
     lastname        = models.CharField("Nom Client", max_length=15)
     firstname       = models.CharField("Prenom Client", max_length=15)
-    afpa_number     = models.CharField("Numéro carte AFPA Client", max_length=10, default="extérieur")
+    afpa_number     = models.CharField("Numéro carte AFPA Client", max_length=10)
     personal_data   = models.OneToOneField(PersonalData, on_delete=models.CASCADE)
     address         = models.OneToOneField(Address, null=True, on_delete=models.CASCADE, related_name="customer")
 
@@ -98,16 +71,14 @@ class MyManager(models.Manager):
 # filtre un dico de véhicules par application (car/bike) et par id_client
 # et retourne un dico avec les modèles correspondants (voiture ou velo/moto)
     def filter_by_user(self, id_customer):
-        # many access to base but not to many
         # on suppose qu'un client aurra tout au plus 5 véhicules
         vehicles =  self.filter(customer=id_customer) 
         typed_vehicles = [self.get_child(v.id) for v in vehicles ]
         return self.filter_type( typed_vehicles )
 
 
-
 class Vehicle(models.Model):
-    model_name  = models.CharField("libellé modèle", blank=False, max_length=50)
+    model_name  = models.CharField("libellé modèle", max_length=50)
     customer    = models.ForeignKey(Customer, null=True, on_delete=models.CASCADE)
     objects     = MyManager()
 
@@ -117,12 +88,12 @@ class Vehicle(models.Model):
 
 class Motorized(Vehicle):
     brand               = models.CharField("libellé marque", max_length=100, null=True)
-    vin                 = models.CharField(max_length=100, blank=False, null=True)
-    license_plate       = models.CharField( max_length=15, blank=False, null=True)
+    vin                 = models.CharField(max_length=100, null=True)
+    license_plate       = models.CharField( max_length=15, null=True)
     mileage             = models.IntegerField(null=True, blank=True)
     circulation_date    = models.DateField("date de première m.e.c.", null=True)
-    grey_doc_img        = models.ImageField("carte grise", null=True, blank=False, upload_to="img/carte_grise")
-    insurance_img       = models.ImageField("carte assurance", null=True, blank=False, upload_to="img/carte_assurance")
+    grey_doc_img        = models.ImageField("carte grise", null=True, upload_to="img/carte_grise")
+    insurance_img       = models.ImageField("carte assurance", null=True, upload_to="img/carte_assurance")
 
     class Meta:
         verbose_name        = "Motorisé"
@@ -146,25 +117,25 @@ class Bike(Vehicle):
 
 class UserProfile(models.Model):
     user                = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
-    beginning_intership = models.DateField(null=True, blank=True)
-    ending_internship   = models.DateField(null=True, blank=True)
-    afpa_card           = models.CharField("Numéro carte AFPA", max_length=10, blank=False, )
+    beginning_intership = models.DateField(null=True)
+    ending_internship   = models.DateField(null=True)
+    afpa_card           = models.CharField("Numéro carte AFPA", max_length=10, )
    
     def __str__(self):
         return "Profil de {0}".format(self.user.username)
 
 
 class ReparationOrder(models.Model):
-    committed_date          = models.DateTimeField("date de reception", null=True, blank=False, default=datetime.now )
+    committed_date          = models.DateTimeField("date de reception", null=True, default=datetime.now )
     return_date             = models.DateField("Date de restitution prévisionnelle", null=True)
     diagnostic              = models.TextField(max_length=300, null=True)
     to_do_actions           = models.TextField("interventions prévus", max_length=300, null=True)
     actions_done            = models.BooleanField("intervention réalisée", null=False, default=False)
     
-    AwaitingInstructor   = "AI"
-    InstructorValidation = "IV"
-    InstructorDenial     = "ID"
-    AwaitingEstimate     = "AE"
+    AwaitingInstructor   = "AttenteFormateur"
+    InstructorValidation = "ValidationFormateur"
+    InstructorDenial     = "RefusFormateur"
+    AwaitingEstimate     = "AttenteDevis"
 
     Status_choice           = (
         (AwaitingInstructor, 'AttenteFormateur'),
@@ -185,8 +156,8 @@ class ReparationOrder(models.Model):
 
 
 class Component(models.Model):
-    reference   = models.CharField("référence pièce", blank=False, max_length=20)
-    name        = models.CharField("libellé de la pièce", blank=False, max_length=50)
+    reference   = models.CharField("référence pièce", max_length=20)
+    name        = models.CharField("libellé de la pièce", max_length=50)
     
     class Meta:
         verbose_name        = "Pièces"
@@ -197,7 +168,7 @@ class Component(models.Model):
 
 
 class Supplier(models.Model):
-    name        = models.CharField("Nom Fournisseur", blank=False, max_length=35)
+    name        = models.CharField("Nom Fournisseur", max_length=35)
     components  = models.ManyToManyField(Component, through='Component_Supplier_Estimate', related_name="suppliers")
   
     def __str__(self):
@@ -206,7 +177,7 @@ class Supplier(models.Model):
 
 class Estimate(models.Model):
     number            = models.IntegerField(unique=True )
-    date              = models.DateField("Date du devis", blank=False, null=False)
+    date              = models.DateField("Date du devis", null=False)
     signed_img        = models.ImageField("Scan du devis signé", null=True, blank=True, upload_to ="img/devis")  
     
     AwaitingInstructor      = "AI"
@@ -241,9 +212,9 @@ class Estimate(models.Model):
 
 
 class Component_Supplier_Estimate(models.Model):
-    quantity            = models.IntegerField("Quantité de pièces nécessaires", blank=False, null=True, default=1)
-    price               = models.IntegerField("Prix Hors Taxes", null=True, blank=False)
-    estimate_supplier   = models.CharField("Numéro du devis fournisseur", max_length=20, null=True, blank=False)
+    quantity            = models.IntegerField("Quantité de pièces nécessaires", null=True, default=1)
+    price               = models.IntegerField("Prix Hors Taxes", null=True)
+    estimate_supplier   = models.CharField("Numéro du devis fournisseur", max_length=20, null=True)
     estimate            = models.ForeignKey(Estimate, null=True, on_delete=models.CASCADE, related_name="connection")
     supplier            = models.ForeignKey(Supplier, null=True, on_delete=models.CASCADE, related_name="connection")
     component           = models.ForeignKey(Component, null=True, on_delete=models.CASCADE, related_name="connection")
