@@ -8,7 +8,7 @@
                 {{ reparation_order.vehicle.customer.lastname }}
             </div>
         </div>
-        <form class="needs-validation forms" method="post" enctype="multipart/form-data" id="demo">
+        <form class="needs-validation forms" method="post" enctype="multipart/form-data" id="my_form">
             {% csrf_token %}
             <div class="row mt-5 supplier">
                 <div class="col-md-6">
@@ -32,15 +32,15 @@
             {{ component_forms.management_form }}
 
             <div class="row mt-4" style="text-align: center;">
-                    <div class="col-md-2">
-                        <label class=" form-group control-label" for="{{ component_form.quantity.id_for_label }}" >Quantité :<span class="mandatory"> *</span></label>
+                    <div class="col-md-1">
+                        <label class=" form-group control-label" for="{{ component_form.quantity.id_for_label }}" >Qté :<span class="mandatory"> *</span></label>
                     </div>
 
                     
                     <div class="col-md-4">
                         <label class=" form-group control-label" for="{{ component_form.reference.id_for_label }}" >Référence :<span class="mandatory"> *</span></label>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class=" form-group control-label" for="{{ component_form.name.id_for_label }}" >Libellé :<span class="mandatory"> *</span></label>
                     </div>
                     
@@ -48,60 +48,18 @@
                         <label class=" form-group control-label" for="{{ component_form.price.id_for_label }}" >Prix :<span class="mandatory"> *</span></label>
                     </div>
                 </div>
-
+                <div id="formsetZone">
             {% for component_form in component_forms %}
-            <input name="prefix-INITIAL_FORM_COUNT" value="3" type="hidden">
-  <input name="prefix-TOTAL_FORM_COUNT" value="3" type="hidden">
-  <fieldset class="forms">
-
-        <div class="row  mt-1">
-                <div type="text" name="prefix-0-name" value="" id="id_prefix-0-name" class="col-md-2">{{ component_form.quantity }}</div>
-                        
-                <div type="text" name="prefix-0-name" value="" id="id_prefix-0-name" class="col-md-4">{{ component_form.reference }}</div>
-                        
-                <div type="text" name="prefix-0-name" value="" id="id_prefix-0-name" class="col-md-3">{{ component_form.name }}</div>
-                        
-                <div type="text" name="prefix-0-name" value="" id="id_prefix-0-name" class="col-md-2">{{ component_form.price }}</div>
-                
-        </div>
-  <fieldset disabled class="empty-form" style="display: none">
-                <div class="row  mt-1">
-                    <div type="text" name="prefix-__prefix__-name" value="" id="id_prefix-__prefix__-name" class="col-md-2">{{ component_form.quantity }}</div>
-                            
-                    <div type="text" name="prefix-__prefix__-name" value="" id="id_prefix-__prefix__-name" class="col-md-4">{{ component_form.reference }}</div>
-                            
-                    <div type="text" name="prefix-__prefix__-name" value="" id="id_prefix-__prefix__-name" class="col-md-3">{{ component_form.name }}</div>
-                            
-                    <div type="text" name="prefix-__prefix__-name" value="" id="id_prefix-__prefix__-name" class="col-md-2">{{ component_form.price }}</div>
-                            
-                    <div class="btn btn-danger" data-formset-remove-form>-</div>
-                    
-                </div>
-            </fieldset>
-            
-   
-                </fieldset>
+            <div class="nsorte row mt-1">
+                    {{ component_form.quantity }}
+                    {{ component_form.reference }}
+                    {{ component_form.name }}    
+                    {{ component_form.price }}
+            </div>
             {% endfor %}
-           
-  <input name="prefix-INITIAL_FORM_COUNT" value="3" type="hidden">
-  <input name="prefix-TOTAL_FORM_COUNT" value="3" type="hidden">
-
-  <fieldset disabled class="empty-form" style="display: none">
-    <fieldset>
-      <label for="id_prefix-__prefix__-name">Name</label>
-      <input type="text" name="prefix-__prefix__-name" value="initial" id="id_prefix-__prefix__-name">
-      <button type="button" data-formset-remove-form>
-        DELETE
-      </button>
-    </fieldset>
-  </fieldset>
-
- 
-  <fieldset class="controls">
-    <div class="btn btn-success" data-formset-add-form>+</div>
-
-  </fieldset>
-
+        </div>
+            <button class="btn btn-success btn-sm" id="bt_add_sorte" type="button">+</button>
+    
             {% block payoff %}
                 {% comment %}
                 <div class="row mt-5">
@@ -133,124 +91,83 @@
                         <button class="btn btn-primary btn-sm btn-block button" type="submit" id="valider">{% block next %}Valider{% endblock next %}</button>
                     </div>
                 </div>                    
-        </form>            
+        </form>
+        <div style="display:none;">
+            <div id="eform" class="nsorte row mt-1">
+                       {{ component_forms.empty_form }}
+                <div class="btn btn-warning btn-sm bt_rm_sorte">-</div>
+            </div>
+        </div>
     </div>
 
 
-    <script type="text/javascript">
-        function Formset(element) {
-            /* 
-              Dynamic Formset handler for Django formsets.
-            
-            Events:
-            
-              * init.formset
-              * add-form.formset
-              * remove-form.formset
-              * renumber-form.formset
-              
-            */
-            if (!(this instanceof Formset)) {
-              return new Formset(element);
-            }
-            var formset = this;
-            var emptyForm = element.querySelector('.empty-form').firstElementChild;
-            var formsList = element.querySelector('.forms');
-          
-            var initialForms = element.querySelector('[name$=INITIAL_FORM_COUNT]');
-            var totalForms = element.querySelector('[name$=TOTAL_FORM_COUNT]');
-            var prefix = initialForms.name.replace(/INITIAL_FORM_COUNT$/, '');
-          
-            function addForm(event) {
-              // Duplicate empty form.
-              var newForm = emptyForm.cloneNode(true);
-              // Update all references to __prefix__ in the elements names.
-              renumberForm(newForm, '__prefix__', totalForms.value);
-              // Make it able to delete itself.
-              newForm.querySelector('[data-formset-remove-form]').addEventListener('click', removeForm);
-              // Append the new form to the formsList.
-              formsList.insertAdjacentElement('beforeend', newForm);
-              element.dispatchEvent(new CustomEvent('add-form.formset', {
-                detail: {
-                  form: newForm,
-                  formset: formset
-                }
-              }));
-              // Update the totalForms.value
-              totalForms.value = Number(totalForms.value) + 1;
-            }
-          
-            function getForm(target) {
-              var parent = target.parentElement;
-              if (parent == document) {
-                return null;
-              }
-              if (parent == formsList) {
-                return target;
-              }
-              return getForm(parent);
-            }
-          
-            function renumberForm(form, oldValue, newValue) {
-              var matchValue = prefix + oldValue.toString()
-              var match = new RegExp(matchValue);
-              var replace = prefix + newValue.toString();
-          
-              ['name', 'id', 'for'].forEach(function(attr) {
-                form.querySelectorAll('[' + attr + '*=' + matchValue + ']').forEach(function(el) {
-                  el.setAttribute(attr, el.getAttribute(attr).replace(match, replace));
-                });
-              });
-          
-              element.dispatchEvent(new CustomEvent('renumber-form.formset', {
-                detail: {
-                  form: form,
-                  oldValue: oldValue,
-                  newValue: newValue,
-                  formset: formset
-                }
-              }));
-            }
-          
-            function removeForm(event) {
-              // Find the form "row": the child of formsList that is the parent of the element
-              // that triggered this event.
-              var formToRemove = getForm(event.target);
-              // Renumber the rows that come after us.
-              var nextElement = formToRemove.nextElementSibling;
-              var nextElementIndex = Array.prototype.indexOf.call(formsList.children, formToRemove);
-              while (nextElement) {
-                renumberForm(nextElement, nextElementIndex + 1, nextElementIndex);
-                nextElement = nextElement.nextElementSibling;
-                nextElementIndex = nextElementIndex + 1;
-              }
-              // Remove this row.
-              formToRemove.remove();
-              element.dispatchEvent(new CustomEvent('remove-form.formset', {
-                detail: {
-                  form: formToRemove,
-                  formset: formset
-                }
-              }));
-              // Decrement the management form's count.
-              totalForms.value = Number(totalForms.value) - 1;
-            }
-          
-            element.querySelector('[data-formset-add-form]').addEventListener('click', addForm);
-            element.formset = this;
-          
-            element.dispatchEvent(new CustomEvent('init.formset', {
-              detail: {
-                formset: this
-              }
-            }));
-          
-            this.addForm = addForm;
-          }
-          
-          new Formset(document.querySelector('#demo'));
-          
+{% block head %}<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>{%endblock head %}
+<script type="text/javascript">
+        $(document).ready(function(){
 
+            /**************************************************************************
+            *
+            *                                      Gesion ADD REMOVE Formset 
+            *
+            ***************************************************************************/
+        
+            index_form = function( fset, index ){
+        
+                $(fset).find(':input').each(function() {
+                    var name = $(this).attr('name').replace( new RegExp('(\_\_prefix\_\_|\\d)') , index );
+                    var id = 'id_' + name;
+                    $(this).attr({'name': name, 'id': id});
+                });
+        
+                $(fset).find('label').each(function() {
+                    var newFor = $(this).attr('for').replace( new RegExp('') , index );
+                    var id = 'label_' + newFor;
+                    $(this).attr({'id':id, 'for':newFor, 'style':'display:none;'});
+                });
+        
+            }
+        
+            reindex_formset = function( formset_zone ){
+        
+                var formset = $(formset_zone).find( '.nsorte' );
+                for( var cpt=0;cpt<formset.length;cpt++ ){
+                    index_form( formset[cpt], cpt );
+                };
+        
+                $("#id_form-TOTAL_FORMS").val( parseInt( cpt ) );
+        
+            };
+        
+        
+        
+            /**************************************************************************
+            *
+            *                               Gesion Des evenements formulaire
+            *
+            ***************************************************************************/
+        
+        
+            set_event = function(){
+                    //Bind le(s) bt delete sorte
+                    $(".bt_rm_sorte").on('click',function(){
+                        $(this).parents(".nsorte").remove();
+                        reindex_formset( "#formsetZone" );
+                    });
+            };
+        
+            $("#bt_add_sorte").on('click',function(){
+                console.log("ok");
+                //Copy eform
+                $( "#eform" ).clone(true).appendTo( $("#formsetZone") );
+        
+                reindex_formset( "#formsetZone" );
+        
+            });
+        
+            set_event();
+        
+        
+        });
     </script>
 
 {% endblock content %}

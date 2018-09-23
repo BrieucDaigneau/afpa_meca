@@ -380,7 +380,7 @@ class QuotationCreate(View):
             print( "####" , component_forms )
 
             for component_form in component_forms :
-                
+                # if component_form.is_valid():
                 component = Component.objects.create(price=component_form.cleaned_data['price'],
                                                     reference=component_form.cleaned_data['reference'],
                                                     name=component_form.cleaned_data['name'],
@@ -389,12 +389,13 @@ class QuotationCreate(View):
                                                     quotation=quotation)
 
                 component.save()
+                # else: return render(request, 'garage/quotation_create.html', self.getForm( request ))
 
             return redirect('garage:home')
             
         else : 
             print( "################# quotation_form invalid")
-            return render(request, 'garage/quotation_create.html')
+            return render(request, 'garage/quotation_create.html'  )#, self.getForm( request ))
 
     def get_context_data(self, **kwargs):
         context = super(QuotationCreate, self).get_context_data(**kwargs)

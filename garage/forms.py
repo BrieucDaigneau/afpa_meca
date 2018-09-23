@@ -112,15 +112,15 @@ class ReparationOrderForm(forms.ModelForm):
 
 class ComponentForm(forms.Form):
             
-    reference = forms.CharField()
-    name = forms.CharField()
-    price = forms.FloatField()
-    quantity = forms.IntegerField()
+    quantity = forms.IntegerField(required=True, min_value=1)
+    reference = forms.CharField(required=True)
+    name = forms.CharField(required=True)
+    price = forms.FloatField(required=True, min_value=0)
     
-    reference.widget.attrs.update({'class': 'form-control'})
-    name.widget.attrs.update({'class': 'form-control'})
-    price.widget.attrs.update({'class': 'form-control'})
-    quantity.widget.attrs.update({'class': 'form-control'})
+    quantity.widget.attrs.update({'class': 'form-control col-md-1'})
+    reference.widget.attrs.update({'class': 'form-control col-md-4'})
+    name.widget.attrs.update({'class': 'form-control col-md-4'})
+    price.widget.attrs.update({'class': 'form-control col-md-2'})
     
     # def formset_factory(self, form, formset=ComponentFormSet, extra=2):
     #     formset = ComponentFormSet()
