@@ -47,6 +47,7 @@
 
                         <div class="col-md-12">
                             <div class="row" style="text-align: center;">
+                                &nbsp;&nbsp;&nbsp;&nbsp;
                                 <div class="col-md-1">
                                     <label class=" form-group control-label" for="{{ component_form.quantity.id_for_label }}" >Qté :<span class="mandatory"> *</span></label>
                                 </div>                    
@@ -65,7 +66,7 @@
                         <div class="col-md-12" id="formsetZone">
                             {% for component_form in component_forms %}
                                 <div class="nsorte row">
-                                    &nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
                                     {{ component_form.quantity }}&nbsp;
                                     {{ component_form.reference }} &nbsp;
                                     {{ component_form.name }}&nbsp;
@@ -117,7 +118,7 @@
         </form>
         <div style="display:none;">
             <div id="eform" class="nsorte row mt-1">
-                {% for component in component_forms.empty_form %}
+                &nbsp;&nbsp;{% for component in component_forms.empty_form %}
                 &nbsp;{{ component }}
                 {% endfor %}&nbsp;&nbsp;&nbsp;
                 <div class="btn btn-warning bt_rm_sorte">-</div>
