@@ -125,7 +125,7 @@ class ComponentForm(forms.Form):
     # def formset_factory(self, form, formset=ComponentFormSet, extra=2):
     #     formset = ComponentFormSet()
 
-ComponentFormset = formset_factory(ComponentForm, extra=2)
+ComponentFormset = formset_factory(ComponentForm)
 
 class QuotationForm(forms.ModelForm):
 
