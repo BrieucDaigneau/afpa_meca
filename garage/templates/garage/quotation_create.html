@@ -3,16 +3,17 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-md-11">
+            <div class="col-md-12">
                 <h1 id="title" class="title">{% block title %}Création nouveau devis {% endblock title %}</h1>
                 {{ reparation_order.vehicle.customer.lastname }}
             </div>
         </div>
         <form class="needs-validation forms" method="post" enctype="multipart/form-data" id="my_form">
             {% csrf_token %}
-            <div class="row">
-                <div class="col-md-11">
-                    <div class="row mt-5 supplier">
+            <h3 class="col-md-12 mt-4">Fournisseur</h3>
+                <div class="row">
+                <div class="col-md-12">
+                    <div class="row supplier">
                         <div class="col-md-6">
                             <div class="row">
                                 <label class="col-md-4 form-group control-label" for="" >Fournisseur :<span class="mandatory"> *</span></label>
@@ -35,72 +36,90 @@
             </div>
             {{ component_forms.management_form }}
 
-            <div class="row mt-4" style="text-align: center;">
-                    <div class="col-md-1">
-                        <label class=" form-group control-label" for="{{ component_form.quantity.id_for_label }}" >Qté :<span class="mandatory"> *</span></label>
-                    </div>                    
-                    <div class="col-md-4">
-                        <label class=" form-group control-label" for="{{ component_form.reference.id_for_label }}" >Référence :<span class="mandatory"> *</span></label>
-                    </div>
-                    <div class="col-md-4">
-                        <label class=" form-group control-label" for="{{ component_form.name.id_for_label }}" >Libellé :<span class="mandatory"> *</span></label>
-                    </div>
-                    
-                    <div class="col-md-2">
-                        <label class=" form-group control-label" for="{{ component_form.price.id_for_label }}" >Prix :<span class="mandatory"> *</span></label>
+            <div class="row mt-4">
+                <h3 class="col-md-12">Pièces</h3>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="row supplier">
+
+                        <div class="col-md-12">
+                            <div class="row" style="text-align: center;">
+                                <div class="col-md-1">
+                                    <label class=" form-group control-label" for="{{ component_form.quantity.id_for_label }}" >Qté :<span class="mandatory"> *</span></label>
+                                </div>                    
+                                <div class="col-md-4">
+                                    <label class=" form-group control-label" for="{{ component_form.reference.id_for_label }}" >Référence :<span class="mandatory"> *</span></label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class=" form-group control-label" for="{{ component_form.name.id_for_label }}" >Libellé :<span class="mandatory"> *</span></label>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class=" form-group control-label" for="{{ component_form.price.id_for_label }}" >Prix :<span class="mandatory"> *</span></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" id="formsetZone">
+                            {% for component_form in component_forms %}
+                                <div class="nsorte row">
+                                    &nbsp;
+                                    {{ component_form.quantity }}&nbsp;
+                                    {{ component_form.reference }} &nbsp;
+                                    {{ component_form.name }}&nbsp;
+                                    {{ component_form.price }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
                     </div>
                 </div>
 
-                <div id="formsetZone">
-            {% for component_form in component_forms %}
-            <div class="nsorte row">
-                    {{ component_form.quantity }}&nbsp;
-                    {{ component_form.reference }} &nbsp;
-                    {{ component_form.name }}&nbsp;
-                    {{ component_form.price }} &nbsp;
-            </div>
-            {% endfor %}
-        </div>
-        <div class="row">
-            <button class="btn btn-success mt-3" id="bt_add_sorte" type="button">+</button>
-        </div>
-            {% block payoff %}
-                {% comment %}
-                <div class="row mt-5">
-                    <div class="col-md-5">
-                        <label class=" form-group control-label" for="{{ quotation_form.payoff_type.id_for_label }}" >Type de règlement :<span class="mandatory"> *</span></label>
-                            {{ quotation_form.payoff_type }}
-                    </div>
-                    
-                    <div class="col-md-5">
-                        <label class=" form-group control-label" for="{{ quotation_form.payoff_date.id_for_label }}" >Date de règlement :<span class="mandatory"> *</span></label>
-                        {{ quotation_form.payoff_date }}
+                <div class="col-md-12">
+                    <div class="row">
+                        <button class="btn btn-success mt-3" id="bt_add_sorte" type="button">+</button>
                     </div>
                 </div>
-                {% endcomment %}
+
+                {% block payoff %}
+                    {% comment %}
+                    <div class="row mt-5">
+                        <div class="col-md-5">
+                            <label class=" form-group control-label" for="{{ quotation_form.payoff_type.id_for_label }}" >Type de règlement :<span class="mandatory"> *</span></label>
+                                {{ quotation_form.payoff_type }}
+                        </div>
+                        
+                        <div class="col-md-5">
+                            <label class=" form-group control-label" for="{{ quotation_form.payoff_date.id_for_label }}" >Date de règlement :<span class="mandatory"> *</span></label>
+                            {{ quotation_form.payoff_date }}
+                        </div>
+                    </div>
+                    {% endcomment %}
                 {% endblock payoff %}  
-                
+
+            </div>
+        
             <div class="row mt-5">
-                    <div class="col-md-2">
-                        <a href="javascript:window.history.go(-1);" class="btn btn-primary btn-sm btn-block button" id="button">Annuler</a>
-                    </div>
-                    <div class="col-md-3"></div>      
-                    <div class="col-md-2">
-                        {% block back_home %}   
-                         {% comment %}   <button class="btn btn-primary btn-sm btn-block button" type="submit" id="validerAccueil">Valider/Retour Accueil</button> {% endcomment %}
-                        {% endblock back_home %}    
-                    </div> 
-                    <div class="col-md-2"></div>
-                    <div class="col-md-2">
-                        <button class="btn btn-primary btn-block button" type="submit" id="valider">{% block next %}Valider{% endblock next %}</button>
-                    </div>
-                </div>                    
+                <div class="col-md-2">
+                    <a href="javascript:window.history.go(-1);" class="btn btn-primary btn-sm btn-block button" id="button">Annuler</a>
+                </div>
+                <div class="col-md-3"></div>      
+                <div class="col-md-2">
+                    {% block back_home %}   
+                    {% comment %}   <button class="btn btn-primary btn-sm btn-block button" type="submit" id="validerAccueil">Valider/Retour Accueil</button> {% endcomment %}
+                    {% endblock back_home %}    
+                </div> 
+                <div class="col-md-2"></div>
+                <div class="col-md-2"><button class="btn btn-primary btn-block button" type="submit" id="valider">{% block next %}Valider{% endblock next %}</button></div>
+            </div>                    
         </form>
         <div style="display:none;">
             <div id="eform" class="nsorte row mt-1">
                 {% for component in component_forms.empty_form %}
-                    {{ component }}&nbsp;
-                {% endfor %}
+                &nbsp;{{ component }}
+                {% endfor %}&nbsp;&nbsp;&nbsp;
                 <div class="btn btn-warning bt_rm_sorte">-</div>
             </div>
         </div>
