@@ -110,17 +110,29 @@ class ReparationOrderForm(forms.ModelForm):
         }
 
 
-class ComponentForm(forms.Form):
-            
-    quantity = forms.IntegerField(required=True, min_value=1)
-    reference = forms.CharField(required=True)
-    name = forms.CharField(required=True)
-    price = forms.FloatField(required=True, min_value=0)
+class ComponentForm(forms.ModelForm):
+    def __init__(self, *arg, **kwarg):
+        super(ComponentForm, self).__init__(*arg, **kwarg)
+        self.empty_permitted = False
+
+    class Meta:
+        model = Component
+        exclude = ("supplier", "quotation")
+        widgets = {
+            'quantity': NumberInput(attrs={'class': 'form-control col-md-1'}),
+            'reference': TextInput(attrs={'class': 'form-control col-md-4'}),
+            'name': TextInput(attrs={'class': 'form-control col-md-4'}),
+            'price':NumberInput(attrs={'class': 'form-control col-md-2'})
+        }
+    # quantity = forms.IntegerField(required=True, min_value=1)
+    # reference = forms.CharField(required=True)
+    # name = forms.CharField(required=True)
+    # price = forms.FloatField(required=True, min_value=0)
     
-    quantity.widget.attrs.update({'class': 'form-control col-md-1'})
-    reference.widget.attrs.update({'class': 'form-control col-md-4'})
-    name.widget.attrs.update({'class': 'form-control col-md-4'})
-    price.widget.attrs.update({'class': 'form-control col-md-2'})
+    # quantity.widget.attrs.update({'class': 'form-control col-md-1'})
+    # reference.widget.attrs.update({'class': 'form-control col-md-4'})
+    # name.widget.attrs.update({'class': 'form-control col-md-4'})
+    # price.widget.attrs.update({'class': 'form-control col-md-2'})
     
     # def formset_factory(self, form, formset=ComponentFormSet, extra=2):
     #     formset = ComponentFormSet()

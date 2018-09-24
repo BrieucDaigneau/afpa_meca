@@ -360,8 +360,8 @@ class QuotationCreate(View):
         quotation_form = forms['quotation_form']
         component_forms = forms['component_forms']
 
-        print( "####" ,  component_forms)
-        
+        print( "####" ,  component_forms.is_valid())
+       
         if quotation_form.is_valid() and component_forms.is_valid() :
             
             quotation = quotation_form.save(commit=False)
@@ -380,13 +380,17 @@ class QuotationCreate(View):
             print( "####" , component_forms )
 
             for component_form in component_forms :
+                
                 # if component_form.is_valid():
-                component = Component.objects.create(price=component_form.cleaned_data['price'],
-                                                    reference=component_form.cleaned_data['reference'],
-                                                    name=component_form.cleaned_data['name'],
-                                                    quantity=component_form.cleaned_data['quantity'],
-                                                    supplier=quotation.supplier,
-                                                    quotation=quotation)
+                component = component_form.save(commit=False)
+                component.supplier = quotation.supplier
+                component.quotation = quotation
+                # component = Component.objects.create(price=component_form.cleaned_data['price'],
+                #                                     reference=component_form.cleaned_data['reference'],
+                #                                     name=component_form.cleaned_data['name'],
+                #                                     quantity=component_form.cleaned_data['quantity'],
+                #                                     supplier=quotation.supplier,
+                #                                     quotation=quotation)
 
                 component.save()
                 # else: return render(request, 'garage/quotation_create.html', self.getForm( request ))
@@ -395,7 +399,7 @@ class QuotationCreate(View):
             
         else : 
             print( "################# quotation_form invalid")
-            return render(request, 'garage/quotation_create.html'  )#, self.getForm( request ))
+            return render(request, 'garage/quotation_create.html', forms)#, self.getForm( request ))
 
     def get_context_data(self, **kwargs):
         context = super(QuotationCreate, self).get_context_data(**kwargs)
