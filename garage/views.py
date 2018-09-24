@@ -172,6 +172,7 @@ class CustomerUpdate(UpdateView):
 class CustomerSelect(ListView):
     model = Customer
     template_name = "garage/customer_select.html"
+    paginate_by = 2
 
 
 class Customers(CustomerSelect):
