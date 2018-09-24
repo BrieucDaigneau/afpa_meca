@@ -28,6 +28,7 @@ urlpatterns = [
     path('actualisation-intervention/<pk>/', login_required(views.ReparationOrderUpdate.as_view()), name='reparation-order-update'),
     
     path('creation-devis/<int:reparation_orders_id>/', login_required(views.QuotationCreate.as_view()), name='quotation-create'),      
+    path('consultation-devis/', login_required(views.Quotations.as_view()), name='quotations'),
     
     path('car_condition', login_required(views.car_condition), name='car_condition'),    
 ]

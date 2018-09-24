@@ -22,6 +22,8 @@ class Home(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(Home, self).get_context_data(**kwargs)
         context['reparation_order_list'] = ReparationOrder.objects.filter(user_profile=self.request.user)
+        context['quotations_list'] = Quotation.objects.filter(user_profile=self.request.user)
+
         return context
 
 
@@ -281,13 +283,20 @@ class ReparationOrderCreateView(CreateView):
             context['nb_AD'] = len(reparations_orders.filter(status="AttenteDevis"))
 
         vehicle = Vehicle.objects.get_child(self.kwargs['vehicle_id'])  
+        context['reparationorder'] = None
         context['vehicle'] = vehicle   
         return context
 
     def form_valid(self, form):
         vehicle = Vehicle.objects.get(pk=self.kwargs['vehicle_id'])     
-        user = self.request.user          
+        user = self.request.user  
+
+        reparation_ordre_id_max = list(ReparationOrder.objects.all().aggregate(Max('id')).values())[0]
+        count_number = len(str(reparation_ordre_id_max + 1 if reparation_ordre_id_max is not None else 0))
+        new_string= str(str(0)*(8 - count_number)) + str(reparation_ordre_id_max + 1 if reparation_ordre_id_max is not None else 0)
+
         reparation_order = form.save(commit=False)
+        reparation_order.number = "R00000000".replace("00000000", new_string)
         reparation_order.user_profile = user
         reparation_order.vehicle = vehicle
         reparation_order.save()
@@ -320,7 +329,16 @@ class ReparationOrderUpdate(UpdateView):
         reparationorder = ReparationOrder.objects.get(pk=self.kwargs['pk'])  
         context['reparationorder'] = reparationorder
         context['vehicle'] =  reparationorder.vehicle
-        return context  
+        return context 
+
+    def form_valid(self, form):
+        user = self.request.user
+        reparation_order = form.save(commit=False)  
+        reparation_order.user_profile = user
+        reparation_order = form.save()
+        return super().form_valid(form)        
+
+
 
 
 def car_condition(request):
@@ -370,8 +388,9 @@ class QuotationCreate(View):
             
             # attribution d'un id de devis
             quotation_id_max = list(Quotation.objects.all().aggregate(Max('id')).values())[0]
-            quotation.number = quotation_id_max + 1 if quotation_id_max is not None else 0   
-
+            count_number = len(str(quotation_id_max + 1 if quotation_id_max is not None else 0))
+            new_string= str(str(0)*(8 - count_number)) + str(quotation_id_max + 1 if quotation_id_max is not None else 0)
+            quotation.number = "D00000000".replace("00000000", new_string)  
 
             quotation.reparation_order = ReparationOrder.objects.get(pk=self.kwargs['reparation_orders_id'])
             quotation.user_profile = self.request.user
@@ -396,3 +415,11 @@ class QuotationCreate(View):
         context = super(QuotationCreate, self).get_context_data(**kwargs)
         context['reparation_order'] = ReparationOrder.object.get(pk=self.kwargs['reparation_orders_id'])
         return context
+
+class Quotations(ListView):
+    model = Quotation
+    template_name = "garage/quotations.html"
+    def get_context_data(self, **kwargs):    
+        context = super().get_context_data(**kwargs)   
+        context['quotations_list'] = Quotation.objects.all()
+        return context 

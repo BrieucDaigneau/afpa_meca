@@ -15,7 +15,8 @@
         
         <h4 class="col-md-12 mt-5" >
             <div class="row mb-3">
-                <div class=" col-md-3">Client</div>
+                <div class=" col-md-1">N°O.R.</div>
+                <div class=" col-md-2">Client</div>
                 <div class=" col-md-2">Véhicule</div>
                 <div class="col-md-2">Réceptionnaire</div>
                 <div class="col-md-3">Date de réception</div>
@@ -28,7 +29,8 @@
     
         <label for="{{reparation_order.id}}" id="listing" class="col-md-12" ondblclick="modifier()">
             <div class="row ">
-                <div class="col-md-3">{{ reparation_order.vehicle.customer.lastname }} {{ reparation_order.vehicle.customer.firstname }}</div>
+                <div class="col-md-1">{{ reparation_order.number}}</div>
+                <div class="col-md-2">{{ reparation_order.vehicle.customer.lastname }} {{ reparation_order.vehicle.customer.firstname }}</div>
                 <div class="col-md-2">{{ reparation_order.vehicle }}</div>
                 <div class="col-md-2">{{ reparation_order.user_profile }}</div>
                 <div class="col-md-3">{{ reparation_order.committed_date }}</div>

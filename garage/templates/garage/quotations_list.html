@@ -1,0 +1,88 @@
+{% load static %}
+{% block head %}
+<link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
+{% endblock head %}
+{% block content %}
+
+    <div class="row mt-5">
+        <h1 class="col-md-5">Liste des Devis</h1>
+        {% block search %}{% endblock search %}
+    </div>
+    <div class="row">
+        {% block recherche %}{% endblock recherche %}
+    </div>
+    <div class="row">
+        
+        <h4 class="col-md-12 mt-5" >
+            <div class="row mb-3">
+                <div class=" col-md-1">N° Devis</div>
+                <div class="col-md-1">N°O.R.</div>
+                <div class=" col-md-2">Client</div>
+                <div class=" col-md-2">Véhicule</div>
+                <div class="col-md-2">Récept</div>
+                <div class="col-md-2">Date de réception</div>
+                <div class="col-md-2">Statut</div>
+            </div>
+        </h4>
+         
+        {% for quotation in quotations_list %}
+        <input type="radio" class="btn col-md-1 radio" id="{{quotation.id}}" name ="reparation-order" value="{{quotation.status}}" onclick='javascript:document.quotationChecked={{quotation.id}};' >
+    
+        <label for="{{quotation.id}}" id="listing" class="col-md-12" ondblclick="modifier()">
+            <div class="row ">
+                <div class="col-md-1">{{ quotation.number }}</div>
+                <div class="col-md-1">{{ quotation.reparation_order.number }}</div>
+                <div class="col-md-2">{{ quotation.reparation_order.vehicle.customer.lastname }} {{ quotation.reparation_order.vehicle.customer.firstname }}</div>
+                <div class="col-md-2">{{ quotation.reparation_order.vehicle }}</div>
+                <div class="col-md-2">{{ quotation.user_profile }}</div>
+                <div class="col-md-2">{{ quotation.date }}</div>
+                <div class="col-md-2">{{ quotation.status }}</div>
+            </div>
+        </label>
+
+        {% empty %}
+        <p class="col-md-12">aucun Devis</p>
+        {% endfor %}
+
+        <div id="error" class=" col-md-12 mt-2"></div>
+
+
+        {% block buttons %}
+            <div class="container">
+                <div class="row mt-5">
+                    {% block cancel %}{% endblock cancel %}
+                    <div class="col-md-8"></div>
+                    <button class=" btn btn-primary btn-sm col-md-2" onClick="modifier()">Modifier</button>
+                </div>
+            </div>                              
+        {% endblock buttons %}
+        </div>
+
+<script type="text/javascript">
+            
+    function modifier() {
+        if (document.quotationChecked){
+            if (document.getElementById(document.quotationChecked).value === "AttenteDevis") {
+                document.getElementById("error").innerHTML = "Ce devis a été validé par le formateur, il n'est plus modifiable"
+            } else { 
+                console.log("update:" + document.quotationChecked)
+                /*window.location = "{% url 'garage:reparation-order-update' 1 %}".replace(1, document.quotationChecked)*/
+            }
+        } else {
+            document.getElementById("error").innerHTML = "Veuillez selectionner un devis"
+        }     
+    }
+    /* function redirect_quotation_create() {
+        if (document.quotationChecked){
+            if (document.getElementById(document.quotationChecked).value === "AttenteDevis") {
+                window.location = "{% url 'garage:quotation-create' 1 %}".replace(1, document.quotationChecked)
+            } else {
+                document.getElementById("error").innerHTML = "Cet ordre de réparation n'a pas été validé par le formateur"
+            }
+        } else {
+            document.getElementById("error").innerHTML = "Veuillez selectionner un ordre de réparation"
+        } 
+    } */
+</script>
+
+{% endblock content %}
