@@ -23,7 +23,7 @@ class Home(TemplateView):
         context = super(Home, self).get_context_data(**kwargs)
         context['reparation_order_list'] = ReparationOrder.objects.filter(user_profile=self.request.user)
         context['quotations_list'] = Quotation.objects.filter(user_profile=self.request.user)
-
+        context['unser'] = self.request.user  
         return context
 
 

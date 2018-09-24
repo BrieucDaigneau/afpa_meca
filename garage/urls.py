@@ -3,6 +3,7 @@ from django.views.generic import ListView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.conf.urls import url, include
 from django.contrib.auth.decorators import login_required
+from django.contrib import admin
 
 from . import views
 
@@ -29,7 +30,7 @@ urlpatterns = [
     
     path('creation-devis/<int:reparation_orders_id>/', login_required(views.QuotationCreate.as_view()), name='quotation-create'),      
     path('consultation-devis/', login_required(views.Quotations.as_view()), name='quotations'),
-    
+
     path('car_condition', login_required(views.car_condition), name='car_condition'),    
 ]
 
