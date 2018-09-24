@@ -69,14 +69,14 @@ class MotorizedForm(forms.ModelForm):
         model = Car
         exclude = ('customer',)
         widgets = {
-            'brand': TextInput(attrs={'class': 'form-control'}),
-            'model_name': TextInput(attrs={'class': 'form-control'}),
-            'license_plate': TextInput(attrs={'class': 'form-control'}),
-            'vin': TextInput(attrs={'class': 'form-control'}),
+            'brand': TextInput(attrs={'class': 'form-control', 'required':'true'}),
+            'model_name': TextInput(attrs={'class': 'form-control', 'required':'true'}),
+            'license_plate': TextInput(attrs={'class': 'form-control', 'required':'true'}),
+            'vin': TextInput(attrs={'class': 'form-control', 'required':'true'}),
             'mileage': NumberInput(attrs={'class': 'form-control'}),
-            'circulation_date': DateInput(attrs={'class': 'form-control', 'type':'date'}), 
-            'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
-            'insurance_img': FileInput(attrs={'class': 'form-control'})
+            'circulation_date': DateInput(attrs={'class': 'form-control', 'type':'date', 'required':'true'}), 
+            'grey_doc_img': FileInput(attrs={'class': 'form-control', 'required':'true'}),
+            'insurance_img': FileInput(attrs={'class': 'form-control', 'required':'true'})
         }
 
        
@@ -95,7 +95,7 @@ class BikeForm(forms.ModelForm):
         model = Bike
         fields = ['model_name']
         widgets = {
-            'model_name': TextInput(attrs={'class': 'form-control'}),
+            'model_name': TextInput(attrs={'class': 'form-control', 'required':'True'}),
         }
        
 
@@ -119,10 +119,10 @@ class ComponentForm(forms.ModelForm):
         model = Component
         exclude = ("supplier", "quotation")
         widgets = {
-            'quantity': NumberInput(attrs={'class': 'form-control col-md-1'}),
-            'reference': TextInput(attrs={'class': 'form-control col-md-4'}),
-            'name': TextInput(attrs={'class': 'form-control col-md-4'}),
-            'price':NumberInput(attrs={'class': 'form-control col-md-2'})
+            'quantity': NumberInput(attrs={'class': 'form-control col-md-1', 'required':'True'}),
+            'reference': TextInput(attrs={'class': 'form-control col-md-4', 'required':'True'}),
+            'name': TextInput(attrs={'class': 'form-control col-md-4', 'required':'True'}),
+            'price':NumberInput(attrs={'class': 'form-control col-md-2', 'required':'True'})
         }
     # quantity = forms.IntegerField(required=True, min_value=1)
     # reference = forms.CharField(required=True)

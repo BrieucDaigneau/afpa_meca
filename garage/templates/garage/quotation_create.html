@@ -107,11 +107,7 @@
                     <a href="javascript:window.history.go(-1);" class="btn btn-primary btn-sm btn-block button" id="button">Annuler</a>
                 </div>
                 <div class="col-md-3"></div>      
-                <div class="col-md-2">
-                    {% block back_home %}   
-                    {% comment %}   <button class="btn btn-primary btn-sm btn-block button" type="submit" id="validerAccueil">Valider/Retour Accueil</button> {% endcomment %}
-                    {% endblock back_home %}    
-                </div> 
+                <div class="col-md-2"></div> 
                 <div class="col-md-2"></div>
                 <div class="col-md-2"><button class="btn btn-primary btn-block button" type="submit" id="valider">{% block next %}Valider{% endblock next %}</button></div>
             </div>                    
@@ -132,9 +128,7 @@
         $(document).ready(function(){
 
             /**************************************************************************
-            *
-            *                                      Gesion ADD REMOVE Formset 
-            *
+            *                                      Gesion ADD REMOVE Formset          *
             ***************************************************************************/
         
             index_form = function( fset, index ){
@@ -162,16 +156,11 @@
         
                 $("#id_form-TOTAL_FORMS").val( parseInt( cpt ) );
         
-            };
-        
-        
+            };        
         
             /**************************************************************************
-            *
-            *                               Gesion Des evenements formulaire
-            *
+            *                               Gesion Des evenements formulaire          *
             ***************************************************************************/
-        
         
             set_event = function(){
                     //Bind le(s) bt delete sorte
@@ -191,7 +180,6 @@
             });
         
             set_event();
-        
         
         });
     </script>

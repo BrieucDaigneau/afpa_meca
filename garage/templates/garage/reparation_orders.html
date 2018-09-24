@@ -1,7 +1,4 @@
-{% extends 'garage/reparation_orders_list.html' %}
-{% block search %}
-    <div class="col-md-5 "></div>
-    <div class="col-md-2 ">
-        <button onClick="redirect_quotation_create()" class="btn btn-sm btn-primary btn-sm btn-block" >Affecter devis</button>
-    </div>
-{% endblock search %}
+{% extends 'garage/base.html' %}
+{% block content %}
+    {% include 'garage/reparation_orders_generic.html' %}
+{% endblock content %}

@@ -2,37 +2,7 @@
 {% load static %}
 
 {% block content %}
-<div class="row">
-    <h1 class="mt-5">Etat des ordres de réparation</h1>
-</div>
-
-<h4 class="col-md-12 mt-5">
-    <div class="row mb-3">
-        <div class=" col-md-3">Client</div>
-        <div class=" col-md-2">Véhicule</div>
-        <div class="col-md-2">Réceptionnaire</div>
-        <div class="col-md-3">Date de réception</div>
-        <div class="col-md-2">Statut</div>
-    </div>
-</h4>
-
-{% for reparation_order in reparation_order_list %}
-<input type="radio" class="btn col-md-1 radio" id="{{reparation_order.id}}" name="btnreparation_order" onclick='javascript:document.reparation_orderChecked={{reparation_order.id}};'></input>
-
-<label for="{{reparation_order.id}}" id="listing" class="col-md-12" ondblclick="redirect()">
-    <div class="row ">
-        <div class="col-md-3">{{ reparation_order.vehicle.customer.lastname }} {{ reparation_order.vehicle.customer.firstname }}</div>
-        <div class="col-md-2">{{ reparation_order.vehicle }}</div>
-        <div class="col-md-2">{{ reparation_order.user_profile }}</div>
-        <div class="col-md-3">{{ reparation_order.committed_date }}</div>
-        <div class="col-md-2">{{ reparation_order.status }}</div>
-    </div>
-</label>
-
-{% empty %}
-<p class="col-md-12">aucun ordre de réparation</p>
-{% endfor %}
-
+{% include 'garage/reparation_orders_generic.html' %}
 
 <div class="container">
     <div class="col-md-12">

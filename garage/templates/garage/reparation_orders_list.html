@@ -1,5 +1,3 @@
-{% extends 'garage/base.html' %}
-
 {% load static %}
 {% block head %}
 <link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
@@ -24,10 +22,8 @@
                 <div class="col-md-2">Statut</div>
             </div>
         </h4>
-        
-        
-        
-        {% for reparation_order in object_list %}
+         
+        {% for reparation_order in reparation_order_list %}
         <input type="radio" class="btn col-md-1 radio" id="{{reparation_order.id}}" name ="reparation-order" value="{{reparation_order.status}}" onclick='javascript:document.reparation_orderChecked={{reparation_order.id}};' ></input>
     
         <label for="{{reparation_order.id}}" id="listing" class="col-md-12" ondblclick="modifier()">

@@ -26,7 +26,6 @@
         
         {% for vehicle in vehicle_list %}
         <input type="radio" class="btn col-md-1 radio" id="{{vehicle.id}}" name="VehicleBtn" onclick='javascript:document.vehicleChecked={{vehicle.id}}' >
-    </input>
     
     <label for="{{vehicle.id}}" id="listing" class="col-md-12 label_vehicle" ondblclick="redirect()">
         <div class="row ">
