@@ -48,33 +48,44 @@ class MyManager(models.Manager):
 # récupère les voitures pour l'app car, et les motos/velos pour l'app bike
 # dans un dico de véhicules passé en paramètre
     def filter_type(self, dico): # pas d'accés à la bdd
-        if VehicleConfig['vehicle'] == 'bike':         
-            return [ v for v in dico if isinstance(v, Bike) or isinstance(v, Motorbike) ]
-        elif VehicleConfig['vehicle'] == 'car':
-            return [ v for v in dico if isinstance(v, Car) ]
+        if dico:
+            if VehicleConfig['vehicle'] == 'bike':  # les vélos n'ont pas de marque
+                return dico.filter(brand=None)
+                # return [ v for v in dico if isinstance(v, Bike) or isinstance(v, Motorbike) ]
+            elif VehicleConfig['vehicle'] == 'car':
+                return dico.exclude(brand=None)
+        else : return []
+            # return [ v for v in dico if isinstance(v, Car) ]
 
 # récupère le modèle enfant (voiture/moto/velo) 
 # en fonction de l'id du véhicule passé en paramètre
     def get_model(self, id):
-        if Car.objects.filter(pk=id):
+        if isinstance(id, int):
+            id=[id]
+        if Car.objects.filter(pk__in=id):
             return Car
-        elif Motorbike.objects.filter(pk=id):
+        elif Motorbike.objects.filter(pk__in=id):
             return Motorbike
-        elif Bike.objects.filter(pk=id):
+        elif Bike.objects.filter(pk__in=id):
             return Bike
 
     def get_child(self, id):
         return self.get_model( id ).objects.get(pk=id)
 
     def filter_child(self, id):
-        return self.get_model( id ).objects.filter(pk=id)
+        if self.get_model( id ):
+            return self.get_model( id ).objects.filter(pk__in=id)
+        else: return []
 
 # filtre un dico de véhicules par application (car/bike) et par id_client
 # et retourne un dico avec les modèles correspondants (voiture ou velo/moto)
     def filter_by_user(self, id_customer):
         # on suppose qu'un client aurra tout au plus 5 véhicules
-        vehicles =  self.filter(customer=id_customer) 
-        typed_vehicles = [self.get_child(v.id) for v in vehicles ]
+        vehicles_id = [v.id for v in self.filter(customer=id_customer) ]
+        typed_vehicles =  self.filter_child(vehicles_id)
+
+        # typed_vehicles = vehicles.filter_child(vehicles_id)
+        # typed_vehicles = [self.get_child(v.id) for v in vehicles ]
         return self.filter_type( typed_vehicles )
 
 

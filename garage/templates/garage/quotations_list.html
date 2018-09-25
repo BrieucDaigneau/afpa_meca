@@ -45,7 +45,28 @@
         {% endfor %}
 
         <div id="error" class=" col-md-12 mt-2"></div>
-
+        
+        {% if is_paginated %}
+            <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+            {% endif %}
+            {% for i in paginator.page_range %}
+                {% if page_obj.number == i %}
+                <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+            {% endif %}
+            </ul>
+        {% endif %}
 
         {% block buttons %}
             <div class="container">
@@ -65,8 +86,7 @@
             if (document.getElementById(document.quotationChecked).value === "AttenteDevis") {
                 document.getElementById("error").innerHTML = "Ce devis a été validé par le formateur, il n'est plus modifiable"
             } else { 
-                console.log("update:" + document.quotationChecked)
-                /*window.location = "{% url 'garage:reparation-order-update' 1 %}".replace(1, document.quotationChecked)*/
+                window.location = "{% url 'garage:quotation-update' 1 %}".replace(1, document.quotationChecked)
             }
         } else {
             document.getElementById("error").innerHTML = "Veuillez selectionner un devis"
