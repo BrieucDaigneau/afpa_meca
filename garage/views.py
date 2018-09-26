@@ -438,7 +438,7 @@ class Quotations(ListView):
         return context 
 
 class QuotationUpdate(UpdateView):
-    myTemplate_name = 'garage/quotation_create.html'
+    myTemplate_name = 'garage/quotation_update.html'
 
     def getForm(self, requ):
         quotation = Quotation.objects.get(pk=self.kwargs['pk'])
@@ -482,9 +482,10 @@ class QuotationUpdate(UpdateView):
 
             return redirect('garage:quotations')
         else : 
-            return render(request, 'garage/quotation_create.html',forms)
+            return render(request, 'garage/quotation_update.html',forms)
 
     def get_context_data(self, **kwargs):
         context = super(QuotationCreate, self).get_context_data(**kwargs)
-        context['reparation_order'] = ReparationOrder.object.get(pk=self.kwargs['reparation_orders_id'])
+        context['quotation'] = Quotation.objects.get(pk=self.kwargs['pk'])
+        context['reparation_order'] = ReparationOrder.objects.get(pk=self.kwargs['reparation_orders_id'])
         return context

@@ -34,6 +34,7 @@
                     </div>
                 </div>
             </div>
+            {% block payoff %}{% endblock payoff %}  
             {{ component_forms.management_form }}
 
             <div class="row mt-4">
@@ -86,21 +87,7 @@
                     </div>
                 </div>
 
-                {% block payoff %}
-                    {% comment %}
-                    <div class="row mt-5">
-                        <div class="col-md-5">
-                            <label class=" form-group control-label" for="{{ quotation_form.payoff_type.id_for_label }}" >Type de règlement :<span class="mandatory"> *</span></label>
-                                {{ quotation_form.payoff_type }}
-                        </div>
-                        
-                        <div class="col-md-5">
-                            <label class=" form-group control-label" for="{{ quotation_form.payoff_date.id_for_label }}" >Date de règlement :<span class="mandatory"> *</span></label>
-                            {{ quotation_form.payoff_date }}
-                        </div>
-                    </div>
-                    {% endcomment %}
-                {% endblock payoff %}  
+
 
             </div>
         
