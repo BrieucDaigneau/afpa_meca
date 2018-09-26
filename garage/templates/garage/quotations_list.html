@@ -24,7 +24,9 @@
                 <div class="col-md-2">Statut</div>
             </div>
         </h4>
-         
+        <h4 class="col-md-12" >
+            <hr>
+        </h4>
         {% for quotation in quotations_list %}
         <input type="radio" class="btn col-md-1 radio" id="{{quotation.id}}" name ="reparation-order" value="{{quotation.status}}" onclick='javascript:document.quotationChecked={{quotation.id}};' >
     

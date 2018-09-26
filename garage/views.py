@@ -225,31 +225,25 @@ class VehicleSelect(ListView):
     model = Vehicle
     template_name = "garage/vehicle_select.html"
     paginate_by = 10
-   
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         p = Paginator(Vehicle.objects.filter_by_user(self.kwargs['customer_id']), self.paginate_by)
-        if p:
-            context['vehicle_list'] = p.page(context['page_obj'].number)
-        else : context['vehicle_list'] = None
+        context['vehicle_list'] = p.page(context['page_obj'].number)
         context['paginator'] = p
-        return context  
-
+        return context 
 
 class Vehicles(ListView):
     model = Vehicle
-    template_name = "garage/vehicles.html"  
+    template_name = "garage/vehicles.html"    
     paginate_by = 10
-  
     def get_context_data(self, **kwargs):    
         context = super().get_context_data(**kwargs)   
-        vehicles_id = [v.id for v in Vehicle.objects.all()]
-        vehicles = Vehicle.objects.filter_child(vehicles_id)
+        vehicles = [Vehicle.objects.get_child(v.id) for v in Vehicle.objects.all()] 
+        print(vehicles)
         p = Paginator(Vehicle.objects.filter_type(vehicles), self.paginate_by)
         context['vehicle_list'] = p.page(context['page_obj'].number)
         context['paginator'] = p
-        return context  
-
+        return context 
 
 class VehicleUpdate(UpdateView):
     template_name = 'garage/vehicle_update.html'

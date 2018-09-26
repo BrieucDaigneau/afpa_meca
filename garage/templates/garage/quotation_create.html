@@ -71,7 +71,7 @@
                                     {{ component_form.reference }} &nbsp;
                                     {{ component_form.name }}&nbsp;
                                     {{ component_form.price }}
-                                    {{ component_form.id }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    {{ component_form.id }}&nbsp;&nbsp;&nbsp;
                                     <div class="btn btn-warning bt_rm_sorte">-</div>
                                 </div>
                             {% endfor %}
@@ -114,6 +114,7 @@
                 <div class="col-md-2"><button class="btn btn-primary btn-block button" type="submit" id="valider">{% block next %}Valider{% endblock next %}</button></div>
             </div>                    
         </form>
+        
         <div style="display:none;">
             <div id="eform" class="nsorte row mt-1">
                 &nbsp;&nbsp;{% for component in component_forms.empty_form %}
