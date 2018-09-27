@@ -1,10 +1,9 @@
 from django import forms
-from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput, Select
+from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput, Select, formset_factory
 from django.forms.utils import ErrorList
 from django.db.models import Max
 
 from .models import *
-
 
 class CustomerForm(forms.ModelForm):
     class Meta:
@@ -70,14 +69,14 @@ class MotorizedForm(forms.ModelForm):
         model = Car
         exclude = ('customer',)
         widgets = {
-            'brand': TextInput(attrs={'class': 'form-control'}),
-            'model_name': TextInput(attrs={'class': 'form-control'}),
-            'license_plate': TextInput(attrs={'class': 'form-control'}),
-            'vin': TextInput(attrs={'class': 'form-control'}),
+            'brand': TextInput(attrs={'class': 'form-control', 'required':'true'}),
+            'model_name': TextInput(attrs={'class': 'form-control', 'required':'true'}),
+            'license_plate': TextInput(attrs={'class': 'form-control', 'required':'true'}),
+            'vin': TextInput(attrs={'class': 'form-control', 'required':'true'}),
             'mileage': NumberInput(attrs={'class': 'form-control'}),
-            'circulation_date': DateInput(attrs={'class': 'form-control', 'type':'date'}), 
-            'grey_doc_img': FileInput(attrs={'class': 'form-control'}),
-            'insurance_img': FileInput(attrs={'class': 'form-control'})
+            'circulation_date': DateInput(attrs={'class': 'form-control', 'type':'date', 'required':'true'}), 
+            'grey_doc_img': FileInput(attrs={'class': 'form-control', 'required':'true'}),
+            'insurance_img': FileInput(attrs={'class': 'form-control', 'required':'true'})
         }
 
        
@@ -96,7 +95,7 @@ class BikeForm(forms.ModelForm):
         model = Bike
         fields = ['model_name']
         widgets = {
-            'model_name': TextInput(attrs={'class': 'form-control'}),
+            'model_name': TextInput(attrs={'class': 'form-control', 'required':'True'}),
         }
        
 
@@ -111,18 +110,34 @@ class ReparationOrderForm(forms.ModelForm):
         }
 
 
-class ComponentForm(forms.Form):
+class ComponentForm(forms.ModelForm):
+    def __init__(self, *arg, **kwarg):
+        super(ComponentForm, self).__init__(*arg, **kwarg)
+        self.empty_permitted = False
+
+    class Meta:
+        model = Component
+        exclude = ("supplier", "quotation")
+        widgets = {
+            'quantity': NumberInput(attrs={'class': 'form-control col-md-1', 'required':'True'}),
+            'reference': TextInput(attrs={'class': 'form-control col-md-4', 'required':'True'}),
+            'name': TextInput(attrs={'class': 'form-control col-md-4', 'required':'True'}),
+            'price':NumberInput(attrs={'class': 'form-control col-md-2', 'required':'True'})
+        }
+    # quantity = forms.IntegerField(required=True, min_value=1)
+    # reference = forms.CharField(required=True)
+    # name = forms.CharField(required=True)
+    # price = forms.FloatField(required=True, min_value=0)
     
-    reference = forms.CharField()
-    name = forms.CharField()
-    price = forms.FloatField()
-    quantity = forms.IntegerField()
+    # quantity.widget.attrs.update({'class': 'form-control col-md-1'})
+    # reference.widget.attrs.update({'class': 'form-control col-md-4'})
+    # name.widget.attrs.update({'class': 'form-control col-md-4'})
+    # price.widget.attrs.update({'class': 'form-control col-md-2'})
     
-    reference.widget.attrs.update({'class': 'form-control'})
-    name.widget.attrs.update({'class': 'form-control'})
-    price.widget.attrs.update({'class': 'form-control'})
-    quantity.widget.attrs.update({'class': 'form-control'})
-   
+    # def formset_factory(self, form, formset=ComponentFormSet, extra=2):
+    #     formset = ComponentFormSet()
+
+ComponentFormset = formset_factory(ComponentForm)
 
 class QuotationForm(forms.ModelForm):
 
@@ -138,3 +153,7 @@ class QuotationForm(forms.ModelForm):
         widgets = {
             'num_quotation_supplier' : TextInput(attrs={'class': 'form-control'})
         }
+
+
+# ComponentFormSet = formset_factory(ComponentForm, extra=2)
+# formset = ComponentFormSet

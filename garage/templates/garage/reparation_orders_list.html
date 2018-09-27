@@ -1,14 +1,12 @@
-{% extends 'garage/base.html' %}
-
 {% load static %}
 {% block head %}
 <link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
 {% endblock head %}
 {% block content %}
 
-<div class="container">
-    <div class="row">
-        <h1 class="mt-5">Liste des Interventions</h1>
+    <div class="row mt-5">
+        <h1 class="col-md-5">Liste des Interventions</h1>
+        {% block search %}{% endblock search %}
     </div>
     <div class="row">
         {% block recherche %}{% endblock recherche %}
@@ -24,13 +22,11 @@
                 <div class="col-md-2">Statut</div>
             </div>
         </h4>
-        
-        
-        
-        {% for reparation_order in object_list %}
-        <input type="radio" class="btn col-md-1 radio" id="{{reparation_order.id}}" name="reparation_order" onclick='javascript:document.reparation_orderChecked={{reparation_order.id}};' ></input>
+         
+        {% for reparation_order in reparation_order_list %}
+        <input type="radio" class="btn col-md-1 radio" id="{{reparation_order.id}}" name ="reparation-order" value="{{reparation_order.status}}" onclick='javascript:document.reparation_orderChecked={{reparation_order.id}};' ></input>
     
-        <label for="{{reparation_order.id}}" id="listing" class="col-md-12" ondblclick="redirect()">
+        <label for="{{reparation_order.id}}" id="listing" class="col-md-12" ondblclick="modifier()">
             <div class="row ">
                 <div class="col-md-3">{{ reparation_order.vehicle.customer.lastname }} {{ reparation_order.vehicle.customer.firstname }}</div>
                 <div class="col-md-2">{{ reparation_order.vehicle }}</div>
@@ -40,19 +36,49 @@
                 
             </div>
         </label>
-    
+
         {% empty %}
         <p class="col-md-12">aucune intervention</p>
         {% endfor %}
-        {% block buttons %}{% endblock buttons %}
-    </div>
-</div>
+
+        <div id="error" class=" col-md-12 mt-2"></div>
+
+
+        {% block buttons %}
+        <div class="container">
+                <div class="row mt-5">
+                    {% block cancel %}{% endblock cancel %}
+                    <div class="col-md-8"></div>
+                    <button class=" btn btn-primary btn-sm col-md-2" onClick="modifier()">Modifier</button>
+                </div>
+            </div>
+            {% endblock buttons %}
+        </div>
 
 <script type="text/javascript">
             
-    function redirect() {
-        window.location = "{% url 'garage:reparation-order-update' 1 %}".replace(1, document.reparation_orderChecked)
-            
+    function modifier() {
+        if (document.reparation_orderChecked){
+            if (document.getElementById(document.reparation_orderChecked).value === "AttenteDevis") {
+                document.getElementById("error").innerHTML = "Cet ordre de réparation a été validé par le formateur, il n'est plus modifiable"
+            } else { 
+                window.location = "{% url 'garage:reparation-order-update' 1 %}".replace(1, document.reparation_orderChecked)
+            }
+        } else {
+            document.getElementById("error").innerHTML = "Veuillez selectionner un ordre de réparation"
+        }     
+    }
+    function redirect_quotation_create() {
+        if (document.reparation_orderChecked){
+            if (document.getElementById(document.reparation_orderChecked).value === "AttenteDevis") {
+                window.location = "{% url 'garage:quotation-create' 1 %}".replace(1, document.reparation_orderChecked)
+            } else {
+                document.getElementById("error").innerHTML = "Cet ordre de réparation n'a pas été validé par le formateur"
+            }
+        } else {
+            document.getElementById("error").innerHTML = "Veuillez selectionner un ordre de réparation"
+        } 
     }
 </script>
+
 {% endblock content %}

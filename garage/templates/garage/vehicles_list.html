@@ -26,7 +26,6 @@
         
         {% for vehicle in vehicle_list %}
         <input type="radio" class="btn col-md-1 radio" id="{{vehicle.id}}" name="VehicleBtn" onclick='javascript:document.vehicleChecked={{vehicle.id}}' >
-    </input>
     
     <label for="{{vehicle.id}}" id="listing" class="col-md-12 label_vehicle" ondblclick="redirect()">
         <div class="row ">
@@ -69,7 +68,6 @@
 
     function redirect() {
         if (document.vehicleChecked && window.location.href.indexOf("vehicules") >= 0){
-            console.log(window.location.href)
             window.location = "{% url 'garage:vehicle-update' 1 %}".replace(1, document.vehicleChecked)
         }
         else if (document.vehicleChecked && window.location.href.indexOf("select") >= 0){

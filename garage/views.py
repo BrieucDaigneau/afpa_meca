@@ -49,7 +49,6 @@ class CustomerCreateView(View):
                 dictio = self.getForm( request )   
 
                 address_form = dictio['address_form']
-                print("erreur 3", address_form)
                                      
                 if not address_form.is_valid():                         
                     modelFormError = "Une erreur interne est apparue sur l'adresse. Merci de recommencer votre saisie."                  
@@ -302,6 +301,11 @@ class ReparationOrderSelect(ListView):
 
 class ReparationOrders(ReparationOrderSelect):
     template_name = "garage/reparation_orders.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reparation_order_list'] = ReparationOrder.objects.all()
+        return context
     
 
 class ReparationOrderUpdate(UpdateView):
@@ -341,11 +345,11 @@ class QuotationCreate(View):
 
     def getForm(self, requ):
         quotation_form = QuotationForm(requ)
-        component_form = ComponentForm(requ)
+        component_forms = ComponentFormset(requ)
 
         dico = {
             'quotation_form': quotation_form,
-            'component_form': component_form,
+            'component_forms': component_forms,
 
         }
         return dico
@@ -353,15 +357,14 @@ class QuotationCreate(View):
     def get(self, request, **kwargs):
         return render(request, self.myTemplate_name, self.getForm( None ) )
     
+    
     def post(self, request, **kwargs):
         forms = self.getForm(request.POST)
 
         quotation_form = forms['quotation_form']
-        component_form = forms['component_form']
-
-        print( "####" , quotation_form )
-        
-        if component_form.is_valid() and quotation_form.is_valid() :
+        component_forms = forms['component_forms']
+       
+        if quotation_form.is_valid() and component_forms.is_valid() :
             
             quotation = quotation_form.save(commit=False)
             
@@ -376,23 +379,20 @@ class QuotationCreate(View):
             quotation.amount = 0 #component.price*component.quantity
             quotation.save()
 
-            component = Component.objects.create(price=component_form.cleaned_data['price'],
-                                                reference=component_form.cleaned_data['reference'],
-                                                name=component_form.cleaned_data['name'],
-                                                quantity=component_form.cleaned_data['quantity'],
-                                                supplier=quotation.supplier,
-                                                quotation=quotation)
+            for component_form in component_forms :
+                
+                component = component_form.save(commit=False)
+                component.supplier = quotation.supplier
+                component.quotation = quotation
 
-            component.save()
+                component.save()
 
             return redirect('garage:home')
             
         else : 
-            print( "################# quotation_form invalid")
-            return render(request, 'garage/quotation_create.html')
+            return render(request, 'garage/quotation_create.html',forms)
 
     def get_context_data(self, **kwargs):
         context = super(QuotationCreate, self).get_context_data(**kwargs)
         context['reparation_order'] = ReparationOrder.object.get(pk=self.kwargs['reparation_orders_id'])
-        print("#######################", context)
         return context

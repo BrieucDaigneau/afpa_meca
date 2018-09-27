@@ -158,10 +158,10 @@ class Supplier(models.Model):
         return self.name
 
 class Component(models.Model):
+    quantity     = models.IntegerField("quantité pièce")
     reference   = models.CharField("référence pièce", max_length=20)
     name        = models.CharField("libellé de la pièce", max_length=50)
     price       = models.FloatField("prix unitaire")
-    quantity     = models.IntegerField("quantité pièce")
 
     supplier    = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="components")
     quotation   = models.ForeignKey('Quotation', on_delete=models.CASCADE, related_name='components')
