@@ -28,5 +28,4 @@ admin.site.register(Supplier)
 admin.site.register(Quotation)
 admin.site.register(ReparationOrder)
 admin.site.register(Component)
-admin.site.register(Car)
-admin.site.register(Customer)
+
