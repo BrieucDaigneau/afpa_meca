@@ -142,8 +142,10 @@
             {% endif %}
 
             <div class="col-md-3">
+                {% if reparationorder.user_profile %}
                 <label class="control-label">Réceptionnaire : </label> 
-                {{ user.get_username }}
+                {{ reparationorder.user_profile }}
+                {% endif %}
             </div>
         </div>
     {% endblock vehicle %}

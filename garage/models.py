@@ -40,11 +40,11 @@ class Customer(models.Model):
     def __str__(self):
         return "{0}  {1}  N° AFPA : {2}".format(self.lastname, self.firstname, self.afpa_number)
 
-# surcharge du manager django pour le modele vehicle
+# surchpk= du manager django pour le modele vehicle
 # Car Bike et Motorbike héritent tous de Vehicle
 # donc vehicle_id == car_id ou bike_id ou motorbike_id
 class MyManager(models.Manager):
-
+    
 # récupère les voitures pour l'app car, et les motos/velos pour l'app bike
 # dans un dico de véhicules passé en paramètre
     def filter_type(self, dico): # pas d'accés à la bdd
@@ -127,6 +127,7 @@ class UserProfile(models.Model):
 
 
 class ReparationOrder(models.Model):
+    number                  = models.CharField(unique=True, null=True, max_length=15)
     committed_date          = models.DateTimeField("date de reception", null=True, default=datetime.now )
     return_date             = models.DateField("Date de restitution prévisionnelle", null=True)
     diagnostic              = models.TextField(max_length=300, null=True)
@@ -148,14 +149,20 @@ class ReparationOrder(models.Model):
     vehicle                 = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name="reparation_order")
 
     def __str__(self):
-        return str(self.vehicle) + " " + str(self.committed_date) + " " + str(self.user_profile) + " " + str(self.status)
+        return str(self.number) + " ---- " + str(self.vehicle) + "  ----  " + str(self.committed_date) + "   ----   " + str(self.user_profile) + "    ---------------------    " + str(self.status)
 
-
+    class Meta:
+        verbose_name    = "Ordre de Réparations"
+        verbose_name_plural = "Ordres de Réparations"
+    
 class Supplier(models.Model):
     name         = models.CharField("Nom Fournisseur", max_length=35)
         
     def __str__(self):
         return self.name
+    class Meta:
+        verbose_name        = "Fournisseur"
+        verbose_name_plural = "Fournisseurs"
 
 class Component(models.Model):
     quantity     = models.IntegerField("quantité pièce")
@@ -184,7 +191,7 @@ class Quotation(models.Model):
     signed_img              = models.ImageField("Scan du devis signé", null=True, upload_to ="img/devis") 
     payoff_date             = models.DateField("Date de paiement", null=True)
     payoff_type             = models.CharField(max_length=7, null=True, choices=payoff_choice, default=payoff_choice[0],)
-    status                  = models.CharField( max_length=20,choices=Status_choice,default=Status_choice[0],)
+    status                  = models.CharField( max_length=20,choices=Status_choice,default="AttenteFormateur",)
     amount                  = models.FloatField("Total TTC")
     num_quotation_supplier  = models.CharField("Numéro devis Fournisseur", max_length=15)
 
@@ -197,5 +204,5 @@ class Quotation(models.Model):
         verbose_name_plural = "Devis"
 
     def __str__(self):
-        return str(self.number)
+        return str(self.number) + " ---- " + str(self.reparation_order.number) + " ---- " + str(self.reparation_order.vehicle) + "  ----  " + str(self.date) + "   ----   " + str(self.user_profile) + "    ---------------------    " + str(self.status)
 

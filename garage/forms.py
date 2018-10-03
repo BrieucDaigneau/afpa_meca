@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput, Select, formset_factory
+from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput, Select, formset_factory, modelformset_factory
 from django.forms.utils import ErrorList
 from django.db.models import Max
 
@@ -138,6 +138,16 @@ class ComponentForm(forms.ModelForm):
     #     formset = ComponentFormSet()
 
 ComponentFormset = formset_factory(ComponentForm)
+ComponentModelFormset = modelformset_factory(Component, 
+                                        exclude = ("supplier", "quotation"),
+                                        widgets = {
+                                                    'quantity': NumberInput(attrs={'class': 'form-control col-md-1', 'required':'True'}),
+                                                    'reference': TextInput(attrs={'class': 'form-control col-md-4', 'required':'True'}),
+                                                    'name': TextInput(attrs={'class': 'form-control col-md-4', 'required':'True'}),
+                                                    'price':NumberInput(attrs={'class': 'form-control col-md-2', 'required':'True'})
+                                                },
+                                        extra = 0 
+                                        )
 
 class QuotationForm(forms.ModelForm):
 

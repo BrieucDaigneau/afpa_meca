@@ -34,6 +34,7 @@
                     </div>
                 </div>
             </div>
+            {% block payoff %}{% endblock payoff %}  
             {{ component_forms.management_form }}
 
             <div class="row mt-4">
@@ -65,12 +66,14 @@
 
                         <div class="col-md-12" id="formsetZone">
                             {% for component_form in component_forms %}
-                                <div class="nsorte row">
+                                <div class="nsorte row mt-1">
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     {{ component_form.quantity }}&nbsp;
                                     {{ component_form.reference }} &nbsp;
                                     {{ component_form.name }}&nbsp;
                                     {{ component_form.price }}
+                                    {{ component_form.id }}&nbsp;&nbsp;&nbsp;
+                                    <div class="btn btn-warning bt_rm_sorte">-</div>
                                 </div>
                             {% endfor %}
                         </div>
@@ -84,21 +87,7 @@
                     </div>
                 </div>
 
-                {% block payoff %}
-                    {% comment %}
-                    <div class="row mt-5">
-                        <div class="col-md-5">
-                            <label class=" form-group control-label" for="{{ quotation_form.payoff_type.id_for_label }}" >Type de règlement :<span class="mandatory"> *</span></label>
-                                {{ quotation_form.payoff_type }}
-                        </div>
-                        
-                        <div class="col-md-5">
-                            <label class=" form-group control-label" for="{{ quotation_form.payoff_date.id_for_label }}" >Date de règlement :<span class="mandatory"> *</span></label>
-                            {{ quotation_form.payoff_date }}
-                        </div>
-                    </div>
-                    {% endcomment %}
-                {% endblock payoff %}  
+
 
             </div>
         
@@ -112,6 +101,7 @@
                 <div class="col-md-2"><button class="btn btn-primary btn-block button" type="submit" id="valider">{% block next %}Valider{% endblock next %}</button></div>
             </div>                    
         </form>
+        
         <div style="display:none;">
             <div id="eform" class="nsorte row mt-1">
                 &nbsp;&nbsp;{% for component in component_forms.empty_form %}
@@ -125,8 +115,9 @@
 
 {% block head %}<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>{%endblock head %}
 <script type="text/javascript">
-        $(document).ready(function(){
 
+        // from https://lindev.fr/index.php?post/2014/01/17/Django%2C-g%C3%A9rer-les-FormSet-dynamiquement
+        $(document).ready(function(){
             /**************************************************************************
             *                                      Gesion ADD REMOVE Formset          *
             ***************************************************************************/
@@ -144,7 +135,6 @@
                     var id = 'label_' + newFor;
                     $(this).attr({'id':id, 'for':newFor, 'style':'display:none;'});
                 });
-        
             }
         
             reindex_formset = function( formset_zone ){
@@ -185,4 +175,3 @@
     </script>
 
 {% endblock content %}
-
