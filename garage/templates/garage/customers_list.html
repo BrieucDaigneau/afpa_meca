@@ -44,7 +44,7 @@
         <div id="error" class=" col-md-12 mt-2"></div>
     {% endblock list %}
 
-       
+    {% if is_paginated %}       
         <ul class="pagination">
         {% if page_obj.has_previous %}
             <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
@@ -64,7 +64,7 @@
             <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
         {% endif %}
         </ul>
-
+        {% endif %}
 
     {% block buttons %}
         <div class="row">

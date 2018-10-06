@@ -47,7 +47,7 @@ class MyManager(models.Manager):
     
 # récupère les voitures pour l'app car, et les motos/velos pour l'app bike
 # dans un dico de véhicules passé en paramètre
-    def filter_type(self, dico): # pas d'accés à la bdd
+    def filter_business_application(self, dico): # pas d'accés à la bdd
         if VehicleConfig['vehicle'] == 'bike':         
             return [ v for v in dico if isinstance(v, Bike) or isinstance(v, Motorbike) ]
         elif VehicleConfig['vehicle'] == 'car':
@@ -75,7 +75,7 @@ class MyManager(models.Manager):
         # on suppose qu'un client aurra tout au plus 5 véhicules
         vehicles =  self.filter(customer=id_customer) 
         typed_vehicles = [self.get_child(v.id) for v in vehicles ]
-        return self.filter_type( typed_vehicles )
+        return self.filter_business_application( typed_vehicles )
 
 
 class Vehicle(models.Model):

@@ -76,8 +76,21 @@
                                     <div class="btn btn-warning bt_rm_sorte">-</div>
                                 </div>
                             {% endfor %}
+                            
                         </div>
-
+                        <div class="col-md-9">&nbsp;</div>
+                        <div class="col-md-8"></div>
+                        <h2 class=" control-label col-md-2">Total :</h2>
+                        
+                        <h3 class="col-md-2" id="amount">
+                            {% if quotation_form.amount.value %}
+                                {{ quotation_form.amount.value }}
+                            {% else %} 0
+                            {% endif %}
+                        <h3>
+                        <div style="display:none;">
+                            {{ quotation_form.amount }}
+                        </div>
                     </div>
                 </div>
 
@@ -114,6 +127,21 @@
 
 
 {% block head %}<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>{%endblock head %}
+
+<script>
+    //auto-filling amount
+
+        function majTotal(){
+            let total = 0
+            for ( id = 0 ; id < document.getElementsByClassName('quantity').length - 1 ; id++ ){
+                let sub_total = document.getElementById(`id_form-${id}-quantity`).value * document.getElementById(`id_form-${id}-price`).value 
+                total += sub_total
+            };
+            document.getElementById('id_amount').value = total
+            document.getElementById('amount').innerHTML = total
+        }
+
+</script>
 <script type="text/javascript">
 
         // from https://lindev.fr/index.php?post/2014/01/17/Django%2C-g%C3%A9rer-les-FormSet-dynamiquement

@@ -119,10 +119,10 @@ class ComponentForm(forms.ModelForm):
         model = Component
         exclude = ("supplier", "quotation")
         widgets = {
-            'quantity': NumberInput(attrs={'class': 'form-control col-md-1', 'required':'True'}),
+            'quantity': NumberInput(attrs={'value':'1', 'class': 'form-control col-md-1 quantity', 'required':'True', 'onchange':'majTotal()'}),
             'reference': TextInput(attrs={'class': 'form-control col-md-4', 'required':'True'}),
             'name': TextInput(attrs={'class': 'form-control col-md-4', 'required':'True'}),
-            'price':NumberInput(attrs={'class': 'form-control col-md-2', 'required':'True'})
+            'price':NumberInput(attrs={'class': 'form-control col-md-2', 'required':'True', 'onchange':'majTotal()'})
         }
     # quantity = forms.IntegerField(required=True, min_value=1)
     # reference = forms.CharField(required=True)
@@ -141,10 +141,10 @@ ComponentFormset = formset_factory(ComponentForm)
 ComponentModelFormset = modelformset_factory(Component, 
                                         exclude = ("supplier", "quotation"),
                                         widgets = {
-                                                    'quantity': NumberInput(attrs={'class': 'form-control col-md-1', 'required':'True'}),
+                                                    'quantity': NumberInput(attrs={'value':'1', 'class': 'form-control col-md-1 quantity', 'required':'True', 'onchange':'majTotal()'}),
                                                     'reference': TextInput(attrs={'class': 'form-control col-md-4', 'required':'True'}),
                                                     'name': TextInput(attrs={'class': 'form-control col-md-4', 'required':'True'}),
-                                                    'price':NumberInput(attrs={'class': 'form-control col-md-2', 'required':'True'})
+                                                    'price':NumberInput(attrs={'class': 'form-control col-md-2', 'required':'True', 'onchange':'majTotal()'})
                                                 },
                                         extra = 0 
                                         )
@@ -159,9 +159,10 @@ class QuotationForm(forms.ModelForm):
 
     class Meta:
         model = Quotation
-        fields =('supplier', 'num_quotation_supplier' )
+        fields =('supplier', 'num_quotation_supplier', 'amount')
         widgets = {
-            'num_quotation_supplier' : TextInput(attrs={'class': 'form-control'})
+            'num_quotation_supplier' : TextInput(attrs={'class': 'form-control'}),
+            'amount' : NumberInput(attrs={'class': 'form-control'}),
         }
 
 

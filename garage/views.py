@@ -240,7 +240,7 @@ class Vehicles(ListView):
         context = super().get_context_data(**kwargs)   
         vehicles = [Vehicle.objects.get_child(v.id) for v in Vehicle.objects.all()] 
         print(vehicles)
-        p = Paginator(Vehicle.objects.filter_type(vehicles), self.paginate_by)
+        p = Paginator(Vehicle.objects.filter_business_application(vehicles), self.paginate_by)
         context['vehicle_list'] = p.page(context['page_obj'].number)
         context['paginator'] = p
         return context 
@@ -404,7 +404,7 @@ class QuotationCreate(View):
             quotation.reparation_order = ReparationOrder.objects.get(pk=self.kwargs['reparation_orders_id'])
             quotation.user_profile = self.request.user
 
-            quotation.amount = 0 #component.price*component.quantity
+            #quotation.amount = 0 #component.price*component.quantity
             quotation.save()
 
             for component_form in component_forms :
@@ -485,7 +485,7 @@ class QuotationUpdate(UpdateView):
             return render(request, 'garage/quotation_update.html',forms)
 
     def get_context_data(self, **kwargs):
-        context = super(QuotationCreate, self).get_context_data(**kwargs)
+        context = super(QuotationUpdate, self).get_context_data(**kwargs)
         context['quotation'] = Quotation.objects.get(pk=self.kwargs['pk'])
         context['reparation_order'] = ReparationOrder.objects.get(pk=self.kwargs['reparation_orders_id'])
         return context
