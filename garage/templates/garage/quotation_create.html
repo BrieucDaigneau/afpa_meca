@@ -82,12 +82,13 @@
                         <div class="col-md-8"></div>
                         <h2 class=" control-label col-md-2">Total :</h2>
                         
-                        <h3 class="col-md-2" id="amount">
+                        <h3 class="col-md-1" id="amount">
                             {% if quotation_form.amount.value %}
                                 {{ quotation_form.amount.value }}
                             {% else %} 0
                             {% endif %}
                         <h3>
+                        <h3>€</h3>
                         <div style="display:none;">
                             {{ quotation_form.amount }}
                         </div>
