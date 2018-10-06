@@ -138,6 +138,7 @@
                 let sub_total = document.getElementById(`id_form-${id}-quantity`).value * document.getElementById(`id_form-${id}-price`).value 
                 total += sub_total
             };
+            total = Math.round(total*100)/100;
             document.getElementById('id_amount').value = total
             document.getElementById('amount').innerHTML = total
         }

@@ -181,16 +181,16 @@ class Component(models.Model):
 
 
 class Quotation(models.Model):
-    payoff_choice   = ( ("Chèques", 'Chèques'), ("Espèces", 'Espèces'), )
+    payoff_choice   = (("non réglé", 'non réglé'), ("Chèques", 'Chèques'), ("Espèces", 'Espèces'), )
     Status_choice   = ( ("AttenteFormateur", 'AttenteFormateur'), ("ValidationFormateur", 'ValidationFormateur'),
                         ("RefusFormateur", 'RefusFormateur'), ("ValidationClient",'ValidationClient'),
                         ("AttenteClient", 'AttenteClient'), ("RefusClient", 'RefusClient'), )
 
     number                  = models.CharField(verbose_name = "n° Devis", unique=True, max_length=15)
-    date                    = models.DateField(verbose_name = "Date du devis", null=False, default=datetime.now)
+    date                    = models.DateTimeField(verbose_name = "Date du devis", null=False, default=datetime.now)
     signed_img              = models.ImageField(verbose_name = "Scan du devis signé", null=True, upload_to ="img/devis") 
-    payoff_date             = models.DateField(verbose_name = "Date de paiement", null=True)
-    payoff_type             = models.CharField(verbose_name = "Moyen de paiement", max_length=7, null=True, choices=payoff_choice, default=payoff_choice[0],)
+    payoff_date             = models.DateTimeField(verbose_name = "Date de paiement", null=True)
+    payoff_type             = models.CharField(verbose_name = "Moyen de paiement", max_length=9, null=True, choices=payoff_choice, default=payoff_choice[0],)
     status                  = models.CharField(verbose_name = "statut", max_length=20,choices=Status_choice,default="AttenteFormateur",)
     amount                  = models.FloatField(verbose_name = "Total TTC")
     num_quotation_supplier  = models.CharField(verbose_name = "N° devis Fournisseur", max_length=15)

@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput, Select, formset_factory, modelformset_factory
+from django.forms import ModelForm, TextInput, EmailInput, SelectDateWidget, FileInput, NumberInput, DateInput, Textarea, NumberInput, Select, formset_factory, modelformset_factory, DateTimeInput
 from django.forms.utils import ErrorList
 from django.db.models import Max
 
@@ -164,7 +164,23 @@ class QuotationForm(forms.ModelForm):
             'num_quotation_supplier' : TextInput(attrs={'class': 'form-control'}),
             'amount' : NumberInput(attrs={'class': 'form-control'}),
         }
+class QuotationUpdateForm(QuotationForm):
+                                  
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['payoff_type'].queryset = Quotation.payoff_choice
 
+    class Meta:
+        model = Quotation
+        fields =('supplier', 'num_quotation_supplier', 'amount', 'payoff_type', 'payoff_date')
+        widgets = {
+            'num_quotation_supplier' : TextInput(attrs={'class': 'form-control'}),
+            'amount' : NumberInput(attrs={'class': 'form-control'}),
+            'payoff_type': Select(attrs={'class': 'form-control', 'onchange':'auto_payoff_date()'}),
+            'payoff_date': DateTimeInput(attrs={'class': 'form-control', 'type':'date', 'required':'true', 'value':''})
+
+        }
+    
 
 # ComponentFormSet = formset_factory(ComponentForm, extra=2)
 # formset = ComponentFormSet

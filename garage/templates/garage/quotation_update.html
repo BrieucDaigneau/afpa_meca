@@ -3,15 +3,49 @@
 {% block title %}Modification du devis{% endblock title %}
 
 {% block payoff %}
-{% comment %} <div class="row mt-5">
+<div class="row mt-5">
     <div class="col-md-5">
         <label class=" form-group control-label" for="{{ quotation_form.payoff_type.id_for_label }}" >Type de règlement :<span class="mandatory"> *</span></label>
             {{ quotation_form.payoff_type }}
     </div>
     
-    <div class="col-md-5">
+    <div class="col-md-5" id="date">
         <label class=" form-group control-label" for="{{ quotation_form.payoff_date.id_for_label }}" >Date de règlement :<span class="mandatory"> *</span></label>
         {{ quotation_form.payoff_date }}
     </div>
-</div> {% endcomment %}
+</div>
+
+<script>
+    (function (){
+        var dateinput = document.querySelector('input[type=date]')
+        var dateString = "0002-01-01"
+
+        if (document.getElementById('id_payoff_type').value === 'non réglé'){
+            document.getElementById('date').style = 'visibility:hidden'
+            dateinput.value = dateinput.value || dateString
+            console.log(dateinput.value)
+
+        }
+    })();
+    function auto_payoff_date() {
+        var dateinput = document.querySelector('input[type=date]')
+        var dateString ="0002-01-01"
+        
+        console.log(document.getElementById('id_payoff_date').value)
+        if (document.getElementById('id_payoff_type').value === 'non réglé'){
+            document.getElementById('date').style = 'visibility:hidden'
+            dateinput.value = dateinput.value || dateString
+            console.log(dateinput.value)
+
+        } else if (document.getElementById('date').style === 'display:none'){
+        } else {
+            document.getElementById('date').style = 'visibility:visible'
+            dateinput.value = ""
+
+        }
+        
+    }
+
+    
+</script>
 {% endblock payoff %}  

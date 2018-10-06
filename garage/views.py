@@ -442,7 +442,7 @@ class QuotationUpdate(UpdateView):
 
     def getForm(self, requ):
         quotation = Quotation.objects.get(pk=self.kwargs['pk'])
-        quotation_form = QuotationForm(requ, instance=quotation)
+        quotation_form = QuotationUpdateForm(requ, instance=quotation)
 
         components = Component.objects.filter(quotation=quotation)
         component_forms = ComponentModelFormset(requ, queryset=components)
