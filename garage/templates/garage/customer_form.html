@@ -122,7 +122,23 @@
             </div>
 
     </div>
-    
+    <script type="text/javascript" src="{% static 'garage/js/vue.js' %}"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>axios.defaults.xsrfCookieName = 'csrftoken';
+                axios.defaults.xsrfHeaderName = 'X-CSRFToken';</script>
+    <script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+	<script type="text/javascript" src="{% static 'garage/js/adress.js' %}"></script>
+	<script src="{% static 'garage/js/jquery-slim.min.js' %}"></script>
+	<script src="{% static 'garage/js/holder.min.js' %}"></script>
+	<script>
+		$(document).ready(function () {
+			$("#navbar-contenu a").each(function (index) {
+				if (this.href == document.location.href) {
+					$(this).addClass('active');
+				}
+			})
+		});
+	</script>
    
     <script type="text/javascript" src="{% static 'garage/js/vue.js' %}"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
