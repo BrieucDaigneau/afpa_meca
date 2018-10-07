@@ -2,10 +2,10 @@
 
 {% block content %}
     <div class="container">
+        {% block print %}{% endblock print %}
         <div class="row">
             <div class="col-md-12">
                 <h1 id="title" class="title">{% block title %}Création nouveau devis {% endblock title %}</h1>
-                {{ reparation_order.vehicle.customer.lastname }}
             </div>
         </div>
         <form class="needs-validation forms" method="post" enctype="multipart/form-data" id="my_form">

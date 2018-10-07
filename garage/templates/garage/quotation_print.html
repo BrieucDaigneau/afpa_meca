@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="utf-8" />
+	<title>{% block title %}AFPA Pôle Mécanique{% endblock %}</title>
+	{% load static %}
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="shortcut icon" type="image/png" href="{% static 'garage/img/favicon.ico' %}"/>
+	<link href="{% static 'garage/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="{% static 'garage/css/base.css' %}" />
+	<link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
+	<link href={% block css %}{% endblock css %} rel="stylesheet"> 
+	{% block head %}{% endblock head %}
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <img src="{% static 'garage/img/logo_afpa2.png' %}">
+                    <div class="col-md-12">Campus de Saint Jean de Vedas</div>
+                    <div class="col-md-12">Association nationale pour la Formation</div>
+                    <div class="col-md-12">Professionnelle des Adultes</div>
+                    <div class="col-md-12">12 rue Jean Mermoz</div>
+                    <div class="col-md-12">34430 St Jean de Vedas</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8"> </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">{{customer.lastname}} {{customer.firstname}}</div>
+                    <div class="col-md-12">{{customer.personal_data.mail}}</div>
+                    <div class="col-md-12">{{customer.address.street_number}} {{customer.address.street_name}}</div>
+                    {% if customer.adress.street_complement %}
+                    <div class="col-md-12">{{customer.adress.street_complement}}</div>
+                {% endif %}
+                <div class="col-md-12">{{customer.adress.zip_code}} {{customer.adress.city}}</div>
+                
+
+
+            </div></div>
+        </div>
+        <h1 id="title" class="title mt-4">Devis N°{{quotation.number}}</h1>
+        
+        <div class="row">
+        
+            <div class="col-md-12 mt-5">
+                    <div class="row" style="text-align: center;">
+                        <h2 class="col-md-2">Référence</h2>
+                        <h2 class="col-md-3">Libellé</h2>
+                        <h2 class="col-md-2">Qté</h2>
+                        <h2 class="col-md-2">PU</h2>
+                        <h2 class="col-md-3">Total TTC</h2>
+                    </div>
+                </div>
+            <h4 class="col-md-12" >
+                <hr>
+            </h4>
+        </div>
+        {% for component in components %}
+        <div class="row">
+            <div class="col-md-2 center" name="components" id="{{component.id}}">{{ component.reference }} &nbsp;</div>
+            <div class="col-md-3 center">{{ component.name }}</div>
+            <div class="col-md-2 center" id="quantity_{{component.id}}">{{ component.quantity }}</div>
+            <div class="col-md-2 center" id="price_{{component.id}}">{{ component.price }}</div>
+            <div class="col-md-3 center" id="total_{{component.id}}">à calculer !!!</div>
+        </div>
+        <hr>
+        {% endfor %}
+        <div class="row">
+            <div class="col-md-7"> </div>
+            <h2 class=" control-label col-md-3">
+                    &nbsp;&nbsp;&nbsp;
+                    Total TTC:
+                </h2>
+            
+            <h3 class="col-md-1">
+                {{ quotation.amount }}
+            </h3>
+            <h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <h3>€</h3>
+        </div>
+
+        <hr>
+        <div class="row">signature du client suivi des mentions "bon pour accord" :</div>
+    </div>
+        
+        
+        
+    </body>
+    <script>
+        (function (){
+            for ( my_id = 0 ; my_id < document.getElementsByName("components").length ; my_id++ ){
+                let id_component = document.getElementsByName("components")[my_id].id
+
+                console.log(`total_${id_component}`)
+                console.log(document.getElementById(`quantity_${id_component}`).innerHTML)
+
+                document.getElementById(`total_${id_component}`).innerHTML = document.getElementById(`quantity_${id_component}`).innerHTML * document.getElementById(`price_${id_component}`).innerHTML
+            }
+            window.print()
+            window.close()
+        })();
+
+
+
+    </script>
+
+</html>

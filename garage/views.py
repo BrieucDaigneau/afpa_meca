@@ -447,7 +447,16 @@ class QuotationUpdate(UpdateView):
         components = Component.objects.filter(quotation=quotation)
         component_forms = ComponentModelFormset(requ, queryset=components)
 
+        reparation_order = ReparationOrder.objects.get(pk=quotation.reparation_order.id)
+        vehicle = Vehicle.objects.get_child(reparation_order.vehicle.id)
+        customer = Customer.objects.get(pk=vehicle.customer.id)
+
         dico = {
+            'quotation': quotation,
+            'components': Component.objects.filter(quotation=quotation),
+            'reparation_order': reparation_order,
+            'vehicle' : vehicle,
+            'customer': customer,
             'quotation_form': quotation_form,
             'component_forms': component_forms,
 
@@ -484,8 +493,6 @@ class QuotationUpdate(UpdateView):
         else : 
             return render(request, 'garage/quotation_update.html',forms)
 
-    def get_context_data(self, **kwargs):
-        context = super(QuotationUpdate, self).get_context_data(**kwargs)
-        context['quotation'] = Quotation.objects.get(pk=self.kwargs['pk'])
-        context['reparation_order'] = ReparationOrder.objects.get(pk=self.kwargs['reparation_orders_id'])
-        return context
+class QuotationPrint(QuotationUpdate):
+    myTemplate_name = 'garage/quotation_print.html'
+   

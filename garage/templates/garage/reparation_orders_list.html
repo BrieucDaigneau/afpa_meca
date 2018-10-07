@@ -92,7 +92,7 @@
     }
     function redirect_quotation_create() {
         if (document.reparation_orderChecked){
-            if (document.getElementById(document.reparation_orderChecked).value === "AttenteDevis") {
+            if (document.getElementById(`reparation_order_${document.reparation_orderChecked}`).value === "AttenteDevis") {
                 window.location = "{% url 'garage:quotation-create' 1 %}".replace(1, document.reparation_orderChecked)
             } else {
                 document.getElementById("error").innerHTML = "Cet ordre de réparation n'a pas été validé par le formateur"

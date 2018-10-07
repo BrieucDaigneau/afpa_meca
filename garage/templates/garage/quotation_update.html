@@ -1,6 +1,9 @@
 {% extends 'garage/quotation_create.html' %} 
 
-{% block title %}Modification du devis{% endblock title %}
+{% block print %}<div class="btn btn-primary mt-5" onclick="print()">imprimer</div>{% endblock print %}
+
+
+{% block title %}Modification du devis N°{{quotation.number}}{% endblock title %}
 
 {% block payoff %}
 <div class="row mt-5">
@@ -46,6 +49,11 @@
         
     }
 
-    
+    function print() {
+        hrefList = location.pathname.split("/")
+        param = hrefList[hrefList.length -2]
+        console.log(param)
+        window.open("{% url 'garage:quotation-print' 1 %}".replace(1, param))
+    }
 </script>
 {% endblock payoff %}  
