@@ -25,9 +25,9 @@
         </h4>
          
         {% for reparation_order in reparation_order_list %}
-        <input type="radio" class="btn col-md-1 radio" id="{{reparation_order.id}}" name ="reparation-order" value="{{reparation_order.status}}" onclick='javascript:document.reparation_orderChecked={{reparation_order.id}};' ></input>
+        <input type="radio" class="btn col-md-1 radio" id="reparation_order_{{reparation_order.id}}" name ="reparation-order" value="{{reparation_order.status}}" onclick='javascript:document.reparation_orderChecked={{reparation_order.id}};' ></input>
     
-        <label for="{{reparation_order.id}}" id="listing" class="col-md-12" ondblclick="modifier()">
+        <label for="reparation_order_{{reparation_order.id}}" id="listing" class="col-md-12" ondblclick="updateReparationOrder()">
             <div class="row ">
                 <div class="col-md-1">{{ reparation_order.number}}</div>
                 <div class="col-md-2">{{ reparation_order.vehicle.customer.lastname }} {{ reparation_order.vehicle.customer.firstname }}</div>
@@ -71,7 +71,7 @@
                 <div class="row mt-5">
                     {% block cancel %}{% endblock cancel %}
                     <div class="col-md-8"></div>
-                    <button class=" btn btn-primary btn-sm col-md-2" onClick="modifier()">Modifier</button>
+                    <button class=" btn btn-primary btn-sm col-md-2" onClick="updateReparationOrder()">Modifier</button>
                 </div>
             </div>
             {% endblock buttons %}
@@ -79,9 +79,9 @@
 
 <script type="text/javascript">
             
-    function modifier() {
+    function updateReparationOrder() {
         if (document.reparation_orderChecked){
-            if (document.getElementById(document.reparation_orderChecked).value === "AttenteDevis") {
+            if (document.getElementById(`reparation_order_${document.reparation_orderChecked}`).value === "AttenteDevis") {
                 document.getElementById("error").innerHTML = "Cet ordre de réparation a été validé par le formateur, il n'est plus modifiable"
             } else { 
                 window.location = "{% url 'garage:reparation-order-update' 1 %}".replace(1, document.reparation_orderChecked)

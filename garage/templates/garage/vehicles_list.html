@@ -1,5 +1,4 @@
 {% extends 'garage/base.html' %}
-
 {% load static %}
 {% block head %}
 <link href="{% static 'garage/css/style.css' %}" rel="stylesheet" type="text/css" />
@@ -76,7 +75,7 @@
                     <div class="row mt-5">
                         <a href="{% url 'garage:home' %}" class=" btn btn-sm btn-primary col-md-2" >Annuler</a>
                         <div class="col-md-4"></div>
-                        <button class=" btn btn-primary btn-sm col-md-2" onClick="modifier()">Modifier</button>
+                        <button class=" btn btn-primary btn-sm col-md-2" onClick="updateVehicle()">Modifier</button>
                         <div class="col-md-2"></div>
                         <button class="  btn btn-primary btn-sm col-md-2" onClick="redirect()">Valider et Attribuer un véhicule</button>
                     </div>
@@ -111,7 +110,7 @@
         let stringToFind = window.location.href.match(/[/](\d+)[/]/)
         window.location = "{% url 'garage:vehicle-create' 1 %}".replace(1, stringToFind[1])
         }
-    function modifier() {
+    function updateVehicle() {
         if (document.vehicleChecked){
         window.location = "{% url 'garage:vehicle-update' 1 %}".replace(1, document.vehicleChecked)            
     } else {

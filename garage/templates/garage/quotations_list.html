@@ -28,9 +28,9 @@
             <hr>
         </h4>
         {% for quotation in quotations_list %}
-        <input type="radio" class="btn col-md-1 radio" id="{{quotation.id}}" name ="reparation-order" value="{{quotation.status}}" onclick='javascript:document.quotationChecked={{quotation.id}};' >
+        <input type="radio" class="btn col-md-1 radio" id="quotation_{{quotation.id}}" name ="reparation-order" value="{{quotation.status}}" onclick='javascript:document.quotationChecked={{quotation.id}};' >
     
-        <label for="{{quotation.id}}" id="listing" class="col-md-12" ondblclick="modifier()">
+        <label for="quotation_{{quotation.id}}" id="listing" class="col-md-12" ondblclick="updateQuotation()">
             <div class="row ">
                 <div class="col-md-1">{{ quotation.number }}</div>
                 <div class="col-md-1">{{ quotation.reparation_order.number }}</div>
@@ -75,7 +75,7 @@
                 <div class="row mt-5">
                     {% block cancel %}{% endblock cancel %}
                     <div class="col-md-8"></div>
-                    <button class=" btn btn-primary btn-sm col-md-2" onClick="modifier()">Modifier</button>
+                    <button class=" btn btn-primary btn-sm col-md-2" onClick="updateQuotation()">Modifier</button>
                 </div>
             </div>                              
         {% endblock buttons %}
@@ -83,9 +83,10 @@
 
 <script type="text/javascript">
             
-    function modifier() {
+    function updateQuotation() {
+        console.log(`quotation_${document.quotationChecked}`)
         if (document.quotationChecked){
-            if (document.getElementById(document.quotationChecked).value === "AttenteDevis") {
+            if (document.getElementById(`quotation_${document.quotationChecked}`).value === "AttenteDevis") {
                 document.getElementById("error").innerHTML = "Ce devis a été validé par le formateur, il n'est plus modifiable"
             } else { 
                 window.location = "{% url 'garage:quotation-update' 1 %}".replace(1, document.quotationChecked)
