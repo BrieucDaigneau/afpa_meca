@@ -67,7 +67,7 @@
             <div class="col-md-3 center">{{ component.name }}</div>
             <div class="col-md-2 center" id="quantity_{{component.id}}">{{ component.quantity }}</div>
             <div class="col-md-2 center" id="price_{{component.id}}">{{ component.price }}</div>
-            <div class="col-md-3 center" id="total_{{component.id}}">à calculer !!!</div>
+            <div class="col-md-3 center" id="total_{{component.id}}"></div>
         </div>
         <hr>
         {% endfor %}
@@ -100,10 +100,10 @@
                 console.log(`total_${id_component}`)
                 console.log(document.getElementById(`quantity_${id_component}`).innerHTML)
 
-                document.getElementById(`total_${id_component}`).innerHTML = document.getElementById(`quantity_${id_component}`).innerHTML * document.getElementById(`price_${id_component}`).innerHTML
+                document.getElementById(`total_${id_component}`).innerHTML = Math.round(document.getElementById(`quantity_${id_component}`).innerHTML * document.getElementById(`price_${id_component}`).innerHTML *100)/100
             }
             window.print()
-            window.close()
+            //window.close()
         })();
 
 
