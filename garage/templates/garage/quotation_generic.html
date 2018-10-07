@@ -1,2 +1,9 @@
 {% extends 'garage/quotations_list.html' %}
+{% block cancel %}
+    {% if not reparation_order_list %}
+        <a href="{% url 'garage:home' %}" class=" btn btn-sm btn-primary col-md-2" >Annuler</a>
+    {% else %}
+        <div class="col-md-2"> </div>
+    {% endif %}
+{% endblock cancel %}
 
