@@ -73,7 +73,7 @@
                                     {{ component_form.name }}&nbsp;
                                     {{ component_form.price }}
                                     {{ component_form.id }}&nbsp;&nbsp;&nbsp;
-                                    <div class="btn btn-warning bt_rm_sorte">-</div>
+                                    <div onclick="majTotal()" class="btn btn-warning bt_rm_sorte">-</div>
                                 </div>
                             {% endfor %}
                             
@@ -97,7 +97,7 @@
 
                 <div class="col-md-12">
                     <div class="row">
-                        <button class="btn btn-success mt-3" id="bt_add_sorte" type="button">+</button>
+                        <button class="btn btn-success mt-3" onclick="majTotal()" id="bt_add_sorte" type="button">+</button>
                     </div>
                 </div>
 
@@ -121,7 +121,7 @@
                 &nbsp;&nbsp;{% for component in component_forms.empty_form %}
                 &nbsp;{{ component }}
                 {% endfor %}&nbsp;&nbsp;&nbsp;
-                <div class="btn btn-warning bt_rm_sorte">-</div>
+                <div class="btn btn-warning bt_rm_sorte" onclick="majTotal()">-</div>
             </div>
         </div>
     </div>
@@ -131,17 +131,18 @@
 
 <script>
     //auto-filling amount
-
-        function majTotal(){
-            let total = 0
-            for ( id = 0 ; id < document.getElementsByClassName('quantity').length - 1 ; id++ ){
-                let sub_total = document.getElementById(`id_form-${id}-quantity`).value * document.getElementById(`id_form-${id}-price`).value 
-                total += sub_total
-            };
-            total = Math.round(total*100)/100;
-            document.getElementById('id_amount').value = total
-            document.getElementById('amount').innerHTML = total
-        }
+    function majTotal(){
+        setTimeout(() => {
+        let total = 0
+        for ( id = 0 ; id < document.getElementsByClassName('quantity').length - 1 ; id++ ){
+            let sub_total = document.getElementById(`id_form-${id}-quantity`).value * document.getElementById(`id_form-${id}-price`).value 
+            total += sub_total
+        };
+        total = Math.round(total*100)/100;
+        document.getElementById('id_amount').value = total
+        document.getElementById('amount').innerHTML = total
+    },0)
+    }
 
 </script>
 <script type="text/javascript">
